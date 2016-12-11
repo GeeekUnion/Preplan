@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志备份配置 文件--><sys>
+
+	<!-- 日志文件备份配置开始 -->
+	<!-- 文件备份饭方式，0：全量备份，1：增量备份 -->
+	<property syskey="FileBakMethod" sysvalue="1"/>
+	<!-- 文件上次备份时间 -->
+	<property syskey="FileLastBakTime" sysvalue=""/>
+	<!-- 文件备份路径 -->
+	<property syskey="FileBakDir" sysvalue="D:\\bak\\file"/>
+	<!-- 日志文件备份配置结束-->
+	
+	<!-- 数据库日志备份配置开始 -->
+	
+	<!-- 数据库日志自动备份配置开始 -->
+	<!-- 备份规则，count：按条数备份，date：按日期备份 -->
+	<property syskey="DataBakRule" sysvalue="date"/>
+	<!-- 按条数备份规定的数据条数-->
+	<property syskey="DataBakCount" sysvalue="1000"/>
+	<!-- 备份方式，0：全量备份，1：增量备份 -->
+	<property syskey="DataBakMethod" sysvalue="1"/>
+	<!-- 日志上次备份时间 -->
+	<property syskey="DataLastBakTime" sysvalue=""/>
+	<!--自动备份到文件或数据库，File：文件，DataBase：数据库  -->
+	<property syskey="AutoBakDis" sysvalue="DataBase"/>
+	<!-- 自动备份后文件生成目录 -->
+	<property syskey="AutoBakDir" sysvalue="D:\\bak\\data\\auto"/>
+	<!-- 数据库日志自动备份配置结束 -->
+	<!-- 数据库日志备份配置结束 -->
+	
+	
+</sys>

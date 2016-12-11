@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/90"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> 
+  <context-root>plan</context-root>
+  <charset-params>
+   <input-charset>
+    <resource-path>/*</resource-path>
+    <java-charset-name>utf-8</java-charset-name>
+    </input-charset>
+   </charset-params>
+   <container-descriptor>
+   		<prefer-web-inf-classes>true</prefer-web-inf-classes>
+   </container-descriptor> 
+   <!-- 添加上后，session不会丢失 -->
+   <session-descriptor>
+   		<cookie-name>mainid</cookie-name>
+   </session-descriptor>
+</weblogic-web-app>

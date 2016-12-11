@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd"  >
+
+<struts>
+	<!-- 设置Action返回页面的文件夹 -->
+    <constant name="struts.convention.result.path" value="/resources/page" />  
+    <!-- 设置搜索Action的包 -->
+    <constant name="struts.convention.package.locators" value="action,actions" />  
+    <!-- 浏览器是否缓存 -->
+ 	<constant name="struts.freemarker.beanwrapperCache" value="false"/>
+ 	<!-- 允许访问类的镜头方法 -->
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+    <!-- 设置访问路径后缀 -->
+    <constant name="struts.action.extension" value="do,action"/>
+    <!-- 设置struts扫描jar包里的action -->
+    <constant name="struts.convention.action.includeJars" value=".*?/*.*?jar(!/)?"/>
+    <!-- struts允许上传文件大小最大值 -->
+    <constant name="struts.multipart.maxSize" value="10000000000"/>
+    <!-- 国际化信息 的默认baseName-->
+    <constant name="struts.custom.i18n.resources" value="i18n/log-i18n,i18n/sitemesh"/>
+    <!-- 附件的默认保存位置 -->
+    <constant name="struts.multipart.saveDir" value="/temp"/>
+    <constant name="struts.convention.action.fileProtocols" value="jar,wsjar"/>
+</struts>
+

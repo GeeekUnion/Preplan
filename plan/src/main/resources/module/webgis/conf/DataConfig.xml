@@ -1,0 +1,4 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<!-- 提供给所以WebGis前端访问的数据配置   对外提供时返回全部字段，不受fields配置限制 -->
+<configuration>
+</configuration>

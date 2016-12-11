@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 此文件用来保存初始化结口的实现类-->
+<classes>
+  <class>
+  	<id>00001</id>
+    <name>com.gsafety.cloudframework.cache.init.InitCache</name>
+    <description>初始化用户缓存</description>
+    <isinit>true</isinit>
+  	<date>2015-07-06 10:54:55</date>
+  	<params>
+	   <key>001</key>
+	   <mapKey>getLoginName</mapKey>
+	   <mapValue>getName</mapValue>
+	   <poclass>com.gsafety.cloudframework.user.po.EmsUser</poclass>
+	   <hql><![CDATA[from EmsUser ]]></hql>
+    </params>
+  </class>
+  <class>
+    <id>00002</id>
+    <name>com.gsafety.cloudframework.cache.UserCachehandlerImpl</name>
+    <description>初始化用户缓存</description>
+    <isinit>false</isinit>
+  	<date>2015-07-06 10:54:55</date>
+  </class>
+</classes>

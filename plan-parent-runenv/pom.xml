@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 项目运行环境配置组件依赖坐标信息 -->
+	<groupId>com.gsafety.plan</groupId>
+	<artifactId>plan-parent-runenv</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<description>
+	  	说明：maven的parent配置文件，配置整个产品/项目所依赖的运行环境，产品/项目所有组件均需要依赖的运行环境（目前主要是配置组件构建打包时的配置信息）
+  	</description>
+
+	<!-- 自定义maven属性 -->
+	<properties>
+		<!-- 指定工程拷贝文件编码 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- 指定项目站点生成HTML编码 -->
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<!-- 指定工程编译编码 -->
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<!-- 指定业务基础软件平台主版本号 -->
+		<cfw-version>1.2.0-RELEASE</cfw-version>
+		<!-- 指定应急一张图主版本号 -->
+		<webgis-version>1.2.0-RELEASE</webgis-version>
+		<!-- 指定共性业务组件主版本号 -->
+		<common-version>1.0.0-RELEASE</common-version>
+		<!-- 指定项目业务组件主版本号 -->
+		<project-version>1.0.0-SNAPSHOT</project-version>
+		<!-- 指定项目Maven私服组件仓库地址-发布版 （项目验收发布时使用） -->
+		<maven-releases-repository-id>Plan</maven-releases-repository-id>
+		<maven-releases-repository-url>http://172.17.10.145:8081/nexus/content/repositories/Plan/</maven-releases-repository-url>
+		<!-- 指定项目Maven私服组件仓库地址-快照版（项目开发时使用） -->
+		<maven-snapshots-repository-id>Plan-Snapshots</maven-snapshots-repository-id>
+		<maven-snapshots-repository-url>http://172.17.10.145:8081/nexus/content/repositories/Plan-Snapshots/</maven-snapshots-repository-url>
+		<!-- maven编译器插件版本 -->
+		<compiler-plugin-version>1.6</compiler-plugin-version>
+		<!-- JavaEE相关 -->
+		<servlet-api-version>2.5</servlet-api-version>
+		<jsp-api-version>2.1</jsp-api-version>
+	</properties>
+
+	<!-- 配置依赖环境 -->
+	<dependencies>
+		<!-- JavaEE相关 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet-api-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp-api-version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- 项目组件仓库配置-项目组件发布仓库，用户名和密码在.m2文件夹下的setting.xml文件中 -->
+	<distributionManagement>
+		<snapshotRepository>
+			<id>${maven-snapshots-repository-id}</id>
+			<url>${maven-snapshots-repository-url}</url>
+		</snapshotRepository>
+		<repository>
+			<id>${maven-releases-repository-id}</id>
+			<url>${maven-releases-repository-url}</url>
+		</repository>
+	</distributionManagement>
+
+	<!-- 项目构建配置 -->
+	<build>
+		<plugins>
+			<!--Maven编译器版本 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${compiler-plugin-version}</source>
+					<target>${compiler-plugin-version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+		<!-- 打包规则 -->
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/package*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+</project>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 继承依赖 /plan项目运行环境配置组件 -->
+	<parent>
+		<groupId>com.gsafety.plan</groupId>
+		<artifactId>plan-parent-runenv</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>plan</artifactId>
+	<version>${project-version}</version>
+	<packaging>war</packaging>
+
+	<description>
+	  	说明：项目主工程，聚合项目所需要的所有业务组件，配置整个项目所依赖的运行环境
+  	</description>
+
+	<dependencies>
+		<!-- 装配组件依赖，对复用的组件扩展 -->
+		<dependency>
+			<groupId>com.gsafety.plan</groupId>
+			<artifactId>plan-component-extension</artifactId>
+			<version>${project-version}</version>
+		</dependency>
+
+		<!-- 项目业务组件依赖 -->
+		<dependency>
+			<groupId>com.gsafety.plan</groupId>
+			<artifactId>plan-module-web</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- mysql数据库驱动  -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.21</version>
+		</dependency>
+		<!-- postgresql数据库驱动  -->
+		<dependency>
+		  <groupId>org.postgresql</groupId>
+		  <artifactId>postgresql</artifactId>
+		  <version>9.4</version>
+		</dependency>
+		<!-- mssqlserver数据库驱动  -->
+		<dependency>
+			<groupId>com.microsoft</groupId>
+			<artifactId>sqljdbc4</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<!-- oralce数据库驱动  -->
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>oracleDriver</artifactId>
+			<version>11</version>
+		</dependency>
+		<!-- 平台组件依赖 -->
+		<!-- 组件运行管理组件 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-core</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 系统信息管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-system-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 菜单管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-menu-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 权限管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-priv-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 角色管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-role-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 用户管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-user-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 系统登录 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-login-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 运行时组件 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-runtime-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 日志管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-log-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 日志审计事件配置 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-log-audit-config-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 主题管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-theme-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 配置管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-config-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 缓存管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-cache-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		<!-- 租户管理 -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-tenant-web</artifactId>
+			<version>${cfw-version}</version>
+		</dependency>
+		
+	</dependencies>
+	<build>
+		<!--项目打包war包文件名 -->
+		<finalName>plan</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+</project>

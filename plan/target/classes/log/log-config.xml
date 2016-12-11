@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 自定义日志配置 文件-->
+<sys>
+	<!-- 保存日志信息key或value值 ，只需要修改sysvalue内容，key标示国际化key，value标示国际化后的信息-->
+	<property syskey="savelogmessage" sysvalue="key"></property>
+	<!-- aop是否使用api方式保存日志，yes：是，no：否 -->
+	<property syskey="isuseapi" sysvalue="no"></property>
+	<!-- aop设置数据缓存数量 -->
+	<property syskey="aopcachedatacount" sysvalue="2"></property>
+	
+	<!-- 设置不需要拦截的po开始,系统内置，不需要更改 -->
+	<!-- 由于记录日志时候也经过拦截器，这样就会造成循环保存日志 -->
+	<!-- 业务日志 -->
+	<property syskey="cloud-log.com.gsafety.cloudframework.log.po.BusinessLogPO" sysvalue=""></property>
+	<!-- 数据日志 -->
+	<property syskey="cloud-log.com.gsafety.cloudframework.log.po.DataLogPO" sysvalue=""></property>
+	<!-- 系统日志 -->
+	<property syskey="cloud-log.com.gsafety.cloudframework.log.po.SystemLogPO" sysvalue=""></property>
+	<!-- 附件日志 -->
+	<property syskey="cloud-log.com.gsafety.cloudframework.log.po.AttachmentLogPO" sysvalue=""></property>
+	
+</sys>

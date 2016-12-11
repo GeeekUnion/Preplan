@@ -1,0 +1,274 @@
+@CHARSET "UTF-8";
+/*样式初始化*/
+body,h1,h2,h3,h4,h5,h6,p,ul,li,dl,dt,dd {
+	padding: 0px;
+	margin: 0px
+}
+
+body,div,ul,li,p,h1,h2,h3,h4,h5,h6,form {
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px
+}
+
+div,span,tr,td {
+	vertical-align: top
+}
+
+img {
+	border: none
+}
+
+em {
+	font-style: normal
+}
+
+ul,li,ol {
+	list-style: none
+}
+
+a {
+	blr: expression(this.onFocus = this.blur ())
+}
+
+a {
+	color: #333333;
+	text-decoration: none
+}
+
+a:hover {
+	text-decoration: none;
+	color: #0090ff
+}
+
+a:focus {
+	outline: none;
+	-moz-outline: none
+}
+
+body {
+	background: url(../img/bg1.png) repeat 0 0;
+	font-size: 12px
+}
+
+input,select,textarea,button {
+	outline: none;
+	font-size: 12px;
+}
+
+label,input,textarea,select,button {
+	font-size: 12px;
+}
+
+input[type="radio"] {
+	border: 0;
+	margin: 0;
+	padding: 0
+}
+
+textarea {
+	color: #333;
+	line-height: 24px;
+	padding-left: 3px;
+}
+
+.fr {
+	float: right
+}
+
+.fl {
+	float: left
+}
+
+.pr5 {
+	padding-right: 5px
+}
+
+.pl10 {
+	padding-left: 10px
+}
+
+.mainwrapper {
+	
+}
+/* header------------- */
+.header {
+	background: #0866c6;
+	clear: both; /*height:140px;overflow:hidden*/
+}
+
+.header-nosub {
+	height: 115px;
+}
+/*logo*/
+.logo {
+	width: 300px;
+	text-align: center;
+	padding: 20px 0 10px 15px;
+	float: left
+}
+
+.logoinnr {
+	width: 282px;
+	height: 40px;
+	display: inline-block;
+	background: url(../img/cfw-logo.png) left no-repeat;
+}
+
+.headerinner {
+	width: 100%;
+}
+
+/*用户登录信息*/
+.userloggedinfo {
+	float: right
+}
+
+.userinfo {
+	padding: 0px;
+	line-height: 23px;
+	text-align: right;
+}
+
+.userinfo a {
+	color: #a8aec9;
+	text-decoration: none;
+	padding: 2px 5px;
+	margin: 0px 5px;
+}
+
+.userinfo a:hover {
+	color: #1b91ff;
+	text-decoration: none;
+}
+
+.userinfo a.signin {
+	padding: 2px 5px;
+	text-decoration: none;
+	color: #a8aec9;
+	border: 1px solid #0064c8
+}
+
+.userinfo a.signin:hover {
+	color: #fff;
+	padding: 2px 5px;
+	text-decoration: none
+}
+
+.userinfo a.signin,.userinfo a.signin:hover {
+	*background-position: 0 3px !important;
+	text-decoration: none;
+	color: #a8aec9;
+}
+
+a.signin {
+	position: relative;
+}
+
+a.signin span {
+	background: url("../img/signin.png") no-repeat 100% 25%;
+	padding: 0px 15px 0 0;
+	margin: 0px;
+	color: #a8aec9;
+}
+
+.userinfo a.menu-open {
+	background: #599adb !important;
+	outline: none;
+	border: 1px solid #7abdff
+}
+
+#small_signup {
+	display: inline;
+	float: none;
+	line-height: 23px;
+	margin: 25px 0 0;
+	width: 170px;
+}
+
+a.signin.menu-open span {
+	background-image: url("../img/signinCur.png");
+	color: #fff;
+}
+
+a.signin.menu-open span:hover,a.signin span:hover {
+	color: #fff;
+}
+
+.userinfoInner {
+	display: none;
+	background-color: #599adb;
+	position: absolute;
+	z-index: 100;
+	border: 1px solid #7abdff;
+	padding: 5px 12px 10px 12px;
+	top: 20px;
+	right: 0;
+	margin-right: 10px;
+	color: #fff;
+	width: 250px
+}
+
+.userinfoInner>p {
+	line-height: 30px;
+	text-align: left;
+}
+
+.userinfoInner>a {
+	float: left;
+	display: block;
+	height: 24px;
+	line-height: 24px;
+	text-align: left;
+	color: #fff;
+}
+
+.userinfoInner>a:hover {
+	display: block;
+}
+
+/*content-----------------*/
+.content {
+	clear: both;
+	width: 100%
+} /*左右分栏的包裹样式*/
+.contentbanner {
+	clear: both;
+	padding: 10px 10px 0 10px;
+	background: #fff;
+	height: 100%
+} /*不分栏的包裹样式*/
+.leftpanel {
+	float: left;
+	width: 260px;
+	color: #fff;
+}
+
+.rightpanel {
+	margin-left: 260px;
+	padding: 10px;
+	background: #fff
+}
+
+.rightpanel:after {
+	display: block;
+	clear: both;
+	content: ""
+}
+
+.leftpanel-hd {
+	background: #dddddd;
+	border-bottom: 1px solid #cccccc;
+	color: #666666;
+	padding: 15px 0 10px 20px
+}
+
+/*foot-------------------*/
+.foot {
+	clear: both;
+	width: 100%;
+	height: 29px;
+	line-height: 29px;
+	text-align: center;
+	font-size: 12px
+}

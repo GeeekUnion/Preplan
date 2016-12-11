@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	业务基础平台总配置文件
+ -->
+<transformers>
+    <!--组件融合的主目录 -->
+    <cloudframework-modules-fuseFile>module</cloudframework-modules-fuseFile>
+    <!-- 缺省的主题 -->
+    <cloudframework-theme-default>blue</cloudframework-theme-default>
+    <!-- 
+    	组件融合模式：
+    	jar：web资源文件不解压，一般用于开发环境；
+    	dir：web资源文件解压，一般用于生成环境；
+     -->
+    <cloudframework-fuse-fuseMode>jar</cloudframework-fuse-fuseMode>
+    <!-- 
+    	组件运行模式：
+    	run: 运行模式
+    	dev: 开发模式
+     -->
+    <cloudframework-run-runMode>dev</cloudframework-run-runMode>
+       
+    <!-- 自定义权限配置开始 -->
+    <!-- 自定义不需要过滤的url，多个地址间使用‘；’分隔 -->
+    <constant name="cloudframework.authority.allowUrl" value = ""/>
+    <!-- 自定义是否开启校验标识 ，默认为false-->
+    <constant name="cloudframework.authority.validateFlags" value = ""/>
+    <!-- 自定义前端登陆的url地址 -->
+    <constant name="cloudframework.authority.front.loginUrl" value = ""/>
+    <constant name="cloudframework.auth.front.loginUrl" value="/sys/login/login!login_noDecorator.do"/>
+    <!-- 自定义权限配置结束-->
+    
+    <!--  SSO服务中的hessian接口URL -->
+	<!-- <constant name="sso.hessian.url" value="http://localhost:8081/sso-service/hessian"/> -->
+	
+	<!-- redi缓存服务器配置 -->
+	<!-- <constant name="cache.redis.conf.MaxIdle" value="8"></constant>
+	<constant name="cache.redis.conf.MaxTotal" value="50"></constant>
+	<constant name="cache.redis.conf.MaxWaitMillis" value="1000"></constant>
+	多个redis服务器，host中间用‘,’隔开, 端口、密码、权重必须与host一致
+	<constant name="cache.redis.host" value="192.168.10.209"></constant>
+	<constant name="cache.redis.port" value="6379/0"></constant>
+	<constant name="cache.redis.password" value=""></constant>
+	<constant name="cache.redis.weight" value="1"></constant>
+	<constant name="cache.redis.timeout" value="1000"></constant> -->
+	
+	<!-- 推送服务配置 -->
+    <!-- <constant name="push.msg.ipaddr" value="http://192.168.1.185:8090/springwebsocket2"></constant> -->
+
+</transformers>

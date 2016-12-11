@@ -1,0 +1,37 @@
+﻿/*main*/
+a{color:#000000 !important;text-decoration:none !important}
+a:hover{color:#00CCFF !important;text-decoration:none !important;}
+a:focus{color:#000000 !important;text-decoration:none !important;}
+.bodyColor{background-color: #f5f5f5}
+
+.fl {float:left;}
+.fr{float: right;}
+.mgt{margin-top:20px;}
+.mgl{margin-left:20px;}
+.textc{text-align:center !important;}
+.fontBold{font-weight:bold;}
+.calendareast{width:200px;height:250px;}
+
+/*首页*/
+.logoImg{width:55px;height:55px;}
+.north{height:70px;background:url(default/images/index-back.jpg) repeat-x 0 0;}
+.northLeft{margin:4px 20px;}
+.northRight{ margin-right:20px;height: 68px; line-height: 68px;}
+.west{width:250px}
+.east{width:190px;}
+.south{height:52px;}
+.accordionControl{width:250px;height:200px;}
+.tree-title,.panel-title{font-size:16px;}
+.esuitree{margin:10px 0px;}
+.tree-node{padding: 5px 0px;}
+
+/*预警页面*/
+.top-area .title{margin-bottom:0px;background-color:#E7F0FE;border:1px solid #95B8E7;}
+.btm-area .title{margin-bottom:0px;background-color:#E7F0FE;border:1px solid #95B8E7;}
+.btm-area .pp_preplan .border{border:1px solid #95B8E7;padding:5px;padding-left:0px;}
+.btm-area .pp_preplan .border .label_box{padding:5px;padding-left:0px;background-color:#F4F4F4}
+.btm-area .pp_preplan .border .validatebox-text{height:25px;}
+/*执行页面*/
+#pps_add_mission {padding:5px}
+#pps_add_mission .form{margin-bottom:10px;}
+#pps_add_mission input{width:300px;height:25px;}

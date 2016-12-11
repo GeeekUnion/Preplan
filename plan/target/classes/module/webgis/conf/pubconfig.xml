@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<configuration>
+	<!--<title>WebGIS Product</title>
+	 <logo>assets/images/logo.png</logo> -->
+	<style>
+		<!-- 风格样式 -->
+		<!--[0]普通字体颜色(textColor) -->
+		<!--[1]主题背景颜色(backgroundColor) -->
+		<!--[2]鼠标放上去颜色(rollOverColor) -->
+		<!--[3]鼠标选中颜色(selectionColor) -->
+		<!--[4]标题颜色(titleColor) -->
+		<!--[5]组件主题颜色(uiChromeColor) -->
+		<!--[6]内容区域颜色(contentBackgroundColor) -->
+        <!--[7]鼠标放上去时字体颜色(rollOverTextColor) -->
+        <!--[8]鼠标选中时字体颜色(selectionTextColor) -->
+		<colors>
+			<!-- 蓝色 -->
+			<blue>0x1d1d1d,0x016bd7,0xC3DDFF,0x8bbcff,0xFFFFFF,0xffffff,0xf1fafa,0x000000,0x000000</blue>
+			<!-- 红色 -->
+ 			<future>0x1d1d1d,0xb30008,0xffa3a3,0xffa3a3,0xFFFFFF,0xffffff,0xfdf3f3,0x000000,0x000000</future>  
+			<!-- 灰色 -->
+			<metal>0x000000,0x868686,0xD4D4D4,0xC1C1C1,0xFFFFFF,0xFFFFFF,0xFEFEFE</metal>
+		</colors>
+		<font name="微软雅黑" size="12"/>
+		<!-- 导航条和title的透明度 -->
+		<alpha>0.8</alpha>
+	</style>
+	<!-- 需要修改地方 -->
+	<geometryservice url="http://192.168.10.126:8399/arcgis/rest/services/Geometry/GeometryServer"/>
+	<!-- 百度地图： initialextent="6493486.580532342 2261503.1742391633 17454382.580532342 7152127.174239163"  
+		 fullextent="-3848372.74306166 443319.75926826615 22470424.836083204 12184047.303868208" -->
+	<!-- 天地图： initialextent="4412556.768846653 1516510.6411778969 17571955.558422595 7386874.413479432" 
+		 fullextent="-52637595.158303775 -23481455.089206144 52637595.158303775 23481455.089206144" -->
+	<!--天地图4490   fullextent="44.533 -0.074  180 90"    initialextent="67 0 157 67"  fullextent="67 0 157 67"  center="116 39" level="0"   -->
+	<map  wraparound180="true" top="0" maxScale="18489335" addarcgisbasemaps="false" wkid="4326" esrilogovisible="false" scalebar="zh-cn">
+	<basemaps>
+			<layer label="矢量" id="本地地图服务" type="tiled" visible="true" alpha="1"
+				url="http://192.168.10.126:8399/arcgis/rest/services/Gsafety31/MapServer"></layer> 
+			
+			<!--此处图层的ID和lable必须一样，否则切换不了  -->	 
+			<!-- <layer label="捷泰在线服务" id="捷泰在线服务" type="tiled" visible="true" alpha="0.9"
+			 url="http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer"></layer> -->
+			 
+			 <!-- <layer label="ArcGis-WMS服务" id="esri_wms" type="wms" visible="true" alpha="0.9"
+			 imageformat="png" visiblelayers="1,2"
+			 url="http://localhost:6080/arcgis/services/OneMap/onemaptest/MapServer/WMSServer"></layer>
+			  -->
+			 <!-- <layer label="ArcGis-WMTS服务" id="esri_wmts" type="wmts" visible="true" alpha="0.9" servicemode="restfull"
+			 url="http://serverapps101.esri.com/arcgis/rest/services/MontgomeryBaseMap/MapServer/WMTS"></layer> -->
+			 
+			<!--  <layer label="ArcGIS在线地图" id="ArcGIS在线地图" type="tiled" visible="true" alpha="1"
+			 url="http://www.arcgisonline.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer"></layer> -->
+			 
+			<!-- <layer label="百度地图" id="百度地图" type="baidu@map" visible="true" alpha="0.7"></layer> -->
+			<!-- <layer label="百度影像地图" id="百度影像地图" type="baidu@image" visible="false" alpha="0.9"></layer>
+			<layer label="百度影像地图" id="百度影像地图" type="baidu@bdjt" visible="false" alpha="0.9"></layer> -->
+			
+			<!-- <layer label="Google地图" id="Google地图" type="google@usa" visible="false" alpha="1"></layer> -->
+			
+			<!-- <layer label="MapABCB地图" icon="assets/images/basemap_image.jpg" id="MapABC地图" type="mapabc@map" visible="true" alpha="1"></layer> -->
+			
+			<!-- <layer label="bing地图" id="bing地图" type="bing" visible="true" alpha="0.9"></layer> -->
+			
+			<!-- <layer label="地图" id="天地图" type="tdtwmts@vec_c" icon="assets/images/defaultBasemapIcon.png" visible="true" alpha="1" 
+				url="http://t2.tianditu.com/DataServer"></layer>
+			<layer label="地图" id="天地图" type="tdtwmts@cva_c" visible="true" alpha="1"
+				url="http://t2.tianditu.com/DataServer"></layer> -->
+			<!-- <layer label="影像" id="天地图影像" type="tdtwmts@img_c" icon="assets/images/basemap_image.png" visible="false" alpha="1"
+				url="http://t2.tianditu.com/DataServer"></layer>
+			<layer label="影像" id="天地图影像" type="tdtwmts@cia_c" visible="false" alpha="1"
+		   url="http://t2.tianditu.com/DataServer"></layer>   -->
+				 
+           <!--  <layer label="地图" id="天地图" type="tdtwmts@vec_c" icon="assets/images/defaultBasemapIcon.png" visible="true" alpha="1" 
+				url="http://106.37.227.26:81/DataServer"></layer>
+			<layer label="地图" id="天地图" type="tdtwmts@cva_c" visible="true" alpha="1"
+				url="http://106.37.227.26:81/DataServer"></layer>
+			<layer label="影像" id="天地图影像" type="tdtwmts@img_c" icon="assets/images/basemap_image.png" visible="false" alpha="1"
+				url="http://106.37.227.26:81/DataServer"></layer>
+			<layer label="影像" id="天地图影像" type="tdtwmts@cia_c" visible="false" alpha="1"
+				url="http://106.37.227.26:81/DataServer"></layer>  -->
+			<!-- <layer label="map" id="map" type="dynamic" visible="false" alpha="1"  icon="assets/images/basemap_image.png"
+				url="http://192.168.1.198:6080/arcgis/rest/services/emsmapserver/jichuzhuantidata0923/MapServer"></layer>   -->
+
+			 <!-- <layer label="SuperMap" id="SuperMap" type="supermap@dynamic" visible="true" alpha="0.9"
+			 url="http://localhost:8090/iserver/services/map-world/rest/maps/World"></layer>  -->
+			 
+			 <!-- <layer label="超图WMTS服务" id="supermap_wmts" type="wmts" visible="true" alpha="0.9"
+			 url="http://localhost:8090/iserver/services/map-world/wmts-china"></layer> -->
+			 
+			 <!-- visiblelayers配置的是title值 -->
+			 <!-- <layer label="超图WMS服务" id="supermap_wms" type="wms" visible="true" alpha="0.9"
+			 imageformat="png" visiblelayers="Countries@World,Capitals@World"
+			 url="http://localhost:8090/iserver/services/map-world/wms130/World Map"></layer> -->
+	</basemaps>
+	<operationallayers>
+		<!-- <layer label="图层服务" type="dynamic" visible="false" id="opmaplay" 
+		url="http://localhost:6080/arcgis/rest/services/TestService/charts_pop/MapServer"></layer>
+		<layer label="WMS服务" type="wms" visible="false" id="wmsopmaplay" 
+		url="http://172.24.1.117:8088/WMS/wms" visiblelayers=""></layer> -->
+	</operationallayers>
+	</map>
+	
+	<widget right="20" top="75" config="widgets/MapSwitcher/MapSwitcherWidget.xml" 
+			url="widgets/MapSwitcher/MapSwitcherWidget.swf"/>
+	<!-- 为保证导航条在鹰眼下面，拖拽鹰眼时不被导航条遮挡  -->
+	<widget wgid="nav" right="75" top="140"  label="导航条" 
+	 		config="widgets/Navigation/NavigationWidget.xml"  url="widgets/Navigation/NavigationWidget.swf" />
+	<widget right="0" bottom="0" config="widgets/OverviewMap/OverviewMapWidget.xml" 
+			url="widgets/OverviewMap/OverviewMapWidget.swf" />
+    <!-- sml 将banner做为单独的widget加载 -->	
+	<widget label="版权信息" right="40" bottom="5" url="widgets/Copyright/CopyrightWidget.swf" config="widgets/Copyright/CopyrightWidget.xml" />
+</configuration>

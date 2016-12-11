@@ -1,0 +1,17 @@
+<decorators defaultdir="/decorators">
+	<!-- 
+		需要系统头尾部装饰的视图界面，
+		配置规则为：“/系统模块Action的NameSpace/*.do”
+	-->
+	<decorator name="main" page="main.ftl">
+		<pattern>/sys/*.do</pattern>
+	</decorator>
+	
+	 <!-- 
+	 	excludes标签中定义不会被装饰的视图界面,路径规则为以“_noDecorator”结尾的.do的请求路径
+	 	开发人员需要在自己的action中的方法名上加上“_noDecorator”后缀，如：add__noDecorator(){}
+	  -->
+     <excludes>
+         <pattern>/*_noDecorator*.do*</pattern>
+     </excludes> 
+</decorators>
