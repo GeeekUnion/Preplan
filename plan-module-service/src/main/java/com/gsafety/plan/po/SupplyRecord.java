@@ -15,26 +15,20 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="PRE_SUPPLY")
-public class Supply implements Serializable{
+@Table(name="PRE_SUPPLYRECORD")
+public class SupplyRecord implements Serializable{
 	private static final long serialVersionUID = 706333807288987828L;
 	private int id;
-	private String supplyName; //物资名称
-	private int supplyNumber;
-	private String supplySn; //物资编号
+	private String supplyNameR; //物资名称
+	private int supplyNumberR;
+
 	
 
 	private Mission missionSn;
 	
 	
 	
-	@Column(name="supply_sn")
-	public String getSupplySn() {
-		return supplySn;
-	}
-	public void setSupplySn(String supplySn) {
-		this.supplySn = supplySn;
-	}
+
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
@@ -43,29 +37,29 @@ public class Supply implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Column(name="supply_name")
-	public String getSupplyName() {
-		return supplyName;
+	@Column(name="supply_namer")
+	public void setSupplyNameR(String supplyNameR) {
+		this.supplyNameR = supplyNameR;
 	}
-	public void setSupplyName(String supplyName) {
-		this.supplyName = supplyName;
+	public int getSupplyNumberR() {
+		return supplyNumberR;
 	}
-	@Column(name="supply_number")
-	public int getSupplyNumber() {
-		return supplyNumber;
+	@Column(name="supply_numberr")
+	public void setSupplyNumberR(int supplyNumberR) {
+		this.supplyNumberR = supplyNumberR;
 	}
-	public void setSupplyNumber(int supplyNumber) {
-		this.supplyNumber = supplyNumber;
+	public void setMissionSn(Mission missionSn) {
+		this.missionSn = missionSn;
 	}
-
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="mission_sn",referencedColumnName="mission_sn")
 	public Mission getMissionSn() {
 		return missionSn;
 	}
-	public void setMissionSn(Mission missionSn) {
-		this.missionSn = missionSn;
+	public String getSupplyNameR() {
+		return supplyNameR;
 	}
+	
 	
 	
 	

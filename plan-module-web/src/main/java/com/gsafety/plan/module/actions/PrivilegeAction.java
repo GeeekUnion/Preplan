@@ -14,7 +14,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
-import com.gsafety.plan.po.Person;
+import com.gsafety.plan.po.PersonRecord;
 import com.gsafety.plan.po.Privilege;
 import com.gsafety.plan.service.PrivilegeService;
 
@@ -94,7 +94,7 @@ public class PrivilegeAction extends ListAction<Privilege>{
 //		List<Privilege> pList=privilegeService.query();
 //		JSONArray array = new JSONArray();
 //	    for(Privilege p : pList){
-//	    	JSONObject jo = new JSONObject();
+//	    	JSONObject jo = new JSONObject();  
 //			jo.put("id", p.getId());
 //			jo.put("PrivilegeOperation", p.getPrivilegeOperation());
 //			jo.put("RecordStatus", p.getRecordStatus());

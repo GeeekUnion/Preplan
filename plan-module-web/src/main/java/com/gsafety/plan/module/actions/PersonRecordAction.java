@@ -11,13 +11,13 @@ import com.gsafety.cloudframework.common.base.conditions.CB;
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.model.PageModel;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
-import com.gsafety.plan.po.Person;
+import com.gsafety.plan.po.PersonRecord;
 /**
  * @author Administrator
  *
  */
 @Namespace("/preplan")
-public class PersonAction extends ListAction<Person> {
+public class PersonRecordAction extends ListAction<PersonRecord> {
 
 	private String name;
 	

@@ -3,9 +3,10 @@ package com.gsafety.plan.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
-import com.gsafety.plan.service.SupplyService;
+import com.gsafety.plan.service.SupplyRecordService;
+
 
 @Service
-public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
+public class SupplyRecordServiceImpl extends BaseServiceImpl implements SupplyRecordService{
 
 }

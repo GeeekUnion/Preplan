@@ -10,91 +10,72 @@
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
+    	function addMis(){
+			$('#win').window({
+				width:500,
+				height:350,
+				title:'历史记录',
+				cache:false,
+				content:'<iframe src="preplan_state_add.action" frameborder="0" width="100%" height="100%"/>'
+			});
+} 
+    	
+    	
     	$(function (){
- 			//数据表格
- 			/*
- 			$('#ppltt').datagrid({
- 			    url:'queryPrivilege.action',
- 			   	pagination:true,
- 			   	rownumbers:true,
- 			   	striped:true,
- 			   	singleSelect:true, 			    
- 			    columns:[[
- 					{field:'id',title:'id',width:180,align:'center'},      
- 					{field:'',title:'报警人',width:250,align:'center'},
- 					{field:'',title:'报警时间',width:250,align:'center'},
- 					{field:'',title:'事件描述',width:250,align:'center'},
- 					{field:'',title:'具体位置',width:250,align:'center'},
- 					{field:'',title:'操作',width:250,align:'center'}
- 			    ]],
- 			 	//数据表格  
- 			   toolbar: [{
- 					text:'查看用户',
- 					iconCls: 'icon-users',
- 					handler:function (){
- 						
- 						}
- 				}]
-				
- 			});
- 			*/
- 			$('#pps_search_btn').linkbutton({    
-			    iconCls: 'icon-add'   
-			});
-			$('#pps_input1').textbox({
-				label: '任务名称：',                
-				labelPosition: 'top',		
-			    required:true,
-			         
-			});
-			$('#pps_input2').textbox({
-				label: '责 任 人：',                
-				labelPosition: 'top',				    
-			    required:true,
-			    missingMessage:'此输入框不能为空！'      
-			});
-			$('#pps_input3').textbox({
-				label: '任务描述：',                
-				labelPosition: 'top',    
-			    multiline:true,
-			    required:true,
-			    missingMessage:'此输入框不能为空！'    
-			});  		 
- 		});	
- 		function addMisson(){			
-				$('#pps_add_mission').window({    
-				    width:420,    
-				    height:250,    
-				    modal:true,
-				    title:'新增任务'   
-				}); 
-			}
+ 			
+ 		 $('#dg').datagrid({    
+  		 url:'',    
+  		 singleSelect:true,
+  		 loadmsg:'请等待',
+	     rownumbers:true,
+  		 pagination:true,
+		 pageNumber:1,
+		 pageSize:15,
+		 pageList:[15,30,50,100],
+		 
+    	 columns:[[    
+    	 {field:'ffffff',title:'事件名称',width:100,align:'center'},   
+        {field:'preplanSn',title:'预案编号',width:100,align:'center'},    
+        {field:'preplanName',title:'预案名称',width:100,align:'center'},    
+        {field:'responDept',title:'负责部门',width:100,align:'center'},
+        {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
+		        		  return "<a  href='#' onclick='addMis()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"查看任务"+"</a>";				        		
+		        	}}
+        
+   			 ]],
+   		
+   		data: [
+		{f1:'666', f2:'value12',f3:'value13'},
+		{f1:'value21', f2:'value22',f3:'value23'},
+		{f1:'value31', f2:'value32',f3:'value33'}
+	   ]
+	  
+  	 
+						});  
+						
+						
+			
+						
+						
+						
+						
+ 		});
+    	
+    	
+    	
+    	
+    	
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body>
-    <!--表格-->
-    <div class="top-area">
-    	<p class="title">事件列表</p>
-    	<table id="ppstt"></table>  
-    </div>   
-    <div class="btm-area">
-    	<p class="title">预案执行情况</p>
-    	<a id="pps_search_btn" href="#" onclick="addMisson()">新增任务</a>
-    </div>
-    
-	<div id="pps_add_mission" style="display:none">
-		<form id="pps_form">
-			<div class="form">
-				<input id="pps_input1" class="easyui-validatebox" type="text" name="pps_mission_name"/>
-			</div>
-			<div class="form">
-				<input id="pps_input2" class="easyui-validatebox" type="text" name="pps_mission_person"/>
-			</div>
-			<div class="form">
-				<input id="pps_input3" class="easyui-textbox" name="pps_mission_desc"/> 	
-			</div>	
-		</form>
-	</div>  
+   
+   <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
+   
+   <table id="dg"></table>  
+   
+   
+   
+   
 </body>
 </html>
