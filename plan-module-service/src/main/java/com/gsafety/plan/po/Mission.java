@@ -30,13 +30,15 @@ public class Mission implements Serializable{
 	private String responPerson;        //负责人，暂无对应表
 	private int personNumber;           //
 	private int supplyNumber;             
+	private String missionStatus;      //任务完成状态                     1代表完成，0代表否
+	private String missionDefault;      //任务是否默认被加入预案  1代表是，0代表否   
 	
 	private Preplan preplanSn;
-	private Set<Person> person=new HashSet<Person>();
-	private Set<Supply> supply=new HashSet<Supply>();
+	private Set<PersonRecord> personRecord=new HashSet<PersonRecord>();    //
+	private Set<SupplyRecord> supplyRecord=new HashSet<SupplyRecord>();    //
 	
 	
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return id;
@@ -86,19 +88,19 @@ public class Mission implements Serializable{
 	public void setSupplyNumber(int supplyNumber) {
 		this.supplyNumber = supplyNumber;
 	}
-	@OneToMany(targetEntity=Person.class,mappedBy="missionSn")
-	public Set<Person> getPerson() {
-		return person;
+	@OneToMany(targetEntity=PersonRecord.class,mappedBy="missionSn")
+	public Set<PersonRecord> getPersonRecord() {
+		return personRecord;
 	}
-	public void setPerson(Set<Person> person) {
-		this.person = person;
+	public void setPersonRecord(Set<PersonRecord> personRecord) {
+		this.personRecord = personRecord;
 	}
-	@OneToMany(targetEntity=Supply.class,mappedBy="missionSn")
-	public Set<Supply> getSupply() {
-		return supply;
+	@OneToMany(targetEntity=SupplyRecord.class,mappedBy="missionSn")
+	public Set<SupplyRecord> getSupplyRecord() {
+		return supplyRecord;
 	}
-	public void setSupply(Set<Supply> supply) {
-		this.supply = supply;
+	public void setSupplyRecord(Set<SupplyRecord> supplyRecord) {
+		this.supplyRecord = supplyRecord;
 	}
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn")
@@ -108,6 +110,22 @@ public class Mission implements Serializable{
 	public void setPreplanSn(Preplan preplanSn) {
 		this.preplanSn = preplanSn;
 	}
+	@Column(name="mission_status")
+	public String getMissionStatus() {
+		return missionStatus;
+	}
+	public void setMissionStatus(String missionStatus) {
+		this.missionStatus = missionStatus;
+	}
+	@Column(name="mission_default")
+	public String getMissionDefault() {
+		return missionDefault;
+	}
+	public void setMissionDefault(String missionDefault) {
+		this.missionDefault = missionDefault;
+	}
+	
+	
 	
 	
 	

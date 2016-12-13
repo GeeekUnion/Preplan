@@ -17,9 +17,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name="PRE_DOMAIN")
-public class Domain implements Serializable{
-	private static final long serialVersionUID = 706333807288987828L;
-	
+public class Domain implements Serializable{	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String domainSn;         //所属领域编号
 	private String domainName;   

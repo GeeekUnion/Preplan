@@ -64,7 +64,7 @@ public class Attr implements Serializable{
 	public void setAttr3(String attr3) {
 		this.attr3 = attr3;
 	}
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "pre_attr_preplan",
 	joinColumns = {@JoinColumn(name = "attr_sn", referencedColumnName = "attr_sn")},
 	inverseJoinColumns = {@JoinColumn(name = "preplan_sn", referencedColumnName ="preplan_sn")})

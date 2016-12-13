@@ -1,7 +1,7 @@
 package com.gsafety.plan.po;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -97,7 +97,7 @@ public class Preplan implements Serializable {
 		this.username = username;
 	}
 	
-	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "pre_attr_preplan",
 	joinColumns = {@JoinColumn(name = "preplan_sn", referencedColumnName = "preplan_sn")},
 	inverseJoinColumns = {@JoinColumn(name = "attr_sn", referencedColumnName ="attr_sn")})
@@ -117,6 +117,7 @@ public class Preplan implements Serializable {
 	public void setDomain(Set<Domain> domain) {
 		this.domain = domain;
 	}
+	
 	@OneToMany(targetEntity=Mission.class,mappedBy="preplanSn")
 	public Set<Mission> getMission() {
 		return mission;

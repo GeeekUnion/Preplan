@@ -29,21 +29,21 @@ public class User implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Column(name="username",unique=true,nullable=false,length=300)
+	@Column(name="username",unique=true,nullable=false)
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	@Column(name="password",nullable=true,length=300)
+	@Column(name="password",nullable=true)
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Column(name="resource",length=300)
+	@Column(name="resource")
 	public String getResource() {
 		return resource;
 	}
