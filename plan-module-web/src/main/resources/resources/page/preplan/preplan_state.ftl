@@ -12,9 +12,9 @@
     <script type="text/javascript">
     	function addMis(){
 			$('#win').window({
-				width:500,
-				height:350,
-				title:'历史记录',
+				width:700,
+				height:550,
+				title:'当前任务',
 				cache:false,
 				content:'<iframe src="preplan_state_add.action" frameborder="0" width="100%" height="100%"/>'
 			});
@@ -24,7 +24,7 @@
     	$(function (){
  			
  		 $('#dg').datagrid({    
-  		 url:'',    
+  		 url:'preplan_mission_queryByPage.action',    
   		 singleSelect:true,
   		 loadmsg:'请等待',
 	     rownumbers:true,
@@ -48,7 +48,18 @@
 		{f1:'666', f2:'value12',f3:'value13'},
 		{f1:'value21', f2:'value22',f3:'value23'},
 		{f1:'value31', f2:'value32',f3:'value33'}
-	   ]
+	   ],
+	    toolbar: [{
+  			   	id:'add',
+		    	text:'添加',
+				iconCls: 'icon-add',
+				handler: function(){	
+					
+					
+					});
+				
+				}
+			}]
 	  
   	 
 						});  

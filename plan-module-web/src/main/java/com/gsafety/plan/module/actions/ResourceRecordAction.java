@@ -1,23 +1,21 @@
 package com.gsafety.plan.module.actions;
 
 
-import java.util.Date;
-import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+
+
 import org.apache.struts2.convention.annotation.Namespace;
 
-import com.gsafety.cloudframework.common.base.conditions.CB;
-import com.gsafety.cloudframework.common.base.conditions.Cnds;
-import com.gsafety.cloudframework.common.base.model.PageModel;
+
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
-import com.gsafety.plan.po.PersonRecord;
+
+import com.gsafety.plan.po.ResourceRecord;
 /**
  * @author Administrator
  *
  */
 @Namespace("/preplan")
-public class PersonRecordAction extends ListAction<PersonRecord> {
+public class ResourceRecordAction extends ListAction<ResourceRecord> {
 
 	private String name;
 	

@@ -34,8 +34,8 @@
 		 
     	 columns:[[    
         {field:'preplanSn',title:'预案编号',width:100,align:'center'},    
-        {field:'preplanName',title:'预案名称',width:100,align:'center'},    
-        {field:'preplanTime',title:'时间',width:100,align:'center'},
+        {field:'preplanName',title:'预案名称',width:150,align:'center'},    
+        {field:'preplanTime',title:'时间',width:200,align:'center'},
         {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
 		        		  return "<a  href='#' onclick='Details()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"启动"+"</a>";				        		
 		        	}}

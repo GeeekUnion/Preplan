@@ -31,8 +31,15 @@ public class MissionAction extends ListAction<Mission> {
 	private String preplanSn;                       
 	private String preplanName;
 	private Timestamp preplanTime;
+	private String responDept;
 	
 	
+	public String getResponDept() {
+		return responDept;
+	}
+	public void setResponDept(String responDept) {
+		this.responDept = responDept;
+	}
 	public MissionService getMissionService() {
 		return missionService;
 	}
@@ -89,6 +96,7 @@ public class MissionAction extends ListAction<Mission> {
 		PrintWriter out = response.getWriter();
 		return out;
 	}
+	//启动预案页面，查询预案属性
 	public String queryByPage() throws IOException{
 		String str=missionService.getPage(page, rows);
 		out().print(str);
@@ -96,6 +104,15 @@ public class MissionAction extends ListAction<Mission> {
 		out().close();
 		return "jsonArray";
 	}
+	//执行情况页面，查询任务属性
+	public String queryByPage2() throws IOException{
+		String str=missionService.getPageMis(page, rows);
+		out().print(str);
+		out().flush();
+		out().close();
+		return "jsonArray";
+	}
+	
 	
 	
 	

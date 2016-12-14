@@ -14,7 +14,6 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
-import com.gsafety.plan.po.PersonRecord;
 import com.gsafety.plan.po.Privilege;
 import com.gsafety.plan.service.PrivilegeService;
 

@@ -89,7 +89,7 @@
 				<param name="root">jsonArray</param>
 			</result>						
 		</action>   
- 		<action name="*" class="com.gsafety.plan.module.actions.PersonRecordAction">
+ 		<action name="*" class="com.gsafety.plan.module.actions.ResourceRecordAction">
  			<result name="main">preplan/{1}.ftl</result>
  		</action>
  	</package>   

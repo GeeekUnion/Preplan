@@ -12,7 +12,7 @@
     <script type="text/javascript">
     	$(function (){
     	 $('#dg').datagrid({    
-  		 url:'',    
+  		 url:'preplan_mission_queryByPage2.action',    
   		 singleSelect:true,
   		 loadmsg:'请等待',
 	     rownumbers:true,
@@ -21,20 +21,15 @@
 		 pageSize:15,
 		 pageList:[15,30,50,100],
 		 columns:[[    
-    	 {field:'ffffff',title:'事件名称',width:100,align:'center'},   
-        {field:'preplanSn',title:'预案编号',width:100,align:'center'},    
-        {field:'preplanName',title:'预案名称',width:100,align:'center'},    
+    	 {field:'missionSn',title:'任务编号',width:100,align:'center'},   
+        {field:'missionMethod',title:'方法安排',width:100,align:'center'},    
+        {field:'missionStatus',title:'任务状态',width:100,align:'center'},    
         {field:'responDept',title:'负责部门',width:100,align:'center'},
-        {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
-		        		  return "<a  href='#' onclick='addMis()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"查看任务"+"</a>";				        		
-		        	}}
+        {field:'responPerson',title:'负责人',width:100,align:'center'}
+      
         
    			     ]],
-   		data:[
-		{f1:'666', f2:'value12',f3:'value13'},
-		{f1:'value21', f2:'value22',f3:'value23'},
-		{f1:'value31', f2:'value32',f3:'value33'}
-	   ]	 
+   		
 		 
 		 
 		 
