@@ -25,17 +25,15 @@ public class Mission implements Serializable{
 	
 	private int id;
 	private String missionSn;           //任务编号
+	private String missionName;       
 	private String missionMethod;       //对应方法
 	private String responDept;          //负责部门，暂无对应表
 	private String responPerson;        //负责人，暂无对应表
-	private int personNumber;           //
-	private int supplyNumber;             
 	private String missionStatus;      //任务完成状态                     1代表完成，0代表否
 	private String missionDefault;      //任务是否默认被加入预案  1代表是，0代表否   
 	
 	private Preplan preplanSn;
-	private Set<PersonRecord> personRecord=new HashSet<PersonRecord>();    //
-	private Set<SupplyRecord> supplyRecord=new HashSet<SupplyRecord>();    //
+	private Set<ResourceRecord> resourceRecord =new HashSet<ResourceRecord>();
 	
 	
 	@Id 
@@ -74,34 +72,8 @@ public class Mission implements Serializable{
 	public void setResponPerson(String responPerson) {
 		this.responPerson = responPerson;
 	}
-	@Column(name="mission_person_number")
-	public int getPersonNumber() {
-		return personNumber;
-	}
-	public void setPersonNumber(int personNumber) {
-		this.personNumber = personNumber;
-	}
-	@Column(name="mission_supply_number")
-	public int getSupplyNumber() {
-		return supplyNumber;
-	}
-	public void setSupplyNumber(int supplyNumber) {
-		this.supplyNumber = supplyNumber;
-	}
-	@OneToMany(targetEntity=PersonRecord.class,mappedBy="missionSn")
-	public Set<PersonRecord> getPersonRecord() {
-		return personRecord;
-	}
-	public void setPersonRecord(Set<PersonRecord> personRecord) {
-		this.personRecord = personRecord;
-	}
-	@OneToMany(targetEntity=SupplyRecord.class,mappedBy="missionSn")
-	public Set<SupplyRecord> getSupplyRecord() {
-		return supplyRecord;
-	}
-	public void setSupplyRecord(Set<SupplyRecord> supplyRecord) {
-		this.supplyRecord = supplyRecord;
-	}
+	
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn")
 	public Preplan getPreplanSn() {
@@ -123,6 +95,20 @@ public class Mission implements Serializable{
 	}
 	public void setMissionDefault(String missionDefault) {
 		this.missionDefault = missionDefault;
+	}
+	@Column(name="mission_name")
+	public String getMissionName() {
+		return missionName;
+	}
+	public void setMissionName(String missionName) {
+		this.missionName = missionName;
+	}
+	@OneToMany(targetEntity=ResourceRecord.class,mappedBy="missionSn")
+	public Set<ResourceRecord> getResourceRecord() {
+		return resourceRecord;
+	}
+	public void setResourceRecord(Set<ResourceRecord> resourceRecord) {
+		this.resourceRecord = resourceRecord;
 	}
 	
 	

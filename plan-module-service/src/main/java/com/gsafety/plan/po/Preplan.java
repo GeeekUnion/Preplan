@@ -27,6 +27,7 @@ public class Preplan implements Serializable {
 	private int id;
 	private String preplanSn;                       
 	private String preplanName;
+	private String preplanDesc;
 	private Timestamp preplanTime;            //预案启动时间
 	private Boolean preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
@@ -124,6 +125,13 @@ public class Preplan implements Serializable {
 	}
 	public void setMission(Set<Mission> mission) {
 		this.mission = mission;
+	}
+	@Column(name="preplan_desc")
+	public String getPreplanDesc() {
+		return preplanDesc;
+	}
+	public void setPreplanDesc(String preplanDesc) {
+		this.preplanDesc = preplanDesc;
 	}
 	
 	

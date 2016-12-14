@@ -33,7 +33,6 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 	@Override
 	public String getPage(int pageNumber, int pageSize) {
 		String hql=" from Preplan p";
-		
 		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Preplan.class);
 		List<Preplan> pList= (List<Preplan>)  pResult.getList();
 		JSONArray array = new JSONArray();
@@ -41,7 +40,6 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 			JSONObject jo = new JSONObject();
 			jo.put("preplanSn", p.getPreplanSn());
 			jo.put("preplanName", p.getPreplanName());
-			
 			Timestamp timestamp = p.getPreplanTime();
 			if (timestamp != null) {
 				String timestamp2 = timestamp.toString();
@@ -49,12 +47,60 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 			} else {
 				jo.put("preplanTime", "");
 			}
-			array.add(jo);
+			jo.put("responDept", p.getResponDept());
+				array.add(jo);
 		}
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
-		
-      
         return str;
 	}
+	public String getPageMis(int pageNumber, int pageSize){
+		String hql=" from Mission m";
+		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Mission.class);
+		List<Mission> pList= (List<Mission>)  pResult.getList();
+		JSONArray array = new JSONArray();
+		for(Mission p:pList){
+			JSONObject jo = new JSONObject();
+			jo.put("missionSn", p.getMissionSn());
+			jo.put("missionMethod",p.getMissionMethod() );
+			jo.put("missionStatus",p.getMissionStatus() );
+			jo.put("responDept", p.getResponDept());
+			jo.put("responPerson", p.getResponPerson());
+				array.add(jo);
+		}
+		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
+        return str;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
 
-}
+
