@@ -234,7 +234,20 @@
 								misArray : misGroup,
 								srcArray : srcGroup
 								},
-						success : function() {
+						success : function(jsonArray) {
+							if(jsonArray == "\"error\""){
+								$.messager.alert('提示','保存出错，请重试！','error');
+							}
+							else if(jsonArray == "\"ok\""){
+								$.messager.alert('提示','保存成功！','info',
+									function() {
+										window.location.reload()							
+									});
+							}
+							else{
+								$.messager.alert('提示','未知错误','error');
+							}						
+							
 						}
 						});      
 		    }    

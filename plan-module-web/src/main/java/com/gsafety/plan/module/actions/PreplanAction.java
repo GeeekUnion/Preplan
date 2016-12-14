@@ -27,6 +27,7 @@ import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Person;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.Privilege;
+import com.gsafety.plan.po.ResourceRecord;
 import com.gsafety.plan.po.Supply;
 import com.gsafety.plan.service.DomainService;
 import com.gsafety.plan.service.IPersonService;
@@ -34,6 +35,7 @@ import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.PersonService;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
+import com.gsafety.plan.service.ResourceRecordService;
 import com.gsafety.plan.service.SupplyService;
 
 @Namespace("/preplan")
@@ -49,6 +51,8 @@ public class PreplanAction extends ListAction<Preplan>{
     private DomainService domainService;
     @Resource
     private MissionService missionService;
+    @Resource
+    private ResourceRecordService rrService;
     
     private String code;
     private String ppName;//预案名字
@@ -167,6 +171,9 @@ public class PreplanAction extends ListAction<Preplan>{
     
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
+        //返回判断
+        String jsonArray ="";
+        
         //获得当前预案时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获得当前预案UUID（preplan_sn）
@@ -218,23 +225,29 @@ public class PreplanAction extends ListAction<Preplan>{
                     if(srcList != null) {
                         for(int j=0;j<srcList.length;j+=4){
                             if(misList[i].equals(srcList[j])) {
-                                System.out.println("存储资源");
+                                String uuidSrc = UUID.randomUUID().toString();
+                                ResourceRecord srcModel = new  ResourceRecord();
+                                srcModel.setResourceName(srcList[j+1]);
+                                srcModel.setResourceNumber(srcList[j+2]);
+                                srcModel.setResourceUnit(srcList[j+2]);
+                                srcModel.setMissionSn(misnModel);
+                                srcModel.setResourceSn(uuidSrc);
+                                rrService.save(srcModel);
+                                System.out.println("保存资源");
+                                
                             }                                                       
                         } 
                     }
                  
                 }  
             }
+            
+        jsonArray = "ok";   
         }catch(Exception e) {
             System.out.println("bug");
-            String returnpd="error";
+            jsonArray = "error";
         }
-        
-
-        
-        
-      
-                                  
+                                 
         return "jsonArray";
         
     }
