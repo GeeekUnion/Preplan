@@ -57,7 +57,7 @@
 			</result>						
 		</action>
 		<!-- 分类拦截和结果配置 -->
-		<action name="preplan_attr_*" class="com.gsafety.plan.module.actions.DoMainAction" method="{1}">
+		<action name="preplan_domain_*" class="com.gsafety.plan.module.actions.DomainAction" method="{1}">
 			<result name="jsonObject" type="json">
 				<!-- 为该Result指定参数 -->
 				<param name="noCache">true</param>
