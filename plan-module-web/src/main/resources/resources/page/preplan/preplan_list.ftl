@@ -14,7 +14,7 @@
  		$(function (){
  			//数据表格
  			$('#ppltt').datagrid({
- 			    url:'preplan_ppl_queryPrivilege.action',			   	
+ 			    url:'preplan_preplan_queryPreplanList.action',			   	
  			   	pagination:true,
 				pageNumber:1,
 				pageSize:20,
@@ -22,18 +22,16 @@
 				rownumbers:true,
  			   	striped:true,
  			   	singleSelect:true, 			    
- 			    columns:[[
- 					{field:'id',title:'id',width:180,align:'center'},      
- 					{field:'PrivilegeOperation',title:'权限名',width:250,align:'center'},
- 					{field:'RecordStatus',title:'编码',width:250,align:'center'},
- 					{field:'ParentID',title:'上级',width:250,align:'center'}
+ 			    columns:[[    
+ 					{field:'preplanName',title:'预案名字',width:300,align:'center'},
+ 					{field:'responDept',title:'负责单位',width:300,align:'center'}
  			    ]],
  			 	//数据表格  
  			   toolbar: [{
- 					text:'查看用户',
+ 					text:'查看预案详情',
  					iconCls: 'icon-users',
  					handler:function (){
- 						
+ 						document.getElementById("ppl_btm_area").style.display="block";
  						}
  				}]
 
@@ -42,28 +40,50 @@
  		//下拉搜索
 		$(function (){
 			$('#ppl_search').combobox({    
-			    url:'preplan_pplqueryPrivilege.action',    
-			    valueField:'id',    
-			    textField:'PrivilegeOperation'   
+			    url:'preplan_domain_queryAllDomain.action',    
+			    valueField:'domain_sn',    
+			    textField:'domain_name'   
 			});
 			$('#ppl_search_btn').linkbutton({    
 			    iconCls: 'icon-search'   
 			});   
 		})
  		
+ 		//下拉搜索预案列表
+ 		function searchPreplanList(){
+ 			//获得搜索值
+ 			var searchCode = $('#ppl_search').combobox('getValue');
+ 			console.log(searchCode);
+ 			jQuery.ajax({
+					url: 'preplan_preplan_queryPreplanList.action',
+					type: 'post',
+					data: {
+							ppType:searchCode,
+							page:1,
+							rows:20,
+							},
+					success: function() {
+						
+					}
+				});
+ 			
+ 		}
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body>
     <!--表格-->
-    <input id="ppl_search" name="dept" value="选择预案类型">
-    <a id="ppl_search_btn" href="#">搜索</a>
+        
     <div class="top-area">
-    	<p class="title">预案列表</p>
+    	<p class="title"><strong>预案列表</strong></p>
+    	<div class="title">
+    		<input id="ppl_search" name="dept" value="选择预案类型">
+    		<a id="ppl_search_btn" href="#" onclick="searchPreplanList()">搜索</a>
+    	</div> 	
     	<table id="ppltt"></table>  
     </div>   
-    <div class="btm-area">
-    	<p class="title">预案详情</p>
+    <div id="ppl_btm_area" class="btm-area" style="display:none">
+    	<p class="title"><strong>预案详情</strong></p>
     	<div id="ppl_preplan" class="pp_preplan">   
 		    <div class="border">   
 		       <span class="label_box"><label for="ppl_preplan_name" >预案名称:</label></span>  
@@ -74,16 +94,25 @@
 		        <span></span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_desc">预案描述:</label></span>     
+		        <span class="label_box"><label for="ppl_preplan_dept">责任单位:</label></span>     
 		        <span></span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_proce">预案流程:</label></span>     
-		        <span>
-		        	<table id="pplmt"></table>
-		        	<table id="pplst"></table>   
-		        </span>
-		    </div>         
+		        <span class="label_box"><label for="ppl_preplan_desc">预案描述:</label></span>		           
+		        <span></span>
+		    </div>
+		    <div class="border">   
+		        <div class="label_box"><label for="ppl_preplan_proce">预案流程:</label></div>     
+		        <div>
+		        	<table id="ppl_mission_dg"> </table> 
+		        </div>
+		    </div>
+		    <div class="border">   
+		        <div class="label_box"><label for="ppl_preplan_src">所需资源:</label></div>     
+		        <div>
+		        	<table id="ppl_src_dg"></table>  
+		        </div>
+		    </div>          
 		</div> 
     </div>
 	

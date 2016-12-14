@@ -73,6 +73,24 @@
 				<param name="root">jsonArray</param>
 			</result>						
 		</action>
+		<!-- Preplan拦截和结果配置 -->
+		<action name="preplan_preplan_*" class="com.gsafety.plan.module.actions.PreplanAction" method="{1}">
+			<result name="jsonObject" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonObject</param>
+			</result>			
+			<result name="jsonArray" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonArray</param>
+			</result>						
+		</action>
+		<!-- Mission拦截和结果配置 -->
 		<action name="preplan_mission_*" class="com.gsafety.plan.module.actions.MissionAction" method="{1}">
 			<result name="jsonObject" type="json">
 				<!-- 为该Result指定参数 -->
@@ -88,7 +106,24 @@
 				<!-- 设置只序列Action的map属性 -->
 				<param name="root">jsonArray</param>
 			</result>						
-		</action>   
+		</action>
+		<!-- Department拦截和结果配置 -->
+		<action name="preplan_department_*" class="com.gsafety.plan.module.actions.DepartmentAction" method="{1}">
+			<result name="jsonObject" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonObject</param>
+			</result>			
+			<result name="jsonArray" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonArray</param>
+			</result>						
+		</action>    
  		<action name="*" class="com.gsafety.plan.module.actions.ResourceRecordAction">
  			<result name="main">preplan/{1}.ftl</result>
  		</action>
