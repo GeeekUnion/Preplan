@@ -26,7 +26,7 @@ public class ResourceRecord implements Serializable{
 	private String resourceNumber;
 	private String resourceUnit;
 
-    private Mission missionSn;
+    private Mission missionSn;    
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -63,7 +63,9 @@ public class ResourceRecord implements Serializable{
     }
     public void setResourceUnit(String resourceUnit) {
         this.resourceUnit = resourceUnit;
-    }	
+    }
+	
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="mission_sn",referencedColumnName="mission_sn")
 	public Mission getMissionSn() {
