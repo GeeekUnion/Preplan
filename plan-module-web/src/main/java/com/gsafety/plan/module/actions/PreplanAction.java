@@ -37,6 +37,7 @@ import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
 import com.gsafety.plan.service.ResourceRecordService;
 import com.gsafety.plan.service.SupplyService;
+import com.opensymphony.xwork2.ActionContext;
 
 @Namespace("/preplan")
 public class PreplanAction extends ListAction<Preplan>{
@@ -63,6 +64,15 @@ public class PreplanAction extends ListAction<Preplan>{
     private int page;
     private int rows;
     
+    private String jsonObject;//返回判断
+    
+    public String getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(String jsonObject) {
+        this.jsonObject = jsonObject;
+    }
 
     public int getPage() {
         return page;
@@ -171,9 +181,7 @@ public class PreplanAction extends ListAction<Preplan>{
     
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
-        //返回判断
-        String jsonArray ="";
-        
+     
         //获得当前预案时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获得当前预案UUID（preplan_sn）
@@ -242,13 +250,13 @@ public class PreplanAction extends ListAction<Preplan>{
                 }  
             }
             
-        jsonArray = "ok";   
+            jsonObject = "ok";   
         }catch(Exception e) {
             System.out.println("bug");
-            jsonArray = "error";
+            jsonObject = "error";
         }
                                  
-        return "jsonArray";
+        return "jsonObject";
         
     }
     
@@ -276,6 +284,20 @@ public class PreplanAction extends ListAction<Preplan>{
         out().flush();
         out().close();
         return "jsonArray";
+    }
+    
+    //查看预案详情
+    public String getDetail() {
+        System.out.println(code);
+        Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+         
+        System.out.println(p.getDomain());//预案责任单位
+        ActionContext.getContext().put("pp_id",p.getId());//预案ID
+        ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
+        ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
+        ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位
+        System.out.println(p.getId());
+        return "main";
     }
     
 }
