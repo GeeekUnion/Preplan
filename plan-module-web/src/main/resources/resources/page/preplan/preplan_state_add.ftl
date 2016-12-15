@@ -54,11 +54,13 @@
 		  					 
 		  					 
 		  	$('#dg2').datagrid({    
-   			 url:'',    
+   			 url:'preplan_resourceRecord_queryByPage.action',    
 			 columns:[[    
 			 {field:'missionSn',title:'任务编号',width:100,align:'center'},   
-			 {field:'resourceName',title:'代码',width:100,align:'center'},    
-       		 {field:'resourceNumber',title:'名称',width:100,align:'center'} 
+			 {field:'resourceName',title:'调拨资源名称',width:100,align:'center'},    
+       		 {field:'resourceNumber',title:'调拨资源数量',width:100,align:'center'},
+       		 {field:'resourceUnit',title:'单位',width:100,align:'center'}
+       		  
        		  
     ]]    
 });  	 
