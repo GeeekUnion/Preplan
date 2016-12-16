@@ -24,17 +24,19 @@
  			   	singleSelect:true, 			    
  			    columns:[[    
  					{field:'preplanName',title:'预案名字',width:300,align:'center'},
- 					{field:'responDept',title:'负责单位',width:300,align:'center'}
+ 					{field:'responDept',title:'负责单位',width:300,align:'center'},
+ 					{field:'id',title:'操作',width:'200',align:'center',
+ 								 formatter:function(value,row,index){
+ 								 			var i = row.id;
+		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看预案详情"+"</a>";				        		
+		        	}}
  			    ]],
- 			 	//数据表格  
- 			   toolbar: [{
- 					text:'查看预案详情',
- 					iconCls: 'icon-users',
- 					handler:function (){
- 						document.getElementById("ppl_btm_area").style.display="block";
- 						}
- 				}]
-
+ 			    //成功加载出发
+ 			    onLoadSuccess:function(){
+	 			    	$('.detail_view').linkbutton({    
+						    iconCls: 'icon-search'   
+						});  
+	 			    }
  			});
  		});
  		//下拉搜索
@@ -68,6 +70,18 @@
 				});
  			
  		}
+ 		
+ 		//查看预案详情
+ 		function detailView(i){
+ 			$('#ppl_detail').window({
+				width:700,
+				height:550,
+				title:'当前预案详情',
+				cache:false,
+				content:'<iframe src="preplan_detail_view.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
+			});
+ 		}
+ 		
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
@@ -82,39 +96,9 @@
     	</div> 	
     	<table id="ppltt"></table>  
     </div>   
-    <div id="ppl_btm_area" class="btm-area" style="display:none">
-    	<p class="title"><strong>预案详情</strong></p>
-    	<div id="ppl_preplan" class="pp_preplan">   
-		    <div class="border">   
-		       <span class="label_box"><label for="ppl_preplan_name" >预案名称:</label></span>  
-		        <span></span>
-		    </div>
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_type">预案分类:</label></span>     
-		        <span></span>
-		    </div>
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_dept">责任单位:</label></span>     
-		        <span></span>
-		    </div>
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_desc">预案描述:</label></span>		           
-		        <span></span>
-		    </div>
-		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_proce">预案流程:</label></div>     
-		        <div>
-		        	<table id="ppl_mission_dg"> </table> 
-		        </div>
-		    </div>
-		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_src">所需资源:</label></div>     
-		        <div>
-		        	<table id="ppl_src_dg"></table>  
-		        </div>
-		    </div>          
-		</div> 
+    <div class="btm-area">
+
     </div>
-	
+	<div id="ppl_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
 </body>
 </html>

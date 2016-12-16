@@ -234,11 +234,12 @@
 								misArray : misGroup,
 								srcArray : srcGroup
 								},
-						success : function(jsonArray) {
-							if(jsonArray == "\"error\""){
+						success : function(jsonObject) {
+							var pd=jsonObject;
+							if(pd == "error"){
 								$.messager.alert('提示','保存出错，请重试！','error');
 							}
-							else if(jsonArray == "\"ok\""){
+							else if(pd == "ok" ){
 								$.messager.alert('提示','保存成功！','info',
 									function() {
 										window.location.reload()							

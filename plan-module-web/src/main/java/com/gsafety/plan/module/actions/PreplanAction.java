@@ -5,7 +5,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -37,6 +40,7 @@ import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
 import com.gsafety.plan.service.ResourceRecordService;
 import com.gsafety.plan.service.SupplyService;
+import com.opensymphony.xwork2.ActionContext;
 
 @Namespace("/preplan")
 public class PreplanAction extends ListAction<Preplan>{
@@ -63,6 +67,15 @@ public class PreplanAction extends ListAction<Preplan>{
     private int page;
     private int rows;
     
+    private String jsonObject;//返回判断
+    
+    public String getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(String jsonObject) {
+        this.jsonObject = jsonObject;
+    }
 
     public int getPage() {
         return page;
@@ -171,9 +184,7 @@ public class PreplanAction extends ListAction<Preplan>{
     
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
-        //返回判断
-        String jsonArray ="";
-        
+     
         //获得当前预案时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //获得当前预案UUID（preplan_sn）
@@ -181,6 +192,7 @@ public class PreplanAction extends ListAction<Preplan>{
         Preplan ppModel=new Preplan();
         ppModel.setPreplanName(ppName);
 //        ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+        ppModel.setPreplanDesc(ppDesc);
         ppModel.setResponDept(ppDept);
         ppModel.setPreplanSn(uuidPreplan);
         
@@ -230,7 +242,7 @@ public class PreplanAction extends ListAction<Preplan>{
                                 srcModel.setResourceName(srcList[j+1]);
                                 srcModel.setResourceNumber(srcList[j+2]);
                                 srcModel.setResourceUnit(srcList[j+2]);
-                                srcModel.setMissionSn(misnModel);
+                                srcModel.setMissionSnR(misnModel);
                                 srcModel.setResourceSn(uuidSrc);
                                 rrService.save(srcModel);
                                 System.out.println("保存资源");
@@ -242,13 +254,13 @@ public class PreplanAction extends ListAction<Preplan>{
                 }  
             }
             
-        jsonArray = "ok";   
+            jsonObject = "ok";   
         }catch(Exception e) {
             System.out.println("bug");
-            jsonArray = "error";
+            jsonObject = "error";
         }
                                  
-        return "jsonArray";
+        return "jsonObject";
         
     }
     
@@ -276,6 +288,27 @@ public class PreplanAction extends ListAction<Preplan>{
         out().flush();
         out().close();
         return "jsonArray";
+    }
+    
+    //查看预案详情
+    public String getDetail() {
+        System.out.println(code);
+        Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+        
+        if(p.getDomain() != null) {
+            Set<Domain> d=p.getDomain();
+            Iterator<Domain> dModel = d.iterator();
+            while(dModel.hasNext()){
+                //System.out.println(((Domain)dModel.next()).getDomainName());
+                ActionContext.getContext().put("pp_type",((Domain)dModel.next()).getDomainName());//预案分类
+            }
+        }     
+        ActionContext.getContext().put("pp_id",p.getId());//预案ID
+        ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
+        ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
+        ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位
+        System.out.println(p.getId());
+        return "main";
     }
     
 }
