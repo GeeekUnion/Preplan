@@ -24,7 +24,7 @@ public class Supply implements Serializable{
     private String supplySn;
     
 	
-    @Column(name="supply_Sn")
+    @Column(name="supply_sn")
 	public String getSupplySn() {
 		return supplySn;
 	}

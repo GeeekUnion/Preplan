@@ -12,7 +12,8 @@
     <script type="text/javascript">
  	$(function (){
 			var id=document.getElementById("ppl_preplan_id").value;
-			console.log(id);  
+			console.log(id);
+			  
 		})
     	
     </script>

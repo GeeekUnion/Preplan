@@ -44,35 +44,9 @@
         
    			 ]],
    		
-   		data: [
-		{f1:'666', f2:'value12',f3:'value13'},
-		{f1:'value21', f2:'value22',f3:'value23'},
-		{f1:'value31', f2:'value32',f3:'value33'}
-	   ],
-	    toolbar: [{
-  			   	id:'add',
-		    	text:'添加',
-				iconCls: 'icon-add',
-				handler: function(){	
-					
-					
-					});
-				
-				}
-			}]
-	  
-  	 
+	    
 						});  
-						
-						
-			
-						
-						
-						
-						
- 		});
-    	
-    	
+                        });
     	
     	
     	
