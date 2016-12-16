@@ -11,7 +11,7 @@
 
     <script type="text/javascript">
  	$(function (){
-			var id=document.getElementById("ppl_preplan_id");
+			var id=document.getElementById("ppl_preplan_id").value;
 			console.log(id);  
 		})
     	
@@ -27,19 +27,19 @@
     	<div id="ppl_preplan" class="pp_preplan">   
 		    <div class="border">   
 		       <span class="label_box"><label for="ppl_preplan_name" >预案名称:</label></span>  
-		        <span></span>
+		        <span>${pp_name}</span>
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_type">预案分类:</label></span>     
-		        <span></span>
+		        <span>${pp_type}</span>
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_dept">责任单位:</label></span>     
-		        <span></span>
+		        <span>${pp_dept}</span>
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_desc">预案描述:</label></span>		           
-		        <span></span>
+		        <span>${pp_desc}</span>
 		    </div>
 		    <div class="border">   
 		        <div class="label_box"><label for="ppl_preplan_proce">预案流程:</label></div>     
@@ -56,7 +56,7 @@
 		</div> 
     </div>
    
-   
+   <input id="ppl_preplan_id" type="hidden" value="${pp_id}"/>
 	
 	
    
