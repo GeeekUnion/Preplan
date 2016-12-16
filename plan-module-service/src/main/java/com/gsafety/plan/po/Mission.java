@@ -103,7 +103,7 @@ public class Mission implements Serializable{
 	public void setMissionName(String missionName) {
 		this.missionName = missionName;
 	}
-	@OneToMany(targetEntity=ResourceRecord.class,mappedBy="missionSn")
+	@OneToMany(targetEntity=ResourceRecord.class,mappedBy="missionSnR")
 	public Set<ResourceRecord> getResourceRecord() {
 		return resourceRecord;
 	}
