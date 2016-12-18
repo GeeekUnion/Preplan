@@ -276,17 +276,32 @@ public class PreplanAction extends ListAction<Preplan>{
     
     //预案列表
     public String queryPreplanList() throws IOException {
-        Cnds cndsPreplan = Cnds.me(Preplan.class);
         String str="";
-        if(ppDept != null) {
-            Domain dmModel = new Domain();
-            dmModel.setDomainSn(ppType);
-            Preplan ppModel=new Preplan();
-            if(dmModel != null) {
-                
-            }
-            WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("name", "zhangsan"));
-            str="";
+        if(code != null) {
+            //如下
+            JSONArray array = new JSONArray();
+            int total=0;//记录数
+            Domain d=domainService.get(Domain.class,Integer.parseInt(code));
+                    if(d.getPreplan() != null) {
+                        Set<Preplan> preplanSet =d.getPreplan();
+                        Iterator<Preplan> ppModel = preplanSet.iterator();
+                        //遍历所有符合条件的预案
+                        while(ppModel.hasNext()){
+                            Preplan p=ppModel.next();
+                            JSONObject jo = new JSONObject();                            
+                            jo.put("id",p.getId());
+                            jo.put("preplanName",p.getPreplanName());  
+                            jo.put("responDept",p.getResponDept()); 
+                            jo.put("preplanSn",p.getPreplanSn());                                                    
+                            jo.put("preplanType",d.getDomainName());
+                            
+                            total+=1;
+                            array.add(jo);    
+                        }
+                        
+                    }
+            str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";   
+
         }
         else {
             //封装预案列表        
@@ -309,8 +324,9 @@ public class PreplanAction extends ListAction<Preplan>{
             Set<Domain> d=p.getDomain();
             Iterator<Domain> dModel = d.iterator();
             while(dModel.hasNext()){
+                Domain ddddd=dModel.next();
                 //System.out.println(((Domain)dModel.next()).getDomainName());
-                ActionContext.getContext().put("pp_type",((Domain)dModel.next()).getDomainName());//预案分类
+                ActionContext.getContext().put("pp_type",ddddd.getDomainName());//预案分类
             }
         }     
         ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
@@ -322,10 +338,12 @@ public class PreplanAction extends ListAction<Preplan>{
     }
   //查看预案详情中查看任务
     public String queryMissionByPpsn() throws IOException {
-        Cnds cndsMission= Cnds.me(Mission.class);
-        ConditionBuilder.eq("preplanSn", ppSn);
-        List<Mission> misnList= missionService.getList(cndsMission);
+        Preplan ppModel=new Preplan();
+        ppModel.setPreplanSn(ppSn);
+        //根据预案Sn查询任务列表
+        List<Mission> misnList= missionService.getListByPpsn(ppModel);
         JSONArray array = new JSONArray();
+       
         if(misnList.size()>0) {
           //封装任务列表
             for(Mission m : misnList) {
@@ -333,17 +351,51 @@ public class PreplanAction extends ListAction<Preplan>{
                 jo.put("missionName",m.getMissionName());
                 jo.put("missionDept",m.getResponDept());
                 jo.put("missionSn",m.getMissionSn());
-                array.add(jo);
+                array.add(jo);               
             }
         }
         
         
         //输出资源到页面
-        String str = array.toString();
-        out().print(str);
+        String misstr = array.toString();
+        out().print(misstr);
         out().flush();
         out().close();   
         return "jsonArray";
     }
+    public String querySrcByMisnSn() throws IOException {
+        HttpServletRequest req = ServletActionContext.getRequest();
+        req.setCharacterEncoding("UTF-8");
+        
+        //获得任务Sn数组,查询资源-----每4个字段存储一个任务的相关信息
+        String[] misnSnArray = req.getParameterValues("misnSnArray");
+        JSONArray srcArray = new JSONArray();
+        if(misnSnArray != null) {           
+            for(int i=0;i<misnSnArray.length;i++) {               
+                //根据任务sn查询资源列表
+                Mission misnModel=new Mission();
+                misnModel.setMissionSn(misnSnArray[i]);
+                List<ResourceRecord> srcList =rrService.getListByPpsn(misnModel);
+                if(srcList.size()>0) {
+                    for(ResourceRecord rr :srcList) {
+                        JSONObject jo2 = new JSONObject();
+                        jo2.put("srcId",rr.getId());
+                        jo2.put("srcName",rr.getResourceName());
+                        jo2.put("srcNumber",rr.getResourceNumber());
+                        jo2.put("srcUnit",rr.getResourceUnit());
+                        srcArray.add(jo2);                    
+                    } 
+                }
+            }
+        }
+      //传回页面       
+      String srcstr = srcArray.toString();
+      System.out.println(srcstr);  
+      out().print(srcstr);
+      out().flush();
+      out().close();   
+      return "jsonArray";
+    }
+   
     
 }

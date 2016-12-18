@@ -13,7 +13,7 @@
  	$(function (){
 			var pp_sn=document.getElementById("ppl_preplan_sn").value;
 			$(function (){
- 			//数据表格
+ 			//任务数据表格
  			$('#ppl_mission_dg').datagrid({
  			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,			   	
 				rownumbers:true,
@@ -24,11 +24,57 @@
  					{field:'missionDept',title:'负责单位',width:250,align:'center'},
  					{field:'missionSn',title:'操作',width:'150',align:'center'}
  			    ]],
- 			    //成功加载出发
+ 			    //加载成功
  			    onLoadSuccess:function(){
+ 			    	var rows = $("#ppl_mission_dg").datagrid("getRows"); //这段代码是获取当前页的所有行。
+ 			    	var misnSnArray = new Array();//传值数组
+					for(var i=0;i<rows.length;i++){					
+						//获取每一行的数据	
+						 misnSnArray.push(rows[i].missionSn);					
+					}
+											
+					//加载资源
+					$.ajax({
+						type : "POST",
+						url : "preplan_preplan_querySrcByMisnSn.action",
+						dataType : "json",
+						traditional : true,
+						data : {
+								misnSnArray : misnSnArray
+						},
+						success : function(srcstr) {
+								$("#ppl_src_dg").datagrid('loadData',srcstr); 								
+						},
+						error: function(){
+								$.messager.alert('资源列表错误','资源列表加载出错！','error');								
+						}
+					});
+	 			},
+	 			//加载失败   
+	 			onLoadError:function(){
+	 			    	  $.messager.alert('任务列表错误','任务列表加载出错！','error');
 	 			    	  
-	 			    }
+	 			    },   
  			});
+ 			
+ 			
+ 			//资源数据表格
+			$('#ppl_src_dg').datagrid({			   	
+				rownumbers:true,
+			 	striped:true,
+			 	singleSelect:true, 			    
+			 	columns:[[    
+			 		{field:'srcName',title:'资源名字',width:250,align:'center'},
+			 		{field:'srcNumber',title:'资源数量',width:150,align:'center'},
+			 		{field:'srcUnit',title:'资源单位',width:'150',align:'center'}, 					
+			 	]], 			    
+				//加载失败   
+				onLoadError:function(){
+				 	$.messager.alert('资源列表错误','资源列表加载出错！','error');
+				 			    	  
+				 	},   
+			});
+ 			
  		});
 			  
 		})
@@ -44,29 +90,29 @@
     	<p class="title"><strong>预案详情</strong></p>
     	<div id="ppl_preplan" class="pp_preplan">   
 		    <div class="border">   
-		       <span class="label_box"><label for="ppl_preplan_name" >预案名称:</label></span>  
+		       <span class="label_box"><label for="ppl_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span>${pp_name}</span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_type">预案分类:</label></span>     
+		        <span class="label_box"><label for="ppl_preplan_type"><strong>预案分类:</strong></label></span>     
 		        <span>${pp_type}</span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_dept">责任单位:</label></span>     
+		        <span class="label_box"><label for="ppl_preplan_dept"><strong>责任单位:</strong></label></span>     
 		        <span>${pp_dept}</span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_desc">预案描述:</label></span>		           
+		        <span class="label_box"><label for="ppl_preplan_desc"><strong>预案描述:</strong></label></span>		           
 		        <span>${pp_desc}</span>
 		    </div>
 		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_proce">预案流程:</label></div>     
+		        <div class="label_box"><label for="ppl_preplan_proce"><strong>预案流程:</strong></label></div>     
 		        <div>
 		        	<table id="ppl_mission_dg"> </table> 
 		        </div>
 		    </div>
 		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_src">所需资源:</label></div>     
+		        <div class="label_box"><label for="ppl_preplan_src"><strong>所需资源:</strong></label></div>     
 		        <div>
 		        	<table id="ppl_src_dg"></table>  
 		        </div>

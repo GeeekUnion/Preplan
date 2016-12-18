@@ -25,16 +25,27 @@
  			    columns:[[    
  					{field:'preplanName',title:'预案名字',width:300,align:'center'},
  					{field:'responDept',title:'负责单位',width:300,align:'center'},
- 					{field:'id',title:'操作',width:'200',align:'center',
+ 					{field:'preplanType',title:'预案类型',width:300,align:'center'},
+ 					{field:'id',title:'操作',width:'150',align:'center',
  								 formatter:function(value,row,index){
  								 			var i = row.id;
 		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看预案详情"+"</a>";				        		
+		        	}},
+		        	{field:'preplanSn',title:'操作',width:'100',align:'center',
+ 								 formatter:function(value,row,index){
+ 								 			var j = row.preplanSn;
+		        		  					return "<a  href='#' onclick='deletePp(" +j+ ")'  class='delete_Pp' >"+"删除"+"</a>";				        		
 		        	}}
  			    ]],
  			    //成功加载出发
  			    onLoadSuccess:function(){
 	 			    	$('.detail_view').linkbutton({    
-						    iconCls: 'icon-search'   
+						    iconCls: 'icon-search',
+						    height:24   
+						});
+						$('.delete_Pp').linkbutton({    
+						    iconCls: 'icon-cancel',
+						    height:24   
 						});  
 	 			    }
  			});
@@ -43,7 +54,7 @@
 		$(function (){
 			$('#ppl_search').combobox({    
 			    url:'preplan_domain_queryAllDomain.action',    
-			    valueField:'domain_sn',    
+			    valueField:'id',    
 			    textField:'domain_name'   
 			});
 			$('#ppl_search_btn').linkbutton({    
@@ -56,26 +67,16 @@
  			//获得搜索值
  			var searchCode = $('#ppl_search').combobox('getValue');
  			console.log(searchCode);
- 			jQuery.ajax({
-					url: 'preplan_preplan_queryPreplanList.action',
-					type: 'post',
-					data: {
-							ppType:searchCode,
-							page:1,
-							rows:20,
-							},
-					success: function() {
-						
-					}
-				});
+ 			var queryParams = {"code" :searchCode};
+ 			$('#ppltt').datagrid('load',queryParams);
  			
  		}
  		
  		//查看预案详情
  		function detailView(i){
  			$('#ppl_detail').window({
-				width:700,
-				height:550,
+				width:1000,
+				height:900,
 				title:'当前预案详情',
 				cache:false,
 				content:'<iframe src="preplan_detail_view.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'

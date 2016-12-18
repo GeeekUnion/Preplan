@@ -250,7 +250,7 @@
 							}						
 							
 						}
-						});      
+					});      
 		    }    
 		});
 							
@@ -264,35 +264,35 @@
 <body>
     <!--表格-->
     <div class="btm-area">
-		<p class="title">预案定制</p>
+		<p class="title"><strong>预案定制</strong></p>
     	<div id="ppe_preplan" class="pp_preplan">   
 		    <div class="border">   
-		       <span class="label_box"><label for="ppe_preplan_name" >预案名称:</label></span>  
+		       <span class="label_box"><label for="ppe_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span> 
 		        	<input id="ppe_input1" class="easyui-validatebox" name="ppe_preplan_name" />   
 		        </span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppe_preplan_type">预案分类:</label></span>     
+		        <span class="label_box"><label for="ppe_preplan_type"><strong>预案分类:</strong></label></span>     
 		        <span><input id="ppe_search" name="ppe_preplan_type" value="请选择预案类型"></span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppe_preplan_dept">责任单位:</label></span>     
+		        <span class="label_box"><label for="ppe_preplan_dept"><strong>责任单位:</strong></label></span>     
 		        <span><input id="ppe_dept_search" name="ppe_preplan_dept" value="请选择责任单位"></span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppe_preplan_desc">预案描述:</label></span>
+		        <span class="label_box"><label for="ppe_preplan_desc"><strong>预案描述:</strong></label></span>
 		        <input id="ppe_input2" class="easyui-validatebox" name="ppe_preplan_desc" />      
 		        <span></span>
 		    </div>
 		    <div class="border">   
-		        <div class="label_box"><label for="ppe_preplan_proce">预案流程:</label></div>     
+		        <div class="label_box"><label for="ppe_preplan_proce"><strong>预案流程:</strong></label></div>     
 		        <div>
 		        	<table id="ppe_mission_dg"> </table> 
 		        </div>
 		    </div>
 		    <div class="border">   
-		        <div class="label_box"><label for="ppe_preplan_src">所需资源:</label></div>     
+		        <div class="label_box"><label for="ppe_preplan_src"><strong>所需资源:</strong></label></div>     
 		        <div>
 		        	<table id="ppe_src_dg"></table>  
 		        </div>
