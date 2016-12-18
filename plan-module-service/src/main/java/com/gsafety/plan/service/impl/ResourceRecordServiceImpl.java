@@ -43,7 +43,7 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
 			 jo.put("resourceNumber", p.getResourceNumber());
 			 jo.put("resourceUnit", p.getResourceUnit());
 			 jo.put("resourceSn", p.getResourceSn());
-			// jo.put("missionSn", p.getMissionSn());
+			 jo.put("missionSnR", p.getMissionSnR().getMissionSn());
 			 
 			 
 				array.add(jo);
@@ -51,6 +51,18 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }
