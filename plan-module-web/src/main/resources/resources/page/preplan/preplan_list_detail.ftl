@@ -11,8 +11,25 @@
 
     <script type="text/javascript">
  	$(function (){
-			var id=document.getElementById("ppl_preplan_id").value;
-			console.log(id);
+			var pp_sn=document.getElementById("ppl_preplan_sn").value;
+			$(function (){
+ 			//数据表格
+ 			$('#ppl_mission_dg').datagrid({
+ 			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,			   	
+				rownumbers:true,
+ 			   	striped:true,
+ 			   	singleSelect:true, 			    
+ 			    columns:[[    
+ 					{field:'missionName',title:'任务名字',width:250,align:'center'},
+ 					{field:'missionDept',title:'负责单位',width:250,align:'center'},
+ 					{field:'missionSn',title:'操作',width:'150',align:'center'}
+ 			    ]],
+ 			    //成功加载出发
+ 			    onLoadSuccess:function(){
+	 			    	  
+	 			    }
+ 			});
+ 		});
 			  
 		})
     	
@@ -57,7 +74,7 @@
 		</div> 
     </div>
    
-   <input id="ppl_preplan_id" type="hidden" value="${pp_id}"/>
+   <input id="ppl_preplan_sn" type="hidden" value="${pp_sn}"/>
 	
 	
    

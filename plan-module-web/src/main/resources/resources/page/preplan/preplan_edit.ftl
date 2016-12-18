@@ -79,7 +79,7 @@
 								});
 								$('#respon_dept'+j).combobox({    
 								    url:'preplan_department_queryAllDept.action',    
-								    valueField:'id',    
+								    valueField:'DeptName',    
 								    textField:'DeptName'  
 								});
 									$('.misbtn').linkbutton({    
@@ -102,7 +102,7 @@
 				onLoadSuccess:function(){
 					$('#respon_dept1').combobox({    
 					    url:'preplan_department_queryAllDept.action',    
-					    valueField:'id',   
+					    valueField:'DeptName',   
 					    textField:'DeptName'   
 					});
 					$('.misbtn').linkbutton({    

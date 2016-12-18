@@ -32,7 +32,7 @@ public class Mission implements Serializable{
 	private String missionStatus;      //任务完成状态                     1代表完成，0代表否
 	private String missionDefault;      //任务是否默认被加入预案  1代表是，0代表否   
 	
-	private Preplan preplanSn;
+	private Preplan preplanSnM;
 	private Set<ResourceRecord> resourceRecord =new HashSet<ResourceRecord>();
 	
 	
@@ -76,11 +76,11 @@ public class Mission implements Serializable{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn")
-	public Preplan getPreplanSn() {
-		return preplanSn;
+	public Preplan getPreplanSnM() {
+		return preplanSnM;
 	}
-	public void setPreplanSn(Preplan preplanSn) {
-		this.preplanSn = preplanSn;
+	public void setPreplanSnM(Preplan preplanSnM) {
+		this.preplanSnM = preplanSnM;
 	}
 	@Column(name="mission_status")
 	public String getMissionStatus() {
