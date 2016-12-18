@@ -43,7 +43,7 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
 			 jo.put("resourceNumber", p.getResourceNumber());
 			 jo.put("resourceUnit", p.getResourceUnit());
 			 jo.put("resourceSn", p.getResourceSn());
-			 jo.put("missionSn", p.getMissionSnR());
+			// jo.put("missionSn", p.getMissionSn());
 			 
 			 
 				array.add(jo);

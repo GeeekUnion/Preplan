@@ -58,7 +58,10 @@ public class PreplanAction extends ListAction<Preplan>{
     @Resource
     private ResourceRecordService rrService;
     
-    private String code;
+    private String code;//传
+    private String ppSn;//值
+  
+
     private String ppName;//预案名字
     private String ppDesc;//预案描述
     private String ppType;//预案分类
@@ -131,6 +134,13 @@ public class PreplanAction extends ListAction<Preplan>{
 
     public void setCode(String code) {
         this.code = code;
+    }
+    public String getPpSn() {
+        return ppSn;
+    }
+
+    public void setPpSn(String ppSn) {
+        this.ppSn = ppSn;
     }
     
     // 输出
@@ -241,7 +251,7 @@ public class PreplanAction extends ListAction<Preplan>{
                                 ResourceRecord srcModel = new  ResourceRecord();
                                 srcModel.setResourceName(srcList[j+1]);
                                 srcModel.setResourceNumber(srcList[j+2]);
-                                srcModel.setResourceUnit(srcList[j+2]);
+                                srcModel.setResourceUnit(srcList[j+3]);
                                 srcModel.setMissionSnR(misnModel);
                                 srcModel.setResourceSn(uuidSrc);
                                 rrService.save(srcModel);
@@ -303,12 +313,37 @@ public class PreplanAction extends ListAction<Preplan>{
                 ActionContext.getContext().put("pp_type",((Domain)dModel.next()).getDomainName());//预案分类
             }
         }     
-        ActionContext.getContext().put("pp_id",p.getId());//预案ID
+        ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
         ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
         ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
         ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位
         System.out.println(p.getId());
         return "main";
+    }
+  //查看预案详情中查看任务
+    public String queryMissionByPpsn() throws IOException {
+        Cnds cndsMission= Cnds.me(Mission.class);
+        cndsMission.and(ConditionBuilder.eq("preplanSn",ppSn));     
+        List<Mission> misnList= missionService.getList(cndsMission);
+        JSONArray array = new JSONArray();
+        if(misnList.size()>0) {
+          //封装任务列表
+            for(Mission m : misnList) {
+                JSONObject jo = new JSONObject();
+                jo.put("missionName",m.getMissionName());
+                jo.put("missionDept",m.getResponDept());
+                jo.put("missionSn",m.getPreplanSn());
+                array.add(jo);
+            }
+        }
+        
+        
+        //输出资源到页面
+        String str = array.toString();
+        out().print(str);
+        out().flush();
+        out().close();   
+        return "jsonArray";
     }
     
 }
