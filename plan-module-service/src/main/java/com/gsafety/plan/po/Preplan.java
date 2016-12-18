@@ -119,7 +119,7 @@ public class Preplan implements Serializable {
 		this.domain = domain;
 	}
 	
-	@OneToMany(targetEntity=Mission.class,mappedBy="preplanSn")
+	@OneToMany(targetEntity=Mission.class,mappedBy="preplanSnM")
 	public Set<Mission> getMission() {
 		return mission;
 	}
