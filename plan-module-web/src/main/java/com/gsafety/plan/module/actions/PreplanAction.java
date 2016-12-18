@@ -236,7 +236,7 @@ public class PreplanAction extends ListAction<Preplan>{
                     String uuidMission = UUID.randomUUID().toString();
                     misnModel.setMissionDefault("0");//默认任务
                     misnModel.setMissionSn(uuidMission);//任务唯一标号
-                    misnModel.setPreplanSn(ppModel);//与预案表关联
+                    misnModel.setPreplanSnM(ppModel);//与预案表关联
                     misnModel.setMissionName(misList[i+2]);
                     misnModel.setResponDept(misList[i+3]);
                     missionService.save(misnModel);
@@ -323,7 +323,7 @@ public class PreplanAction extends ListAction<Preplan>{
   //查看预案详情中查看任务
     public String queryMissionByPpsn() throws IOException {
         Cnds cndsMission= Cnds.me(Mission.class);
-        cndsMission.and(ConditionBuilder.eq("preplanSn",ppSn));     
+        ConditionBuilder.eq("preplanSn", ppSn);
         List<Mission> misnList= missionService.getList(cndsMission);
         JSONArray array = new JSONArray();
         if(misnList.size()>0) {
@@ -332,7 +332,7 @@ public class PreplanAction extends ListAction<Preplan>{
                 JSONObject jo = new JSONObject();
                 jo.put("missionName",m.getMissionName());
                 jo.put("missionDept",m.getResponDept());
-                jo.put("missionSn",m.getPreplanSn());
+                jo.put("missionSn",m.getMissionSn());
                 array.add(jo);
             }
         }
