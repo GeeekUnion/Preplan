@@ -1,7 +1,9 @@
 package com.gsafety.plan.service.impl;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.gsafety.cloudframework.common.base.dao.IBaseDAO;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
+import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.ResourceRecord;
 import com.gsafety.plan.service.ResourceRecordService;
@@ -51,6 +54,16 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
+
+    @Override
+    public List<ResourceRecord> getListByPpsn(Mission misnModel) {
+        // TODO Auto-generated method stub
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("missionSnR", misnModel);
+        String hql=" from ResourceRecord r where missionSnR=:missionSnR";
+        List<ResourceRecord> mList =baseDAO.getListByHql(hql, hashMap,ResourceRecord.class );
+        return mList;
+    }
 	
 	
 }

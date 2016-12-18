@@ -76,17 +76,17 @@ public class Mission implements Serializable{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn")
-	public Preplan getPreplanSnM() {
-		return preplanSnM;
-	}
-	public void setPreplanSnM(Preplan preplanSnM) {
-		this.preplanSnM = preplanSnM;
-	}
+	   public Preplan getPreplanSnM() {
+        return preplanSnM;
+    }
+    public void setPreplanSnM(Preplan preplanSnM) {
+        this.preplanSnM = preplanSnM;
+    }
 	@Column(name="mission_status")
 	public String getMissionStatus() {
 		return missionStatus;
 	}
-	public void setMissionStatus(String missionStatus) {
+    public void setMissionStatus(String missionStatus) {
 		this.missionStatus = missionStatus;
 	}
 	@Column(name="mission_default")

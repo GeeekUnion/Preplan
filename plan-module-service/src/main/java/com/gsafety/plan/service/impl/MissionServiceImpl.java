@@ -1,7 +1,9 @@
 package com.gsafety.plan.service.impl;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -70,6 +72,16 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
+
+    @Override
+    public List<Mission> getListByPpsn(Preplan ppModel) {
+        // TODO Auto-generated method stub
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("preplanSnM", ppModel);
+        String hql=" from Mission m where preplanSnM=:preplanSnM";
+        List<Mission> mList =baseDAO.getListByHql(hql, hashMap,Mission.class );
+        return mList;
+    }
 	
 	
 	
