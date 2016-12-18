@@ -6,6 +6,8 @@ package com.gsafety.plan.module.actions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,11 @@ import org.apache.struts2.convention.annotation.Namespace;
 
 
 
+
+
+
+
+import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.ResourceRecord;
 import com.gsafety.plan.service.ResourceRecordService;
@@ -31,6 +38,7 @@ import com.gsafety.plan.service.ResourceRecordService;
 @Namespace("/preplan")
 public class ResourceRecordAction extends ListAction<ResourceRecord> {
 
+	private static final Object ResourceRecord = null;
 	@Resource
 	private ResourceRecordService resourceRecordService;
 	private String name;
@@ -44,9 +52,18 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	private String resourceUnit;
 	private String resourceSn;
 	private String missionSnR;
+	private String missionSn;
 	
 	
 	
+	public String getMissionSn() {
+		return missionSn;
+	}
+
+	public void setMissionSn(String missionSn) {
+		this.missionSn = missionSn;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -162,7 +179,20 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 		out().close();
 		return "jsonArray";
 	}
-	
+	//查询调动资源记录
+//		public String queryByPage2() throws IOException{
+//			
+//			Map<String ,Object> map =new HashMap<String,Object>();
+//			String missionSnR=missionSn;
+//			map.put(missionSn, ResourceRecord);
+//			String hql="select r from ResourceRecord r where r.missionSnR like:missionSn";
+//			String str=resourceRecordService.getListBySql(hql, map);
+//			out().print(str);
+//			out().flush();
+//			out().close();
+//			return "jsonArray";
+//
+//		}
 	
 	
 	
