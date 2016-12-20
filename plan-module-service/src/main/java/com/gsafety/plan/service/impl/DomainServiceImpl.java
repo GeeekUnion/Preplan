@@ -45,5 +45,12 @@ public class DomainServiceImpl extends BaseServiceImpl implements DomainService{
         return str;
        
     }
+    @Override
+    public Domain getBySn(String ppType) {
+        // TODO Auto-generated method stub
+        String hql = " from Domain d where d.domainSn = "+ppType;
+        Domain d= baseDAO.getUniqueByHql(hql,Domain.class);
+        return d;
+    }
 
 }

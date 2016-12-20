@@ -1,7 +1,9 @@
 package com.gsafety.plan.service.impl;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.sf.json.JSONArray;
@@ -45,6 +47,31 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
         String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         System.out.println(str);
         return str;
+    }
+
+    @Override
+    public void updateById(Preplan ppModel,String pd) {
+        // TODO Auto-generated method stub
+        
+        if(pd==null) {
+            Map<String, Object> hashMap = new HashMap<String, Object>();
+            String hql = "update Preplan p set p.preplanName=:preplanName,p.preplanDesc=:preplanDesc,p.responDept=:responDept where p.id=:id";            
+            hashMap.put("preplanName",ppModel.getPreplanName());
+            hashMap.put("preplanDesc",ppModel.getPreplanDesc());
+            hashMap.put("responDept",ppModel.getResponDept());
+            hashMap.put("id",ppModel.getId());
+            baseDAO.updateByHql(hql,hashMap);
+        }
+        else {
+            Map<String, Object> hashMap = new HashMap<String, Object>();
+            String hql = "update Preplan p set p.preplanName=:preplanName,p.preplanDesc=:preplanDesc,p.responDept=:responDept where p.id=:id";            
+            hashMap.put("preplanName",ppModel.getPreplanName());
+            hashMap.put("preplanDesc",ppModel.getPreplanDesc());
+            hashMap.put("responDept",ppModel.getResponDept());
+            hashMap.put("id",ppModel.getId());
+            baseDAO.updateByHql(hql,hashMap);
+        }
+       
     }
 
 }

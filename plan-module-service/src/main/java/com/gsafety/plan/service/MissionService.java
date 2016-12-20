@@ -13,4 +13,6 @@ public interface MissionService extends IBaseService{
 	String getPageMis(int pageNumber, int pageSize);
 
     List<Mission> getListByPpsn(Preplan ppModel);
+
+    void updateById(Mission m);
 }
