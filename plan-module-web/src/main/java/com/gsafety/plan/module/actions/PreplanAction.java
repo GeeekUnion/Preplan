@@ -58,15 +58,17 @@ public class PreplanAction extends ListAction<Preplan>{
     @Resource
     private ResourceRecordService rrService;
     
-    private String code;//传
+    private String code;//传id
     private String ppSn;//值
   
 
     private String ppName;//预案名字
     private String ppDesc;//预案描述
-    private String ppType;//预案分类
+    private String ppType;//预案分类Sn
     private String ppDept;//预案部门
     
+    private String misnName;//任务名字
+    private String misnDept;//任务部门
     private int page;
     private int rows;
     
@@ -141,6 +143,22 @@ public class PreplanAction extends ListAction<Preplan>{
 
     public void setPpSn(String ppSn) {
         this.ppSn = ppSn;
+    }
+    
+    public String getMisnName() {
+        return misnName;
+    }
+
+    public void setMisnName(String misnName) {
+        this.misnName = misnName;
+    }
+
+    public String getMisnDept() {
+        return misnDept;
+    }
+
+    public void setMisnDept(String misnDept) {
+        this.misnDept = misnDept;
     }
     
     // 输出
@@ -348,6 +366,7 @@ public class PreplanAction extends ListAction<Preplan>{
           //封装任务列表
             for(Mission m : misnList) {
                 JSONObject jo = new JSONObject();
+                jo.put("missionId",m.getId());
                 jo.put("missionName",m.getMissionName());
                 jo.put("missionDept",m.getResponDept());
                 jo.put("missionSn",m.getMissionSn());
@@ -397,5 +416,193 @@ public class PreplanAction extends ListAction<Preplan>{
       return "jsonArray";
     }
    
+    //删除预案
+    public String deletePreplan(){
+        System.out.println(code);
+        Preplan ppModel=preplanService.get(Preplan.class,Integer.parseInt(code));
+        if(ppModel.getPreplanSn() != null) {
+            //根据预案Sn查询任务列表
+            List<Mission> misnList= missionService.getListByPpsn(ppModel); 
+            if(misnList.size()>0) {
+                try{
+                    for(Mission m:misnList)
+                    {
+                        System.out.println(m);  
+                                                                  
+                        List<ResourceRecord> srcList =rrService.getListByPpsn(m);
+                        for(ResourceRecord rr:srcList) {
+                            System.out.println(rr);
+                            rrService.delete(rr); 
+                            
+                        } 
+                        missionService.delete(m);
+                    }
+                    
+                }catch(Exception e) {
+                    
+                }
+                
+  
+            }
+            if(ppModel.getDomain() != null) {
+                ppModel.getDomain().remove(ppModel.getDomain());
+                preplanService.update(ppModel);
+            }
+            
+            preplanService.delete(ppModel);    
+        }
+        return "jsonObject";
+    }
     
+    public String getPreplanById() {
+        if(code != null) {
+            Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+            if(p.getDomain() != null) {
+                Set<Domain> d=p.getDomain();
+                Iterator<Domain> dModel = d.iterator();
+                while(dModel.hasNext()){
+                    Domain ddddd=dModel.next();
+                    //System.out.println(((Domain)dModel.next()).getDomainName());
+                    ActionContext.getContext().put("pp_type",ddddd.getDomainName());//预案分类
+                }
+            }
+            
+            ActionContext.getContext().put("pp_id",p.getId());//预案id
+            ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
+            ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
+            ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
+            ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位 
+        }
+
+        return "main";
+    }
+    
+    //删除预案任务
+    public String deleteMission() {
+        System.out.println(code);
+        Mission misnModel=preplanService.get(Mission.class,Integer.parseInt(code));
+        List<ResourceRecord> srcList =rrService.getListByPpsn(misnModel);
+        for(ResourceRecord rr:srcList) {
+            System.out.println(rr);
+            rrService.delete(rr); 
+            
+        } 
+        missionService.delete(misnModel);
+        return "jsonArray";
+    }
+    
+    //删除资源
+    public String deleteSrc() {
+        System.out.println(code);
+        ResourceRecord rr=rrService.get(ResourceRecord.class,Integer.parseInt(code));
+        rrService.delete(rr);
+        return "jsonArray";
+    }
+    
+    public String updateMission(){
+        Mission m=new Mission();
+        m.setMissionName(misnName);
+        m.setResponDept(misnDept);
+        m.setId(Integer.parseInt(code));
+        missionService.updateById(m);
+        return "jsonArray";
+    }
+    
+    //更新预案基础信息
+    public String updatePreplanMsg() {
+        Preplan ppModel=new Preplan();
+        String pd="判断";
+        //如果预案分类Sn未改变
+        if(ppType.equals("空值")){
+            pd=null;
+        }
+        //如果改变
+        else {
+            try{
+                //先除去老的domain
+                Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+                if(p.getDomain() != null) {
+                        Domain d=domainService.getBySn(ppType);
+                        p.getDomain().remove(d);
+                    
+                }
+                
+                //放入预案分类SN(domain_sn)
+                Domain dmModel =new Domain();
+                dmModel.setDomainSn(ppType); 
+                //二者不为空时存入数据库
+                if(dmModel!=null&&ppModel!=null){
+                    ppModel.getDomain().add(dmModel);
+                    preplanService.save(ppModel);        
+                }else{
+                   System.out.println("出错"); 
+                }
+            }catch(Exception e){
+                System.out.println("bug"); 
+            }
+        }
+
+        
+        ppModel.setId(Integer.parseInt(code));
+        ppModel.setPreplanName(ppName);
+        ppModel.setPreplanDesc(ppDesc);
+        ppModel.setResponDept(ppDept);
+        preplanService.updateById(ppModel,pd);
+        return "jsonArray";
+    }
+    
+    //添加新任务和资源
+    public String addMisnSrc() {
+        
+        try {
+            HttpServletRequest req = ServletActionContext.getRequest();
+            req.setCharacterEncoding("UTF-8");
+            //获得当前预案
+            Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+            Preplan ppModel=new Preplan();
+            ppModel.setPreplanSn(p.getPreplanSn());
+            //获得预案数组-----每4个字段存储一个任务的相关信息
+            String[] misList = req.getParameterValues("misArray");
+            if(misList != null) {
+                for(int i=0;i<misList.length;i+=4){
+                    Mission misnModel = new Mission();
+                    //获得当前任务UUID（mission_sn）
+                    String uuidMission = UUID.randomUUID().toString();
+                    misnModel.setMissionDefault("0");//默认任务
+                    misnModel.setMissionSn(uuidMission);//任务唯一标号
+                    misnModel.setPreplanSnM(ppModel);//与预案表关联
+                    misnModel.setMissionName(misList[i+2]);
+                    misnModel.setResponDept(misList[i+3]);
+                    missionService.save(misnModel);
+                    System.out.println("保存任务");
+                    
+                    //获得资源数组-----每4个字段存储一个资源的相关信息
+                    String[] srcList = req.getParameterValues("srcArray");
+                    if(srcList != null) {
+                        for(int j=0;j<srcList.length;j+=4){
+                            if(misList[i].equals(srcList[j])) {
+                                String uuidSrc = UUID.randomUUID().toString();
+                                ResourceRecord srcModel = new  ResourceRecord();
+                                srcModel.setResourceName(srcList[j+1]);
+                                srcModel.setResourceNumber(srcList[j+2]);
+                                srcModel.setResourceUnit(srcList[j+3]);
+                                srcModel.setMissionSnR(misnModel);//与资源表关联
+                                srcModel.setResourceSn(uuidSrc);
+                                rrService.save(srcModel);
+                                System.out.println("保存资源");
+                                
+                            }                                                       
+                        } 
+                    }
+                 
+                }  
+            }
+            
+            jsonObject = "ok";   
+        }catch(Exception e) {
+            System.out.println("bug");
+            jsonObject = "error";
+        }
+        return "jsonArray"; 
+    }
 }

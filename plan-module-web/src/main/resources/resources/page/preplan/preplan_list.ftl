@@ -33,10 +33,69 @@
 		        	}},
 		        	{field:'preplanSn',title:'操作',width:'100',align:'center',
  								 formatter:function(value,row,index){
- 								 			var j = row.preplanSn;
+ 								 			var j = row.id;
 		        		  					return "<a  href='#' onclick='deletePp(" +j+ ")'  class='delete_Pp' >"+"删除"+"</a>";				        		
 		        	}}
  			    ]],
+ 			    toolbar: [{
+ 			    	text:'修改预案属性',
+					iconCls: 'icon-edit',
+					handler: function(){
+						var row =$('#ppltt').datagrid('getSelected');
+						if(row != null){
+							var rid=row.id;
+							$('#ppl_updatePreplan').window({
+								width:1000,
+								height:800,
+								title:'修改预案属性',
+								cache:false,
+								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
+							});
+						}
+						else{
+							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+						}
+						
+					}
+				},'-',{
+					text:'修改任务资源',
+					iconCls: 'icon-edit',
+					handler: function(){
+						var row =$('#ppltt').datagrid('getSelected');						
+						if(row != null){						  
+							var i =row.id; 
+							$('#ppl_updateMisnSrc').window({
+								width:1000,
+								height:800,
+								title:'修改任务资源',
+								cache:false,
+								content:'<iframe src="ppl_preplan_list_updatemr.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
+							});
+						}
+						else{
+							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+						}
+					}	
+				},'-',{
+					text:'新增任务资源',
+					iconCls: 'icon-add',
+					handler: function(){
+						var row =$('#ppltt').datagrid('getSelected');						
+						if(row != null){
+							var rid=row.id;
+							$('#ppl_updatePreplan').window({
+								width:1000,
+								height:800,
+								title:'新增任务资源',
+								cache:false,
+								content:'<iframe src="ppl_preplan_list_addm.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
+							});
+						}
+						else{
+							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+						}
+					}
+				}],			    
  			    //成功加载出发
  			    onLoadSuccess:function(){
 	 			    	$('.detail_view').linkbutton({    
@@ -76,11 +135,41 @@
  		function detailView(i){
  			$('#ppl_detail').window({
 				width:1000,
-				height:900,
+				height:800,
 				title:'当前预案详情',
 				cache:false,
-				content:'<iframe src="preplan_detail_view.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
+				content:'<iframe src="ppl_preplan_list_detail.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
 			});
+ 		}
+ 		
+ 		
+ 		//删除预案
+ 		function deletePp(j){
+			$.messager.confirm('确认删除','您确定要删除该预案？',
+				function(r){
+					if(r){
+						//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "preplan_preplan_deletePreplan.action",
+							dataType : "json",
+							data : {
+									code : j
+							},
+							success : function() {
+									$.messager.alert('提示','删除成功！','info',
+										function() {
+											window.location.reload()							
+										}); 								
+							},
+							error: function(){
+									$.messager.alert('错误','删除出错！','error');								
+							}
+						});		
+					}
+							
+				}
+			)
  		}
  		
     </script>
@@ -100,6 +189,9 @@
     <div class="btm-area">
 
     </div>
-	<div id="ppl_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
+	<div id="ppl_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
+	<div id="ppl_updatePreplan" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
+	<div id="ppl_updateMisnSrc" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
+	<div id="ppl_addMission" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
 </body>
 </html>

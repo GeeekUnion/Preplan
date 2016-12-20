@@ -125,9 +125,13 @@
 			</result>						
 		</action>
 		<!-- 查看预案详情特殊拦截和结果配置 -->
-		<action name="preplan_detail_view" class="com.gsafety.plan.module.actions.PreplanAction" method="getDetail">
-			<result name="main" >preplan/preplan_list_detail.ftl</result>									
-		</action>    
+		<action name="ppl_*" class="com.gsafety.plan.module.actions.PreplanAction" method="getDetail">
+			<result name="main" >preplan/{1}.ftl</result>									
+		</action>
+		<!-- 修改预案及添加任务资源特殊拦截和结果配置 -->
+		<action name="ppl_*" class="com.gsafety.plan.module.actions.PreplanAction" method="getPreplanById">
+			<result name="main" >preplan/{1}.ftl</result>									
+		</action>     
 		<!-- ResourseRecord拦截和结果配置 -->
 		<action name="preplan_resourceRecord_*" class="com.gsafety.plan.module.actions.ResourceRecordAction" method="{1}">
 			<result name="jsonObject" type="json">
@@ -145,14 +149,7 @@
 				<param name="root">jsonArray</param>
 			</result>						
 		</action>    
-		
-		
-		
-		
-		
-		
-		
-		
+					
  		<action name="*" class="com.gsafety.plan.module.actions.ResourceRecordAction">
  			<result name="main">preplan/{1}.ftl</result>
  		</action>

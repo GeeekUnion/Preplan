@@ -22,7 +22,12 @@
  			    columns:[[    
  					{field:'missionName',title:'任务名字',width:250,align:'center'},
  					{field:'missionDept',title:'负责单位',width:250,align:'center'},
- 					{field:'missionSn',title:'操作',width:'150',align:'center'}
+ 					{field:'missionId',title:'操作',width:'150',align:'center',
+ 									formatter:function(value,row,index){
+ 											//记得传ID
+ 								 			var i = row.id;
+		        		  					return "<a  href='#' onclick='deleteMisn(" +i+ ")'  class='delete_misn' >"+"暂无"+"</a>";			        		
+		        	}},
  			    ]],
  			    //加载成功
  			    onLoadSuccess:function(){
@@ -32,7 +37,10 @@
 						//获取每一行的数据	
 						 misnSnArray.push(rows[i].missionSn);					
 					}
-											
+					$('.delete_misn').linkbutton({    
+						    iconCls: 'icon-cancel',
+						    height:24   
+						});						
 					//加载资源
 					$.ajax({
 						type : "POST",
