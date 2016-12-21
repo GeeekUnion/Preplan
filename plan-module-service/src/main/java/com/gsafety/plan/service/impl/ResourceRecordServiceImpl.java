@@ -80,6 +80,7 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
   		if(reList.size()>0){
   			for(ResourceRecord r:reList){
   				JSONObject jo = new JSONObject();
+  				 jo.put("id", r.getId());
   				 jo.put("resourceName", r.getResourceName());
   				 jo.put("resourceNumber", r.getResourceNumber());
   				 jo.put("resourceUnit", r.getResourceUnit());

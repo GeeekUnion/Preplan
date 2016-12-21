@@ -17,4 +17,6 @@ public interface MissionService extends IBaseService{
     void updateById(Mission m);
     
     public Mission getByMissionSn(String missionSn);
+    
+    
 }
