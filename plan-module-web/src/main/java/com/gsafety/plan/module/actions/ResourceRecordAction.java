@@ -7,6 +7,7 @@ package com.gsafety.plan.module.actions;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -18,19 +19,15 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 
-
-
-
-
-
-
-
-
-
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
+import com.gsafety.plan.po.Person;
 import com.gsafety.plan.po.ResourceRecord;
+import com.gsafety.plan.po.Supply;
+import com.gsafety.plan.service.MissionService;
+import com.gsafety.plan.service.PersonService;
 import com.gsafety.plan.service.ResourceRecordService;
+import com.gsafety.plan.service.SupplyService;
 /**
  * @author Administrator
  *
@@ -38,9 +35,16 @@ import com.gsafety.plan.service.ResourceRecordService;
 @Namespace("/preplan")
 public class ResourceRecordAction extends ListAction<ResourceRecord> {
 
-	private static final Object ResourceRecord = null;
+	//private static final Object ResourceRecord = null;
+	@Resource
+	private MissionService missionService;
 	@Resource
 	private ResourceRecordService resourceRecordService;
+	@Resource
+	private SupplyService supplyService;
+	@Resource
+	private PersonService personService;
+	
 	private String name;
 	private JSONObject jsonObject = new JSONObject();
 	private JSONArray jsonArray = new JSONArray();
@@ -53,9 +57,51 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	private String resourceSn;
 	private String missionSnR;
 	private String missionSn;
+	private String supplySn;
+	private String supplyName;
 	
 	
 	
+	public String getSupplyName() {
+		return supplyName;
+	}
+
+	public void setSupplyName(String supplyName) {
+		this.supplyName = supplyName;
+	}
+
+	public MissionService getMissionService() {
+		return missionService;
+	}
+
+	public void setMissionService(MissionService missionService) {
+		this.missionService = missionService;
+	}
+
+	public String getSupplySn() {
+		return supplySn;
+	}
+
+	public void setSupplySn(String supplySn) {
+		this.supplySn = supplySn;
+	}
+
+	public SupplyService getSupplyService() {
+		return supplyService;
+	}
+
+	public void setSupplyService(SupplyService supplyService) {
+		this.supplyService = supplyService;
+	}
+
+	public PersonService getPersonService() {
+		return personService;
+	}
+
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
 	public String getMissionSn() {
 		return missionSn;
 	}
@@ -171,29 +217,36 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 		PrintWriter out = response.getWriter();
 		return out;
 	}
-	//查询调动资源记录
-	public String queryByPage() throws IOException{
-		String str=resourceRecordService.getPage(page, rows);
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-	}
-	//查询调动资源记录
-//		public String queryByPage2() throws IOException{
-//			
-//			Map<String ,Object> map =new HashMap<String,Object>();
-//			String missionSnR=missionSn;
-//			map.put(missionSn, ResourceRecord);
-//			String hql="select r from ResourceRecord r where r.missionSnR like:missionSn";
-//			String str=resourceRecordService.getListBySql(hql, map);
-//			out().print(str);
-//			out().flush();
-//			out().close();
-//			return "jsonArray";
-//
-//		}
 	
+	          //查询调动资源记录
+		public String queryByPage() throws IOException{
+			
+				String str=resourceRecordService.getByReSn(missionSn,page, rows);
+				out().print(str);
+				out().flush();
+				out().close();
+				return "jsonArray";
+		}
+		
+		public String saveRecord() throws IOException{
+			jsonObject.put("status", "ok");
+			ResourceRecord resourceRecord = new ResourceRecord();
+			try{
+				resourceRecord.setResourceSn(supplySn);
+				resourceRecord.setResourceName(supplyName);
+				resourceRecord.setResourceNumber(resourceNumber);
+				resourceRecord.setResourceUnit(resourceUnit);
+				resourceRecord.setMissionSnR(missionService.getByMissionSn(missionSn));
+				resourceRecordService.save(resourceRecord);
+	
+			}catch(Exception e){
+				jsonObject.put("status", "nook");
+			}
+			return "jsonObject";
+					                               }
+	    public void deleteRecord() throws IOException{
+	    	
+	    }
 	
 	
 	

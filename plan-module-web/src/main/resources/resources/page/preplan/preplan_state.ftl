@@ -12,7 +12,7 @@
     <script type="text/javascript">
     	function addMis(){
 			$('#win').window({
-				width:700,
+				width:780,
 				height:550,
 				title:'当前任务',
 				cache:false,
