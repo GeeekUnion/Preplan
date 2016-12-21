@@ -104,7 +104,7 @@ public class MissionAction extends ListAction<Mission> {
 		out().close();
 		return "jsonArray";
 	}
-	//执行情况页面，查询任务属性
+	//执行情况页面，查询所有任务属性
 	public String queryByPage2() throws IOException{
 		String str=missionService.getPageMis(page, rows);
 		out().print(str);
@@ -112,6 +112,15 @@ public class MissionAction extends ListAction<Mission> {
 		out().close();
 		return "jsonArray";
 	}
+	//执行情况页面，根据预案Sn，查询对应任务属性
+	public String queryByPreSn() throws IOException{
+		
+		String str="";
+		out().print(str);
+		out().flush();
+		out().close();
+		return "jsonArray";
+}
 	
 	
 	

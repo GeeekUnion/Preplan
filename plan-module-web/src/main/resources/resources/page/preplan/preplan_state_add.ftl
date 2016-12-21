@@ -30,16 +30,9 @@
 			var row = $('#dg').datagrid('getSelected');
 			var sn=row.missionSn;	
 			$('#dlg').dialog('open').dialog('setTitle','添加资源');
-				$.ajax({
-					
-					method:'POST',
-					dataType:'json',
-					data:{
-					        missionSn:sn
-					},
-					
-					
-				})
+			$('#ff').form('load',{
+			 missionSn:sn
+		})
                                }                       
     
     	$(function (){
@@ -91,6 +84,8 @@
 			 pageSize:15,
 			 pageList:[15,30,50,100],   
 			 columns:[[    	
+			 
+			 {field:'id',title:'编号',width:100,align:'center',hidden:'true'},
 			 {field:'missionSnR',title:'任务编号',width:100,align:'center'},   
 			 {field:'resourceName',title:'调拨资源名称',width:100,align:'center'},    
        		 {field:'resourceNumber',title:'调拨资源数量',width:100,align:'center'},
@@ -105,48 +100,50 @@
 					
 					}	
                     },
-                    {
-						text:'删除用户',
-						iconCls: 'icon-remove',
-						handler: function(){
-							var array = $('#dg').datagrid('getSelections');
-							var id2="";
-							var num=array.length;//获取要删除信息的个数  
-					        for(var i=0; i<array.length; i++){
-					            if(i!=array.length-1){  
-					                id2=id2+array[i].id+",";  
-					             }else{  
-					                 id2=id2+array[i].id;  
-					             }   
-					        }   
-					        var selected = $('#dg').datagrid('getSelected');  
-		 					if (selected){
-		 						$.messager.confirm('提示', '确定删除？', function(r){
-		 							if (r){												
-		 								$.post("removeMultiUser.action",{
-		 									ids:id2,num:num
-		 									//id:selected.id
-		 									},
-		 	 								
-		 										function(status){
-		 	 										// 这里是请求发送成功后的回调函数。
-		 	 										if(status != null){
-		 	 											$.messager.alert('成功','删除成功','info');
-		 	 	 										$('#dg').datagrid("reload");
-		 	 										}
-		 	 										else{
-		 	 											$.messager.alert('失败','删除失败','info');
-		 	 											$('#dg').datagrid("reload");
-		 	 										}
-		 	 									},"text")
-		 	 								
-		 								}
-		 						});
-		 					}else {
-		 						$.messager.alert('提示','请选择要操作的数据','info');
-		 			        }
+                   {
+				id:'delete',
+				iconCls:'icon-remove',
+				text:'删除',
+				handler:function(){
+						var row=$("#dg2").datagrid("getSelected");
+						if(row){
+								$.messager.confirm('确认对话框', '您想要删除所选数据吗？', function(r){
+									if (r){
+										$.ajax({
+											url:'preplan_resourceRecord_deleteRecord.action',
+											method:'POST',
+											dataType:'json',
+											data:{'id':row.id},
+											success:function(data){
+												if(data.status=="ok"){
+													$.messager.alert('我的提示','删除成功！','info');
+													$("#dg2").datagrid("reload");						
+												}else{
+													$.messager.alert('我的提示','删除失败！','error');
+												}
+											}
+										})
+									}
+								});		
+								
+						}else{
+							$.messager.show({
+								title:'我的提示',
+								msg:'请先选择一条记录！',
+								timeout:1000,
+								showType:'show',
+								style:{
+									right:'',
+									top:document.body.scrollTop+document.documentElement.scrollTop+200,
+									bottom:''
+								}
+							})
 						}
+					
 					}
+					
+				
+			}
                     ]   
               
     
@@ -196,8 +193,7 @@
 					});
 				}
 			})	
-			var supplySn = 1;
-			var supplyName = 1;		 
+			 
 				//下拉框资源名字
 			$('#cc').combobox({    
 			    url:'preplan_supply_queryAllSupply.action',    
@@ -208,6 +204,13 @@
 			    limitToList:true,
 				
 			});	 
+		  			
+		  			
+		  			
+		  			
+		  			
+		  			
+		  			
 		  					 
 		  					 
 		  					 
@@ -237,6 +240,11 @@
 		buttons="#dlg-buttons" modal="true">
 
 		<form id="ff" method="post">
+		
+		     <div class="fitem" >
+				<label>missionSn:</label> <input name="missionSn" class="easyui-validatebox" type="text" 
+					>
+			</div>
 			<div class="fitem">
 				<label >资源名称:</label>
 	    	<input id="cc" name="supplySn">

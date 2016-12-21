@@ -60,8 +60,18 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	private String supplySn;
 	private String supplyName;
 	
+	private String id;
 	
 	
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getSupplyName() {
 		return supplyName;
 	}
@@ -244,8 +254,16 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 			}
 			return "jsonObject";
 					                               }
-	    public void deleteRecord() throws IOException{
-	    	
+		//失败了？？
+	    public String  deleteRecord() throws IOException{
+	    	jsonObject.put("status", "ok");
+	    	try{
+	    	String hql="delete  ResourceRecord r where r.id ="+id;
+	    	resourceRecordService.delete(hql);
+	    	}catch(Exception e){
+	    		jsonObject.put("status", "nook");
+	    	}
+	    	return "jsonObject";
 	    }
 	
 	
