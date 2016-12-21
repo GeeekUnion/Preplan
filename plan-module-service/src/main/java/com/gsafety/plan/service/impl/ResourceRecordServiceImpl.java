@@ -64,6 +64,38 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
         List<ResourceRecord> mList =baseDAO.getListByHql(hql, hashMap,ResourceRecord.class );
         return mList;
     }
+    
+  //根据mission的Sn返回对应的所有resourceRecord
+  	public String getByReSn(String missionSn,int pageNumber, int pageSize){
+  		
+  		Mission misnModel= new Mission();
+  		misnModel.setMissionSn(missionSn);
+  		Map<String ,Object> map =new HashMap<String,Object>();
+  		map.put("missionSnR",misnModel);
+  		String hql="from ResourceRecord r where missionSnR =:missionSnR";
+  		List<ResourceRecord> reList=baseDAO.getListByHql(hql, map,ResourceRecord.class );
+  	
+  		JSONArray array = new JSONArray();
+  		int total=0;
+  		if(reList.size()>0){
+  			for(ResourceRecord r:reList){
+  				JSONObject jo = new JSONObject();
+  				 jo.put("resourceName", r.getResourceName());
+  				 jo.put("resourceNumber", r.getResourceNumber());
+  				 jo.put("resourceUnit", r.getResourceUnit());
+  				 jo.put("resourceSn", r.getResourceSn());
+  				 jo.put("missionSnR", r.getMissionSnR().getMissionSn());
+  				 total+=1;
+  				 array.add(jo);
+  				
+  				
+  			}
+  		}
+  		
+  		
+  		String str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";
+          return str;
+  	}
 	
 	
 }

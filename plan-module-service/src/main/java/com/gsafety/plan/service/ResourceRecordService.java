@@ -15,5 +15,7 @@ public interface ResourceRecordService extends IBaseService{
 	String getPage(int pageNumber, int pageSize);
 
     List<ResourceRecord> getListByPpsn(Mission misnModel);
+    
+    String getByReSn(String missionSn,int pageNumber, int pageSize);
 
 }

@@ -15,4 +15,6 @@ public interface MissionService extends IBaseService{
     List<Mission> getListByPpsn(Preplan ppModel);
 
     void updateById(Mission m);
+    
+    public Mission getByMissionSn(String missionSn);
 }
