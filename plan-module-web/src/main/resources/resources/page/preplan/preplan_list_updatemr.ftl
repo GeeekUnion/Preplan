@@ -141,7 +141,26 @@
     /*------------------分割线-----------------*/   
      
     //根据任务SN查看资源
-     function showSrc(i){			
+     function showSrc(i){
+     	$('#ppl_src_dg').datagrid({
+			  toolbar: [{
+			    	text:'添加资源',
+					iconCls: 'icon-add',					
+					handler: //资源表格添加新行
+							function(){
+								$('#ppl_src_dg').datagrid('appendRow',{
+									resourceNumber: '',
+									resourceUnit: '',
+									resourceUnit: '',
+									id:'',
+								});
+						}
+
+				}]
+		});
+
+     	
+		
 			var sn=i;	
 				$.ajax({
 					url:'preplan_resourceRecord_queryByPage.action',
@@ -190,6 +209,7 @@
 			            }
 			        }
 			    ]],
+
 			    onAfterEdit: function (rowIndex, rowData, changes) {  
 			        //endEdit该方法触发此事件  
 			        alert(changes);  
@@ -277,7 +297,7 @@
 			});			  
 	}     
 	function cancelrow2(index){     
-		$('#ppl_mission_dg').datagrid('cancelEdit', index);     
+		$('#ppl_src_dg').datagrid('cancelEdit', index);     
 	}													
     </script>
     </head>
