@@ -43,7 +43,12 @@
 			                    return e+d;
 			                }
 			            }
-			        }
+			        },
+			        {field:'missionSn',title:'操作',width:'100',align:'center',
+ 								 formatter:function(value,row,index){
+ 								 			var j = row.missionSn; 								 			
+		        		  					return "<a  href='#' onclick=\"showSrc('"+j+"')\"  class='delete_Pp' >"+"查看该任务资源"+"</a>";				        		
+		        	}}
 			    ]],
 			    onAfterEdit: function (rowIndex, rowData, changes) {  
 			        //endEdit该方法触发此事件  
@@ -132,7 +137,148 @@
 	function cancelrow(index){     
 		$('#ppl_mission_dg').datagrid('cancelEdit', index);     
 	}  
-    	
+    
+    /*------------------分割线-----------------*/   
+     
+    //根据任务SN查看资源
+     function showSrc(i){			
+			var sn=i;	
+				$.ajax({
+					url:'preplan_resourceRecord_queryByPage.action',
+					method:'POST',
+					dataType:'json',
+					data:{
+					        missionSn:sn
+					},
+					success:function(str){
+						$('#ppl_src_dg').datagrid("loadData",str)
+						
+					}
+				})
+	}
+	$(function (){
+ 			//资源数据表格
+ 			$('#ppl_src_dg').datagrid({
+			    iconCls:'icon-edit',
+			    singleSelect:true,
+				striped:true,			 
+			    columns:[[
+			        {field:'resourceName',title:'资源名字',width:250,align:'center',
+			        	editor:{
+			                type:'combobox',
+			                options:{
+								url:'preplan_preplan_queryAllSrc.action',     					 
+								valueField:'SrcName',    
+								textField:'SrcName',
+								groupField:'group'
+			                }
+			            }			        				        					
+			        },
+			        {field:'resourceNumber',title:'资源数量',width:200,align:'center',editor:'text'},	
+			        {field:'resourceUnit',title:'资源单位',width:200,align:'center',editor:'text'},		       
+			        {field:'id',title:'操作',width:200,align:'center',
+			            formatter:function(value,row,index){
+			                if (row.editing){
+			                    var s = '<a href="#" onclick="saverow2('+index+')">保存</a> ';
+			                    var c = '<a href="#" onclick="cancelrow2('+index+')">取消</a>';
+			                    return s+c;
+			                } else {
+			                    var e = '<a href="#" onclick="editrow2('+index+')">编辑</a> ';
+			                    var d = '<a href="#" onclick="deleterow2('+row.id+')">删除</a>';
+			                    return e+d;
+			                }
+			            }
+			        }
+			    ]],
+			    onAfterEdit: function (rowIndex, rowData, changes) {  
+			        //endEdit该方法触发此事件  
+			        alert(changes);  
+			        editRow = undefined;  
+			    },  
+			    onBeforeEdit: function (index, row) {  
+			        row.editing = true;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    },  
+			    onAfterEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    },  
+			    onCancelEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    }
+			});			
+ 		});					  
+	
+	
+	function editrow2(index){     
+		 $('#ppl_src_dg').datagrid('beginEdit', index);     
+	}     
+	function deleterow2(i){ 
+		$.messager.confirm('确认提交','您确认删除该资源？',function(r){     
+			  if (r){     
+			        //删除该任务资源
+						$.ajax({
+							type : "POST",
+							url : "preplan_resourceRecord_deleteSrc.action",
+							dataType : "json",
+							data : {
+									code : i
+							},
+							success : function() {
+									$.messager.alert('提示','删除成功！','info',
+										function() {
+											window.location.reload()							
+										}); 								
+							},
+							error: function(){
+									$.messager.alert('错误','删除出错！','error');								
+							}
+			  		 	}) 
+			  	}    
+			});     
+	}   
+	//保存
+	function saverow2(i){
+	 	  
+		  var rows = $('#ppl_src_dg').datagrid('getRows');
+  		  var row = rows[i];
+  		  //前端先保存改好的数据  
+  		  $('#ppl_src_dg').datagrid('endEdit',i);
+  		  var id=row.id;
+  		  var srcName=row.resourceName;
+  		  var srcNumber=row.resourceNumber;
+  		  var srcUnit =row.resourceUnit;
+  		  console.log(row.missionDept) 
+		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
+			  if (r){     
+			      //保存任务
+					$.ajax({
+						type : "POST",
+						url : "preplan_resourceRecord_updateSrc.action",
+						dataType : "json",
+						data : {
+								code : id,//srcId
+								resourceName : srcName,//资源Name
+								resourceNumber : srcNumber,//资源数量
+								resourceUnit : srcUnit,//资源单位
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										window.location.reload()							
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！','error');								
+						}
+			  		})    
+			   }     
+			});			  
+	}     
+	function cancelrow2(index){     
+		$('#ppl_mission_dg').datagrid('cancelEdit', index);     
+	}													
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->

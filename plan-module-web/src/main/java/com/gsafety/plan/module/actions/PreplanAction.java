@@ -382,6 +382,7 @@ public class PreplanAction extends ListAction<Preplan>{
         out().close();   
         return "jsonArray";
     }
+    //根据任务SN查看资源
     public String querySrcByMisnSn() throws IOException {
         HttpServletRequest req = ServletActionContext.getRequest();
         req.setCharacterEncoding("UTF-8");
@@ -491,14 +492,9 @@ public class PreplanAction extends ListAction<Preplan>{
         return "jsonArray";
     }
     
-    //删除资源
-    public String deleteSrc() {
-        System.out.println(code);
-        ResourceRecord rr=rrService.get(ResourceRecord.class,Integer.parseInt(code));
-        rrService.delete(rr);
-        return "jsonArray";
-    }
+
     
+    //更新任务
     public String updateMission(){
         Mission m=new Mission();
         m.setMissionName(misnName);
@@ -507,6 +503,8 @@ public class PreplanAction extends ListAction<Preplan>{
         missionService.updateById(m);
         return "jsonArray";
     }
+    
+
     
     //更新预案基础信息
     public String updatePreplanMsg() {

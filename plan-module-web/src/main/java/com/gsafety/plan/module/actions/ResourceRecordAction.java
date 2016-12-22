@@ -62,9 +62,18 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	
 	private String id;
 	
+	private String code;
 	
 	
-	public String getId() {
+	public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getId() {
 		return id;
 	}
 
@@ -260,6 +269,7 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	    	try{
 	    	String hql="delete  ResourceRecord r where r.id ="+id;
 	    	resourceRecordService.delete(hql);
+	    	
 	    	}catch(Exception e){
 	    		jsonObject.put("status", "nook");
 	    	}
@@ -267,7 +277,23 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	    }
 	
 	
-	
+	    //更新资源
+	    public String updateSrc() {
+	        ResourceRecord rr=new  ResourceRecord();
+	        rr.setId(Integer.parseInt(code));
+	        rr.setResourceName(resourceName);
+	        rr.setResourceNumber(resourceNumber);
+	        rr.setResourceUnit(resourceUnit);
+	        resourceRecordService.updateById(rr);
+	        return "jsonArray";
+	    }
+	    //删除资源
+	    public String deleteSrc() {
+	        System.out.println(code);
+	        ResourceRecord rr=resourceRecordService.get(ResourceRecord.class,Integer.parseInt(code));
+	        resourceRecordService.delete(rr);
+	        return "jsonArray";
+	    }
 	
 	
 	
