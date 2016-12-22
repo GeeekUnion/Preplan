@@ -18,4 +18,6 @@ public interface ResourceRecordService extends IBaseService{
     
     String getByReSn(String missionSn,int pageNumber, int pageSize);
 
+    void updateById(ResourceRecord rr);
+
 }

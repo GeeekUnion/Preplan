@@ -97,6 +97,18 @@ public class ResourceRecordServiceImpl extends BaseServiceImpl implements Resour
   		String str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";
           return str;
   	}
+
+    @Override
+    public void updateById(ResourceRecord rr) {
+        // TODO Auto-generated method stub
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        String hql = "update ResourceRecord r set r.resourceName=:resourceName,r.resourceNumber=:resourceNumber,r.resourceUnit=:resourceUnit where r.id=:id";            
+        hashMap.put("resourceName",rr.getResourceName());
+        hashMap.put("resourceNumber",rr.getResourceNumber());
+        hashMap.put("resourceUnit",rr.getResourceUnit());
+        hashMap.put("id",rr.getId());
+        baseDAO.updateByHql(hql,hashMap);
+    }
 	
 	
 }
