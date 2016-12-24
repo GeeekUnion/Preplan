@@ -203,7 +203,7 @@
 			                    return s+c;
 			                } else {
 			                    var e = '<a href="#" onclick="editrow2('+index+')">编辑</a> ';
-			                    var d = '<a href="#" onclick="deleterow2('+row.id+')">删除</a>';
+			                    var d = '<a href="#" onclick="deleterow2('+index+')">删除</a>';
 			                    return e+d;
 			                }
 			            }
@@ -234,8 +234,16 @@
 	function editrow2(index){     
 		 $('#ppl_src_dg').datagrid('beginEdit', index);     
 	}     
-	function deleterow2(i){ 
-		$.messager.confirm('确认提交','您确认删除该资源？',function(r){     
+	function deleterow2(a){
+		//根据index选中行
+		var choserow=$('#ppl_src_dg').datagrid('selectRow',a);
+		//获得选择行数据
+		var row=$('#ppl_src_dg').datagrid('getSelected');
+		//获得id
+		var i=row.id;
+		//如果有id则删除该记录
+		if(i != ""){
+			$.messager.confirm('确认提交','您确认删除该资源？',function(r){     
 			  if (r){     
 			        //删除该任务资源
 						$.ajax({
@@ -256,7 +264,13 @@
 							}
 			  		 	}) 
 			  	}    
-			});     
+			}); 
+		}
+		else{
+			//删除选中行
+			$('#ppl_src_dg').datagrid('deleteRow',a);   				
+		} 
+		    
 	}   
 	//保存
 	function saverow2(i){
@@ -269,10 +283,12 @@
   		  var srcName=row.resourceName;
   		  var srcNumber=row.resourceNumber;
   		  var srcUnit =row.resourceUnit;
-  		  console.log(row.missionDept) 
-		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
-			  if (r){     
-			      //保存任务
+ 
+		  $.messager.confirm('确认提交','您确认保存该资源？',function(r){     
+			  if (r){			  
+			  	 //如果id不为空
+			  	 if(id != ""){	
+			  	 	//更新任务		  	 				      
 					$.ajax({
 						type : "POST",
 						url : "preplan_resourceRecord_updateSrc.action",
@@ -292,7 +308,35 @@
 						error: function(){
 								$.messager.alert('错误','修改出错！','error');								
 						}
-			  		})    
+			  		})
+			  	 }
+			  	 //保存新任务
+			  	 else{
+			  	 	//获得Mission的Sn
+			  	 	var fatherRow = $('#ppl_mission_dg').datagrid('getSelected')
+			  	 	var fatherSn =fatherRow.missionSn;
+			  	 	$.ajax({
+						type : "POST",
+						url : "preplan_resourceRecord_saveSrc.action",
+						dataType : "json",
+						data : {
+								code : fatherSn, //资源Name
+								resourceName : srcName,//资源Name
+								resourceNumber : srcNumber,//资源数量
+								resourceUnit : srcUnit,//资源单位
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										window.location.reload()							
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！','error');								
+						}
+			  		})
+			  	 }	     
+    
 			   }     
 			});			  
 	}     

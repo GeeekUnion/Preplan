@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
+import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Person;
 import com.gsafety.plan.po.ResourceRecord;
 import com.gsafety.plan.po.Supply;
@@ -275,16 +277,30 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	    	}
 	    	return "jsonObject";
 	    }
-	
-	
+	    
+	    //保存新资源
+	    public String saveSrc() {
+	        Mission misnModel =new Mission();
+	        misnModel.setMissionSn(code);
+            String uuidSrc = UUID.randomUUID().toString();
+            ResourceRecord srcModel = new  ResourceRecord();
+            srcModel.setResourceName(resourceName);
+            srcModel.setResourceNumber(resourceNumber);
+            srcModel.setResourceUnit(resourceUnit);
+            srcModel.setMissionSnR(misnModel);
+            srcModel.setResourceSn(uuidSrc);
+            resourceRecordService.save(srcModel);
+            System.out.println("保存资源");
+	        return "jsonArray";
+	    }
 	    //更新资源
 	    public String updateSrc() {
-	        ResourceRecord rr=new  ResourceRecord();
-	        rr.setId(Integer.parseInt(code));
-	        rr.setResourceName(resourceName);
-	        rr.setResourceNumber(resourceNumber);
-	        rr.setResourceUnit(resourceUnit);
-	        resourceRecordService.updateById(rr);
+	          ResourceRecord rr=new  ResourceRecord();
+	            rr.setId(Integer.parseInt(code));
+	            rr.setResourceName(resourceName);
+	            rr.setResourceNumber(resourceNumber);
+	            rr.setResourceUnit(resourceUnit);
+	            resourceRecordService.updateById(rr); 	        
 	        return "jsonArray";
 	    }
 	    //删除资源
@@ -294,7 +310,7 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 	        resourceRecordService.delete(rr);
 	        return "jsonArray";
 	    }
-	
+	    
 	
 	
 	
