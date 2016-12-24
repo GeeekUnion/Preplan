@@ -149,8 +149,8 @@
 					handler: //资源表格添加新行
 							function(){
 								$('#ppl_src_dg').datagrid('appendRow',{
+									resourceName: '',
 									resourceNumber: '',
-									resourceUnit: '',
 									resourceUnit: '',
 									id:'',
 								});
