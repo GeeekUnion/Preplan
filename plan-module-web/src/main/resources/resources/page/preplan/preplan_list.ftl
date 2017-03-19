@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
-    	//查询所有权限
+    	//查询所有
  		$(function (){
  			//数据表格
  			$('#ppltt').datagrid({
@@ -19,6 +19,7 @@
 				pageNumber:1,
 				pageSize:20,
 				pageList:[20,40,80,100],
+				loadingMessage:'正在加载，请稍后...',
 				rownumbers:true,
  			   	striped:true,
  			   	singleSelect:true, 			    
@@ -50,7 +51,7 @@
 								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
-								title:'修改预案属性',
+								title:' ',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="90%" height="90%"/>'
 							});
@@ -73,7 +74,7 @@
 								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
-								title:'修改任务资源',
+								title:' ',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatemr.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
 							});

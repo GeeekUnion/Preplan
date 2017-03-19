@@ -17,6 +17,7 @@
  			$('#ppl_mission_dg').datagrid({
 			    iconCls:'icon-edit',
 			    singleSelect:true,
+			    loadingMessage:'正在加载，请稍后...',
 				striped:true,
 			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
 			    columns:[[
@@ -180,6 +181,7 @@
  			$('#ppl_src_dg').datagrid({
 			    iconCls:'icon-edit',
 			    singleSelect:true,
+			    loadingMessage:'正在加载，请稍后...',
 				striped:true,			 
 			    columns:[[
 			        {field:'resourceName',title:'资源名字',width:250,align:'center',

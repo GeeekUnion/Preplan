@@ -20,6 +20,7 @@
  			   	striped:true,
  			   	singleSelect:true, 			    
  			    columns:[[    
+ 			    	{field:'missionOrder',title:'任务序号',width:60,align:'center'},
  					{field:'missionName',title:'任务名字',width:250,align:'center'},
  					{field:'missionDept',title:'负责单位',width:250,align:'center'},
  					{field:'missionId',title:'操作',width:'150',align:'center',
@@ -87,37 +88,65 @@
 			  
 		})
     	
+    	function deleteMisn(i){
+    	
+    	}
+    	
+    	//确认按钮
+    	$(function (){
+			$('#printBtn').linkbutton({    
+			    iconCls: 'icon-ok',
+			    width:250,
+			    height:50,   
+			});  			   
+		});
+    	
+		function printme() 
+		{
+			var headstr = "<html><head><title></title></head><body>";  
+			var footstr = "</body></html>";  
+			var printData = document.getElementById("printArea").innerHTML; //获得 div 里的所有 html 数据
+			var oldstr = document.body.innerHTML;  
+			document.body.innerHTML = headstr+printData+footstr;  
+			window.print();  	
+			document.body.innerHTML = oldstr; 		
+		}
+    	
     </script>
     </head>
 <body>
    
   
    
-   <div class="btm-area">
-    	<p class="title"><strong>预案详情</strong></p>
+   <div class="btm-area" id="printArea">
     	<div id="ppl_preplan" class="pp_preplan">   
 		    <div class="border">   
 		       <span class="label_box"><label for="ppl_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span>${pp_name}</span>
 		    </div>
+		    <hr class="hidden-hr">
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_type"><strong>预案分类:</strong></label></span>     
 		        <span>${pp_type}</span>
 		    </div>
+		    <hr class="hidden-hr">
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_dept"><strong>责任单位:</strong></label></span>     
 		        <span>${pp_dept}</span>
 		    </div>
+		    <hr class="hidden-hr">
 		    <div class="border">   
 		        <span class="label_box"><label for="ppl_preplan_desc"><strong>预案描述:</strong></label></span>		           
 		        <span>${pp_desc}</span>
 		    </div>
+		    <hr class="hidden-hr">
 		    <div class="border">   
 		        <div class="label_box"><label for="ppl_preplan_proce"><strong>预案流程:</strong></label></div>     
 		        <div>
 		        	<table id="ppl_mission_dg"> </table> 
 		        </div>
 		    </div>
+		    <hr class="hidden-hr">
 		    <div class="border">   
 		        <div class="label_box"><label for="ppl_preplan_src"><strong>所需资源:</strong></label></div>     
 		        <div>
@@ -126,7 +155,7 @@
 		    </div>          
 		</div> 
     </div>
-   
+   <a id="printBtn" href="#" onclick="printme()" style="margin:20px auto">打印</a>
    <input id="ppl_preplan_sn" type="hidden" value="${pp_sn}"/>
 	
 	

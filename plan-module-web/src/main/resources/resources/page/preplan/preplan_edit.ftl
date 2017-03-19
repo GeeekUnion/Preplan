@@ -38,8 +38,7 @@
 			    required:true,
 			    multiline:true,
 			    missingMessage:'此输入框不能为空！',
-			    width:500,
-			    height:100			         
+			    width:500,			         
 			});	
 		});
 		
@@ -74,8 +73,8 @@
 								var j=i+1;
 								$('#ppe_mission_dg').datagrid('appendRow',{
 									mission_sn:j+'<input type="hidden" id="mission_sn' + j + '"name="mission_sn" value="' + j + '">',
-									misssion_name:'<input id="mission_name' + j + '" class="misinput" name="mission_name" >',
-									respon_dept:'<input id="respon_dept' + j + '" class="missearch" name="respon_dept" value="选择负责部门">',
+									misssion_name:'<input id="mission_name' + j + '" class="misinput input_height" name="mission_name" >',
+									respon_dept:'<input id="respon_dept' + j + '" class="missearch input_height" name="respon_dept" value="选择负责部门">',
 									edit:'<a class="misbtn" onclick="addSrcRow(' + j + ')" href="#">分配资源</a>'
 								});
 								$('#respon_dept'+j).combobox({    
@@ -99,8 +98,8 @@
 				}],			    
 			    data: [
 					{mission_sn:'1<input type="hidden" id="mission_sn1" name="mission_sn" value="1">',
-					misssion_name:'<input id="mission_name1" class="misinput" name="misssion_name">',
-					respon_dept:'<input id="respon_dept1" class="missearch" name="respon_dept" value="选择负责部门">',
+					misssion_name:'<input id="mission_name1" class="misinput input_height" name="misssion_name">',
+					respon_dept:'<input id="respon_dept1" class="missearch input_height" name="respon_dept" value="选择负责部门">',
 					edit:'<a class="misbtn" onclick="addSrcRow(1)" href="#">分配资源</a>'}
 				],
 				onLoadSuccess:function(){
@@ -144,9 +143,9 @@
 			document.getElementById('hiddenSrcLength').value=k;
 			$('#ppe_src_dg').datagrid('appendRow',{
 				mission_sn:i,
-				src_name:'<input id="src_name' + j + '" class="srcsearch1" name="src_name' + i + '" value="选择资源">',
-				src_number:'<input id="src_number' + i + '" class="srcinput" name="src_number' + i + '" class="easyui-textbox" value="">',
-				src_unit:'<input id="src_unit' + i + '" class="srcinput" name="src_unit' + i + '" class="easyui-textbox" value="" >'
+				src_name:'<input id="src_name' + j + '" class="srcsearch1 input_height" name="src_name' + i + '" value="选择资源">',
+				src_number:'<input id="src_number' + i + '" class="srcinput input_height" name="src_number' + i + '" class="easyui-textbox" value="">',
+				src_unit:'<input id="src_unit' + i + '" class="srcinput input_height" name="src_unit' + i + '" class="easyui-textbox" value="" >'
 			});		
 			$('#src_name'+j).combobox({
 				url:'preplan_preplan_queryAllSrc.action',     					 
@@ -288,7 +287,7 @@
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppe_preplan_desc"><strong>预案描述:</strong></label></span>
-		        <input id="ppe_input2" rows=5 name="ppe_preplan_desc"  class="easyui-textbox easyui-validatebox">  
+		        <input id="ppe_input2" name="ppe_preplan_desc"  style="height:100px">  
 		        <span></span>
 		    </div>
 		    <div class="border">   

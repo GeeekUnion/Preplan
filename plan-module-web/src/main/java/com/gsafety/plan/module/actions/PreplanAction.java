@@ -259,7 +259,7 @@ public class PreplanAction extends ListAction<Preplan>{
                     misnModel.setMissionName(misList[i+2]);
                     misnModel.setResponDept(misList[i+3]);
                     missionService.save(misnModel);
-                    System.out.println("保存任务");
+                    System.out.println("保存任务"+misList[i+1]);
                     
                     //获得资源数组-----每4个字段存储一个资源的相关信息
                     String[] srcList = req.getParameterValues("srcArray");
@@ -368,6 +368,7 @@ public class PreplanAction extends ListAction<Preplan>{
             for(Mission m : misnList) {
                 JSONObject jo = new JSONObject();
                 jo.put("missionId",m.getId());
+                jo.put("missionOrder",m.getMissionOrder());
                 jo.put("missionName",m.getMissionName());
                 jo.put("missionDept",m.getResponDept());
                 jo.put("missionSn",m.getMissionSn());
