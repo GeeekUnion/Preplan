@@ -78,7 +78,7 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
         // TODO Auto-generated method stub
         Map<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("preplanSnM", ppModel);
-        String hql=" from Mission m where preplanSnM=:preplanSnM";
+        String hql=" from Mission m where preplanSnM=:preplanSnM order by m.missionOrder";
         List<Mission> mList =baseDAO.getListByHql(hql, hashMap,Mission.class );
         return mList;
     }

@@ -31,8 +31,9 @@ public class Mission implements Serializable{
 	private String responPerson;        //负责人，暂无对应表
 	private String missionStatus;      //任务完成状态                     1代表完成，0代表否
 	private String missionDefault;      //任务是否默认被加入预案  1代表是，0代表否   
-	
-	private Preplan preplanSnM;
+	private String missionOrder;   //序号
+
+    private Preplan preplanSnM;
 	private Set<ResourceRecord> resourceRecord =new HashSet<ResourceRecord>();
 	
 	
@@ -51,6 +52,14 @@ public class Mission implements Serializable{
 	public void setMissionSn(String missionSn) {
 		this.missionSn = missionSn;
 	}
+	@Column(name="mission_order")
+    public String getMissionOrder() {
+        return missionOrder;
+    }
+    public void setMissionOrder(String missionOrder) {
+        this.missionOrder = missionOrder;
+    }	 
+	
 	@Column(name="mission_method")
 	public String getMissionMethod() {
 		return missionMethod;
