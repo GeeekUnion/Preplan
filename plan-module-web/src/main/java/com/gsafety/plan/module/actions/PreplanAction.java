@@ -255,6 +255,7 @@ public class PreplanAction extends ListAction<Preplan>{
                     misnModel.setMissionDefault("0");//默认任务
                     misnModel.setMissionSn(uuidMission);//任务唯一标号
                     misnModel.setPreplanSnM(ppModel);//与预案表关联
+                    misnModel.setMissionOrder(misList[i+1]);//任务序号
                     misnModel.setMissionName(misList[i+2]);
                     misnModel.setResponDept(misList[i+3]);
                     missionService.save(misnModel);

@@ -9,6 +9,9 @@
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
+	<script type="text/javascript" src="${getMC ("")}/js/raphael-min.js"></script>
+	<script type="text/javascript" src="${getMC ("")}/js/flowchart.min.js"></script>
+ 
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body class="easyui-layout" scroll="no">

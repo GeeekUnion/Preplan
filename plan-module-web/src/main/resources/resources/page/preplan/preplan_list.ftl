@@ -45,11 +45,14 @@
 						if(row != null){
 							var rid=row.id;
 							$('#ppl_updatePreplan').window({
-								width:1000,
-								height:800,
+								top:5,
+								fit:true,
+								loadingMessage:'正在加载，请稍后...',
+								minimizable:false,
+								collapsible:false,
 								title:'修改预案属性',
 								cache:false,
-								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
+								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="90%" height="90%"/>'
 							});
 						}
 						else{
@@ -65,8 +68,11 @@
 						if(row != null){						  
 							var i =row.id; 
 							$('#ppl_updateMisnSrc').window({
-								width:1000,
-								height:800,
+								top:5,
+								fit:true,
+								loadingMessage:'正在加载，请稍后...',
+								minimizable:false,
+								collapsible:false,
 								title:'修改任务资源',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatemr.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
@@ -84,8 +90,11 @@
 						if(row != null){
 							var rid=row.id;
 							$('#ppl_updatePreplan').window({
-								width:1000,
-								height:800,
+								top:5,
+								fit:true,
+								loadingMessage:'正在加载，请稍后...',
+								minimizable:false,
+								collapsible:false,
 								title:'新增任务资源',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_addm.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
@@ -134,10 +143,13 @@
  		//查看预案详情
  		function detailView(i){
  			$('#ppl_detail').window({
-				width:1000,
-				height:800,
+				top:5,
+				fit:true,
+				loadingMessage:'正在加载，请稍后...',
+				minimizable:false,
+				collapsible:false,
 				title:'当前预案详情',
-				cache:false,
+				cache:false,				
 				content:'<iframe src="ppl_preplan_list_detail.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
 			});
  		}
@@ -187,11 +199,11 @@
     	<table id="ppltt"></table>  
     </div>   
     <div class="btm-area">
-
+		<div id="ppl_detail"></div>
+		<div id="ppl_updatePreplan"></div>
+		<div id="ppl_updateMisnSrc"></div>
+		<div id="ppl_addMission"></div> 
     </div>
-	<div id="ppl_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
-	<div id="ppl_updatePreplan" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
-	<div id="ppl_updateMisnSrc" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>
-	<div id="ppl_addMission" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
+
 </body>
 </html>
