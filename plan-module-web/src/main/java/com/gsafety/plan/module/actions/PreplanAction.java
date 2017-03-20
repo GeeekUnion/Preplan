@@ -45,6 +45,7 @@ import com.opensymphony.xwork2.ActionContext;
 @Namespace("/preplan")
 public class PreplanAction extends ListAction<Preplan>{
   //注入service
+	
     @Resource
     private PreplanService preplanService;   
     @Resource
@@ -74,92 +75,7 @@ public class PreplanAction extends ListAction<Preplan>{
     
     private String jsonObject;//返回判断
     
-    public String getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(String jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    public String getPpName() {
-        return ppName;
-    }
-
-    public void setPpName(String ppName) {
-        this.ppName = ppName;
-    }
-
-    public String getPpDesc() {
-        return ppDesc;
-    }
-
-    public void setPpDesc(String ppDesc) {
-        this.ppDesc = ppDesc;
-    }
-
-    public String getPpType() {
-        return ppType;
-    }
-
-    public void setPpType(String ppType) {
-        this.ppType = ppType;
-    }
-
-    public String getPpDept() {
-        return ppDept;
-    }
-
-    public void setPpDept(String ppDept) {
-        this.ppDept = ppDept;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-    public String getPpSn() {
-        return ppSn;
-    }
-
-    public void setPpSn(String ppSn) {
-        this.ppSn = ppSn;
-    }
     
-    public String getMisnName() {
-        return misnName;
-    }
-
-    public void setMisnName(String misnName) {
-        this.misnName = misnName;
-    }
-
-    public String getMisnDept() {
-        return misnDept;
-    }
-
-    public void setMisnDept(String misnDept) {
-        this.misnDept = misnDept;
-    }
     
     // 输出
     public PrintWriter out() throws IOException {
@@ -604,5 +520,91 @@ public class PreplanAction extends ListAction<Preplan>{
             jsonObject = "error";
         }
         return "jsonArray"; 
+    }
+    public String getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(String jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public String getPpName() {
+        return ppName;
+    }
+
+    public void setPpName(String ppName) {
+        this.ppName = ppName;
+    }
+
+    public String getPpDesc() {
+        return ppDesc;
+    }
+
+    public void setPpDesc(String ppDesc) {
+        this.ppDesc = ppDesc;
+    }
+
+    public String getPpType() {
+        return ppType;
+    }
+
+    public void setPpType(String ppType) {
+        this.ppType = ppType;
+    }
+
+    public String getPpDept() {
+        return ppDept;
+    }
+
+    public void setPpDept(String ppDept) {
+        this.ppDept = ppDept;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public String getPpSn() {
+        return ppSn;
+    }
+
+    public void setPpSn(String ppSn) {
+        this.ppSn = ppSn;
+    }
+    
+    public String getMisnName() {
+        return misnName;
+    }
+
+    public void setMisnName(String misnName) {
+        this.misnName = misnName;
+    }
+
+    public String getMisnDept() {
+        return misnDept;
+    }
+
+    public void setMisnDept(String misnDept) {
+        this.misnDept = misnDept;
     }
 }
