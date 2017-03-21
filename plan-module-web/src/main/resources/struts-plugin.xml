@@ -166,6 +166,23 @@
 				<param name="root">jsonArray</param>
 			</result>						
 		</action>   
+		<!-- Event拦截和结果配置 -->
+		<action name="preplan_event_*" class="com.gsafety.plan.module.actions.EventAction" method="{1}">
+			<result name="jsonObject" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonObject</param>
+			</result>			
+			<result name="jsonArray" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonArray</param>
+			</result>						
+		</action>   
 					
  		<action name="*" class="com.gsafety.plan.module.actions.ResourceRecordAction">
  			<result name="main">preplan/{1}.ftl</result>

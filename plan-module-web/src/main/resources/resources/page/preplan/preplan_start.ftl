@@ -23,7 +23,7 @@
     	$(function (){
  			
  		 $('#dg').datagrid({    
-  		 url:'preplan_mission_queryByPage.action',    
+  		 url:'preplan_event_queryByPage.action',    
   		 singleSelect:true,
   		 loadmsg:'请等待',
 	     rownumbers:true,
@@ -33,15 +33,29 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
-        {field:'preplanSn',title:'预案编号',width:100,align:'center'},    
-        {field:'preplanName',title:'预案名称',width:150,align:'center'},    
-        {field:'preplanTime',title:'时间',width:200,align:'center'},
+        {field:'eventSn',title:'事件编号',width:100,align:'center'},    
+        {field:'eventName',title:'事件名称',width:150,align:'center'},    
+        {field:'eventOccurTime',title:'发生时间',width:200,align:'center'},
+        {field:'eventOccurPlace',title:'发生地点',width:150,align:'center'},  
         {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
 		        		  return "<a  href='#' onclick='Details()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"启动"+"</a>";				        		
 		        	}}
-            
-        
    						 ]],
+   		 toolbar: [{
+  			   	id:'add',
+		    	text:'添加',
+				iconCls: 'icon-add',
+				handler: function(){
+					$('#win').window({
+						width:380,
+		 				height:330,
+		 				title:'事件添加',
+		 				cache:false,
+		 				content:'<iframe src="${pageContext.request.contextPath}/circulate/bicycleLend_add" frameborder="0" width="100%" height="100%"/>'
+					});
+				
+				}
+			}]
    		
    						     
    						 	 

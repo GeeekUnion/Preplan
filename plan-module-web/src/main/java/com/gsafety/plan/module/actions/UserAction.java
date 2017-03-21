@@ -1,6 +1,6 @@
 package com.gsafety.plan.module.actions;
 
-import java.util.Map;
+
 
 import javax.annotation.Resource;
 
@@ -15,8 +15,7 @@ import com.gsafety.plan.service.UserService;
 
 @Namespace("/preplan")
 public class UserAction extends ListAction<User>{
-	//用于封装会话session
-	protected Map<String, Object> session;
+	
   
 	@Resource
 	private UserService userService;
@@ -65,27 +64,7 @@ public class UserAction extends ListAction<User>{
 	}	
 	
 	
-	//登录
-//		public String login() {
-//			//Person person=personService.getByPersonSn(personSn);
-//			User user =userService.get
-//			Boolean right=false;
-//			if(user!=null){ 
-//				if(password.equals(user.getPassword())){
-//					right=true;
-//				}else{
-//					right=false;
-//				}
-//			}
-//			if(right){
-//				session.put("userSn", user.getUsername());			
-//			
-//				jsonObject.put("status", "ok");
-//			}else{
-//				jsonObject.put("status", "nook");
-//			}
-//			return "jsonObject";
-//		}
+
 	
 	
 	
