@@ -19,7 +19,7 @@
 				pageNumber:1,
 				pageSize:20,
 				pageList:[20,40,80,100],
-				loadingMessage:'正在加载，请稍后...',
+				loadMsg:'正在加载，请稍后...',
 				rownumbers:true,
  			   	striped:true,
  			   	singleSelect:true, 			    
@@ -48,9 +48,10 @@
 							$('#ppl_updatePreplan').window({
 								top:5,
 								fit:true,
-								loadingMessage:'正在加载，请稍后...',
+								loadMsg:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
+								draggable:false,
 								title:' ',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="90%" height="90%"/>'
@@ -71,9 +72,10 @@
 							$('#ppl_updateMisnSrc').window({
 								top:5,
 								fit:true,
-								loadingMessage:'正在加载，请稍后...',
+								loadMsg:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
+								draggable:false,
 								title:' ',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatemr.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
@@ -93,10 +95,11 @@
 							$('#ppl_updatePreplan').window({
 								top:5,
 								fit:true,
-								loadingMessage:'正在加载，请稍后...',
+								loadMsg:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
-								title:'新增任务资源',
+								draggable:false,								
+								title:' ',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_addm.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
 							});
@@ -146,7 +149,7 @@
  			$('#ppl_detail').window({
 				top:5,
 				fit:true,
-				loadingMessage:'正在加载，请稍后...',
+				loadMsg:'正在加载，请稍后...',
 				minimizable:false,
 				collapsible:false,
 				title:'当前预案详情',

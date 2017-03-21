@@ -23,12 +23,6 @@
  			    	{field:'missionOrder',title:'任务序号',width:60,align:'center'},
  					{field:'missionName',title:'任务名字',width:250,align:'center'},
  					{field:'missionDept',title:'负责单位',width:250,align:'center'},
- 					{field:'missionId',title:'操作',width:'150',align:'center',
- 									formatter:function(value,row,index){
- 											//记得传ID
- 								 			var i = row.id;
-		        		  					return "<a  href='#' onclick='deleteMisn(" +i+ ")'  class='delete_misn' >"+"暂无"+"</a>";			        		
-		        	}},
  			    ]],
  			    //加载成功
  			    onLoadSuccess:function(){
@@ -120,35 +114,30 @@
    
    <div class="btm-area" id="printArea">
     	<div id="ppl_preplan" class="pp_preplan">   
-		    <div class="border">   
-		       <span class="label_box"><label for="ppl_preplan_name" ><strong>预案名称:</strong></label></span>  
+		    <div style="border:1px solid #95B8E7;padding:5px;padding-left:0px;">   
+		       <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span>${pp_name}</span>
 		    </div>
-		    <hr class="hidden-hr">
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_type"><strong>预案分类:</strong></label></span>     
+		    <div style="border-left:1px solid #95B8E7;border-right:1px solid #95B8E7;padding:5px;padding-left:0px;">   
+		        <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_type"><strong>预案分类:</strong></label></span>     
 		        <span>${pp_type}</span>
 		    </div>
-		    <hr class="hidden-hr">
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_dept"><strong>责任单位:</strong></label></span>     
+		    <div style="border:1px solid #95B8E7;padding:5px;padding-left:0px;">   
+		        <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_dept"><strong>责任单位:</strong></label></span>     
 		        <span>${pp_dept}</span>
 		    </div>
-		    <hr class="hidden-hr">
-		    <div class="border">   
-		        <span class="label_box"><label for="ppl_preplan_desc"><strong>预案描述:</strong></label></span>		           
+		    <div style="border-left:1px solid #95B8E7;border-right:1px solid #95B8E7;padding:5px;padding-left:0px;">   
+		        <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_desc"><strong>预案描述:</strong></label></span>		           
 		        <span>${pp_desc}</span>
 		    </div>
-		    <hr class="hidden-hr">
-		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_proce"><strong>预案流程:</strong></label></div>     
+		    <div style="padding-left:0px;border-right:1px solid #95B8E7;">   
+		        <div style="padding:5px; padding-left:0px;background-color:#F4F4F4;border-left:1px solid #95B8E7; border-top:1px solid #95B8E7;"><label for="ppl_preplan_proce"><strong>预案流程:</strong></label></div>     
 		        <div>
 		        	<table id="ppl_mission_dg"> </table> 
 		        </div>
 		    </div>
-		    <hr class="hidden-hr">
-		    <div class="border">   
-		        <div class="label_box"><label for="ppl_preplan_src"><strong>所需资源:</strong></label></div>     
+		    <div style="padding-left:0px;border-right:1px solid #95B8E7;">   
+		        <div style="border-left:1px solid #95B8E7;padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_src"><strong>所需资源:</strong></label></div>     
 		        <div>
 		        	<table id="ppl_src_dg"></table>  
 		        </div>

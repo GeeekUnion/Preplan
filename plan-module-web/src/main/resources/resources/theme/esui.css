@@ -11,7 +11,6 @@ a:focus{color:#000000 !important;text-decoration:none !important;}
 .textc{text-align:center !important;}
 .fontBold{font-weight:bold;}
 .calendareast{width:200px;height:250px;}
-.hidden-hr{margin:0px;}
 
 /*首页*/
 .logoImg{width:55px;height:55px;}
@@ -38,4 +37,4 @@ a:focus{color:#000000 !important;text-decoration:none !important;}
 #pps_add_mission input{width:300px;height:25px;}
 
 /*执行页面*/
-#printArea .border{border-bottom:0px solid #95B8E7;}
+
