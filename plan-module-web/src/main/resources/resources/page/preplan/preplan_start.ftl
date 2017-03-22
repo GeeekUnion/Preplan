@@ -51,7 +51,7 @@
 		 				height:330,
 		 				title:'事件添加',
 		 				cache:false,
-		 				content:'<iframe src="${pageContext.request.contextPath}/circulate/bicycleLend_add" frameborder="0" width="100%" height="100%"/>'
+		 				content:'<iframe src="preplan_start_add.action" frameborder="0" width="100%" height="100%"/>'
 					});
 				
 				}

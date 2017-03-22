@@ -19,7 +19,7 @@
 	//提交 
 	$('#submit').click(function(){
 			$('#ff').form('submit', {    
-			    url:'${pageContext.request.contextPath}/circulate/lendAndReturnRecordAction_save.action',       
+			    url:'preplan_event_save.action',       
 			    success:function(data){
 			    	var result = eval('(' + data + ')');
 			    	if(result.status=='ok'){
@@ -55,10 +55,6 @@
 	    <div style="margin: 15px;">   
 	        <label for="eventOccurPlace">发生地:&nbsp;&nbsp;</label>   
 	        <input class="easyui-textbox" type="text" name="eventOccurPlace" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="eventOccurTime">发生时间:</label>   
-	        <input class="easyui-textbox" type="text" name="phoneNumber" data-options="required:true" />   
 	    </div>
 	      
 	    <div style="margin-top: 25px;text-align:center">

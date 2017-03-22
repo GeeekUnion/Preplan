@@ -3,6 +3,7 @@ package com.gsafety.plan.module.actions;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +58,9 @@ public class EventAction extends ListAction<Event>{
 		try{
 			event.setEventName(eventName);
 			event.setEventOccurPlace(eventOccurPlace);
-			event.setEventOccurTime(eventOccurTime);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			event.setEventOccurTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+			String eventSn=new SimpleDateFormat("yyyyMMddHHmmssSSS") .format(System.currentTimeMillis() );
 			event.setEventSn(eventSn);
 			eventService.save(event);
 		}catch(Exception e){
