@@ -50,7 +50,17 @@
 			    height:50,   
 			});  			   
 		});
-				
+		
+		$.extend($.fn.datagrid.methods, {  
+        getRowNum:function(jq){  
+            var opts=$.data(jq[0],"datagrid").options;  
+            var array = new Array();  
+            opts.finder.getTr(jq[0],"","selected",1).each(function(){  
+                array.push($(this).find("td.datagrid-td-rownumber").text());  
+            });  
+            return array.join(",");  
+        }  
+    });		
 		
 		/*------------------分割线-----------------*/
 				
@@ -59,12 +69,10 @@
 		//任务表格
 		$(function (){
 			$('#ppe_mission_dg').datagrid({
-				singleSelect:true,     
+				singleSelect:true,  
+				rownumbers:true,   
 			    columns:[[    
-			        {field:'mission_sn',title:'任务标识',width:60}, 
-			        {field:'mission_order',title:'任务序号',width:60,formatter:function(value,row,index){
-		        		  return index+1;				        		
-		        	}},   
+			        {field:'mission_sn',title:'任务标识',width:60},   
 			        {field:'misssion_name',title:'任务名称',width:300},    
 			        {field:'respon_dept',title:'责任单位',width:300,},
 			        {field:'edit',title:'操作',width:100,align:'center'}
@@ -115,7 +123,8 @@
 							if(srcl>0){
 								$.messager.alert('警告','该任务的关联资源还未删除！请先删除相关联资源','error');  
 							}else{
-								$('#ppe_mission_dg').datagrid('deleteRow',index);
+								$('#ppe_mission_dg').datagrid('deleteRow',index);								
+								$('#ppe_mission_dg').datagrid('clearSelections');//取消选择行  
 								$('#ppe_mission_dg').datagrid('reload');															
 								//$.messager.alert('提示','删除成功!','info');  
 							}
@@ -163,7 +172,7 @@
 			        {field:'src_number',title:'数量',width:300,},
 			        {field:'src_unit',title:'单位',width:300}
 			    ]],	
-			    			    toolbar: [{
+			    toolbar: [{
 			    	text:'删除资源',
 					iconCls: 'icon-cancel',					
 					handler:function(){
@@ -171,7 +180,8 @@
 						if(row != null){						  
 							var index =$('#ppe_src_dg').datagrid('getRowIndex'); 
 							$('#ppe_src_dg').datagrid('deleteRow',index);
-							$('#ppe_src_dg').datagrid('reload');															
+							$('#ppe_src_dg').datagrid('reload');	
+							$('#ppe_src_dg').datagrid('clearSelections');//取消选择行  														
 							//$.messager.alert('提示','删除成功!','info');  
 							
 
@@ -229,8 +239,11 @@
 			function(r){
 			//如果是，则提交    
 		    if (r){ 
-		       
-		     		//----任务数据处理----		
+		       		
+		     		//----任务数据处理----	
+		     		//var orderArray=$('#ppe_mission_dg').datagrid('getRowNum'); 
+		     		//console.log(orderArray);	
+		     		var orderArrayNum=1;
 					//获取存好的任务个数
 					var x= parseInt(document.getElementById('hiddenMisLength').value);
 					var misGroup = new Array();
@@ -246,9 +259,10 @@
 						}
 						else{
 							misGroup.push(a);//标识任务
-							misGroup.push($('#'+misId1).val());
+							misGroup.push(orderArrayNum);
 							misGroup.push($('#'+misId2).textbox('getValue'));
 							misGroup.push($('#'+misId3).combobox('getValue'));
+							orderArrayNum++;
 						}						
 					}
 					
