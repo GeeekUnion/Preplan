@@ -67,7 +67,9 @@ public class PreplanAction extends ListAction<Preplan>{
     private String ppDesc;//预案描述
     private String ppType;//预案分类Sn
     private String ppDept;//预案部门
-    
+    private String ppUid;//自定义预案编号
+
+
     private String misnName;//任务名字
     private String misnDept;//任务部门
     private int page;
@@ -124,7 +126,38 @@ public class PreplanAction extends ListAction<Preplan>{
        
         return "jsonArray";
     }
-    
+    //保存预案
+    public String saveOnlyPreplan() {
+        //获得当前预案时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //获得当前预案UUID（preplan_sn）
+        String uuidPreplan = UUID.randomUUID().toString();
+        Preplan ppModel=new Preplan();
+        ppModel.setPreplanName(ppName);
+        ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+        ppModel.setPreplanDesc(ppDesc);
+        ppModel.setResponDept(ppDept);
+        ppModel.setPreplanSn(uuidPreplan);
+        ppModel.setPreplanUID(ppUid);
+        try{   
+            //放入预案分类SN(domain_sn)
+            Domain dmModel =new Domain();
+            dmModel.setDomainSn(ppType); 
+            //二者不为空时存入数据库
+            if(dmModel!=null&&ppModel!=null){
+                ppModel.getDomain().add(dmModel);
+                preplanService.save(ppModel);
+                jsonObject = uuidPreplan;
+            }else{
+                jsonObject = "error";
+               System.out.println("出错"); 
+            }
+        }catch(Exception e){
+            jsonObject = "error";
+            System.out.println("bug"); 
+        }
+        return "jsonObject";
+    }
     
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
@@ -135,7 +168,7 @@ public class PreplanAction extends ListAction<Preplan>{
         String uuidPreplan = UUID.randomUUID().toString();
         Preplan ppModel=new Preplan();
         ppModel.setPreplanName(ppName);
-//        ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+        ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
         ppModel.setPreplanDesc(ppDesc);
         ppModel.setResponDept(ppDept);
         ppModel.setPreplanSn(uuidPreplan);
@@ -150,9 +183,11 @@ public class PreplanAction extends ListAction<Preplan>{
                 ppModel.getDomain().add(dmModel);
                 preplanService.save(ppModel);        
             }else{
+               jsonObject = "error";
                System.out.println("出错"); 
             }
         }catch(Exception e){
+            jsonObject = "error";
             System.out.println("bug"); 
         }
         
@@ -229,7 +264,9 @@ public class PreplanAction extends ListAction<Preplan>{
                             jo.put("responDept",p.getResponDept()); 
                             jo.put("preplanSn",p.getPreplanSn());                                                    
                             jo.put("preplanType",d.getDomainName());
-                            
+                            jo.put("preplanTime",p.getPreplanTime());
+                            jo.put("preplanUID",p.getPreplanUID());
+                            jo.put("preplanDesc",p.getPreplanDesc());
                             total+=1;
                             array.add(jo);    
                         }
@@ -606,5 +643,12 @@ public class PreplanAction extends ListAction<Preplan>{
 
     public void setMisnDept(String misnDept) {
         this.misnDept = misnDept;
+    }
+    public String getPpUid() {
+        return ppUid;
+    }
+
+    public void setPpUid(String ppUid) {
+        this.ppUid = ppUid;
     }
 }

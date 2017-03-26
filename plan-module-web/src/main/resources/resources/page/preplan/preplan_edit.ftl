@@ -10,8 +10,8 @@
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
-    	
-    	//下拉框       	
+    
+        //下拉框       	
     	$(function (){
     		
     		//预案分类
@@ -28,9 +28,14 @@
 			});
 			   
 		});
-		//输入框
+    
+    	//输入框
 		$(function (){
 			$('#ppe_input1').textbox({	
+				    required:true,
+				    missingMessage:'此输入框不能为空！'			         
+			});
+			$('#ppe_input3').textbox({	
 				    required:true,
 				    missingMessage:'此输入框不能为空！'			         
 			});
@@ -41,270 +46,387 @@
 			    width:500,			         
 			});	
 		});
-		
-		//确认按钮
+    
+    	//确认按钮
     	$(function (){
-			$('#submitBtn').linkbutton({    
+			$('.submitBtn').linkbutton({    
 			    iconCls: 'icon-ok',
 			    width:250,
 			    height:50,   
 			});  			   
 		});
 		
-		$.extend($.fn.datagrid.methods, {  
-        getRowNum:function(jq){  
-            var opts=$.data(jq[0],"datagrid").options;  
-            var array = new Array();  
-            opts.finder.getTr(jq[0],"","selected",1).each(function(){  
-                array.push($(this).find("td.datagrid-td-rownumber").text());  
-            });  
-            return array.join(",");  
-        }  
-    });		
-		
-		/*------------------分割线-----------------*/
-				
-
-		//数据网格
-		//任务表格
-		$(function (){
-			$('#ppe_mission_dg').datagrid({
-				singleSelect:true,  
-				rownumbers:true,   
-			    columns:[[    
-			        {field:'mission_sn',title:'任务标识',width:60},   
-			        {field:'misssion_name',title:'任务名称',width:300},    
-			        {field:'respon_dept',title:'责任单位',width:300,},
-			        {field:'edit',title:'操作',width:100,align:'center'}
+		//
+		$('#preplanStep').progressbar({ 
+			value:35,
+			text:'第一步' 
+		}); 
+    /*------------------分割线-----------------*/
+ 	function showAddMis(pp_sn){
+			$(function (){
+ 			//任务数据表格
+ 			$('#ppl_mission_dg').datagrid({
+			    iconCls:'icon-edit',
+			    singleSelect:true,
+			    loadingMessage:'正在加载，请稍后...',
+				striped:true,
+			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
+			    columns:[[
+			        {field:'missionName',title:'任务名字',width:250,align:'center',editor:'text'},
+			        {field:'missionDept',title:'负责单位',width:250,align:'center',			           
+			            editor:{
+			                type:'combobox',
+			                options:{
+								url:'preplan_department_queryAllDept.action',    
+			    				valueField:'DeptName',    
+			    				textField:'DeptName'
+			                }
+			            }
+			        },			       
+			        {field:'missionId',title:'操作',width:250,align:'center',
+			            formatter:function(value,row,index){
+			                if (row.editing){
+			                    var s = '<a href="#" onclick="saverow('+index+')">保存</a> ';
+			                    var c = '<a href="#" onclick="cancelrow('+index+')">取消</a>';
+			                    return s+c;
+			                } else {
+			                    var e = '<a href="#" onclick="editrow('+index+')">编辑</a> ';
+			                    var d = '<a href="#" onclick="deleterow('+row.missionId+')">删除</a>';
+			                    return e+d;
+			                }
+			            }
+			        },
+			        {field:'missionSn',title:'操作',width:'100',align:'center',
+ 								 formatter:function(value,row,index){
+ 								 			var j = row.missionSn; 								 			
+		        		  					return "<a  href='#' onclick=\"showSrc('"+j+"')\"  class='delete_Pp' >"+"查看该任务资源"+"</a>";				        		
+		        	}}
 			    ]],
-			    toolbar: [{
-			    	text:'添加任务行',
-					iconCls: 'icon-add',					
-					handler: //任务表格添加新行
-							function addNewRow(){
-								var i=parseInt(document.getElementById('hiddenMisLength').value);								
-								var j=i+1;
-								$('#ppe_mission_dg').datagrid('appendRow',{
-									mission_sn:j,
-									misssion_name:'<input id="mission_name' + j + '" class="misinput input_height" name="mission_name" >'+'<input type="hidden" id="mission_sn' + j + '"name="mission_sn" value="' + j + '">',
-									respon_dept:'<input id="respon_dept' + j + '" class="missearch input_height" name="respon_dept" value="选择负责部门">',
-									edit:'<a class="misbtn" onclick="addSrcRow(' + j + ')" href="#">分配资源</a>'
-								});
-								$('#respon_dept'+j).combobox({    
-								    url:'preplan_department_queryAllDept.action',    
-								    valueField:'DeptName',    
-								    textField:'DeptName', 
-								    height:23 
-								});
-								$('.misbtn').linkbutton({    
-									iconCls: 'icon-add',
-									height:23   
-								}); 
-								$('.misinput').textbox({    
-					      			required:true,
-									missingMessage:'此输入框不能为空！'	,
-									height:23
-								});
-																					
-					 			document.getElementById('hiddenMisLength').value=j;			
-							} 
-				},'-',{
-					text:'删除任务行',
-					iconCls: 'icon-cancel',
-					handler: function(){
-						var row =$('#ppe_mission_dg').datagrid('getSelected');												
-						if(row != null){						  
-							var index =$('#ppe_mission_dg').datagrid('getRowIndex'); 
-							var misSn =row.mission_sn;
-							var srcPdName="src_pd"+misSn
-							var srcl = document.getElementsByName(srcPdName).length;
-							//console.log(srcl);
-							//如果存在该资源长度，则不能删除
-							if(srcl>0){
-								$.messager.alert('警告','该任务的关联资源还未删除！请先删除相关联资源','error');  
-							}else{
-								$('#ppe_mission_dg').datagrid('deleteRow',index);								
-								$('#ppe_mission_dg').datagrid('clearSelections');//取消选择行  
-								$('#ppe_mission_dg').datagrid('reload');															
-								//$.messager.alert('提示','删除成功!','info');  
+			    toolbar:[
+			    	{
+			    		text:'添加任务行',
+						iconCls: 'icon-edit',
+						handler: function(){
+							$('#ppl_mission_dg').datagrid('appendRow',{
+								missionName:'预案任务',
+								missionDept:'负责单位',
+								missionId:'',								
+							});
+						}
+					}
+				],			    
+			    onAfterEdit: function (rowIndex, rowData, changes) {  
+			        //endEdit该方法触发此事件  
+			        alert(changes);  
+			        editRow = undefined;  
+			    },  
+			    onBeforeEdit: function (index, row) {  
+			        row.editing = true;  
+			        $('#ppl_mission_dg').datagrid('refreshRow', index);  
+			    },  
+			    onAfterEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_mission_dg').datagrid('refreshRow', index);  
+			    },  
+			    onCancelEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_mission_dg').datagrid('refreshRow', index);  
+			    }
+			});			
+ 		});					  
+	}
+	/*------------------分割线-----------------*/
+	function editrow(index){     
+		 $('#ppl_mission_dg').datagrid('beginEdit', index);     
+	}     
+	function deleterow(i){ 
+		$.messager.confirm('确认提交','删除任务该任务的资源也将删除！您确认删除该任务？',function(r){     
+			  if (r){     
+			        //删除该任务资源
+						$.ajax({
+							type : "POST",
+							url : "preplan_preplan_deleteMission.action",
+							dataType : "json",
+							data : {
+									code : i
+							},
+							success : function() {
+									$.messager.alert('提示','删除成功！','info',
+										function() {
+											window.location.reload()							
+										}); 								
+							},
+							error: function(){
+									$.messager.alert('错误','删除出错！','error');								
 							}
-
+			  		 	}) 
+			  	}    
+			});     
+	}   
+	//保存任务  
+	function saverow(i){
+	 	  
+		  var rows = $('#ppl_mission_dg').datagrid('getRows');
+  		  var row = rows[i];
+  		  //前端先保存改好的数据  
+  		  $('#ppl_mission_dg').datagrid('endEdit',i);
+  		  var id=row.missionId;
+  		  var misnName=row.missionName;
+  		  var misnDept=row.missionDept;
+  		  console.log(row.missionDept) 
+		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
+			  if (r){     
+			      //保存任务
+					$.ajax({
+						type : "POST",
+						url : "preplan_preplan_updateMission.action",
+						dataType : "json",
+						data : {
+								code : id,//missionId
+								misnName : misnName,//missionName
+								misnDept : misnDept,//missionDept
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										window.location.reload()							
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！','error');								
 						}
-						else{
-							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+			  		})    
+			   }     
+			});			  
+	}     
+	function cancelrow(index){     
+		$('#ppl_mission_dg').datagrid('cancelEdit', index);     
+	}  
+    
+    /*------------------分割线-----------------*/   
+     
+    //根据任务SN查看资源
+     function showSrc(i){
+     	$('#ppl_src_dg').datagrid({
+			  toolbar: [{
+			    	text:'添加资源',
+					iconCls: 'icon-add',					
+					handler: //资源表格添加新行
+							function(){
+								$('#ppl_src_dg').datagrid('appendRow',{
+									resourceName: '',
+									resourceNumber: '',
+									resourceUnit: '',
+									id:'',
+								});
 						}
-					}	
-				}],			    
-			    data: [
-					{mission_sn:'1',
-					misssion_name:'<input id="mission_name1" class="misinput input_height" name="misssion_name"><input type="hidden" id="mission_sn1" name="mission_sn" value="1">',
-					respon_dept:'<input id="respon_dept1" class="missearch input_height" name="respon_dept" value="选择负责部门">',
-					edit:'<a class="misbtn" onclick="addSrcRow(1)" href="#">分配资源</a>'}
-				],
-				onLoadSuccess:function(){
-					$('#respon_dept1').combobox({    
-					    url:'preplan_department_queryAllDept.action',    
-					    valueField:'DeptName',   
-					    textField:'DeptName'   
-					});
-					$('.misbtn').linkbutton({    
-					    iconCls: 'icon-add'   
-					});
-					$('.misinput').textbox({    
-		      			required:true,
-						missingMessage:'此输入框不能为空！'	
-					});  
-				},							
-		        
-			}); 
-		})
-		
 
-		
-		/*------------------分割线-----------------*/
-		//资源表格
-		$(function (){
-			$('#ppe_src_dg').datagrid({
-				singleSelect:true,       
-			    columns:[[     
-			    	{field:'mission_sn',title:'任务标识',width:60},
-			        {field:'src_name',title:'资源',width:300},    
-			        {field:'src_number',title:'数量',width:300,},
-			        {field:'src_unit',title:'单位',width:300}
-			    ]],	
-			    toolbar: [{
-			    	text:'删除资源',
-					iconCls: 'icon-cancel',					
-					handler:function(){
-						var row =$('#ppe_src_dg').datagrid('getSelected');												
-						if(row != null){						  
-							var index =$('#ppe_src_dg').datagrid('getRowIndex'); 
-							$('#ppe_src_dg').datagrid('deleteRow',index);
-							$('#ppe_src_dg').datagrid('reload');	
-							$('#ppe_src_dg').datagrid('clearSelections');//取消选择行  														
-							//$.messager.alert('提示','删除成功!','info');  
-							
+				}]
+		});
 
-						}
-						else{
-							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
-						}
-					}
-				}]		    			   
-		        
-			}); 
-		})
+     	
 		
-		//资源表格添加新行
-		function addSrcRow(i){
-			//存储资源对应的任务编号		
-			var j=parseInt(document.getElementById('hiddenSrcLength').value);
-			var k=j+1;
-			document.getElementById('hiddenSrcLength').value=k;
-			$('#ppe_src_dg').datagrid('appendRow',{
-				mission_sn:i+'<input type="hidden" name="src_pd'+i+'" value="">',
-				src_name:'<input id="src_name' + j + '" class="srcsearch1 input_height" name="src_name' + i + '" value="选择资源">',
-				src_number:'<input id="src_number' + i + '" class="srcinput input_height" name="src_number' + i + '" class="easyui-textbox" value="">',
-				src_unit:'<input id="src_unit' + i + '" class="srcinput input_height" name="src_unit' + i + '" class="easyui-textbox" value="" >'
-			});		
-			$('#src_name'+j).combobox({
-				url:'preplan_preplan_queryAllSrc.action',     					 
-				valueField:'SrcName',    
-				textField:'SrcName',
-				groupField:'group'
-					    
-			});
-				
-		    $('.srcbtn').linkbutton({    
-					iconCls: 'icon-add'   
-			}); 
-			
-			$('.srcinput').textbox({    
-		      			required:true,
-						missingMessage:'此输入框不能为空！'	
-			});
-			$('.remove-src-btn').linkbutton({    
-				iconCls: 'icon-cancel',
-				height:24   
-			}); 
-		}	
-		
-
-		
-		/*------------------分割线-----------------*/
-		function submitPreplan(){
-		$.messager.defaults = { ok:"确定", cancel:"取消" , width:300 ,};
-		//确认对话框		
-		$.messager.confirm('确认提交','您确认填制好预案并提交？',
-			function(r){
-			//如果是，则提交    
-		    if (r){ 
-		       		
-		     		//----任务数据处理----	
-		     		//var orderArray=$('#ppe_mission_dg').datagrid('getRowNum'); 
-		     		//console.log(orderArray);	
-		     		var orderArrayNum=1;
-					//获取存好的任务个数
-					var x= parseInt(document.getElementById('hiddenMisLength').value);
-					var misGroup = new Array();
-					for(var a=1;a<=x;a++){
-							
-						//获取任务名字
-						var misId1='mission_sn'+a;
-						var misId2='mission_name'+a;
-						var misId3='respon_dept'+a;			
-						//任务存入数组																			
-						if(typeof($('#'+misId1).val())=="undefined" || $('#'+misId1).val().length<0 ){
+			var sn=i;	
+				$.ajax({
+					url:'preplan_resourceRecord_queryByPage.action',
+					method:'POST',
+					dataType:'json',
+					data:{
+					        missionSn:sn
+					},
+					success:function(str){
+						$('#ppl_src_dg').datagrid("loadData",str)
 						
-						}
-						else{
-							misGroup.push(a);//标识任务
-							misGroup.push(orderArrayNum);
-							misGroup.push($('#'+misId2).textbox('getValue'));
-							misGroup.push($('#'+misId3).combobox('getValue'));
-							orderArrayNum++;
-						}						
 					}
-					
-					
-					
-					//----资源数据处理----
-					
-					//获取存好的资源个数（对应的任务）
-					var i= parseInt(document.getElementById('hiddenMisLength').value);
-					var srcGroup = new Array();
-					for(var j=1;j<=i;j++){
-						var srcName1='src_name'+j;
-						var srcName2='src_number'+j;
-						var srcName3='src_unit'+j;
-						//资源数组长度
-						var l = document.getElementsByName(srcName3).length;
-						console.log(l);
-						//如果存在该资源长度，则取值
-						if(l>0){
-							for(var k=0;k<l;k++){				
-							//资源存入数组
-							srcGroup.push(j);	//标识任务		
-							srcGroup.push(document.getElementsByName(srcName1)[k].value);
-							srcGroup.push(document.getElementsByName(srcName2)[k].value);
-							srcGroup.push(document.getElementsByName(srcName3)[k].value);
-							
+				})
+	}
+	$(function (){
+ 			//资源数据表格
+ 			$('#ppl_src_dg').datagrid({
+			    iconCls:'icon-edit',
+			    singleSelect:true,
+			    loadingMessage:'正在加载，请稍后...',
+				striped:true,			 
+			    columns:[[
+			        {field:'resourceName',title:'资源名字',width:250,align:'center',
+			        	editor:{
+			                type:'combobox',
+			                options:{
+								url:'preplan_preplan_queryAllSrc.action',     					 
+								valueField:'SrcName',    
+								textField:'SrcName',
+								groupField:'group'
+			                }
+			            }			        				        					
+			        },
+			        {field:'resourceNumber',title:'资源数量',width:200,align:'center',editor:'text'},	
+			        {field:'resourceUnit',title:'资源单位',width:200,align:'center',editor:'text'},		       
+			        {field:'id',title:'操作',width:200,align:'center',
+			            formatter:function(value,row,index){
+			                if (row.editing){
+			                    var s = '<a href="#" onclick="saverow2('+index+')">保存</a> ';
+			                    var c = '<a href="#" onclick="cancelrow2('+index+')">取消</a>';
+			                    return s+c;
+			                } else {
+			                    var e = '<a href="#" onclick="editrow2('+index+')">编辑</a> ';
+			                    var d = '<a href="#" onclick="deleterow2('+index+')">删除</a>';
+			                    return e+d;
+			                }
+			            }
+			        }
+			    ]],
+
+			    onAfterEdit: function (rowIndex, rowData, changes) {  
+			        //endEdit该方法触发此事件  
+			        alert(changes);  
+			        editRow = undefined;  
+			    },  
+			    onBeforeEdit: function (index, row) {  
+			        row.editing = true;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    },  
+			    onAfterEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    },  
+			    onCancelEdit: function (index, row) {  
+			        row.editing = false;  
+			        $('#ppl_src_dg').datagrid('refreshRow', index);  
+			    }
+			});			
+ 		});					  
+	
+	
+	function editrow2(index){     
+		 $('#ppl_src_dg').datagrid('beginEdit', index);     
+	}     
+	function deleterow2(a){
+		//根据index选中行
+		var choserow=$('#ppl_src_dg').datagrid('selectRow',a);
+		//获得选择行数据
+		var row=$('#ppl_src_dg').datagrid('getSelected');
+		//获得id
+		var i=row.id;
+		//如果有id则删除该记录
+		if(i != ""){
+			$.messager.confirm('确认提交','您确认删除该资源？',function(r){     
+			  if (r){     
+			        //删除该任务资源
+						$.ajax({
+							type : "POST",
+							url : "preplan_resourceRecord_deleteSrc.action",
+							dataType : "json",
+							data : {
+									code : i
+							},
+							success : function() {
+									$.messager.alert('提示','删除成功！','info',
+										function() {
+											window.location.reload()							
+										}); 								
+							},
+							error: function(){
+									$.messager.alert('错误','删除出错！','error');								
+							}
+			  		 	}) 
+			  	}    
+			}); 
+		}
+		else{
+			//删除选中行
+			$('#ppl_src_dg').datagrid('deleteRow',a);   				
+		} 
+		    
+	}   
+	//保存
+	function saverow2(i){
+	 	  
+		  var rows = $('#ppl_src_dg').datagrid('getRows');
+  		  var row = rows[i];
+  		  //前端先保存改好的数据  
+  		  $('#ppl_src_dg').datagrid('endEdit',i);
+  		  var id=row.id;
+  		  var srcName=row.resourceName;
+  		  var srcNumber=row.resourceNumber;
+  		  var srcUnit =row.resourceUnit;
+ 
+		  $.messager.confirm('确认提交','您确认保存该资源？',function(r){     
+			  if (r){			  
+			  	 //如果id不为空
+			  	 if(id != ""){	
+			  	 	//更新任务		  	 				      
+					$.ajax({
+						type : "POST",
+						url : "preplan_resourceRecord_updateSrc.action",
+						dataType : "json",
+						data : {
+								code : id,//srcId
+								resourceName : srcName,//资源Name
+								resourceNumber : srcNumber,//资源数量
+								resourceUnit : srcUnit,//资源单位
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										window.location.reload()							
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！','error');								
 						}
-						}			
-					}
+			  		})
+			  	 }
+			  	 //保存新任务
+			  	 else{
+			  	 	//获得Mission的Sn
+			  	 	var fatherRow = $('#ppl_mission_dg').datagrid('getSelected')
+			  	 	var fatherSn =fatherRow.missionSn;
+			  	 	$.ajax({
+						type : "POST",
+						url : "preplan_resourceRecord_saveSrc.action",
+						dataType : "json",
+						data : {
+								code : fatherSn, //资源Name
+								resourceName : srcName,//资源Name
+								resourceNumber : srcNumber,//资源数量
+								resourceUnit : srcUnit,//资源单位
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										window.location.reload()							
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！','error');								
+						}
+			  		})
+			  	 }	     
+    
+			   }     
+			});			  
+	}     
+	function cancelrow2(index){     
+		$('#ppl_src_dg').datagrid('cancelEdit', index);     
+	}	
+	
+	
+	/*------------------分割线-----------------*/
+			//保存预案
+			function submitPreplan(){		       		
 					//预案名字
 					var preplanName=$('#ppe_input1').textbox('getValue');
 					//预案描述
 					var preplanDesc=$('#ppe_input2').textbox('getValue');
+					//预案编号
+					var preplanUid=$('#ppe_input3').textbox('getValue');
 					//预案类型
 					var preplanType=$('#ppe_search').combobox('getValue');
 					//预案责任单位
 					var preplanDept=$('#ppe_dept_search').combobox('getText');
-					console.log(misGroup);
-					console.log(srcGroup);
 					$.ajax({
 						type : "POST",
-						url : "preplan_preplan_savePreplan.action",
+						url : "preplan_preplan_saveOnlyPreplan.action",
 						dataType : "json",
 						traditional : true,
 						data : {
@@ -312,45 +434,47 @@
 								ppDesc : preplanDesc,
 								ppType : preplanType,
 								ppDept : preplanDept,
-								misArray : misGroup,
-								srcArray : srcGroup
+								ppUid  : preplanUid
 								},
 						success : function(jsonObject) {
 							var pd=jsonObject;
 							if(pd == "error"){
 								$.messager.alert('提示','保存出错，请重试！','error');
 							}
-							else if(pd == "ok" ){
-								$.messager.alert('提示','保存成功！','info',
-									function() {
-										window.location.reload()							
-									});
+							else if(pd.length > 0){
+								$('#ppl_preplan_sn').val(pd);
+								$('#plePreplanMsg').hide();
+								$('#pleMisSrc').show();
+								showAddMis(pd);								
 							}
 							else{
 								$.messager.alert('提示','未知错误','error');
 							}						
-							
+
 						}
-					});      
-		    }    
-		});
-							
-		}	
-		
-		
-		
+
+					})			      
+		    } 												
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body>
-    <!--表格-->
-    <div class="btm-area">
-		<p class="title"><strong>预案定制</strong></p>
-    	<div id="ppe_preplan" class="pp_preplan">   
+   <div class="btm-area">
+		<div id="preplanStep" style="width:400px;margin:0 auto;"></div> 
+   </div>		
+  <div class="btm-area" id="plePreplanMsg">
+  		<p class="title"><strong>预案基本信息</strong></p>
+    	<div id="ppe_preplan" class="pp_preplan">    		  
 		    <div class="border">   
 		       <span class="label_box"><label for="ppe_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span> 
 		        	<input id="ppe_input1" class="easyui-validatebox" name="ppe_preplan_name" />   
+		        </span>
+		    </div>
+		    <div class="border">   
+		       <span class="label_box"><label for="ppe_preplan_uid" ><strong>预案编码:</strong></label></span>  
+		        <span> 
+		        	<input id="ppe_input3" class="easyui-validatebox" name="ppe_preplan_uid" />   
 		        </span>
 		    </div>
 		    <div class="border">   
@@ -365,33 +489,38 @@
 		        <span class="label_box"><label for="ppe_preplan_desc"><strong>预案描述:</strong></label></span>
 		        <input id="ppe_input2" name="ppe_preplan_desc"  style="height:100px">  
 		        <span></span>
-		    </div>
+		    </div>         
+		</div> 
+		<div style="width:100%">
+			<a class="submitBtn" href="#" onclick="submitPreplan()" style="margin:20px auto">下一步</a>
+		</div>
+    </div>
+   
+   <div class="btm-area" id="pleMisSrc" style="display:none">
+    	<p class="title"><strong>${pp_name}添加任务资源</strong></p>
+    	<div id="ppl_preplan" class="pp_preplan">   		    
 		    <div class="border">   
-		        <div class="label_box"><label for="ppe_preplan_proce"><strong>预案流程:</strong></label></div>     
-		        <div class="ppe_mission2">
-		        	<table id="ppe_mission_dg"> </table> 
-		        </div>
-		    </div>
-		    <div class="border">   
-		        <div class="label_box"><label for="ppe_preplan_src"><strong>所需资源:</strong></label></div>     
+		        <div class="label_box"><label for="ppl_preplan_proce"><strong>任务列表</strong></label></div>     
 		        <div>
-		        	<table id="ppe_src_dg"></table>  
+		        	<table id="ppl_mission_dg"> </table> 
 		        </div>
 		    </div>
 		    <div class="border">   
-		        <div class="label_box"><label for="ppe_preplan_src"><strong>其他模块:</strong></label></div>     
+		        <div class="label_box"><label for="ppl_preplan_src"><strong>资源列表</strong></label></div>     
 		        <div>
-		        	
+		        	<table id="ppl_src_dg"></table>  
 		        </div>
-		    </div>          
+		    </div>
+		   <div style="width:100%">
+				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="margin:20px auto">完成</a>
+			</div>          
 		</div> 
     </div>
-	<input id="hiddenMisLength" type="hidden" value="1"/>
-	<input id="hiddenMisOrder" type="hidden" value="1"/>
-	<input id="hiddenSrcLength" type="hidden" value="0"/>
-	<div style="width:100%">
-		<a id="submitBtn" href="#" onclick="submitPreplan()" style="margin:20px auto">提交</a>
-	</div>
-</div>	  
+   
+   <input id="ppl_preplan_sn" type="hidden" value=""/>
+	
+	
+   
+   
 </body>
 </html>
