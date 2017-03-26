@@ -38,7 +38,7 @@
         {field:'eventOccurTime',title:'发生时间',width:200,align:'center'},
         {field:'eventOccurPlace',title:'发生地点',width:150,align:'center'},  
         {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
-		        		  return "<a  href='#' onclick='Details()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"启动"+"</a>";				        		
+		        		  return "<a  href='#' onclick='Details()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"选择预案"+"</a>";				        		
 		        	}}
    						 ]],
    		 toolbar: [{
