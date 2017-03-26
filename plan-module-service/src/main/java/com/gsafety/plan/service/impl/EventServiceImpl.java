@@ -14,7 +14,6 @@ import com.gsafety.cloudframework.common.base.dao.IBaseDAO;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Event;
-import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.EventService;
 @Service
 public class EventServiceImpl extends BaseServiceImpl implements EventService{
@@ -54,7 +53,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
-	//
+	
 	
 	
 	

@@ -26,6 +26,7 @@ public class Preplan implements Serializable {
 
 	private int id;
 	private String preplanSn;                       
+	private String preplanUID;
 	private String preplanName;
 	private String preplanDesc;
 	private Timestamp preplanTime;            //预案启动时间
@@ -37,6 +38,7 @@ public class Preplan implements Serializable {
 	private Set<Attr> attr=new HashSet<Attr>();
 	private Set<Domain>domain=new HashSet<Domain>();
 	private Set<Mission>mission=new HashSet<Mission>();
+	private Set<Event> event= new HashSet<Event>();
 	
 
 	@Id
@@ -132,6 +134,21 @@ public class Preplan implements Serializable {
 	}
 	public void setPreplanDesc(String preplanDesc) {
 		this.preplanDesc = preplanDesc;
+	}
+	
+	@ManyToMany(fetch=FetchType.LAZY,mappedBy="preplans")
+	public Set<Event> getEvent() {
+		return event;
+	}
+	public void setEvent(Set<Event> event) {
+		this.event = event;
+	}
+	@Column(name="preplan_uid")
+	public String getPreplanUID() {
+		return preplanUID;
+	}
+	public void setPreplanUID(String preplanUID) {
+		this.preplanUID = preplanUID;
 	}
 	
 	
