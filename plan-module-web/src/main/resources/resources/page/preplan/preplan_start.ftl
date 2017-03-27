@@ -12,11 +12,11 @@
     <script type="text/javascript">
          function Details(){
 			$('#win').window({
-				width:500,
-				height:350,
+				width:900,
+				height:450,
 				title:'历史记录',
 				cache:false,
-				content:'<iframe src="" frameborder="0" width="100%" height="100%"/>'
+				content:'<iframe src="preplan_start_choose.action" frameborder="0" width="100%" height="100%"/>'
 			});
 } 
     
@@ -33,7 +33,7 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
-        {field:'eventSn',title:'事件编号',width:100,align:'center'},    
+        {field:'eventSn',title:'事件编号',width:100,align:'center',hidden:'true'},    
         {field:'eventName',title:'事件名称',width:150,align:'center'},    
         {field:'eventOccurTime',title:'发生时间',width:200,align:'center'},
         {field:'eventOccurPlace',title:'发生地点',width:150,align:'center'},  
