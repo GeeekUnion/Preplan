@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,7 +28,7 @@ public class Event implements Serializable{
 	private String eventName;
 	private Timestamp eventOccurTime;
 	private String eventOccurPlace;
-	private Set<Preplan> preplans=new HashSet<Preplan>();
+	private Preplan preplan;
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -65,17 +66,16 @@ public class Event implements Serializable{
 	public void setEventOccurPlace(String eventOccurPlace) {
 		this.eventOccurPlace = eventOccurPlace;
 	}
+	@OneToOne(optional = true, cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "preplan_sn", referencedColumnName = "preplan_sn", unique = true)
+	public Preplan getPreplan() {
+		return preplan;
+	}
+	public void setPreplan(Preplan preplan) {
+		this.preplan = preplan;
+	}
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "pre_event_preplan", joinColumns = {
-			@JoinColumn(name = "event_sn", referencedColumnName="event_sn",nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "preplan_sn", referencedColumnName="preplan_sn",nullable = false, updatable = false) })
-	public Set<Preplan> getPreplans() {
-		return preplans;
-	}
-	public void setPreplans(Set<Preplan> preplans) {
-		this.preplans = preplans;
-	}
+	
 	
 	
 	

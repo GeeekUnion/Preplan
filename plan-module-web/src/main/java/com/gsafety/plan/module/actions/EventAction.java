@@ -51,14 +51,11 @@ public class EventAction extends ListAction<Event>{
 		out().close();
 		return "jsonArray";
 	}
-	//启动预案页面，查询所有预案
-//	public String queryByPage2() throws IOException{
-//		String str=eventService.
-//		out().print(str);
-//		out().flush();
-//		out().close();
-//		return "jsonArray";
-//	}
+     //
+	public void sss(){
+		
+		
+	}
 	//增加event，未完成
 	public String save(){
 		jsonObject.put("status", "ok");

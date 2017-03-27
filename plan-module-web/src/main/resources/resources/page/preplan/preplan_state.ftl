@@ -36,6 +36,7 @@
 					//流程图代码
 					var code="st=>start: 事件名称"+"\n"
 							 +"e=>end: 完成"+"\n";
+							 
 					var count=0;//计数器
 					//定义元素
 					for(var j = 0;j<str.length;j++){
