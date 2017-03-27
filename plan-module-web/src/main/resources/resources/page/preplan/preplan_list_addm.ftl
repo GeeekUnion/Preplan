@@ -238,6 +238,32 @@
 		});
 							
 		}
+		/*
+		,'-',{
+					text:'新增任务资源',
+					iconCls: 'icon-add',
+					handler: function(){
+						var row =$('#ppltt').datagrid('getSelected');						
+						if(row != null){
+							var rid=row.id;
+							$('#ppl_updatePreplan').window({
+								top:5,
+								fit:true,
+								loadMsg:'正在加载，请稍后...',
+								minimizable:false,
+								collapsible:false,
+								draggable:false,								
+								title:' ',
+								cache:false,
+								content:'<iframe src="ppl_preplan_list_addm.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
+							});
+						}
+						else{
+							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+						}
+					}
+				}
+		*/
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->

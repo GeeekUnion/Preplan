@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="${getTheme('default','')}/esui.css"/>
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>   
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
@@ -61,6 +62,11 @@
 			value:35,
 			text:'第一步' 
 		}); 
+		
+		$.extend($.messager.defaults,{
+             ok:"确定",
+             cancel:"取消"
+        });
     /*------------------分割线-----------------*/
  	function showAddMis(pp_sn){
 			$(function (){
@@ -68,7 +74,7 @@
  			$('#ppl_mission_dg').datagrid({
 			    iconCls:'icon-edit',
 			    singleSelect:true,
-			    loadingMessage:'正在加载，请稍后...',
+			    loadMsg:'正在加载，请稍后...',
 				striped:true,
 			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
 			    columns:[[
@@ -105,7 +111,7 @@
 			    toolbar:[
 			    	{
 			    		text:'添加任务行',
-						iconCls: 'icon-edit',
+						iconCls: 'icon-add',
 						handler: function(){
 							$('#ppl_mission_dg').datagrid('appendRow',{
 								missionName:'预案任务',
@@ -153,7 +159,7 @@
 							success : function() {
 									$.messager.alert('提示','删除成功！','info',
 										function() {
-											window.location.reload()							
+																		
 										}); 								
 							},
 							error: function(){
@@ -173,7 +179,7 @@
   		  var id=row.missionId;
   		  var misnName=row.missionName;
   		  var misnDept=row.missionDept;
-  		  console.log(row.missionDept) 
+  		  var ppSn = $('#ppl_preplan_sn').val();
 		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
 			  if (r){     
 			      //保存任务
@@ -182,6 +188,7 @@
 						url : "preplan_preplan_updateMission.action",
 						dataType : "json",
 						data : {
+								ppSn : ppSn,//preplanSn
 								code : id,//missionId
 								misnName : misnName,//missionName
 								misnDept : misnDept,//missionDept
@@ -189,11 +196,13 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_mission_dg').datagrid('reload');
+										$('#ppl_mission_dg').datagrid('clearSelections');//取消选择行							
 									}); 								
 							},
 						error: function(){
-								$.messager.alert('错误','修改出错！','error');								
+								$.messager.alert('错误','修改出错！','error');
+								$('#ppl_mission_dg').datagrid('clearSelections');//取消选择行								
 						}
 			  		})    
 			   }     
@@ -322,7 +331,8 @@
 							success : function() {
 									$.messager.alert('提示','删除成功！','info',
 										function() {
-											window.location.reload()							
+											$('#ppl_src_dg').datagrid('reload');
+											$('#ppl_src_dg').datagrid('clearSelections');//取消选择行							
 										}); 								
 							},
 							error: function(){
@@ -368,7 +378,8 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_src_dg').datagrid('reload');
+										$('#ppl_src_dg').datagrid('clearSelections');//取消选择行							
 									}); 								
 							},
 						error: function(){
@@ -394,7 +405,8 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_src_dg').datagrid('reload');
+										$('#ppl_src_dg').datagrid('clearSelections');//取消选择行							
 									}); 								
 							},
 						error: function(){
@@ -454,7 +466,16 @@
 						}
 
 					})			      
-		    } 												
+		    } 
+		    
+	/*------------------完成-----------------*/	    
+		 function  submitMisSrc(){
+		 	$.messager.confirm('确认','您确认已经完成预案填制？',function(r){    
+			    if (r){    
+			        window.location.reload()    
+			    }    
+			});  		 
+		 }												
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
@@ -492,7 +513,7 @@
 		    </div>         
 		</div> 
 		<div style="width:100%">
-			<a class="submitBtn" href="#" onclick="submitPreplan()" style="margin:20px auto">下一步</a>
+			<a class="submitBtn" href="#" onclick="submitPreplan()" style="width:250px;margin:20px auto">下一步</a>
 		</div>
     </div>
    
@@ -511,16 +532,13 @@
 		        	<table id="ppl_src_dg"></table>  
 		        </div>
 		    </div>
-		   <div style="width:100%">
-				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="margin:20px auto">完成</a>
+		   <div>
+				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="width:250px;margin:20px auto">完成</a>
 			</div>          
 		</div> 
     </div>
    
    <input id="ppl_preplan_sn" type="hidden" value=""/>
-	
-	
-   
-   
+ 
 </body>
 </html>

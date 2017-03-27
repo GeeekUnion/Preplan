@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="${getTheme('default','')}/esui.css"/>
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
@@ -21,18 +22,21 @@
 				pageList:[20,40,80,100],
 				loadMsg:'正在加载，请稍后...',
 				rownumbers:true,
+				fitColumns:true,
  			   	striped:true,
  			   	singleSelect:true, 			    
  			    columns:[[    
- 					{field:'preplanName',title:'预案名字',width:300,align:'center'},
- 					{field:'responDept',title:'负责单位',width:300,align:'center'},
- 					{field:'preplanType',title:'预案类型',width:300,align:'center'},
- 					{field:'id',title:'操作',width:'150',align:'center',
+ 			    	{field:'preplanUid',title:'预案编号',width:10,align:'center'},
+ 					{field:'preplanName',title:'预案名字',width:10,align:'center'},
+ 					{field:'responDept',title:'负责单位',width:10,align:'center'},
+ 					{field:'preplanType',title:'预案类型',width:10,align:'center'},
+ 					{field:'preplanTime',title:'编制时间',width:10,align:'center'}, 					
+ 					{field:'id',title:'操作',width:10,align:'center',
  								 formatter:function(value,row,index){
  								 			var i = row.id;
 		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看预案详情"+"</a>";				        		
 		        	}},
-		        	{field:'preplanSn',title:'操作',width:'100',align:'center',
+		        	{field:'preplanSn',title:'操作',width:10,align:'center',
  								 formatter:function(value,row,index){
  								 			var j = row.id;
 		        		  					return "<a  href='#' onclick='deletePp(" +j+ ")'  class='delete_Pp' >"+"删除"+"</a>";				        		
@@ -85,29 +89,6 @@
 							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
 						}
 					}	
-				},'-',{
-					text:'新增任务资源',
-					iconCls: 'icon-add',
-					handler: function(){
-						var row =$('#ppltt').datagrid('getSelected');						
-						if(row != null){
-							var rid=row.id;
-							$('#ppl_updatePreplan').window({
-								top:5,
-								fit:true,
-								loadMsg:'正在加载，请稍后...',
-								minimizable:false,
-								collapsible:false,
-								draggable:false,								
-								title:' ',
-								cache:false,
-								content:'<iframe src="ppl_preplan_list_addm.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
-							});
-						}
-						else{
-							$.messager.alert('提示','您还为选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
-						}
-					}
 				}],			    
  			    //成功加载出发
  			    onLoadSuccess:function(){
@@ -175,7 +156,7 @@
 							success : function() {
 									$.messager.alert('提示','删除成功！','info',
 										function() {
-											window.location.reload()							
+											$('#ppltt').datagrid('reload');					
 										}); 								
 							},
 							error: function(){
@@ -196,7 +177,7 @@
         
     <div class="top-area">
     	<p class="title"><strong>预案列表</strong></p>
-    	<div class="title">
+    	<div class="title" style="padding:5px 0;">
     		<input id="ppl_search" name="dept" value="选择预案类型">
     		<a id="ppl_search_btn" href="#" onclick="searchPreplanList()">搜索</a>
     	</div> 	

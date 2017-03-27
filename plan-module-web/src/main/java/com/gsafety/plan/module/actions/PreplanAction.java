@@ -260,11 +260,17 @@ public class PreplanAction extends ListAction<Preplan>{
                             Preplan p=ppModel.next();
                             JSONObject jo = new JSONObject();                            
                             jo.put("id",p.getId());
+                            jo.put("preplanUid",p.getPreplanUID());
                             jo.put("preplanName",p.getPreplanName());  
                             jo.put("responDept",p.getResponDept()); 
                             jo.put("preplanSn",p.getPreplanSn());                                                    
                             jo.put("preplanType",d.getDomainName());
-                            jo.put("preplanTime",p.getPreplanTime());
+                            if(p.getPreplanTime() != null) {
+                                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
+                            }
+                            else {
+                                jo.put("preplanTime",""); 
+                            }
                             jo.put("preplanUID",p.getPreplanUID());
                             jo.put("preplanDesc",p.getPreplanDesc());
                             total+=1;
@@ -449,14 +455,27 @@ public class PreplanAction extends ListAction<Preplan>{
     
 
     
-    //更新任务
-    public String updateMission(){
+    //新增或更新任务
+    public String updateMission(){        
         Mission m=new Mission();
-        m.setMissionName(misnName);
-        m.setResponDept(misnDept);
-        m.setId(Integer.parseInt(code));
-        missionService.updateById(m);
-        return "jsonArray";
+
+        if(code.length()<=0 || code==null) {
+            Preplan pp=new Preplan();
+            pp.setPreplanSn(ppSn);
+            String uuidMission = UUID.randomUUID().toString();
+            m.setMissionName(misnName);
+            m.setResponDept(misnDept);
+            m.setMissionSn(uuidMission);           
+            m.setPreplanSnM(pp);;
+            missionService.save(m);
+        }
+        else {
+            m.setMissionName(misnName);
+            m.setResponDept(misnDept);
+            m.setId(Integer.parseInt(code));
+            missionService.updateById(m);
+        }
+        return "jsonObject";
     }
     
 
