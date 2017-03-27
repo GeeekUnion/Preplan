@@ -28,10 +28,19 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
         JSONArray array = new JSONArray();
         for(Preplan p : pList) {
             JSONObject jo = new JSONObject();
-            jo.put("id", p.getId());
-            jo.put("preplanName",p.getPreplanName());
-            jo.put("responDept",p.getResponDept());
-            jo.put("preplanSn",p.getPreplanSn());
+            jo.put("id",p.getId());
+            jo.put("preplanUid",p.getPreplanUID());
+            jo.put("preplanName",p.getPreplanName());  
+            jo.put("responDept",p.getResponDept()); 
+            jo.put("preplanSn",p.getPreplanSn());                                                    
+            if(p.getPreplanTime() != null) {
+                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
+            }
+            else {
+                jo.put("preplanTime",""); 
+            }
+            jo.put("preplanUID",p.getPreplanUID());
+            jo.put("preplanDesc",p.getPreplanDesc());
             
             //获得预案类型
             if(p.getDomain() != null) {
