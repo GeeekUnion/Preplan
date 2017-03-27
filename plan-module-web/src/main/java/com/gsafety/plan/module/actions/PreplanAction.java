@@ -308,10 +308,11 @@ public class PreplanAction extends ListAction<Preplan>{
             }
         }     
         ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
+        ActionContext.getContext().put("pp_uid",p.getPreplanUID());//预案编号
         ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
         ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
         ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位
-        System.out.println(p.getId());
+        System.out.println(p.getPreplanUID());
         return "main";
     }
   //查看预案详情中查看任务
@@ -430,6 +431,7 @@ public class PreplanAction extends ListAction<Preplan>{
             }
             
             ActionContext.getContext().put("pp_id",p.getId());//预案id
+            ActionContext.getContext().put("pp_uid",p.getPreplanUID());//预案编号
             ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
             ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
             ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述

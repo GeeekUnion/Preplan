@@ -57,18 +57,19 @@
 			});  			   
 		});
 		
-		//
-		$('#preplanStep').progressbar({ 
-			value:35,
-			text:'第一步' 
-		}); 
-		
-		$.extend($.messager.defaults,{
-             ok:"确定",
-             cancel:"取消"
-        });
+		//步数
+		$(function (){
+			$('#preplanStep').progressbar({ 
+				value:45,
+				text:'第一步'
+			}); 
+		});
     /*------------------分割线-----------------*/
  	function showAddMis(pp_sn){
+ 			$('#preplanStep').progressbar({ 
+				value:85,
+				text:'第二步'
+			});
 			$(function (){
  			//任务数据表格
  			$('#ppl_mission_dg').datagrid({
@@ -471,8 +472,13 @@
 	/*------------------完成-----------------*/	    
 		 function  submitMisSrc(){
 		 	$.messager.confirm('确认','您确认已经完成预案填制？',function(r){    
-			    if (r){    
-			        window.location.reload()    
+			    if (r){   
+			    	$('#pleMisSrc').hide();
+					$('#plePerfect').show(); 
+					$('#preplanStep').progressbar({ 
+						value:100,
+						text:'完成'
+					});  					 
 			    }    
 			});  		 
 		 }												
@@ -536,6 +542,10 @@
 				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="width:250px;margin:20px auto">完成</a>
 			</div>          
 		</div> 
+    </div>
+   
+    <div class="btm-area" id="plePerfect" style="display:none;margin-top:15px;">
+    	<p style="width:400px;margin:0 auto;">预案填制完成，<strong><a htef="index.action">点此返回</a></strong></p>
     </div>
    
    <input id="ppl_preplan_sn" type="hidden" value=""/>

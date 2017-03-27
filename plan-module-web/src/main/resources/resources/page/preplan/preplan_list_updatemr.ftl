@@ -17,6 +17,7 @@
  			$('#ppl_mission_dg').datagrid({
 			    iconCls:'icon-edit',
 			    singleSelect:true,
+			    rownumbers:true,
 			    loadingMessage:'正在加载，请稍后...',
 				striped:true,
 			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
@@ -51,6 +52,19 @@
 		        		  					return "<a  href='#' onclick=\"showSrc('"+j+"')\"  class='delete_Pp' >"+"查看该任务资源"+"</a>";				        		
 		        	}}
 			    ]],
+			    toolbar:[
+			    	{
+			    		text:'添加任务行',
+						iconCls: 'icon-add',
+						handler: function(){
+							$('#ppl_mission_dg').datagrid('appendRow',{
+								missionName:'预案任务',
+								missionDept:'负责单位',
+								missionId:'',								
+							});
+						}
+					}
+				],
 			    onAfterEdit: function (rowIndex, rowData, changes) {  
 			        //endEdit该方法触发此事件  
 			        alert(changes);  
@@ -89,7 +103,8 @@
 							success : function() {
 									$.messager.alert('提示','删除成功！','info',
 										function() {
-											window.location.reload()							
+											$('#ppl_mission_dg').datagrid('reload');
+											$('#ppl_mission_dg').datagrid('clearSelections');//取消选择行								
 										}); 								
 							},
 							error: function(){
@@ -125,7 +140,8 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_mission_dg').datagrid('reload');
+										$('#ppl_mission_dg').datagrid('clearSelections');//取消选择行									
 									}); 								
 							},
 						error: function(){
@@ -182,6 +198,7 @@
 			    iconCls:'icon-edit',
 			    singleSelect:true,
 			    loadingMessage:'正在加载，请稍后...',
+			    rownumbers:true,
 				striped:true,			 
 			    columns:[[
 			        {field:'resourceName',title:'资源名字',width:250,align:'center',
@@ -258,7 +275,8 @@
 							success : function() {
 									$.messager.alert('提示','删除成功！','info',
 										function() {
-											window.location.reload()							
+											$('#ppl_src_dg').datagrid('reload');
+											$('#ppl_src_dg').datagrid('clearSelections');//取消选择行							
 										}); 								
 							},
 							error: function(){
@@ -304,7 +322,8 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_src_dg').datagrid('reload');
+											$('#ppl_src_dg').datagrid('clearSelections');//取消选择行								
 									}); 								
 							},
 						error: function(){
@@ -330,7 +349,8 @@
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
 									function() {
-										window.location.reload()							
+										$('#ppl_src_dg').datagrid('reload');
+										$('#ppl_src_dg').datagrid('clearSelections');//取消选择行								
 									}); 								
 							},
 						error: function(){

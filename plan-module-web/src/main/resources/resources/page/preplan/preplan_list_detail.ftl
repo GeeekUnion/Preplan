@@ -118,10 +118,15 @@
 		       <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_name" ><strong>预案名称:</strong></label></span>  
 		        <span>${pp_name}</span>
 		    </div>
+		    <div style="border:1px solid #95B8E7;padding:5px;padding-left:0px;">   
+		       <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_uid" ><strong>预案编号:</strong></label></span>  
+		        <span>${pp_uid}</span>
+		    </div>
 		    <div style="border-left:1px solid #95B8E7;border-right:1px solid #95B8E7;padding:5px;padding-left:0px;">   
 		        <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_type"><strong>预案分类:</strong></label></span>     
 		        <span>${pp_type}</span>
 		    </div>
+		   
 		    <div style="border:1px solid #95B8E7;padding:5px;padding-left:0px;">   
 		        <span style="padding:5px;padding-left:0px;background-color:#F4F4F4"><label for="ppl_preplan_dept"><strong>责任单位:</strong></label></span>     
 		        <span>${pp_dept}</span>
