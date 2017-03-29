@@ -68,10 +68,14 @@ public class PreplanAction extends ListAction<Preplan>{
     private String ppType;//预案分类Sn
     private String ppDept;//预案部门
     private String ppUid;//自定义预案编号
+    
 
 
     private String misnName;//任务名字
     private String misnDept;//任务部门
+    private String misnOrder;//序号
+
+
     private int page;
     private int rows;
     
@@ -467,13 +471,17 @@ public class PreplanAction extends ListAction<Preplan>{
             String uuidMission = UUID.randomUUID().toString();
             m.setMissionName(misnName);
             m.setResponDept(misnDept);
-            m.setMissionSn(uuidMission);           
-            m.setPreplanSnM(pp);;
+            m.setMissionSn(uuidMission);
+            System.out.println(misnOrder);
+            m.setMissionOrder(misnOrder);
+            m.setPreplanSnM(pp);
             missionService.save(m);
         }
         else {
             m.setMissionName(misnName);
             m.setResponDept(misnDept);
+            System.out.println(misnOrder);
+            m.setMissionOrder(misnOrder);
             m.setId(Integer.parseInt(code));
             missionService.updateById(m);
         }
@@ -672,4 +680,12 @@ public class PreplanAction extends ListAction<Preplan>{
     public void setPpUid(String ppUid) {
         this.ppUid = ppUid;
     }
+    public String getMisnOrder() {
+        return misnOrder;
+    }
+
+    public void setMisnOrder(String misnOrder) {
+        this.misnOrder = misnOrder;
+    }
+    
 }

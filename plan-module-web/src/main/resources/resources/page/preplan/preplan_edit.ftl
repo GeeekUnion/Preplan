@@ -11,6 +11,17 @@
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
+    	var orderUnique=false;
+    	//自定义验证规则
+		$.extend($.fn.validatebox.defaults.rules, {    
+		    unique: {    
+		        validator: function(value, param){   
+		        	console.log(value); 
+		            return true;    
+		        },    
+		        message: '该属性需唯一！'   
+		    }    
+		});    
     
         //下拉框       	
     	$(function (){
@@ -79,7 +90,26 @@
 				striped:true,
 			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
 			    columns:[[
-			        {field:'missionName',title:'任务名字',width:250,align:'center',editor:'text'},
+			    	{field:'missionOrder',title:'任务序号',width:100,align:'center',
+			        	editor:{
+			                type:'validatebox',
+			                options:{
+								required: true,
+								missingMessage:'此输入框不能为空！',
+								validType:'unique',
+								validateOnBlur:true,    
+			                }
+			            }
+			        },
+			        {field:'missionName',title:'任务名字',width:250,align:'center',
+			        	editor:{
+			                type:'validatebox',
+			                options:{
+								required: true,
+								missingMessage:'此输入框不能为空！',    
+			                }
+			            }
+			        },
 			        {field:'missionDept',title:'负责单位',width:250,align:'center',			           
 			            editor:{
 			                type:'combobox',
@@ -106,7 +136,7 @@
 			        {field:'missionSn',title:'操作',width:'100',align:'center',
  								 formatter:function(value,row,index){
  								 			var j = row.missionSn; 								 			
-		        		  					return "<a  href='#' onclick=\"showSrc('"+j+"')\"  class='delete_Pp' >"+"查看该任务资源"+"</a>";				        		
+		        		  					return "<a  href='#' onclick=\"showSrc('"+j+"')\"  class='delete_Pp' >"+"添加资源"+"</a>";				        		
 		        	}}
 			    ]],
 			    toolbar:[
@@ -115,8 +145,8 @@
 						iconCls: 'icon-add',
 						handler: function(){
 							$('#ppl_mission_dg').datagrid('appendRow',{
-								missionName:'预案任务',
-								missionDept:'负责单位',
+								missionName:'',
+								missionDept:'选择负责单位',
 								missionId:'',								
 							});
 						}
@@ -124,7 +154,7 @@
 				],			    
 			    onAfterEdit: function (rowIndex, rowData, changes) {  
 			        //endEdit该方法触发此事件  
-			        alert(changes);  
+			        //alert(changes);  
 			        editRow = undefined;  
 			    },  
 			    onBeforeEdit: function (index, row) {  
@@ -180,6 +210,7 @@
   		  var id=row.missionId;
   		  var misnName=row.missionName;
   		  var misnDept=row.missionDept;
+  		  var misnOrder=row.missionOrder;
   		  var ppSn = $('#ppl_preplan_sn').val();
 		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
 			  if (r){     
@@ -193,6 +224,7 @@
 								code : id,//missionId
 								misnName : misnName,//missionName
 								misnDept : misnDept,//missionDept
+								misnOrder: misnOrder,
 						},
 						success : function() {
 								$.messager.alert('提示','修改成功！','info',
