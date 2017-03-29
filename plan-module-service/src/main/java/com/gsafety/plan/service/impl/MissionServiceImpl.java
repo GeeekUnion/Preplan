@@ -87,9 +87,10 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
     public void updateById(Mission m) {
         // TODO Auto-generated method stub
         Map<String, Object> hashMap = new HashMap<String, Object>();
-        String hql = "update Mission m set m.missionName=:missionName,m.responDept=:responDept where m.id=:id";            
+        String hql = "update Mission m set m.missionName=:missionName,m.responDept=:responDept,m.missionOrder=:missionOrder  where m.id=:id";            
         hashMap.put("missionName",m.getMissionName());
         hashMap.put("responDept",m.getResponDept());
+        hashMap.put("missionOrder",m.getMissionOrder());
         hashMap.put("id",m.getId());
         baseDAO.updateByHql(hql,hashMap);
     }

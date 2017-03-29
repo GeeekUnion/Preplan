@@ -41,10 +41,11 @@ public class Preplan implements Serializable {
 	private Set<Attr> attr=new HashSet<Attr>();
 	private Set<Domain>domain=new HashSet<Domain>();
 	private Set<Mission>mission=new HashSet<Mission>();
-	
+	private Set<Module> module =new HashSet<Module>();
 	
 
-	@Id
+
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return id;
@@ -131,6 +132,13 @@ public class Preplan implements Serializable {
 	public void setMission(Set<Mission> mission) {
 		this.mission = mission;
 	}
+	@OneToMany(targetEntity=Module.class,mappedBy="preplanSnM")
+    public Set<Module> getModule() {
+        return module;
+    }   
+    public void setModule(Set<Module> module) {
+        this.module = module;
+    }	
 	@Column(name="preplan_desc")
 	public String getPreplanDesc() {
 		return preplanDesc;
