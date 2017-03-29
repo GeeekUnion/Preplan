@@ -48,7 +48,8 @@
 		</div>
 		<div title="资源管理" data-options="iconCls:'icon-myf'">
 			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表','preplan_src_list.action')">资源列表</a></span></li>		
+				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表','preplan_src_list.action')">资源列表</a></span></li>
+				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表2','preplan_src_map.action')">资源列表2</a></span></li>				
 			</ul>
 		</div>
 	</div>	

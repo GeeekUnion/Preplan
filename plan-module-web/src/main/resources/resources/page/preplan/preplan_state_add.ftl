@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
-
+    <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript">
         function showResource(){
 			var row = $('#dg').datagrid('getSelected');

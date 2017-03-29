@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
+	 <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 	<!--为了使用detailview的插件-->
     <script type="text/javascript" src="${getMC ("")}/js/datagrid-detailview.js"></script>
     <script type="text/javascript">
