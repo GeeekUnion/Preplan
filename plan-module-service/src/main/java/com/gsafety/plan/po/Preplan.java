@@ -36,7 +36,7 @@ public class Preplan implements Serializable {
 	private String responPerson;              //负责人，暂无对应表
 
 	
-	private Event event;
+	
 	private User username;
 	private Set<Attr> attr=new HashSet<Attr>();
 	private Set<Domain>domain=new HashSet<Domain>();
@@ -145,13 +145,7 @@ public class Preplan implements Serializable {
 	public void setPreplanUID(String preplanUID) {
 		this.preplanUID = preplanUID;
 	}
-	@OneToOne(optional = true, cascade = CascadeType.ALL, mappedBy = "preplan")
-	public Event getEvent() {
-		return event;
-	}
-	public void setEvent(Event event) {
-		this.event = event;
-	}
+	
 	
 	
 	

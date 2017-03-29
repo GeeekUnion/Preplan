@@ -28,7 +28,7 @@ public class Event implements Serializable{
 	private String eventName;
 	private Timestamp eventOccurTime;
 	private String eventOccurPlace;
-	private Preplan preplan;
+	
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -66,14 +66,7 @@ public class Event implements Serializable{
 	public void setEventOccurPlace(String eventOccurPlace) {
 		this.eventOccurPlace = eventOccurPlace;
 	}
-	@OneToOne(optional = true, cascade = CascadeType.REFRESH)
-	@JoinColumn(name = "preplan_sn", referencedColumnName = "preplan_sn", unique = true)
-	public Preplan getPreplan() {
-		return preplan;
-	}
-	public void setPreplan(Preplan preplan) {
-		this.preplan = preplan;
-	}
+
 	
 	
 	
