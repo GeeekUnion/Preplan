@@ -46,8 +46,12 @@
 				<li data-options="iconCls:'icon-center'">><span><a href="#"  onclick="addTab('执行情况','preplan_state.action')">执行情况</a></span></li>			
 			</ul>
 		</div>
-	</div>
-	
+		<div title="资源管理" data-options="iconCls:'icon-myf'">
+			<ul id="tt3" class="easyui-tree esuitree">
+				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表','preplan_src_list.action')">资源列表</a></span></li>		
+			</ul>
+		</div>
+	</div>	
 </div>
 
 <!--1.3region="center",这里的宽度和高度都是由周边决定，不用设置-->
