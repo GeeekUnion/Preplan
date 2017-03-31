@@ -8,8 +8,13 @@ import java.io.PrintWriter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+
+
+
 
 
 
@@ -30,6 +35,36 @@ public class SupplyAction extends ListAction<Supply> {
      private SupplyService supplyService;
      private String supplyName;
      private String supplySn;
+     private JSONArray jsonArray = new JSONArray();
+     
+	
+	//查询所有的supply
+    public String queryAllSupply() throws IOException{
+    	String str=supplyService.getAllSupply();
+		out().print(str);
+		out().flush();
+		out().close();
+		return "jsonArray";
+    }
+    //地图里，查询所有supply
+    public String querySupply(){
+        jsonArray =supplyService.getMapSupply();
+		return "jsonArray";
+    }
+	
+    
+    
+    
+    
+    
+    
+    
+    public JSONArray getJsonArray() {
+		return jsonArray;
+	}
+	public void setJsonArray(JSONArray jsonArray) {
+		this.jsonArray = jsonArray;
+	}
 	public SupplyService getSupplyService() {
 		return supplyService;
 	}
@@ -55,14 +90,4 @@ public class SupplyAction extends ListAction<Supply> {
 		PrintWriter out = response.getWriter();
 		return out;
 	}
-	//查询所有的supply记录
-    public String queryAllSupply() throws IOException{
-    	String str=supplyService.getAllSupply();
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-    }
-	
-
 }
