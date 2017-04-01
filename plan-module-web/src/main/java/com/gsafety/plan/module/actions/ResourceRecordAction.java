@@ -243,6 +243,7 @@ public class ResourceRecordAction extends ListAction<ResourceRecord> {
 		public String queryByPage() throws IOException{
 			
 				String str=resourceRecordService.getByReSn(missionSn,page, rows);
+				System.out.println(str);
 				out().print(str);
 				out().flush();
 				out().close();

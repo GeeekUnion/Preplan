@@ -52,13 +52,13 @@
 							$('#ppl_updatePreplan').window({
 								top:5,
 								fit:true,
-								loadMsg:'正在加载，请稍后...',
+								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
 								draggable:false,
-								title:' ',
+								title:'《'+row.preplanName+'》基础信息修改',
 								cache:false,
-								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="90%" height="90%"/>'
+								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="10%" height="100%"/>'
 							});
 						}
 						else{
@@ -76,11 +76,11 @@
 							$('#ppl_updateMisnSrc').window({
 								top:5,
 								fit:true,
-								loadMsg:'正在加载，请稍后...',
+								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
 								collapsible:false,
 								draggable:false,
-								title:' ',
+								title:'《'+row.preplanName+'》任务资源修改',
 								cache:false,
 								content:'<iframe src="ppl_preplan_list_updatemr.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
 							});
@@ -130,7 +130,7 @@
  			$('#ppl_detail').window({
 				top:5,
 				fit:true,
-				loadMsg:'正在加载，请稍后...',
+				loadingMessage:'正在加载，请稍后...',
 				minimizable:false,
 				collapsible:false,
 				title:'当前预案详情',

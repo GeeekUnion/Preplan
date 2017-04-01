@@ -99,7 +99,6 @@
    
   
 <div class="btm-area">
-		<p class="title"><strong>${pp_name}预案属性修改</strong></p>
     	<div id="ppe_preplan" class="pp_preplan">   
 		    <div class="border">   
 		       <span class="label_box"><label for="ppe_preplan_name" ><strong>预案名称:</strong></label></span>  

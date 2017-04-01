@@ -465,7 +465,7 @@ public class PreplanAction extends ListAction<Preplan>{
     public String updateMission(){        
         Mission m=new Mission();
 
-        if(code.length()<=0 || code==null) {
+        if(code==null || code.length()<=0) {
             Preplan pp=new Preplan();
             pp.setPreplanSn(ppSn);
             String uuidMission = UUID.randomUUID().toString();

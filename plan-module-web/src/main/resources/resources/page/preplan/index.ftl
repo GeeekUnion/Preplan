@@ -34,22 +34,22 @@
 <!--1.2 region="west",必须指明宽度-->
 <div region="west" class="west"  title="导航菜单" split="true"  >
     <div class="easyui-accordion" >				
-		<div title="预案管理" data-options="iconCls:'icon-man'" >
+		<div title="预案及模块管理" data-options="iconCls:'icon-man'" >
 			<ul id="tt1" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-category'">><span><a href="#"  onclick="addTab('预案列表','preplan_list.action')">预案列表</a></span></li>
-				<li data-options="iconCls:'icon-product'">><span><a href="#"  onclick="addTab('预案定制','preplan_edit.action')">预案定制</a></span></li>																				
+				<li data-options="iconCls:'icon-category'"><span><a href="#"  onclick="addTab('预案列表','preplan_list.action')">预案列表</a></span></li>
+				<li data-options="iconCls:'icon-product'"><span><a href="#"  onclick="addTab('预案编制','preplan_edit.action')">预案编制</a></span></li>	
+				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('模块编制','preplan_module.action')">模块编制</a></span></li>																				
 			</ul>
 		</div>
 		<div title="预案启动和执行" data-options="iconCls:'icon-system'">
 			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('启动预案','preplan_start.action')">启动预案</a></span></li>
-				<li data-options="iconCls:'icon-center'">><span><a href="#"  onclick="addTab('执行情况','preplan_state.action')">执行情况</a></span></li>			
+				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('启动预案','preplan_start.action')">启动预案</a></span></li>
+				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('执行情况','preplan_state.action')">执行情况</a></span></li>			
 			</ul>
 		</div>
 		<div title="资源管理" data-options="iconCls:'icon-myf'">
 			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表','preplan_src_list.action')">资源列表</a></span></li>
-				<li data-options="iconCls:'icon-menu'">><span><a href="#"  onclick="addTab('资源列表2','preplan_src_map.action')">资源列表2</a></span></li>				
+				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('资源列表','preplan_src_map.action')">资源列表</a></span></li>				
 			</ul>
 		</div>
 	</div>	
