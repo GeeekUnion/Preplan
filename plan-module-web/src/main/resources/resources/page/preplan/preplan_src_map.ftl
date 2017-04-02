@@ -69,11 +69,56 @@
     <!--高德地图api-->
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=7c8b33d77321b79ab3ec833abfe8ff00"></script> 
     
+    <script type="text/javascript">
+         
     
+    	$(function (){
+ 			
+ 		 $('#dg').datagrid({    
+  		 url:'preplan_supply_querySupply.action',    
+  		 singleSelect:true,
+  		 loadmsg:'请等待',
+	     rownumbers:true,
+  		 pagination:true,
+		 pageNumber:1,
+		 pageSize:15,
+		 pageList:[15,30,50,100],
+		 
+    	 columns:[[    
+        {field:'supplyName',title:'资源名称',width:100,align:'center'},    
+        {field:'supplyNumber',title:'资源数量',width:100,align:'center'},    
+        {field:'supplyUnit',title:'资源单位',width:100,align:'center'},    
+        {field:'supplyLatitude',title:'经度',width:100,align:'center'},
+        {field:'supplyLongitude',title:'纬度',width:150,align:'center'}, 
+        {field:'supplyPrincipal',title:'资源负责人',width:100,align:'center'}, 
+        {field:'supplyPrincipalPhone',title:'负责人电话',width:150,align:'center'},  
+       
+   						 ]],
+   		 toolbar: [{
+  			   	id:'add',
+		    	text:'添加',
+				iconCls: 'icon-add',
+				handler: function(){
+					$('#win').window({
+						width:380,
+		 				height:330,
+		 				title:'添加资源地',
+		 				cache:false,
+		 				content:'<iframe src="preplan_src_map_add.action" frameborder="0" width="100%" height="100%"/>'
+					});
+				
+				}
+			}]
+  
+						});  
+ 		});
+ 		
+    </script>
     </head>
 
 <body>
-   
+    <table id="dg"></table>  
+    <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
 	<div id="container" tabindex="0"></div>
     <script type="text/javascript">
        //新建地图
@@ -110,7 +155,7 @@
             			infoWindow.open(map, marker.getPosition());
         			});
     			    //实例化信息窗体
-				    var title =data[i].supplyName+ '<span style="font-size:11px;color:#F00;">' + data[i].supplyNumber+ '</span>',
+				    var title =data[i].supplyName+ '<span style="font-size:11px;color:#F00;">' + data[i].supplyNumber+ '</span>'+data[i].supplyUnit,
 				    content = [];
 				    content.push("地址");
 				    content.push("负责人:"+data[i].supplyPrincipal);
