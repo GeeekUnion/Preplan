@@ -21,6 +21,7 @@ public class Supply implements Serializable{
 	private int id;
 	private String supplyName; //物资名称
 	private int supplyNumber;
+	private String supplyUnit; //物资单位
     private String supplySn;
     private String supplyLongitude;
     private String supplyLatitude;
@@ -83,6 +84,13 @@ public class Supply implements Serializable{
 	}
 	public void setSupplyPrincipalPhone(String supplyPrincipalPhone) {
 		this.supplyPrincipalPhone = supplyPrincipalPhone;
+	}
+	@Column(name="supply_unit")
+	public String getSupplyUnit() {
+		return supplyUnit;
+	}
+	public void setSupplyUnit(String supplyUnit) {
+		this.supplyUnit = supplyUnit;
 	}
 	
 	

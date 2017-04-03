@@ -34,6 +34,7 @@ public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
 			 jo.put("supplyName", s.getSupplyName());
 			 jo.put("supplySn", s.getSupplySn());
 			 jo.put("supplyNumber", s.getSupplyNumber());
+			 jo.put("supplyUnit", s.getSupplyUnit());
 			 jo.put("id", s.getId());
 			 jo.put("supplyLatitude", s.getSupplyLatitude());
 			 jo.put("supplyLongitude", s.getSupplyLongitude());
@@ -56,6 +57,7 @@ public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
 			 jo.put("supplyName", s.getSupplyName());
 			 jo.put("supplySn", s.getSupplySn());
 			 jo.put("supplyNumber", s.getSupplyNumber());
+			 jo.put("supplyUnit", s.getSupplyUnit());
 			 jo.put("id", s.getId());
 			 jo.put("supplyLatitude", s.getSupplyLatitude());
 			 jo.put("supplyLongitude", s.getSupplyLongitude());
