@@ -2,6 +2,7 @@ package com.gsafety.plan.module.actions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +13,13 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 
+import com.gsafety.cloudframework.common.base.conditions.Cnds;
+import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
+import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Module;
 import com.gsafety.plan.service.ModuleService;
+import com.opensymphony.xwork2.ActionContext;
 ;
 
 @Namespace("/preplan")
@@ -26,32 +31,91 @@ public class ModuleAction extends ListAction<Module> {
 	private JSONArray jsonArray = new JSONArray();
 	private int page;
 	private int rows;
+    private String title;//标题
+    private String content;//内容
+    private  int id;//唯一标识
 	//预案的
 	private String preplanSn;                       
 
-	/*
+	/*@name 查询模块列表（默认，无preplan外键）
 	 *@param  preplanSn
 	 *@return pagerList(模块带分页)
 	 * */
-	public String queryModuleByPpsn() {
+	public String queryModuleByPpsn() {	    
+	    jsonObject = moduleService.queryModulePagerByPpsn(page,rows,preplanSn);
+	    return "jsonObject";
+	}
+	
+	/*@name 新增或者保存模块 
+     *@param  模块属性
+     *@returns 
+     * */
+	public String saveOrUpdateModule() {
+	    System.out.println("标题："+title+"，内容："+content);	    
+	    if(id==0) {
+	        Module md=new Module();
+	        String uuidModule = UUID.randomUUID().toString();	        
+	        md.setTitle(title);
+	        md.setContent(content);
+	        md.setModuleSn(uuidModule);
+	        md.setModuleCheck(true);
+	        moduleService.save(md);
+	    }
+	    else {
+	        Module md=moduleService.get(Module.class, id);
+	        md.setContent(content);
+	        md.setTitle(title);
+	        moduleService.update(md);
+	    }
+
 	    
-	    return "jsonArray";
+	    return "jsonObject"; 
+	}
+	
+	/*@name 删除模块 
+     *@param  模块id
+     *@returns 
+     * */
+	public String deleteModuleById(){
+	    if(id==0) {
+	        
+	        
+	    }
+	    else {
+	        Module md=new Module();
+	        md.setId(id);
+	        moduleService.delete(md);  	        
+	    }
+	    return "jsonObject";
 	}
 	
 	
 	
 	
+	/*@name 获得模块
+     *@param  模块id
+     *@returns 模块实体
+     * */
+    public String getModuleById() {
+        Module md=moduleService.get(Module.class, id);
+        System.out.println(md);
+        jsonObject.put("title",md.getTitle());
+        jsonObject.put("content",md.getTitle());
+        return "jsonObject";             
+    }
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
+	/*@name 获取更新信息 
+     *@param  模块id
+     *@returns 
+     * */
+	public String getUpdateFtl() {
+	    System.out.println(id);
+	    ActionContext.getContext().put("moduleId",id);//id
+        return "updateFtl";	    	    
+	}
 	
 	public PrintWriter out() throws IOException {
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -109,6 +173,38 @@ public class ModuleAction extends ListAction<Module> {
 
     public void setPreplanSn(String preplanSn) {
         this.preplanSn = preplanSn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public ModuleService getModuleService() {
+        return moduleService;
+    }
+
+    public void setModuleService(ModuleService moduleService) {
+        this.moduleService = moduleService;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 	
 	
