@@ -24,6 +24,7 @@ public class Module {
     private String content;//内容
     private String order;//显示顺序
     private Preplan preplanSnM;//与预案对应
+    private boolean moduleCheck;
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,6 +72,13 @@ public class Module {
     }
     public void setOrder(String order) {
         this.order = order;
+    }
+    @Column(name="module_check") 
+    public boolean isModuleCheck() {
+        return moduleCheck;
+    }
+    public void setModuleCheck(boolean moduleCheck) {
+        this.moduleCheck = moduleCheck;
     }
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn")
