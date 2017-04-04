@@ -19,15 +19,13 @@
 
 <!--1.1 egion="north"，指明高度，可以自适应-->
 <div region="north" class="north" scroll="no">
-    <div class="fl northLeft">
-    	<a href="index">
-	    	<img class="logoImg fl" src="#" alt="XX网" />	
-	    </a>
-		 <h3 class="fl mgl">预警管理系统</h3>
-    </div>
-   
-	<div class="fr northRight">
-		<span>欢迎您</span>
+	<div class="header">
+	    <div class="fl northLeft">
+			 <h1 class="fl mgl" style="font-size:32px;">预警管理系统</h1>
+	    </div>   
+		<div class="fr northRight">
+			<span>欢迎您</span>
+		</div>
 	</div>
 </div>
 
@@ -67,8 +65,10 @@
 
 </div>
 
-<!--1.4 region="east",必须指明宽度-->
+<!--1.4 region="east",必须指明宽度
 <div region="east" title="日历" split="true" class="east"><div class="easyui-calendar calendareast"></div></div>
+-->
+
 
 <!--1.5 region="south"，指明高度，可以自适应-->
 <div region="south" class="south" ><center> <p>&copy; 2016 | All Will Be Ok,Belive Youself Please | Designed by<a href="#">DKL</a></p></center></div>

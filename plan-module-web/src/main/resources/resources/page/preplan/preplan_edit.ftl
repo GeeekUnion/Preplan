@@ -13,19 +13,20 @@
 
     <script type="text/javascript">       
         //下拉框       	
-    	$(function (){
-    		
+    	$(function (){    		
     		//预案分类
 			$('#ppe_search').combobox({    
 			    url:'preplan_domain_queryAllDomain.action',    
 			    valueField:'domain_sn',    
-			    textField:'domain_name'   
+			    textField:'domain_name',
+			    required:true,    
 			});
 			//预案部门
 			$('#ppe_dept_search').combobox({    
 			    url:'preplan_department_queryAllDept.action',    
 			    valueField:'id',    
-			    textField:'DeptName'   
+			    textField:'DeptName',
+			    required:true,   
 			});
 			   
 		});
@@ -67,7 +68,7 @@
 
 	/*------------------保存预案-----------------*/
 			//保存预案
-			function submitPreplan(){		       		
+			function submitPreplan(){					       		
 					//预案名字
 					var preplanName=$('#ppe_input1').textbox('getValue');
 					//预案描述
@@ -78,36 +79,67 @@
 					var preplanType=$('#ppe_search').combobox('getValue');
 					//预案责任单位
 					var preplanDept=$('#ppe_dept_search').combobox('getText');
-					$.ajax({
-						type : "POST",
-						url : "preplan_preplan_saveOnlyPreplan.action",
-						dataType : "json",
-						traditional : true,
-						data : {
-								ppName : preplanName,
-								ppDesc : preplanDesc,
-								ppType : preplanType,
-								ppDept : preplanDept,
-								ppUid  : preplanUid
-								},
-						success : function(jsonObject) {
-							var pd=jsonObject;
-							if(pd == "error"){
-								$.messager.alert('提示','保存出错，请重试！','error');
+					
+					var isValid1 = $('#ppe_input1').textbox('isValid');
+					var isValid2 = $('#ppe_input2').textbox('isValid');
+					var isValid3 = $('#ppe_input3').textbox('isValid');
+					var isValid4 = $('#ppe_search').combobox('isValid');
+					var isValid5 = $('#ppe_dept_search').combobox('isValid');
+					if(isValid1==false || isValid2==false || isValid3==false || isValid4==false || isValid5==false){
+					    	if(isValid1==false){
+					    		$("#ppe_input1").next('span').find('input').focus();
+					    		return isValid1;
+					    	};
+					    	if(isValid2==false){
+					    		$("#ppe_input2").next('span').find('textarea').focus();
+					    		return isValid2;
+					    	};
+					    	if(isValid3==false){
+					    		$("#ppe_input3").next('span').find('input').focus();
+					    		return isValid3;
+					    	};
+					    	if(isValid4==false){
+					    		$("#ppe_search").next('span').find('input').focus();
+					    		return isValid4;
+					    	};
+					    	if(isValid5==false){
+					    		$("#ppe_dept_search").next('span').find('input').focus();
+					    		return isValid5;
+					    	};										
+					}else{
+						
+						$.ajax({
+							type : "POST",
+							url : "preplan_preplan_saveOnlyPreplan.action",
+							dataType : "json",
+							traditional : true,
+							data : {
+									ppName : preplanName,
+									ppDesc : preplanDesc,
+									ppType : preplanType,
+									ppDept : preplanDept,
+									ppUid  : preplanUid
+									},
+							success : function(jsonObject) {
+								var pd=jsonObject;
+								if(pd == "error"){
+									$.messager.alert('提示','保存出错，请重试！','error');
+								}
+								else if(pd.length > 0){
+									$('#ppl_preplan_sn').val(pd);
+									$('#plePreplanMsg').hide();
+									$('#pleMisSrc').show();
+									showAddMis(pd);								
+								}
+								else{
+									$.messager.alert('提示','未知错误','error');
+								}						
+	
 							}
-							else if(pd.length > 0){
-								$('#ppl_preplan_sn').val(pd);
-								$('#plePreplanMsg').hide();
-								$('#pleMisSrc').show();
-								showAddMis(pd);								
-							}
-							else{
-								$.messager.alert('提示','未知错误','error');
-							}						
-
-						}
-
-					})			      
+	
+						})
+						
+					}			      
 		    }
 	/*------------------其他模块-----------------*/	    
 		 function  submitMisSrc(){
@@ -163,11 +195,11 @@
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppe_preplan_type"><strong>预案分类:</strong></label></span>     
-		        <span><input id="ppe_search" name="ppe_preplan_type" value="请选择预案类型"></span>
+		        <span><input id="ppe_search" name="ppe_preplan_type"></span>
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppe_preplan_dept"><strong>责任单位:</strong></label></span>     
-		        <span><input id="ppe_dept_search" name="ppe_preplan_dept" value="请选择责任单位"></span>
+		        <span><input id="ppe_dept_search" name="ppe_preplan_dept"></span>
 		    </div>
 		    <div class="border">   
 		        <span class="label_box"><label for="ppe_preplan_desc"><strong>预案描述:</strong></label></span>
@@ -240,8 +272,8 @@
                     iconCls: 'icon-add',
                     handler: function(){
                         $('#missrctt').datagrid('appendRow',{                      
-                                    missionName:'预案任务',
-									missionDept:'负责单位',
+                                    missionName:'',
+									missionDept:'',
 									missionSn:'',                               
                         });                        
                         //editParentRow($('#missrctt').datagrid('getFooterRows')); 
@@ -275,19 +307,20 @@
 			                options:{
 								url:'${pageContext.request.contextPath}/plan/preplan/preplan_department_queryAllDept.action',    
 			    				valueField:'DeptName',    
-			    				textField:'DeptName'
+			    				textField:'DeptName',
+			    				required:true,
 			                }
 			            }
 			        },			       
 			        {field:'missionSn',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
 			                if (row.editing){
-			                    var s = '<a href="#" onclick="saveParentRow('+index+')">保存</a> ';
-			                    var c = '<a href="#" onclick="cancelParentRow('+index+')">取消</a>';
+			                    var s = '<a href="#" onclick="saveParentRow('+index+')">保存</a> |';
+			                    var c = ' <a href="#" onclick="cancelParentRow('+index+')">取消</a>';
 			                    return s+c;
 			                } else {
-			                    var e = '<a href="#" onclick="editParentRow('+index+')">编辑</a> ';
-			                    var d = '<a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
+			                    var e = '<a href="#" onclick="editParentRow('+index+')">编辑</a> |';
+			                    var d = ' <a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
 			                    return e+d;
 			                }
 			            }
@@ -356,12 +389,12 @@
 				        {field:'id',title:'操作',width:200,align:'center',
 				            formatter:function(value,row,index){
 				                if (row.editing){
-				                    var s = '<a href="#" onclick="saveSonRow('+index+','+pIndex+')">保存</a> ';
-				                    var c = '<a href="#" onclick="cancelSonRow('+index+','+pIndex+')">取消</a>';
+				                    var s = '<a href="#" onclick="saveSonRow('+index+','+pIndex+')">保存</a> |';
+				                    var c = ' <a href="#" onclick="cancelSonRow('+index+','+pIndex+')">取消</a>';
 				                    return s+c;
 				                } else {
-				                    var e = '<a href="#" onclick="editSonRow('+index+','+pIndex+')">编辑</a> ';
-				                    var d = '<a href="#" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
+				                    var e = '<a href="#" onclick="editSonRow('+index+','+pIndex+')">编辑</a> |';
+				                    var d = ' <a href="#" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
 				                    return e+d;
 				                }
 				            }
