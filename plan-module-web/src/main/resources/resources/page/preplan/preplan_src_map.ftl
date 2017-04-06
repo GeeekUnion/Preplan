@@ -5,6 +5,7 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"> 
 		<style type="text/css">
 		      #container{
+		        position: absolute;
 		        height: 500px;
 		        width:1000px;
 		        margin: 0px;
@@ -58,7 +59,35 @@
 	            float: left;
 	            margin-right: 6px;
 	        }
-		    </style>
+	        
+	        
+	        
+	        
+	        
+	    .map-panel {
+	    z-index:100;
+        color: #333;
+        padding: 6px;
+        border: 1px solid silver;
+        box-shadow: 3px 4px 3px 0px silver;
+        position: absolute;
+        background-color: #eee;
+        top: 10px;
+        right: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        line-height: 20px;
+      }
+      #input{
+        width: 250px;
+        height: 25px;
+      }
+	        
+	        
+	        
+	        
+	        
+    </style>
     <link rel = "stylesheet" href="${getTheme('default','')}default/easyui.css" type="text/css"/>
 	<link rel="stylesheet" type="text/css" href="${getTheme('default','')}/icon.css"/>
     <link rel="stylesheet" type="text/css" href="${getTheme('default','')}/esui.css"/>
@@ -117,9 +146,21 @@
     </head>
 
 <body>
-    <table id="dg"></table>  
+	<table id="dg"></table>    
     <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
-	<div id="container" tabindex="0"></div>
+	<div id="container" tabindex="0" style="position:absolute">
+	<div class ='map-panel'>
+     输入地址显示位置:</br>
+     <input id = 'input' value = '阜通东大街8号'> </input>
+     <div id = 'message'></div>
+     <div id='geocodes'> </div>
+   </div>
+	</div>
+	
+	<!--根据地址查询经纬度(地理编码)-->
+	
+ 
+   
     <script type="text/javascript">
        //新建地图
         var map = new AMap.Map('container',{
@@ -127,7 +168,7 @@
             zoom: 5,
             center: [116.480983, 40.0958]
         });
-        addMarker();
+        
         //ajax引用
          $.ajax({
  			url:'preplan_supply_querySupply.action',
@@ -137,6 +178,7 @@
  			success:function(res){    
  				var data=eval('('+res+')');
  				 var markers = []; 
+ 				   var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
         for (var i = 0; i < data.length; i += 1) {
     			    var marker;
     				var icon = new AMap.Icon({
@@ -151,24 +193,19 @@
     					title: data[i].supplyName,
     					map: map
     				});
-    				AMap.event.addListener(marker, 'click', function() {
-            			infoWindow.open(map, marker.getPosition());
-        			});
-    			    //实例化信息窗体
-				    var title =data[i].supplyName+ '<span style="font-size:11px;color:#F00;">' + data[i].supplyNumber+ '</span>'+data[i].supplyUnit,
-				    content = [];
-				    content.push("地址");
-				    content.push("负责人:"+data[i].supplyPrincipal);
-				    content.push("电话："+data[i].supplyPrincipalPhone);
-				    content.push("<a href='#'>详细信息</a>");
-				    var infoWindow = new AMap.InfoWindow({
-				        isCustom: true,  //使用自定义窗体
-				        content: createInfoWindow(title, content.join("<br/>")),
-				        offset: new AMap.Pixel(16, -45)
-				    });
-    			    //
+    			
+    			     marker.content = data[i].supplyName+ '<span style="font-size:11px;color:#F00;">' + data[i].supplyNumber+ '</span>'+data[i].supplyUnit  +   "<hr>负责人:"+data[i].supplyPrincipal     +"<hr>电话："+data[i].supplyPrincipalPhone;
+                     marker.on('click', markerClick);
+                     marker.emit('click', {target: marker});
+    			    
            markers.push(marker);
-        }
+        }         //循环结束
+        
+        
+        function markerClick(e) {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
            map.setFitView();
  				
  			},
@@ -176,75 +213,50 @@
  				
  			},
  		});	
- 		//
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-         //添加marker标记
-       function addMarker() {
-        map.clearMap();
-        var marker = new AMap.Marker({
-            title:"PEKING",
-            map: map,
-            position: [116.481181, 39.989792]
+ 		
+ 		//根据地址查询经纬度(地理编码)
+ 		    AMap.plugin('AMap.Geocoder',function(){
+        var geocoder = new AMap.Geocoder({
+            city: "010"//城市，默认：“全国”
         });
+        var marker = new AMap.Marker({
+            map:map,
+            bubble:true
+        })
+        var input = document.getElementById('input');
+        input.onchange = function(e){
+            var address = input.value;
+            geocoder.getLocation(address,function(status,result){
+              if(status=='complete'&&result.geocodes.length){
+                marker.setPosition(result.geocodes[0].location);
+                console.log(result.geocodes[0].location);
+                $('#geocodes')[0].innerHTML='经纬度:('+result.geocodes[0].location.I+','+result.geocodes[0].location.M+')';
+                map.setCenter(marker.getPosition())
+                document.getElementById('message').innerHTML = ''
+              }else{
+                document.getElementById('message').innerHTML = '获取位置失败'
+              }
+            })
+        }
+        input.onchange();
+
+    });
+  
        
-    }
-       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
     
-     //构建自定义信息窗体
-    function createInfoWindow(title, content) {
-        var info = document.createElement("div");
-        info.className = "info";
-
-        //可以通过下面的方式修改自定义窗体的宽高
-        //info.style.width = "400px";
-        // 定义顶部标题
-        var top = document.createElement("div");
-        var titleD = document.createElement("div");
-        var closeX = document.createElement("img");
-        top.className = "info-top";
-        titleD.innerHTML = title;
-        closeX.src = "http://webapi.amap.com/images/close2.gif";
-        closeX.onclick = closeInfoWindow;
-
-        top.appendChild(titleD);
-        top.appendChild(closeX);
-        info.appendChild(top);
-
-        // 定义中部内容
-        var middle = document.createElement("div");
-        middle.className = "info-middle";
-        middle.style.backgroundColor = 'white';
-        middle.innerHTML = content;
-        info.appendChild(middle);
-
-        // 定义底部内容
-        var bottom = document.createElement("div");
-        bottom.className = "info-bottom";
-        bottom.style.position = 'relative';
-        bottom.style.top = '0px';
-        bottom.style.margin = '0 auto';
-        var sharp = document.createElement("img");
-        sharp.src = "http://webapi.amap.com/images/sharp.png";
-        bottom.appendChild(sharp);
-        info.appendChild(bottom);
-        return info;
-    }
-
-    //关闭信息窗体
-    function closeInfoWindow() {
-        map.clearInfoWindow();
-    }
+  
     
     
         
@@ -263,32 +275,9 @@
          
     </script>
 	<script type='text/javascript'>
-	$(function(){
 	
-	
-	
-	})
-	
-	var mock = {
-		log: function(result) {
-			window.parent.setIFrameResult('log', result);
-		}
-	}
-	console = mock;
-	window.Konsole = {
-		exec: function(code) {
-			code = code || '';
-			try {
-				var result = window.eval(code);
-				window.parent.setIFrameResult('result', result);
-			} catch (e) {
-				window.parent.setIFrameResult('error', e);
-			}
-		}
-	}
 </script>
-	
-	
+	 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
 	
 	
 	
