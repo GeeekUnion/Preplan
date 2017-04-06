@@ -58,7 +58,7 @@
 								draggable:false,
 								title:'《'+row.preplanName+'》基础信息修改',
 								cache:false,
-								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="10%" height="100%"/>'
+								content:'<iframe src="ppl_preplan_list_updatep.action?code=' +rid+ '" frameborder="0" width="100%" height="100%"/>'
 							});
 						}
 						else{

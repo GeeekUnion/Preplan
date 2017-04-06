@@ -27,6 +27,8 @@
     //显示列表
     $(function(){
     	var pp_sn=document.getElementById("ppl_preplan_sn").value;
+    	var rowEditing = false;
+    	var rowEditing2 = false;
         $('#missrctt').datagrid({ 
             title:'任务列表', 
             remoteSort:false, 
@@ -36,6 +38,7 @@
             loadMsg:'加载中，请稍后...',
             nowrap:false, 
             striped:true,
+            idField:'missionId',
             fitColumns:true, 
             showFooter:true,
             url:'${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,
@@ -43,13 +46,17 @@
                     text : '添加任务',
                     iconCls: 'icon-add',
                     handler: function(){
-                        $('#missrctt').datagrid('appendRow',{
-                                    missionName:'预案任务',
-									missionDept:'负责单位',
-									missionSn:'',                              
-                        }); 
-                        //editParentRow($('#missrctt').datagrid('getFooterRows')); 
-                        console.log($('#missrctt').datagrid('getFooterRows'))     
+                    	if( rowEditing == false ){
+                    		$('#missrctt').datagrid('appendRow',{
+                                    missionName:'',
+									missionDept:'',
+									missionId:'-101',                              
+                        	});
+                        	editParentRow(-101,"missionOrder");
+                    	}else{
+                    		$.messager.alert('提示','新任务还未保存，请先保存再添加新任务行！','info');
+                    	}
+                           
                     }
             }],
             columns:[[    
@@ -79,19 +86,21 @@
 			                options:{
 								url:'${pageContext.request.contextPath}/plan/preplan/preplan_department_queryAllDept.action',    
 			    				valueField:'DeptName',    
-			    				textField:'DeptName'
+			    				textField:'DeptName',
+			    				required: true,
+								missingMessage:'此输入框不能为空！'
 			                }
 			            }
 			        },			       
-			        {field:'missionSn',title:'操作',width:250,align:'center',
+			        {field:'missionId',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
 			                if (row.editing){
-			                    var s = '<a href="#" onclick="saveParentRow('+index+')">保存</a> ';
-			                    var c = '<a href="#" onclick="cancelParentRow('+index+')">取消</a>';
+			                    var s = '<a href="#" onclick="saveParentRow('+index+')">保存</a> |';
+			                    var c = ' <a href="#" onclick="cancelParentRow('+row.missionId+')">取消</a>';
 			                    return s+c;
 			                } else {
-			                    var e = '<a href="#" onclick="editParentRow('+index+')">编辑</a> ';
-			                    var d = '<a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
+			                    var e = '<a href="#" onclick="editParentRow('+row.missionId+',\'missionOrder\')">编辑</a> |';
+			                    var d = ' <a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
 			                    return e+d;
 			                }
 			            }
@@ -112,20 +121,26 @@
                     fitColumns:true,
                     singleSelect:true,
                     rownumbers:true,
-                    striped:true,
+                    striped:true,  
+                    idField:'id',                 
                     loadMsg:'加载中，请稍后...',
                     height:'auto',
                     toolbar: [{
                         text : '添加资源',
                         iconCls: 'icon-add',
                         handler: function(){
-                            subCategory.datagrid('appendRow',{
-                                    resourceName: '',
-									resourceNumber: '',
-									resourceUnit: '',
-									id:'',                                
-                            });
-                            //editSonRow(0,pIndex);
+                            if( rowEditing2 == false ){
+                        	    subCategory.datagrid('appendRow',{
+	                                    resourceName: '',
+										resourceNumber: '',
+										resourceUnit: '',
+										id:'-101',                                                             
+	                            });
+	                            editSonRow(-101,pIndex,"resourceNumber");
+                        	}else{
+                        		$.messager.alert('提示','新资源还未保存，请先保存再添加新资源行！','info');
+                        	}
+                            
                         }
                     }],
                     columns:[[
@@ -136,7 +151,9 @@
 									url:'${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryAllSrc.action',     					 
 									valueField:'SrcName',    
 									textField:'SrcName',
-									groupField:'group'
+									groupField:'group',
+									required: true,
+                                    missingMessage:'此输入框不能为空！',
 				                }
 				            }			        				        					
 				        },
@@ -160,13 +177,13 @@
 	                    }, 		       
 				        {field:'id',title:'操作',width:200,align:'center',
 				            formatter:function(value,row,index){
-				                if (row.editing){
-				                    var s = '<a href="#" onclick="saveSonRow('+index+','+pIndex+')">保存</a> ';
-				                    var c = '<a href="#" onclick="cancelSonRow('+index+','+pIndex+')">取消</a>';
+				                if (row.editing2){
+				                    var s = '<a href="#" onclick="saveSonRow('+index+','+pIndex+')">保存</a> |';
+				                    var c = ' <a href="#" onclick="cancelSonRow('+row.id+','+pIndex+')">取消</a>';
 				                    return s+c;
 				                } else {
-				                    var e = '<a href="#" onclick="editSonRow('+index+','+pIndex+')">编辑</a> ';
-				                    var d = '<a href="#" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
+				                    var e = '<a href="#" onclick="editSonRow('+row.id+','+pIndex+',\'resourceNumber\')">编辑</a> |';
+				                    var d = ' <a href="#" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
 				                    return e+d;
 				                }
 				            }
@@ -179,31 +196,41 @@
                     onLoadSuccess:function(){
                         $('#missrctt').datagrid('fixDetailRowHeight',index);
                     },
-                    onBeforeEdit: function (index, row) {  
-                        row.editing = true;  
+                    onBeforeEdit: function (index, row) {
+                    	rowEditing2 = true;
+                        row.editing2 = true;  
                         $(this).datagrid('refreshRow', index);  
                     },  
-                    onAfterEdit: function (index, row) {  
-                        row.editing = false;  
+                    onAfterEdit: function (index, row) { 
+                    	rowEditing2 = false; 
+                        row.editing2 = false;  
                         $(this).datagrid('refreshRow', index);  
                     },  
-                    onCancelEdit: function (index, row) {  
-                        row.editing = false;  
+                    onCancelEdit: function (index, row) {
+                    	rowEditing2 = false;  
+                        row.editing2 = false;  
                         $(this).datagrid('refreshRow', index);  
                     }
                 });
                     $('#missrctt').datagrid('fixDetailRowHeight',index);
                 },
                 
-                onBeforeEdit: function (index, row) {  
+                
+               	onCollapseRow: function (index, row) { 
+ 					rowEditing2 = false;
+                }, 
+                onBeforeEdit: function (index, row) { 
+                	rowEditing = true; 
                     row.editing = true;  
                     $('#missrctt').datagrid('refreshRow', index);  
                 },  
-                onAfterEdit: function (index, row) {  
+                onAfterEdit: function (index, row) {
+                  	rowEditing = false;
                     row.editing = false;  
                     $('#missrctt').datagrid('refreshRow', index);  
                 },  
-                onCancelEdit: function (index, row) {  
+                onCancelEdit: function (index, row) {
+                	rowEditing = false;  
                     row.editing = false;  
                     $('#missrctt').datagrid('refreshRow', index);  
                 }
@@ -212,10 +239,12 @@
  
     /*------------------父类行编辑begin-----------------*/
     //开始编辑
-    function editParentRow(index){     
+    function editParentRow(mId,fieldName){ 
+        var index=$('#missrctt').datagrid('getRowIndex',mId);
         $('#missrctt').datagrid('beginEdit', index);
-        var ed = $('#missrctt').datagrid('getEditor', {index:index,field:'missionName'});
+        var ed = $('#missrctt').datagrid('getEditor', {index:index,field:fieldName});
         $(ed.target).focus();
+        
     }    
     //删除行
     function deleteParentRow(i,index){ 
@@ -248,7 +277,7 @@
     	}
             
     }   
-    //保存修改  
+	//保存修改  
     function saveParentRow(i){           
           //前端先保存改好的数据  
           $('#missrctt').datagrid('endEdit',i);
@@ -258,48 +287,79 @@
   		  var misnName=row.missionName;
   		  var misnDept=row.missionDept;
   		  var misnOrder=row.missionOrder;
-  		  var pp_sn=document.getElementById("ppl_preplan_sn").value;
-		  $.messager.confirm('确认提交','您确认保存该任务？',function(r){     
-			  if (r){     
-			      //保存任务
-					$.ajax({
-						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updateMission.action",
-						dataType : "json",
-						data : {
-								code : id,//missionId
-								misnOrder: misnOrder,
-								misnName : misnName,//missionName
-								misnDept : misnDept,//missionDept
-								ppSn     : pp_sn,
-						},
-						success : function() {
-								$.messager.alert('提示','修改成功！','info',
-									function() {
-										$('#missrctt').datagrid('reload');
-										$('#missrctt').datagrid('clearSelections');//取消选择行									
-									}); 								
+  		  console.log(misnOrder+':'+misnName+':'+misnDept)
+		  if( misnOrder==="" || misnName==="" || misnDept===""){
+			  	if(misnOrder===""){
+					  editParentRow(id,"missionOrder");
+					  return true;
+				};
+				if(misnName===""){
+					editParentRow(id,"missionName");
+					return true;
+				};
+				if(misnDept===""){
+					editParentRow(id,"missionDept");
+					return true;
+				};  
+		  }else{
+			var pp_sn=document.getElementById("ppl_preplan_sn").value;
+			$.messager.confirm('确认提交','您确认保存该任务？',function(r){     
+				if (r){     
+					//保存任务
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updateMission.action",
+							dataType : "json",
+							data : {
+									code : id,//missionId
+									misnOrder: misnOrder,
+									misnName : misnName,//missionName
+									misnDept : misnDept,//missionDept
+									ppSn     : pp_sn,
 							},
-						error: function(){
-								$.messager.alert('错误','修改出错！请确保您完全填写了任务内容！','error');								
-						}
-			  		})    
-			   }     
-			});              
+							success : function() {
+									$.messager.alert('提示','修改成功！','info',
+										function() {
+											$('#missrctt').datagrid('reload');
+											$('#missrctt').datagrid('clearSelections');//取消选择行									
+										}); 								
+								},
+							error: function(){
+									$.messager.alert('错误','修改出错！请确保您完全填写了任务内容！','error');								
+							}
+						})    
+				}     
+			}); 	
+		  }	             
     }     
     //取消编辑
-    function cancelParentRow(index){     
-        $('#missrctt').datagrid('cancelEdit', index);     
+    function cancelParentRow(mId){ 
+    	var index=$('#missrctt').datagrid('getRowIndex',mId);
+    	if(mId == -101){
+    		$.messager.confirm('确认','该任务未保存，取消将删除该未保存任务，确认删除？',function(r){    
+			    if (r){    
+			    	$('#missrctt').datagrid('cancelEdit', index);
+			        $('#missrctt').datagrid('deleteRow',index);    
+			    }    
+			});     		
+    	}else{  
+    		$.messager.confirm('确认','该任务未保存，取消将不保存修改，确认删除？',function(r){    
+			    if (r){    
+			       $('#missrctt').datagrid('cancelEdit', index);    
+			    }    
+			});  		        	
+    	}         
     }  
     
     /*------------------父类行编辑end-----------------*/  
     
     /*------------------子类行编辑begin-----------------*/ 
     //开始编辑
-    function editSonRow(index,pIndex){ 
+    function editSonRow(sId,pIndex,filedName){     
         var subCategory = $('#missrctt').datagrid('getRowDetail',pIndex).find('table.subCategory');
+        var index=subCategory.datagrid('getRowIndex',sId);
         subCategory.datagrid('beginEdit', index);
-        var ed = subCategory.datagrid('getEditor', {index:index,field:'resourceNumber'});
+        var ed = subCategory.datagrid('getEditor', {index:index,field:filedName});
         $(ed.target).focus();
     }    
     //删除行
@@ -347,51 +407,38 @@
           //前端先保存改好的数据  
           subCategory.datagrid('endEdit',index);
           var rows = subCategory.datagrid('getRows');
-          var row = rows[index];
-          console.log(row);          
+          var row = rows[index];         
           var prows = $('#missrctt').datagrid('getRows');
           var prow = prows[pIndex]; 
   		  var id=row.id;
   		  var srcName=row.resourceName;
   		  var srcNumber=row.resourceNumber;
   		  var srcUnit =row.resourceUnit;
- 
-		  $.messager.confirm('确认提交','您确认保存该资源？',function(r){     
+ 		  console.log(srcName+':'+srcNumber+':'+srcUnit)	
+ 		  if( srcName==="" || srcNumber==="" || srcUnit===""){
+ 		  		if(srcNumber===""){
+					editSonRow(id,pIndex,"resourceNumber");
+					return true;
+				};
+				if(srcUnit===""){
+					editSonRow(id,pIndex,"resourceUnit");
+					return true;
+				};
+			  	if(srcName===""){
+					editSonRow(id,pIndex,"resourceName");
+					return true;
+				};  
+		  }else{
+ 		  	  $.messager.confirm('确认提交','您确认保存该资源？',function(r){ 
+ 		  	  console.log("srcid:"+id);    
 			  if (r){			  
-			  	 //如果id不为空
-			  	 if(id != ""){	
-			  	 	//更新资源	  	 				      
-					$.ajax({
-						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_resourceRecord_updateSrc.action",
-						dataType : "json",
-						data : {
-								code : id,//srcId
-								resourceName : srcName,//资源Name
-								resourceNumber : srcNumber,//资源数量
-								resourceUnit : srcUnit,//资源单位
-						},
-						success : function() {
-								$.messager.alert('提示','修改成功！','info',
-									function() {
-										subCategory.datagrid('reload');
-										subCategory.datagrid('clearSelections');//取消选择行								
-									}); 								
-							},
-						error: function(){
-								$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
-						}
-			  		})
-			  	 }
 			  	 //保存新资源
-			  	 else{
-			  	 	//获得Mission的Sn
+			  	 if(id === -101){	
+				 	//获得Mission的Sn
 				  	var fatherSn =prow.missionSn;
 					if(fatherSn == ""){
 						$.messager.alert('错误','该资源的任务还没有保存！','error');	
-					}
-					else{
-
+					}else{
 				  	 	$.ajax({
 							type : "POST",
 							url : "${pageContext.request.contextPath}/plan/preplan/preplan_resourceRecord_saveSrc.action",
@@ -414,15 +461,51 @@
 							}
 				  		})
 					}	
+			  	 }else{
+					//更新资源	  	 				      
+					$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_resourceRecord_updateSrc.action",
+						dataType : "json",
+						data : {
+								code : id,//srcId
+								resourceName : srcName,//资源Name
+								resourceNumber : srcNumber,//资源数量
+								resourceUnit : srcUnit,//资源单位
+						},
+						success : function() {
+								$.messager.alert('提示','修改成功！','info',
+									function() {
+										subCategory.datagrid('reload');
+										subCategory.datagrid('clearSelections');//取消选择行								
+									}); 								
+							},
+						error: function(){
+								$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
+						}
+			  		})	
 			  	 }	     
     
 			   }     
-			});              
+			});
+ 		  }	
+ 
+		                
     } 
      //取消编辑
-        function cancelSonRow(index,pIndex){
+        function cancelSonRow(sId,pIndex){       	
             var subCategory = $('#missrctt').datagrid('getRowDetail',pIndex).find('table.subCategory');
-            subCategory. datagrid('cancelEdit', index); 
+            var index=subCategory.datagrid('getRowIndex',sId);
+            if(sId == -101){
+            	$.messager.confirm('确认','该资源未保存，取消将删除该未保存资源，确认删除？',function(r){    
+				    if (r){    
+				    	subCategory. datagrid('cancelEdit', index); 
+				        subCategory.datagrid('deleteRow',index);    
+				    }    
+				});	
+            }else{
+            	subCategory. datagrid('cancelEdit', index); 
+            }            
         }
     /*------------------子类行编辑end-----------------*/ 
  
