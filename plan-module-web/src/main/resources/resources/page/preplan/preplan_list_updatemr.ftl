@@ -429,11 +429,10 @@
 					return true;
 				};  
 		  }else{
- 		  	  $.messager.confirm('确认提交','您确认保存该资源？',function(r){ 
- 		  	  console.log("srcid:"+id);    
+ 		  	  $.messager.confirm('确认提交','您确认保存该资源？',function(r){     
 			  if (r){			  
 			  	 //保存新资源
-			  	 if(id === -101){	
+			  	 if(id < 0){	
 				 	//获得Mission的Sn
 				  	var fatherSn =prow.missionSn;
 					if(fatherSn == ""){
