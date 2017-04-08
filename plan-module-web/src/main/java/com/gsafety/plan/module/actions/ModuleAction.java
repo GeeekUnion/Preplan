@@ -18,6 +18,7 @@ import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
 import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Module;
+import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.ModuleService;
 import com.opensymphony.xwork2.ActionContext;
 ;
@@ -31,8 +32,10 @@ public class ModuleAction extends ListAction<Module> {
 	private JSONArray jsonArray = new JSONArray();
 	private int page;
 	private int rows;
+
     private String title;//标题
     private String content;//内容
+    private String order;//顺序
     private  int id;//唯一标识
 	//预案的
 	private String preplanSn;                       
@@ -51,24 +54,37 @@ public class ModuleAction extends ListAction<Module> {
      *@returns 
      * */
 	public String saveOrUpdateModule() {
-	    System.out.println("标题："+title+"，内容："+content);	    
-	    if(id==0) {
-	        Module md=new Module();
-	        String uuidModule = UUID.randomUUID().toString();	        
-	        md.setTitle(title);
-	        md.setContent(content);
-	        md.setModuleSn(uuidModule);
-	        md.setModuleCheck(true);
-	        moduleService.save(md);
-	    }
-	    else {
-	        Module md=moduleService.get(Module.class, id);
-	        md.setContent(content);
-	        md.setTitle(title);
-	        moduleService.update(md);
-	    }
-
-	    
+	    System.out.println("标题："+title+"，内容："+content);
+	    if(preplanSn == null) {
+	        if(id==0) {
+	            Module md=new Module();
+	            String uuidModule = UUID.randomUUID().toString();           
+	            md.setTitle(title);
+	            md.setContent(content);
+	            md.setModuleSn(uuidModule);
+	            md.setModuleCheck(true);
+	            moduleService.save(md);
+	        }
+	        else {
+	            Module md=moduleService.get(Module.class, id);
+	            md.setContent(content);
+	            md.setTitle(title);
+	            moduleService.update(md);
+	        }
+	    }else {
+	        Module oldMd=moduleService.get(Module.class, id);	        
+            Module md=new Module();
+            Preplan pl=new Preplan();
+            pl.setPreplanSn(preplanSn);
+            String uuidModule = UUID.randomUUID().toString();
+            md.setOrder(order);
+            md.setTitle(oldMd.getTitle());
+            md.setContent(oldMd.getContent());
+            md.setPreplanSnM(pl);
+            md.setModuleSn(uuidModule);
+            md.setModuleCheck(false);
+            moduleService.save(md); 
+	    }	    
 	    return "jsonObject"; 
 	}
 	
@@ -207,7 +223,13 @@ public class ModuleAction extends ListAction<Module> {
         this.id = id;
     }
 	
-	
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
 	
 	
 	

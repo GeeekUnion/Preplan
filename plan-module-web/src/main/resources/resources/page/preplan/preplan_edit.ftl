@@ -217,7 +217,13 @@
 		    <table id="missrctt" style="min-height:550px"></table>
 		   <div>
 				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="width:250px;margin:20px auto">添加其他模块</a>
-			</div>          
+			</div>      
+			<div id="orderDialog">
+				<input id="orderVv" class="easyui-validatebox" data-options="required:true" style="height:20px;margin:50px 63px" />  
+			</div>
+			<div id="preplanModuleArea">
+				<table id="preplanModuleList" style="min-height:550px"></table>
+			</div>    
 		</div> 
     </div>
     
@@ -515,7 +521,7 @@
   		  var misnOrder=row.missionOrder;
   		  var misnDept=row.missionDept; 
   		  
-  		 if( misnOrder==="" || misnName==="" || misnDept===""){
+  		 if( misnOrder==="" || misnName==="" || typeof(misnDept) === "undefined" ||  misnDept==="" ){
 			  	if(misnOrder===""){
 					  editParentRow(id,"missionOrder");
 					  return true;
@@ -524,7 +530,7 @@
 					editParentRow(id,"missionName");
 					return true;
 				};
-				if(misnDept===""){
+				if( typeof(misnDept) === "undefined" || misnDept===""){
 					editParentRow(id,"missionDept");
 					return true;
 				};  
@@ -645,7 +651,7 @@
   		  var srcNumber=row.resourceNumber;
   		  var srcUnit =row.resourceUnit;
  
- 		  if( srcName==="" || srcNumber==="" || srcUnit===""){
+ 		  if( typeof(srcName) === "undefined" ||  srcName==="" || srcNumber==="" || srcUnit===""){
 			  	if(srcNumber===""){
 					editSonRow(id,pIndex,"resourceNumber");
 					return true;
@@ -654,7 +660,7 @@
 					editSonRow(id,pIndex,"resourceUnit");
 					return true;
 				};
-			  	if(srcName===""){
+			  	if( typeof(srcName) === "undefined" || srcName===""){
 					editSonRow(id,pIndex,"resourceName");
 					return true;
 				};  
@@ -662,11 +668,12 @@
  		  	$.messager.confirm('确认提交','您确认保存该资源？',function(r){     
 			  if (r){			  
 			  	 //保存新资源
-			  	 if(id < 0){	
+			  	 if(id<0){	
 				 	//获得Mission的Sn
 				  	var fatherSn =prow.missionSn;
-					if(fatherSn == ""){
-						$.messager.alert('错误','该资源的任务还没有保存！','error');	
+					if(typeof(fatherSn) === "undefined" || fatherSn===""){
+						$.messager.alert('错误','该资源的任务还没有保存！','error');
+						editSonRow(id,pIndex,"resourceNumber");	
 					}else{
 				  	 	$.ajax({
 							type : "POST",
@@ -679,14 +686,14 @@
 									resourceUnit : srcUnit,//资源单位
 							},
 							success : function() {
-									$.messager.alert('提示','修改成功！','info',
+									$.messager.alert('提示','保存成功！','info',
 										function() {
 											subCategory.datagrid('reload');
 											subCategory.datagrid('clearSelections');//取消选择行								
 										}); 								
 								},
 							error: function(){
-									$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
+									$.messager.alert('错误','保存出错！请确保您完全填写了资源内容！','error');								
 							}
 				  		})
 					}	
@@ -703,14 +710,14 @@
 								resourceUnit : srcUnit,//资源单位
 						},
 						success : function() {
-								$.messager.alert('提示','修改成功！','info',
+								$.messager.alert('提示','保存成功！','info',
 									function() {
 										subCategory.datagrid('reload');
 										subCategory.datagrid('clearSelections');//取消选择行								
 									}); 								
 							},
 						error: function(){
-								$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
+								$.messager.alert('错误','保存出错！请确保您完全填写了资源内容！','error');								
 						}
 			  		})	
 			  	 }	     
@@ -738,7 +745,7 @@
     
     
     
-    /*-----------------------------------*/	
+    /*----------------查看该预案模块---------------*/	
  	function showAddModule(pp_sn){
 			$(function (){
  			$('#modulett').datagrid({
@@ -748,7 +755,7 @@
 			    loadMsg:'正在加载，请稍后...',
 				striped:true,
 				fitColumns:true,
-			    url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action?ppSn='+pp_sn,
+			    url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action?preplanSn='+pp_sn,
 			    columns:[[
 			    	{field:'order',title:'模块顺序',width:100,align:'center',
 			        	editor:{
@@ -771,25 +778,22 @@
 			            }
 			        },
 			        {field:'content',title:'模块内容',width:250,align:'center',
-			        	editor:{
-			                type:'validatebox',
-			                options:{
-								required: true,
-								missingMessage:'此输入框不能为空！',    
-			                }
+			        	formatter:function(value,row,index){
+			        		if(row.expand){
+			        			var d = '<a href="#" onclick="colPmContentDetail('+index+')">关闭模块内容</a> ';
+			            		return d;	
+			        		}else{
+			        			var e = '<a href="#" onclick="getPmContentDetail('+index+')">查看模块内容</a> ';
+			            		return e;
+			        		}
+
 			            }
 			        },
-			        {field:'missionId',title:'操作',width:250,align:'center',
+			        {field:'idc',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
-			                if (row.editing){
-			                    var s = '<a href="#" onclick="saverow('+index+')">保存</a> ';
-			                    var c = '<a href="#" onclick="cancelrow('+index+')">取消</a>';
-			                    return s+c;
-			                } else {
-			                    var e = '<a href="#" onclick="editrow('+index+')">编辑</a> ';
-			                    var d = '<a href="#" onclick="deleterow('+row.moduleId+')">删除</a>';
-			                    return e+d;
-			                }
+			            	var u ='<a href="#" onclick="updateModuleOrder('+row.id+')">删除</a> |'				                
+			                var d =' <a href="#" onclick="deleteModule('+row.id+')">删除</a>';			                
+			                return u+d;
 			            }
 			        },
 			    ]],
@@ -798,57 +802,212 @@
 			    		text:'添加模块',
 						iconCls: 'icon-add',
 						handler: function(){
+							$('#preplanModuleArea').window({
+								loadingMessage:'正在加载，请稍后...',
+								minimizable:false,
+								collapsible:false,
+								maximizable:false,
+								width:700,
+								height:600,
+								cache:false,
+								draggable:false,
+								title:'选择模块',								
+							});		
+							showModuleList();
+							$('#preplanModuleArea').window('center');											
 						}
 					}
 				],
 				view: detailview, 
 	            detailFormatter: function(rowIndex, rowData){ 
-	                return '<table class="subCategory"></table>'; 
+	            	//console.log(rowData);
+	                return '<p><strong>模块内容：</strong>'+rowData.content+'</p>';
 	            },            
 	            onExpandRow: function(index,row){
+	            	row.expand = true;
+	            	$('#modulett').datagrid('refreshRow', index);
 	                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
 	                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
 	                $('#modulett').datagrid('clearSelections');//取消选择行    
 	                $('#modulett').datagrid('fixDetailRowHeight',index);
-	            },			     
-			    onBeforeEdit: function (index, row) {  
-			        row.editing = true;  
-			        $('#modulett').datagrid('refreshRow', index);  
-			    },  
-			    onAfterEdit: function (index, row) {  
-			        row.editing = false;  
-			        $('#modulett').datagrid('refreshRow', index);  
-			    },  
-			    onCancelEdit: function (index, row) {  
-			        row.editing = false;  
-			        $('#modulett').datagrid('refreshRow', index);  
-			    }
+	            },
+	            onCollapseRow: function(index,row){
+	            	row.expand = false;
+	            	$('#modulett').datagrid('refreshRow', index);
+	                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
+	                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
+	                $('#modulett').datagrid('clearSelections');//取消选择行    
+	                $('#modulett').datagrid('fixDetailRowHeight',index);
+	            },
 			});			
  		});					  
 	}
 	/*------------------模块编辑-----------------*/
-	function editrow(index){     
-		 $('#modulett').datagrid('beginEdit', index);     
-	}     
-	function deleterow(i){ 
-     
-	}   
-	//保存任务  
-	function saverow(i){
-	 	  
-		  var rows = $('#modulett').datagrid('getRows');
-  		  var row = rows[i];
-  		  //前端先保存改好的数据  
-  		  $('#modulett').datagrid('endEdit',i);
-  		  var ppSn = $('#ppl_preplan_sn').val();
-			  
-	}     
-	function cancelrow(index){     
-		$('#modulett').datagrid('cancelEdit', index);     
-	}  
+	//修改模块顺序
+	function updateModuleOrder(id){
+	    $('#orderDialog').dialog({    
+		    title: '请输入序号',    
+		    width: 300,    
+		    height: 200,                
+		    modal: true,
+		    buttons:[{
+				text:'保存',
+				iconCls:'icon-save',
+				handler:function(){
+					
+				}
+			},{
+				text:'取消',
+				iconCls:'icon-cancel',
+				handler:function(){
+				
+				}
+			}]
+		       
+		}); 	
+	} 
+	//删除模块
+    function deleteModule(id){
+    	$.messager.confirm('确认删除','您确定要删除该模块？',
+				function(r){
+					if(r){
+						//删除该模块
+						$.ajax({
+							type : "POST",
+							url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_deleteModuleById.action',
+							dataType : "json",
+							data : {
+									id : id
+							},
+							success : function() {
+									$.messager.alert('提示','删除成功！','info',
+										function() {
+											$('#modulett').datagrid('reload');					
+										}); 								
+							},
+							error: function(){
+									$.messager.alert('错误','删除出错！','error',
+										function() {
+											$('#modulett').datagrid('reload');					
+										}); 								
+							}
+						});		
+					}
+							
+				})
+ 		}
+       	
+    //查看模块内容  	
+    function getPmContentDetail(index){    	  	
+    	$('#modulett').datagrid('expandRow',index);
+    	$('#modulett').datagrid('fixDetailRowHeight',index);   	
+    }  
+    //关闭模块内容 
+   function  colPmContentDetail(index){
+   		$('#modulett').datagrid('collapseRow',index);
+    	$('#modulett').datagrid('fixDetailRowHeight',index);  
+   } 
     
-    /*------------------分割线-----------------*/
     
+    /*------------------查看所有模块-----------------*/
+    
+    //查看所有模块列表
+	function showModuleList(){	    
+ 		$('#preplanModuleList').datagrid({
+		    pagination:true,
+		    rownumbers:true,
+			pageNumber:1,
+			pageSize:15,
+			pageList:[15,40,80,100],
+		    singleSelect:true,
+		    loadMsg:'正在加载，请稍后...',
+			striped:true,
+			fitColumns:true,
+		    url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action',
+	    	toolbar:[{
+		    	iconCls: 'icon-ok',
+		    	handler: function(){
+		    		var row=$('#preplanModuleList').datagrid('getSelected');
+	    			if(row != null){
+	    				var preplanSn=$('#ppl_preplan_sn').val();
+	    				var id=row.id;
+	    				console.log("preplanSn:"+preplanSn+"，id:"+id);
+						$.ajax({
+							type : "POST",
+							url: '${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
+							dataType : "json",
+							data : {
+								preplanSn : preplanSn,
+								id : id,
+								//order : order,
+							},
+							success : function() {
+									$.messager.alert('提示','保存成功！','info',
+										function() {
+											$('#modulett').datagrid('reload');
+											$('#preplanModuleList').datagrid('clearSelections');//取消选择行								
+										}); 								
+								},
+							error: function(){
+									$.messager.alert('错误','保存出错！请重试！','error');								
+							}
+				  		})		
+					}
+					else{
+						$.messager.alert('提示','您还没有选择一行哦（PS：当一行背景变黄色时即为选中）','info');	
+					}
+		    	}			    	
+		    }],
+		    columns:[[
+		    	{field:'id',title:'模块id',width:100,align:'center'},
+		        {field:'title',title:'模块标题',width:250,align:'center'},
+		        {field:'content',title:'模块内容',width:250,align:'center',
+		        	formatter:function(value,row,index){
+		        		if(row.expand){
+		        			var d = '<a href="#" onclick="colContentDetail('+index+')">关闭模块内容</a> ';
+		            		return d;	
+		        		}else{
+		        			var e = '<a href="#" onclick="getContentDetail('+index+')">查看模块内容</a> ';
+		            		return e;
+		        		}
+
+		            }
+		        }
+		    ]],
+			view: detailview, 
+            detailFormatter: function(rowIndex, rowData){ 
+            	//console.log(rowData);
+                return '<p><strong>模块内容：</strong>'+rowData.content+'</p>';
+            },            
+            onExpandRow: function(index,row){
+            	row.expand = true;
+            	$('#preplanModuleList').datagrid('refreshRow', index);
+                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
+                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
+                $('#preplanModuleList').datagrid('clearSelections');//取消选择行    
+                $('#preplanModuleList').datagrid('fixDetailRowHeight',index);
+            },
+            onCollapseRow: function(index,row){
+            	row.expand = false;
+            	$('#preplanModuleList').datagrid('refreshRow', index);
+                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
+                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
+                $('#preplanModuleList').datagrid('clearSelections');//取消选择行    
+                $('#preplanModuleList').datagrid('fixDetailRowHeight',index);
+            },			     				    
+		}); 
+	}	
+	
+	//查看模块内容  	
+    function getContentDetail(index){    	  	
+    	$('#preplanModuleList').datagrid('expandRow',index);
+    	$('#preplanModuleList').datagrid('fixDetailRowHeight',index);   	
+    }  
+    //关闭模块内容 
+   function  colContentDetail(index){
+   		$('#preplanModuleList').datagrid('collapseRow',index);
+    	$('#preplanModuleList').datagrid('fixDetailRowHeight',index);  
+   } 
 </script>
  
 </body>

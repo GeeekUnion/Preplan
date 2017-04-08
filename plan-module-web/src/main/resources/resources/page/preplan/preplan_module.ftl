@@ -92,7 +92,6 @@
     //新添模块
 	function addModule(){
 		$('#addModuleWin').window({
-			top:5,
 			loadingMessage:'正在加载，请稍后...',
 			minimizable:false,
 			collapsible:false,
@@ -110,7 +109,6 @@
 	//修改模块
 	function updateModule(id){
 		$('#addModuleWin').window({
-			top:5,
 			loadingMessage:'正在加载，请稍后...',
 			minimizable:false,
 			collapsible:false,
@@ -167,12 +165,36 @@
    		$('#modulett').datagrid('collapseRow',index);
     	$('#modulett').datagrid('fixDetailRowHeight',index);  
    }
-     		
+    $(function(){
+	    $('#orderDialog').dialog({    
+		    title: '请输入序号',    
+		    width: 300,    
+		    height: 200,                
+		    modal: true,
+		    buttons:[{
+				text:'保存',
+				iconCls:'icon-save',
+				handler:function(){
+					
+				}
+			},{
+				text:'取消',
+				iconCls:'icon-cancel',
+				handler:function(){
+					$('#orderDialog').dialog('close')
+				}
+			}]
+		       
+		}); 
+    }) 		
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body>
 <table id="modulett" style="min-height:550px"></table>	  
 <div id="addModuleWin"></div>	
+<div id="orderDialog">
+	<input id="orderVv" class="easyui-validatebox" data-options="required:true" style="height:20px;margin:50px 63px" />  
+</div>
 </body>
 </html>

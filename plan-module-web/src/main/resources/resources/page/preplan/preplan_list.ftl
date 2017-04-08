@@ -50,7 +50,6 @@
 						if(row != null){
 							var rid=row.id;
 							$('#ppl_updatePreplan').window({
-								top:5,
 								fit:true,
 								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
@@ -74,7 +73,6 @@
 						if(row != null){						  
 							var i =row.id; 
 							$('#ppl_updateMisnSrc').window({
-								top:5,
 								fit:true,
 								loadingMessage:'正在加载，请稍后...',
 								minimizable:false,
@@ -128,7 +126,6 @@
  		//查看预案详情
  		function detailView(i){
  			$('#ppl_detail').window({
-				top:5,
 				fit:true,
 				loadingMessage:'正在加载，请稍后...',
 				minimizable:false,

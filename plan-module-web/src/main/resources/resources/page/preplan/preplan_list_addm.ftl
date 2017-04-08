@@ -247,7 +247,6 @@
 						if(row != null){
 							var rid=row.id;
 							$('#ppl_updatePreplan').window({
-								top:5,
 								fit:true,
 								loadMsg:'正在加载，请稍后...',
 								minimizable:false,

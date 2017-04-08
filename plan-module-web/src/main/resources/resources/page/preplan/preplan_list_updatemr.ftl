@@ -288,7 +288,7 @@
   		  var misnDept=row.missionDept;
   		  var misnOrder=row.missionOrder;
   		  console.log(misnOrder+':'+misnName+':'+misnDept)
-		  if( misnOrder==="" || misnName==="" || misnDept===""){
+		  if( misnOrder==="" || misnName==="" || typeof(misnDept) === "undefined" || misnDept===""){
 			  	if(misnOrder===""){
 					  editParentRow(id,"missionOrder");
 					  return true;
@@ -297,7 +297,7 @@
 					editParentRow(id,"missionName");
 					return true;
 				};
-				if(misnDept===""){
+				if( typeof(misnDept) === "undefined" || misnDept===""){
 					editParentRow(id,"missionDept");
 					return true;
 				};  
@@ -415,7 +415,7 @@
   		  var srcNumber=row.resourceNumber;
   		  var srcUnit =row.resourceUnit;
  		  console.log(srcName+':'+srcNumber+':'+srcUnit)	
- 		  if( srcName==="" || srcNumber==="" || srcUnit===""){
+ 		  if( typeof(srcName) === "undefined" || srcName==="" || srcNumber==="" || srcUnit===""){
  		  		if(srcNumber===""){
 					editSonRow(id,pIndex,"resourceNumber");
 					return true;
@@ -424,19 +424,21 @@
 					editSonRow(id,pIndex,"resourceUnit");
 					return true;
 				};
-			  	if(srcName===""){
+			  	if(typeof(srcName) === "undefined" || srcName===""){
 					editSonRow(id,pIndex,"resourceName");
 					return true;
 				};  
 		  }else{
  		  	  $.messager.confirm('确认提交','您确认保存该资源？',function(r){     
-			  if (r){			  
+			  if (r){				  	  		  
 			  	 //保存新资源
-			  	 if(id < 0){	
+			  	 if(id<0){	
 				 	//获得Mission的Sn
 				  	var fatherSn =prow.missionSn;
-					if(fatherSn == ""){
+				  	console.log(fatherSn);
+					if(typeof(fatherSn) === "undefined" || fatherSn===""){
 						$.messager.alert('错误','该资源的任务还没有保存！','error');	
+						editSonRow(id,pIndex,"resourceNumber");
 					}else{
 				  	 	$.ajax({
 							type : "POST",
@@ -449,14 +451,14 @@
 									resourceUnit : srcUnit,//资源单位
 							},
 							success : function() {
-									$.messager.alert('提示','修改成功！','info',
+									$.messager.alert('提示','保存成功！','info',
 										function() {
 											subCategory.datagrid('reload');
 											subCategory.datagrid('clearSelections');//取消选择行								
 										}); 								
 								},
 							error: function(){
-									$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
+									$.messager.alert('错误','保存出错！请确保您完全填写了资源内容！','error');								
 							}
 				  		})
 					}	
@@ -473,14 +475,14 @@
 								resourceUnit : srcUnit,//资源单位
 						},
 						success : function() {
-								$.messager.alert('提示','修改成功！','info',
+								$.messager.alert('提示','保存成功！','info',
 									function() {
 										subCategory.datagrid('reload');
 										subCategory.datagrid('clearSelections');//取消选择行								
 									}); 								
 							},
 						error: function(){
-								$.messager.alert('错误','修改出错！请确保您完全填写了资源内容！','error');								
+								$.messager.alert('错误','保存出错！请确保您完全填写了资源内容！','error');								
 						}
 			  		})	
 			  	 }	     
