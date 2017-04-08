@@ -12,19 +12,26 @@
 	<!--为了使用detailview的插件-->
     <script type="text/javascript" src="${getMC ("")}/js/datagrid-detailview.js"></script>
     <script type="text/javascript">
-           function Startup(){
-           var row=$("#dgc").datagrid("getSelected");
+          var row=parent.$("#dg").datagrid("getSelected");
+    	 console.log(row);
+    
+        function Startup(){
+        var row2=$("#dgc").datagrid("getSelected");  
+        console.log(row2);
       $.ajax({
-			url:'',
+			url:'preplan_event_choosePre.action',
 			method:'POST',
 			dataType:'json',
-			data:{'preplanSn':row.preplanSn},
+			data:{'id2':row2.id,
+			      'id'  :row.id
+			
+			},
 			success:function(data){
 				if(data.status=="ok"){
-					$.messager.alert('我的提示','删除成功！','info');
+					$.messager.alert('我的提示','选择预案成功！','info');
 					$("#dgc").datagrid("reload");						
 				}else{
-					$.messager.alert('我的提示','删除失败！','error');
+					$.messager.alert('我的提示','选择预案失败！','error');
 				}
 			}
 		})
@@ -32,6 +39,7 @@
     }
     
     	$(function (){
+    	
  		 $('#dgc').datagrid({    
   		 url:'preplan_preplan_queryPreplanList.action',    
   		 singleSelect:true,

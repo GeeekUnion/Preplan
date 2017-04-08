@@ -12,11 +12,14 @@
 
     <script type="text/javascript">
          function Details(){
+     
 			$('#win').window({
 				width:900,
 				height:450,
 				title:'历史记录',
 				cache:false,
+				
+
 				content:'<iframe src="preplan_start_choose.action" frameborder="0" width="100%" height="100%"/>'
 			});
 } 

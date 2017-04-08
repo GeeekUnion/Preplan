@@ -120,7 +120,7 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
-    	 {field:'ffffff',title:'事件名称',width:100,align:'center'},   
+    	 {field:'eventName',title:'事件名称',width:100,align:'center'},   
         {field:'preplanSn',title:'预案编号',width:100,align:'center'},    
         {field:'preplanName',title:'预案名称',width:100,align:'center'},    
         {field:'responDept',title:'负责部门',width:100,align:'center'},

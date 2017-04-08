@@ -15,20 +15,25 @@ import org.apache.struts2.convention.annotation.Namespace;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Event;
+import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.EventService;
+import com.gsafety.plan.service.PreplanService;
 @Namespace("/preplan")
 public class EventAction extends ListAction<Event>{
 
 	//注入service
 	@Resource
 	private EventService eventService;
-	
-	private int id;
+	@Resource
+	private PreplanService preplanService;
+	private int id;    //event的id
+	private int id2;  //preplan的id
 	private String eventSn;
 	private String eventName;
 	private Timestamp eventOccurTime;
 	private String eventOccurPlace;
 	
+	private String preplanSn;
 	private int page;
 	private int rows;
 	
@@ -51,11 +56,7 @@ public class EventAction extends ListAction<Event>{
 		out().close();
 		return "jsonArray";
 	}
-     //
-	public void sss(){
-		
-		
-	}
+     
 	//增加event，未完成
 	public String save(){
 		jsonObject.put("status", "ok");
@@ -68,6 +69,21 @@ public class EventAction extends ListAction<Event>{
 			String eventSn=new SimpleDateFormat("yyyyMMddHHmmssSSS") .format(System.currentTimeMillis() );
 			event.setEventSn(eventSn);
 			eventService.save(event);
+		}catch(Exception e){
+			jsonObject.put("status", "nook");
+		}
+		return "jsonObject";
+	}
+	//event选定preplan
+	public String choosePre(){
+		jsonObject.put("status", "ok");
+		try{
+	 Event e  =	eventService.get(Event.class, id);
+	 Preplan p= preplanService.get(Preplan.class, id2);
+	 p.setEventSn(e);
+	 System.out.println();
+	 System.out.println("233333333333333");
+	preplanService.update(p);
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
 		}
@@ -127,6 +143,18 @@ public class EventAction extends ListAction<Event>{
 	}
 	public void setJsonObject(JSONObject jsonObject) {
 		this.jsonObject = jsonObject;
+	}
+	public String getPreplanSn() {
+		return preplanSn;
+	}
+	public void setPreplanSn(String preplanSn) {
+		this.preplanSn = preplanSn;
+	}
+	public int getId2() {
+		return id2;
+	}
+	public void setId2(int id2) {
+		this.id2 = id2;
 	}
 	
 	

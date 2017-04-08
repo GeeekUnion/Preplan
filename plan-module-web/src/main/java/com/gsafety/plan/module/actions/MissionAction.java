@@ -34,6 +34,39 @@ public class MissionAction extends ListAction<Mission> {
 	private String responDept;
 	
 	
+	
+	public PrintWriter out() throws IOException {
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html");
+		response.setContentType("text/plain; charset=utf-8");
+		PrintWriter out = response.getWriter();
+		return out;
+	}
+	//启动预案页面，查询预案属性
+	public String queryByPage() throws IOException{
+		
+		String str=missionService.getPage(page, rows);
+		
+		out().print(str);
+		out().flush();
+		out().close();
+		return "jsonArray";
+	}
+	
+	
+	//执行情况页面，根据预案Sn，查询对应任务属性
+	public String queryByPreSn() throws IOException{
+		
+		String str="";
+		out().print(str);
+		out().flush();
+		out().close();
+		return "jsonArray";
+}
+	
+	
+	
+	
 	public String getResponDept() {
 		return responDept;
 	}
@@ -88,43 +121,6 @@ public class MissionAction extends ListAction<Mission> {
 	public void setPreplanTime(Timestamp preplanTime) {
 		this.preplanTime = preplanTime;
 	} 
-	
-	public PrintWriter out() throws IOException {
-		HttpServletResponse response = ServletActionContext.getResponse();
-		response.setContentType("text/html");
-		response.setContentType("text/plain; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		return out;
-	}
-	//启动预案页面，查询预案属性
-	public String queryByPage() throws IOException{
-		String str=missionService.getPage(page, rows);
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-	}
-	//执行情况页面，查询所有任务属性
-	public String queryByPage2() throws IOException{
-		String str=missionService.getPageMis(page, rows);
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-	}
-	//执行情况页面，根据预案Sn，查询对应任务属性
-	public String queryByPreSn() throws IOException{
-		
-		String str="";
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-}
-	
-	
-	
-	
 	
 	
 	
