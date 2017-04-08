@@ -40,6 +40,13 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 		JSONArray array = new JSONArray();
 		for(Preplan p:pList){
 			JSONObject jo = new JSONObject();
+			if(p.getEventSn().getEventName()==null||p.getEventSn().getEventName().length()<=0){
+				jo.put("eventName", "");
+			}else{
+				jo.put("eventName", p.getEventSn().getEventName());
+			}
+			
+			
 			jo.put("preplanSn", p.getPreplanSn());
 			jo.put("preplanName", p.getPreplanName());
 			Timestamp timestamp = p.getPreplanTime();

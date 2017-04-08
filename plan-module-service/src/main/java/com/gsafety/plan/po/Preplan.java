@@ -35,7 +35,7 @@ public class Preplan implements Serializable {
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表
 
-	
+	private Event eventSn;
 	
 	private User username;
 	private Set<Attr> attr=new HashSet<Attr>();
@@ -152,6 +152,14 @@ public class Preplan implements Serializable {
 	}
 	public void setPreplanUID(String preplanUID) {
 		this.preplanUID = preplanUID;
+	}
+	@OneToOne(cascade = {CascadeType.ALL})    
+	@JoinColumn(name = "event_sn", unique = true,referencedColumnName="event_sn")    
+	public Event getEventSn() {
+		return eventSn;
+	}
+	public void setEventSn(Event eventSn) {
+		this.eventSn = eventSn;
 	}
 	
 	

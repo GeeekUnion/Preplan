@@ -66,6 +66,15 @@ public class Event implements Serializable{
 	public void setEventOccurPlace(String eventOccurPlace) {
 		this.eventOccurPlace = eventOccurPlace;
 	}
+	
+//	@OneToOne(cascade = {CascadeType.ALL})    
+//	@JoinColumn(name = "preplan_sn", unique = true,referencedColumnName="preplan_sn")    
+//	public Preplan getPreplanSn() {
+//		return preplanSn;
+//	}
+//	public void setPreplanSn(Preplan preplanSn) {
+//		this.preplanSn = preplanSn;
+//	}
 
 	
 	
