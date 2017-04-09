@@ -3,6 +3,7 @@ package com.gsafety.plan.module.actions;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Timestamp;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Mission;
+import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.PreplanService;
 
@@ -28,6 +30,7 @@ public class MissionAction extends ListAction<Mission> {
 	private int page;
 	private int rows;
 	//预案的
+	private String id;
 	private String preplanSn;                       
 	private String preplanName;
 	private Timestamp preplanTime;
@@ -63,8 +66,60 @@ public class MissionAction extends ListAction<Mission> {
 		out().close();
 		return "jsonArray";
 }
-	
-	
+	 //查看预案详情中查看任务
+    public String queryMissionByPpsn() throws IOException {
+        Preplan ppModel=new Preplan();
+        ppModel.setPreplanSn(preplanSn);
+        //根据预案Sn查询任务列表
+        List<Mission> misnList= missionService.getListByPpsn(ppModel);
+        JSONArray array = new JSONArray();
+       
+        if(misnList.size()>0) {
+          //封装任务列表
+            for(Mission m : misnList) {
+                JSONObject jo = new JSONObject();
+                jo.put("missionId",m.getId());
+                jo.put("missionOrder",m.getMissionOrder());
+                jo.put("missionName",m.getMissionName());
+                jo.put("missionDept",m.getResponDept());
+                jo.put("missionSn",m.getMissionSn());
+                jo.put("missionStatus", m.getMissionStatus());
+                array.add(jo);               
+            }
+        }
+        
+        
+        //输出资源到页面
+        String misstr = array.toString();
+        out().print(misstr);
+        out().flush();
+        out().close();   
+        return "jsonArray";
+    }
+	//根据missionSn获得mission,没有put所有的属性
+    public String queryBymissionSn(){
+        JSONObject jo = new JSONObject();
+        JSONArray array = new JSONArray();
+    	Mission m = missionService.get(Mission.class,id);
+    	if(m!=null){
+    		jo.put("missionDefault", m.getMissionDefault());
+    		jo.put("missionMethod", m.getMissionMethod());
+    		jo.put("missionName", m.getMissionName());
+    		jo.put("missionOrder", m.getMissionOrder());
+    		jo.put("missionSn", m.getMissionSn());
+    		jo.put("missionStatus", m.getMissionStatus());
+    		array.add(jo);
+    	}else{
+    		
+    	}
+    	
+    	return "jsonArray";
+    }
+    
+    
+    
+    
+    
 	
 	
 	public String getResponDept() {
@@ -120,6 +175,12 @@ public class MissionAction extends ListAction<Mission> {
 	}
 	public void setPreplanTime(Timestamp preplanTime) {
 		this.preplanTime = preplanTime;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	} 
 	
 	

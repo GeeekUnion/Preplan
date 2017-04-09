@@ -24,24 +24,34 @@
 			});	
 		*/	
 			$.ajax({
-				url:'preplan_preplan_queryMissionByPpsn.action',
+				url:'preplan_mission_queryMissionByPpsn.action',
 				method:'POST',
 				dataType:'json',
 				data:{
-					  ppSn:i
+					  preplanSn:i
 				},
 				success:function(str){
 					$('#canvas').html('');
 					//console.log(str)
 					//流程图代码
 					var code="st=>start: 事件名称"+"\n"
-							 +"e=>end: 完成"+"\n";
+							 +"e=>end: 完成:>http://www.baidu.com"+"\n";
 							 
 					var count=0;//计数器
 					//定义元素
 					for(var j = 0;j<str.length;j++){
 						count=count+1;
-						code=code+"op"+count+"=>operation: "+str[j].missionName+"|past"+"\n"						
+						code=code+"op"+count+"=>operation: "+str[j].missionName
+						if(str[j].missionStatus=="0"){
+						  code=code+"|past"+"\n"	
+						}else if(str[j].missionStatus=="1"){
+						  code=code+"|current"+"\n"	
+						}else{
+					  	  code=code+"|future"+"\n"	
+						}
+						
+						
+											
 					}
 					//连接
 					for(var k=1;k<count+1;k++){
