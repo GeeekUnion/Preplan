@@ -476,6 +476,7 @@ public class PreplanAction extends ListAction<Preplan>{
             m.setMissionOrder(misnOrder);
             m.setPreplanSnM(pp);
             missionService.save(m);
+            jsonObject="new";
         }
         else {
             m.setMissionName(misnName);

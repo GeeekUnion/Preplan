@@ -66,6 +66,37 @@
 			}); 
 		});
 
+
+	/*------------------验证方法-----------------*/    
+	$.extend($.fn.validatebox.defaults.rules, {    
+	    onlyInteger: {    
+	        validator: function(value, param){  
+	        	var orderValArray=$('#orderVv').textbox('getValue').split("");
+	        	for(var i=0;i<orderValArray.length;i++){
+	        		var patt1=new RegExp(/^\d*$/);
+		        	if(!patt1.test(orderValArray[i])){			        			        		
+		        		return false;
+		        	}
+	        	}
+	        	return true;		                
+	        },    
+	        message: '只能输入大于0的整数！'   
+	    }    
+	});
+	
+    var orderUnique=false;
+	//自定义验证规则
+	$.extend($.fn.validatebox.defaults.rules, {    
+	    unique: {    
+	        validator: function(value, param){   
+	        	console.log(value); 
+	            return true;    
+	        },    
+	        message: '该属性需唯一！'   
+	    }    
+	});
+	
+
 	/*------------------保存预案-----------------*/
 			//保存预案
 			function submitPreplan(){					       		
@@ -218,9 +249,6 @@
 		   <div>
 				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="width:250px;margin:20px auto">添加其他模块</a>
 			</div>      
-			<div id="orderDialog">
-				<input id="orderVv" class="easyui-validatebox" data-options="required:true" style="height:20px;margin:50px 63px" />  
-			</div>
 			<div id="preplanModuleArea">
 				<table id="preplanModuleList" style="min-height:550px"></table>
 			</div>    
@@ -232,6 +260,9 @@
     		<table id="modulett" style="min-height:550px"></table>	    
 		   <div>
 				<a class="submitBtn" href="#" onclick="submitPerfect()" style="width:250px;margin:20px auto">完成</a>
+			</div>
+			<div id="orderDialog">
+				<input id="orderVv" value=""/>  
 			</div>          
 		</div> 
     </div>
@@ -243,18 +274,9 @@
    
    <input id="ppl_preplan_sn" type="hidden" value=""/>
   <script type="text/javascript">    
-  
-    	var orderUnique=false;
-    	//自定义验证规则
-		$.extend($.fn.validatebox.defaults.rules, {    
-		    unique: {    
-		        validator: function(value, param){   
-		        	console.log(value); 
-		            return true;    
-		        },    
-		        message: '该属性需唯一！'   
-		    }    
-		});   
+    
+    //全局顺序初始（任务及模块）
+    var orderNum=1;  
   
     //显示列表
     function showAddMis(pp_sn){
@@ -282,6 +304,7 @@
                     handler: function(){
                         if( rowEditing == false ){
                     		$('#missrctt').datagrid('appendRow',{
+                    				missionOrder:orderNum,
                                     missionName:'',
 									missionDept:'',
 									missionId:'-101',                              
@@ -326,13 +349,12 @@
 			        },			       
 			        {field:'missionId',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
-			            	var filedName="missionOrder";
 			                if (row.editing){
 			                    var s = '<a href="#" onclick="saveParentRow('+index+',\'missionOrder\')">保存</a> |';
 			                    var c = ' <a href="#" onclick="cancelParentRow('+row.missionId+')">取消</a>';
 			                    return s+c;
 			                } else {
-			                    var e = '<a href="#" onclick="editParentRow('+row.missionId+',filedName)">编辑</a> |';
+			                    var e = '<a href="#" onclick="editParentRow('+row.missionId+',\'missionOrder\')">编辑</a> |';
 			                    var d = ' <a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
 			                    return e+d;
 			                }
@@ -550,7 +572,10 @@
 									misnOrder: misnOrder,
 									ppSn     : pp_sn,
 							},
-							success : function() {
+							success : function(data) {
+									if(data==="new"){
+										orderNum++;
+									}
 									$.messager.alert('提示','修改成功！','info',
 										function() {
 											$('#missrctt').datagrid('reload');
@@ -791,7 +816,7 @@
 			        },
 			        {field:'idc',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
-			            	var u ='<a href="#" onclick="updateModuleOrder('+row.id+')">删除</a> |'				                
+			            	var u ='<a href="#" onclick="updateModuleOrder('+row.id+')">修改顺序</a> |'				                
 			                var d =' <a href="#" onclick="deleteModule('+row.id+')">删除</a>';			                
 			                return u+d;
 			            }
@@ -845,26 +870,62 @@
 	/*------------------模块编辑-----------------*/
 	//修改模块顺序
 	function updateModuleOrder(id){
-	    $('#orderDialog').dialog({    
-		    title: '请输入序号',    
-		    width: 300,    
-		    height: 200,                
-		    modal: true,
-		    buttons:[{
-				text:'保存',
-				iconCls:'icon-save',
-				handler:function(){
-					
-				}
-			},{
-				text:'取消',
-				iconCls:'icon-cancel',
-				handler:function(){
-				
-				}
-			}]
-		       
-		}); 	
+	    $(function(){
+	    	$('#orderVv').textbox({    
+			    required: true, 		    					
+				validType: 'onlyInteger', 
+				width:150,
+				     
+			});
+			var spanNow=$("#orderVv").next('span');
+	    	var inputNow=$("#orderVv").next('span').find('input:first-child');
+	    	inputNow.css('height','20px');
+	    	spanNow.css('margin','50px 63px');    	
+		    $('#orderDialog').dialog({    
+			    title: '请输入序号',    
+			    width: 300,    
+			    height: 200,                
+			    modal: true,
+			    buttons:[{
+					text:'保存',
+					iconCls:'icon-save',
+					handler:function(){	
+						var pd=$('#orderVv').textbox('isValid');
+						if(pd===true){
+							var newOrder=$('#orderVv').textbox('getValue');
+							$.ajax({
+								type : "POST",
+								url: '${pageContext.request.contextPath}/plan/preplan/preplan_module_updateModuleOrder.action',
+								dataType : "json",
+								data : {
+									id : id,
+									order : newOrder,
+								},
+								success : function() {
+											
+										$.messager.alert('提示','保存成功！','info',
+											function() {
+												$('#modulett').datagrid('reload');
+												$('#orderDialog').dialog('close')
+											}); 																			
+									},
+								error: function(){
+										$.messager.alert('错误','保存出错！请重试！','error');								
+								}
+					  		})	
+						}else{					
+						}
+					}
+				},{
+					text:'取消',
+					iconCls:'icon-cancel',
+					handler:function(){
+						$('#orderDialog').dialog('close')
+					}
+				}]
+			       
+			}); 
+	    }) 	
 	} 
 	//删除模块
     function deleteModule(id){
@@ -925,13 +986,14 @@
 			fitColumns:true,
 		    url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action',
 	    	toolbar:[{
+	    		text : '确认添加',
 		    	iconCls: 'icon-ok',
 		    	handler: function(){
 		    		var row=$('#preplanModuleList').datagrid('getSelected');
 	    			if(row != null){
 	    				var preplanSn=$('#ppl_preplan_sn').val();
 	    				var id=row.id;
-	    				console.log("preplanSn:"+preplanSn+"，id:"+id);
+	    				//console.log("preplanSn:"+preplanSn+"，id:"+id);
 						$.ajax({
 							type : "POST",
 							url: '${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
@@ -939,14 +1001,16 @@
 							data : {
 								preplanSn : preplanSn,
 								id : id,
-								//order : order,
+								order : orderNum,
 							},
 							success : function() {
 									$.messager.alert('提示','保存成功！','info',
 										function() {
 											$('#modulett').datagrid('reload');
-											$('#preplanModuleList').datagrid('clearSelections');//取消选择行								
-										}); 								
+											$('#preplanModuleList').datagrid('clearSelections');//取消选择行	
+											orderNum++;							
+										}); 
+																		
 								},
 							error: function(){
 									$.messager.alert('错误','保存出错！请重试！','error');								

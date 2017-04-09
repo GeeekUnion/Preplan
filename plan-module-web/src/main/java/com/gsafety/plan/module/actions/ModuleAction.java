@@ -133,6 +133,17 @@ public class ModuleAction extends ListAction<Module> {
         return "updateFtl";	    	    
 	}
 	
+	/*@name 更新模块顺序 
+     *@param  模块id
+     *@returns 
+     * */
+    public String updateModuleOrder() {
+        Module oldMd=moduleService.get(Module.class, id);
+        oldMd.setOrder(order);
+        moduleService.save(oldMd);
+        return "jsonObject";             
+    }
+	
 	public PrintWriter out() throws IOException {
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("text/html");
