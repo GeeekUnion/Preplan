@@ -29,7 +29,7 @@ public class Mission implements Serializable{
 	private String missionMethod;       //对应方法
 	private String responDept;          //负责部门，暂无对应表
 	private String responPerson;        //负责人，暂无对应表
-	private String missionStatus;      //任务完成状态                     1代表完成，0代表否
+	private String missionStatus;      //任务完成状态                     1代表正在，0代表否，2代表完成
 	private String missionDefault;      //任务是否默认被加入预案  1代表是，0代表否   
 	private String missionOrder;   //序号
 
