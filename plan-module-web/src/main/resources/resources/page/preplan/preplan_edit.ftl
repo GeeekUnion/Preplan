@@ -47,6 +47,12 @@
 			    missingMessage:'此输入框不能为空！',
 			    width:500,			         
 			});	
+			$('#orderVv').textbox({    
+			    required: true, 		    					
+				validType: 'onlyInteger', 
+				width:150,
+				     
+			});
 		});
     
     	//确认按钮
@@ -55,13 +61,18 @@
 			    iconCls: 'icon-ok',
 			    width:250,
 			    height:50,   
-			});  			   
+			});
+			$('.returnBtn').linkbutton({    
+			    iconCls: 'icon-undo',
+			    width:250,
+			    height:50,   
+			});  						   
 		});
 		
 		//步数
 		$(function (){
 			$('#preplanStep').progressbar({ 
-				value:25,
+				value:45,
 				text:'第一步：填写预案基本信息'
 			}); 
 		});
@@ -99,7 +110,8 @@
 
 	/*------------------保存预案-----------------*/
 			//保存预案
-			function submitPreplan(){					       		
+			function submitPreplan(){	
+					var ppSn=document.getElementById("ppl_preplan_sn").value				       		
 					//预案名字
 					var preplanName=$('#ppe_input1').textbox('getValue');
 					//预案描述
@@ -138,63 +150,90 @@
 					    		return isValid5;
 					    	};										
 					}else{
+						if(typeof(ppSn)==="undefined" || ppSn==="" ){
+							$.ajax({    //保存新预案
+								type : "POST",
+								url : "preplan_preplan_saveOnlyPreplan.action",
+								dataType : "json",
+								traditional : true,
+								data : {
+										ppName : preplanName,
+										ppDesc : preplanDesc,
+										ppType : preplanType,
+										ppDept : preplanDept,
+										ppUid  : preplanUid
+										},
+								success : function(jsonObject) {
+									var pd=jsonObject;
+									if(pd == "error"){
+										$.messager.alert('提示','保存出错，请重试！','error');
+									}
+									else if(pd.length > 0){
+										$('#ppl_preplan_sn').val(pd);
+										$('#plePreplanMsg').hide();
+										$('#pleMisSrc').show();
+										$('#pleModule').show(); 
+										showAddMis(pd);								
+									}
+									else{
+										$.messager.alert('提示','未知错误','error');
+									}						
+		
+								}
+		
+							})
 						
-						$.ajax({
-							type : "POST",
-							url : "preplan_preplan_saveOnlyPreplan.action",
-							dataType : "json",
-							traditional : true,
-							data : {
-									ppName : preplanName,
-									ppDesc : preplanDesc,
-									ppType : preplanType,
-									ppDept : preplanDept,
-									ppUid  : preplanUid
-									},
-							success : function(jsonObject) {
-								var pd=jsonObject;
-								if(pd == "error"){
-									$.messager.alert('提示','保存出错，请重试！','error');
+						}else{						
+							$.ajax({   //修改旧预案
+								type : "POST",
+								url : "preplan_preplan_saveOnlyPreplan.action",
+								dataType : "json",
+								traditional : true,
+								data : {
+										ppName : preplanName,
+										ppDesc : preplanDesc,
+										ppType : preplanType,
+										ppDept : preplanDept,
+										ppUid  : preplanUid,
+										ppSn   : ppSn
+										},
+								success : function(jsonObject) {
+									var pd=jsonObject;
+									if(pd == "error"){
+										$.messager.alert('提示','保存出错，请重试！','error');
+									}
+									else if(pd.length > 0){
+										$('#ppl_preplan_sn').val(pd);
+										$('#plePreplanMsg').hide();
+										$('#pleMisSrc').show();
+										$('#pleModule').show(); 
+										showAddMis(pd);								
+									}
+									else{
+										$.messager.alert('提示','未知错误','error');
+									}						
+		
 								}
-								else if(pd.length > 0){
-									$('#ppl_preplan_sn').val(pd);
-									$('#plePreplanMsg').hide();
-									$('#pleMisSrc').show();
-									showAddMis(pd);								
-								}
-								else{
-									$.messager.alert('提示','未知错误','error');
-								}						
-	
-							}
-	
-						})
+		
+							})						
+						}
+						
 						
 					}			      
 		    }
-	/*------------------其他模块-----------------*/	    
-		 function  submitMisSrc(){
-		 	$.messager.confirm('确认','您确认已经完成任务及资源的填制？',function(r){    
-			    if (r){   
-			    	$('#pleMisSrc').hide();
-					$('#pleModule').show(); 
-					$('#preplanStep').progressbar({ 
-						value:85,
-						text:'第三步：添加其他模块'
-					}); 
-					var pp_sn=document.getElementById("ppl_preplan_sn").value;
-					showAddModule(pp_sn);				 
-			    }    
-			});  		 
-		 }			     
-		    
-			    
+		     
+		    function returnPreplan(){
+				$('#plePreplanMsg').show();
+				$('#pleMisSrc').hide();
+				$('#pleModule').hide();
+		    }			    
 		    	    
 	/*------------------完成-----------------*/	    
 		 function  submitPerfect(){
 		 	$.messager.confirm('确认','您确认已经完成预案填制？',function(r){    
 			    if (r){   
-			    	$('#pleModule').hide();
+			    	$('#pleMisSrc').hide();
+			    	$('#pleModule').hide();			    	
 					$('#plePerfect').show(); 
 					$('#preplanStep').progressbar({ 
 						value:100,
@@ -210,7 +249,7 @@
    <div class="btm-area">
 		<div id="preplanStep" style="width:400px;margin:0 auto;"></div> 
    </div>		
-  <div class="btm-area" id="plePreplanMsg">
+  <div class="btm-area" id="plePreplanMsg" style="margin-top:10px;">
     	<div id="ppe_preplan" class="pp_preplan">    		  
 		    <div class="border">   
 		       <span class="label_box"><label for="ppe_preplan_name" ><strong>预案名称:</strong></label></span>  
@@ -239,15 +278,16 @@
 		    </div>         
 		</div> 
 		<div style="width:100%">
-			<a class="submitBtn" href="#" onclick="submitPreplan()" style="width:250px;margin:20px auto">下一步</a>
+			<a class="submitBtn" href="javascript:void(0)" onclick="submitPreplan()" style="width:250px;margin:20px auto">下一步</a>
 		</div>
     </div>
     
-    <div class="btm-area" id="pleMisSrc" style="display:none">
+    <div class="btm-area" id="pleMisSrc" style="display:none;margin-top:10px" >
     	<div id="ppl_preplan" class="pp_preplan">   		    
 		    <table id="missrctt" style="min-height:550px"></table>
 		   <div>
-				<a class="submitBtn" href="#" onclick="submitMisSrc()" style="width:250px;margin:20px auto">添加其他模块</a>
+		   		<a class="returnBtn" href="javascript:void(0)" onclick="returnPreplan()" style="width:250px;margin:20px auto">上一步</a>
+				<a class="submitBtn" href="#pleModule" style="width:250px;margin:20px auto">添加其他模块</a>
 			</div>      
 			<div id="preplanModuleArea">
 				<table id="preplanModuleList" style="min-height:550px"></table>
@@ -259,21 +299,28 @@
     	<div>   	
     		<table id="modulett" style="min-height:550px"></table>	    
 		   <div>
-				<a class="submitBtn" href="#" onclick="submitPerfect()" style="width:250px;margin:20px auto">完成</a>
-			</div>
-			<div id="orderDialog">
-				<input id="orderVv" value=""/>  
+		   		<a class="returnBtn" href="#pleMisSrc" style="width:250px;margin:20px auto">填写任务资源</a>
+				<a class="submitBtn" href="javascript:void(0)" onclick="submitPerfect()" style="width:250px;margin:20px auto">完成</a>
 			</div>          
 		</div> 
     </div>
     
+	<div id="orderDialog" style="display:none">
+		<input id="orderVv" value=""/>  
+	</div>
    
     <div class="btm-area" id="plePerfect" style="display:none;margin-top:15px;">
-    	<p style="width:400px;margin:0 auto;">预案填制完成，<strong><a htef="index.action">点此返回</a></strong></p>
+    	<center>预案填制完成，<strong><a htef="javascript:void(0)" onclick="closeThisTab('预案编制')">点此返回</a></strong></center>
     </div>
    
    <input id="ppl_preplan_sn" type="hidden" value=""/>
-  <script type="text/javascript">    
+  <script type="text/javascript"> 
+ 	function closeThisTab(title){  
+		window.parent.tabsClose(title)  
+	} 
+	  
+  	
+    
     
     //全局顺序初始（任务及模块）
     var orderNum=1;  
@@ -281,9 +328,9 @@
     //显示列表
     function showAddMis(pp_sn){
     	$('#preplanStep').progressbar({ 
-			value:55,
-			text:'第二步：添加任务资源'
-		});
+			value:85,
+			text:'第二步：添加任务资源及模块'
+		});		
 		var rowEditing = false;
 		var rowEditing2 = false;
         $('#missrctt').datagrid({ 
@@ -350,12 +397,12 @@
 			        {field:'missionId',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
 			                if (row.editing){
-			                    var s = '<a href="#" onclick="saveParentRow('+index+',\'missionOrder\')">保存</a> |';
-			                    var c = ' <a href="#" onclick="cancelParentRow('+row.missionId+')">取消</a>';
+			                    var s = '<a href="javascript:void(0)" onclick="saveParentRow('+index+',\'missionOrder\')">保存</a> |';
+			                    var c = ' <a href="javascript:void(0)" onclick="cancelParentRow('+row.missionId+')">取消</a>';
 			                    return s+c;
 			                } else {
-			                    var e = '<a href="#" onclick="editParentRow('+row.missionId+',\'missionOrder\')">编辑</a> |';
-			                    var d = ' <a href="#" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
+			                    var e = '<a href="javascript:void(0)" onclick="editParentRow('+row.missionId+',\'missionOrder\')">编辑</a> |';
+			                    var d = ' <a href="javascript:void(0)" onclick="deleteParentRow('+row.missionId+','+index+')">删除</a>';
 			                    return e+d;
 			                }
 			            }
@@ -433,12 +480,12 @@
 				        {field:'id',title:'操作',width:200,align:'center',
 				            formatter:function(value,row,index){
 				                if (row.editing2){
-				                    var s = '<a href="#" onclick="saveSonRow('+index+','+pIndex+')">保存</a> |';
-				                    var c = ' <a href="#" onclick="cancelSonRow('+row.id+','+pIndex+')">取消</a>';
+				                    var s = '<a href="javascript:void(0)" onclick="saveSonRow('+index+','+pIndex+')">保存</a> |';
+				                    var c = ' <a href="javascript:void(0)" onclick="cancelSonRow('+row.id+','+pIndex+')">取消</a>';
 				                    return s+c;
 				                } else {
-				                    var e = '<a href="#" onclick="editSonRow('+row.id+','+pIndex+'\'resourceNumber\')">编辑</a> |';
-				                    var d = ' <a href="#" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
+				                    var e = '<a href="javascript:void(0)" onclick="editSonRow('+row.id+','+pIndex+'\'resourceNumber\')">编辑</a> |';
+				                    var d = ' <a href="javascript:void(0)" onclick="deleteSonRow('+index+','+pIndex+')">删除</a>';
 				                    return e+d;
 				                }
 				            }
@@ -488,7 +535,9 @@
                     row.editing = false;  
                     $('#missrctt').datagrid('refreshRow', index);  
                 }
-        });    
+        }); 
+        //显示模块
+        showAddModule(pp_sn);   
     }
  
     /*------------------父类行编辑begin-----------------*/
@@ -805,10 +854,10 @@
 			        {field:'content',title:'模块内容',width:250,align:'center',
 			        	formatter:function(value,row,index){
 			        		if(row.expand){
-			        			var d = '<a href="#" onclick="colPmContentDetail('+index+')">关闭模块内容</a> ';
+			        			var d = '<a href="javascript:void(0)" onclick="colPmContentDetail('+index+')">关闭模块内容</a> ';
 			            		return d;	
 			        		}else{
-			        			var e = '<a href="#" onclick="getPmContentDetail('+index+')">查看模块内容</a> ';
+			        			var e = '<a href="javascript:void(0)" onclick="getPmContentDetail('+index+')">查看模块内容</a> ';
 			            		return e;
 			        		}
 
@@ -816,8 +865,8 @@
 			        },
 			        {field:'idc',title:'操作',width:250,align:'center',
 			            formatter:function(value,row,index){
-			            	var u ='<a href="#" onclick="updateModuleOrder('+row.id+')">修改顺序</a> |'				                
-			                var d =' <a href="#" onclick="deleteModule('+row.id+')">删除</a>';			                
+			            	var u ='<a href="javascript:void(0)" onclick="updateModuleOrder('+row.id+')">修改顺序</a> |'				                
+			                var d =' <a href="javascript:void(0)" onclick="deleteModule('+row.id+')">删除</a>';			                
 			                return u+d;
 			            }
 			        },
@@ -871,12 +920,6 @@
 	//修改模块顺序
 	function updateModuleOrder(id){
 	    $(function(){
-	    	$('#orderVv').textbox({    
-			    required: true, 		    					
-				validType: 'onlyInteger', 
-				width:150,
-				     
-			});
 			var spanNow=$("#orderVv").next('span');
 	    	var inputNow=$("#orderVv").next('span').find('input:first-child');
 	    	inputNow.css('height','20px');
@@ -1028,10 +1071,10 @@
 		        {field:'content',title:'模块内容',width:250,align:'center',
 		        	formatter:function(value,row,index){
 		        		if(row.expand){
-		        			var d = '<a href="#" onclick="colContentDetail('+index+')">关闭模块内容</a> ';
+		        			var d = '<a href="javascript:void(0)" onclick="colContentDetail('+index+')">关闭模块内容</a> ';
 		            		return d;	
 		        		}else{
-		        			var e = '<a href="#" onclick="getContentDetail('+index+')">查看模块内容</a> ';
+		        			var e = '<a href="javascript:void(0)" onclick="getContentDetail('+index+')">查看模块内容</a> ';
 		            		return e;
 		        		}
 

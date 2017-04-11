@@ -57,8 +57,8 @@
 <div region="center" class="center">
 
 <!--2. 对<div>标签引用'easyui-layout'类,fit="true"自动适应父窗口,这里我们指定了宽度和高度-->
-<div id="tt" class="easyui-tabs" fit="true">
-		<div title="Home">
+<div id="ttab" class="easyui-tabs" fit="true" pill='true'>
+		<div title="主页">
 			<center class="mgt fontBold">欢迎来到预警管理系统</center>
 		</div>
 	</div> 
@@ -72,5 +72,12 @@
 
 <!--1.5 region="south"，指明高度，可以自适应-->
 <div region="south" class="south" ><center> <p>&copy; 2016 | All Will Be Ok,Belive Youself Please | Designed by<a href="#">DKL</a></p></center></div>
+>
+<script type="text/javascript">
+	function tabsClose(title){
+		closeTab(title)
+	}
+</script>
+	
 </body>
 </html>

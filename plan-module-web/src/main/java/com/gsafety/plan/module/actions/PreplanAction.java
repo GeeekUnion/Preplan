@@ -5,9 +5,11 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -132,33 +134,46 @@ public class PreplanAction extends ListAction<Preplan>{
     }
     //保存预案
     public String saveOnlyPreplan() {
-        //获得当前预案时间
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //获得当前预案UUID（preplan_sn）
-        String uuidPreplan = UUID.randomUUID().toString();
         Preplan ppModel=new Preplan();
-        ppModel.setPreplanName(ppName);
-        ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+        if(ppSn == null) {
+            //获得当前预案时间
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //获得当前预案UUID（preplan_sn）
+            String uuidPreplan = UUID.randomUUID().toString();                        
+            ppModel.setPreplanTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
+            ppModel.setPreplanSn(uuidPreplan);
+        }else {
+            ppModel=preplanService.getByPpSn(ppSn);           
+            
+        }   
+        ppModel.setPreplanName(ppName);            
         ppModel.setPreplanDesc(ppDesc);
-        ppModel.setResponDept(ppDept);
-        ppModel.setPreplanSn(uuidPreplan);
+        ppModel.setResponDept(ppDept);            
         ppModel.setPreplanUID(ppUid);
-        try{   
+        try{                  
             //放入预案分类SN(domain_sn)
             Domain dmModel =new Domain();
             dmModel.setDomainSn(ppType); 
+                                   
             //二者不为空时存入数据库
             if(dmModel!=null&&ppModel!=null){
-                ppModel.getDomain().add(dmModel);
-                preplanService.save(ppModel);
-                jsonObject = uuidPreplan;
+                Set<Domain> set = new HashSet<Domain>();
+                set.add(dmModel);
+                ppModel.setDomain(set);
+                jsonObject = ppModel.getPreplanSn();
+                if(ppSn == null) {
+                    preplanService.save(ppModel);
+                }else {
+                    preplanService.update(ppModel);
+                }
+                                
             }else{
                 jsonObject = "error";
                System.out.println("出错"); 
             }
         }catch(Exception e){
             jsonObject = "error";
-            System.out.println("bug"); 
+            e.printStackTrace(); 
         }
         return "jsonObject";
     }
