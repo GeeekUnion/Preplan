@@ -125,14 +125,14 @@ public class Preplan implements Serializable {
 		this.domain = domain;
 	}
 	
-	@OneToMany(targetEntity=Mission.class,mappedBy="preplanSnM")
+	@OneToMany(targetEntity=Mission.class,mappedBy="preplanSnM",cascade=CascadeType.ALL)
 	public Set<Mission> getMission() {
 		return mission;
 	}
 	public void setMission(Set<Mission> mission) {
 		this.mission = mission;
 	}
-	@OneToMany(targetEntity=Module.class,mappedBy="preplanSnM")
+	@OneToMany(targetEntity=Module.class,mappedBy="preplanSnM",cascade=CascadeType.ALL)
     public Set<Module> getModule() {
         return module;
     }   

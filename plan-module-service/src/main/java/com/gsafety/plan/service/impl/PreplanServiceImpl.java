@@ -11,6 +11,9 @@ import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Service;
 
+import com.gsafety.cloudframework.common.base.conditions.Cnds;
+import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
+import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Domain;
@@ -81,6 +84,15 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             baseDAO.updateByHql(hql,hashMap);
         }
        
+    }
+
+    @Override
+    public Preplan getByPpSn(String ppSn) {
+        // TODO Auto-generated method stub
+        Cnds cnds1 = Cnds.me(Preplan.class);
+        WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("preplanSn", ppSn));
+        cnds1.and(set);      
+        return baseDAO.getUniqueByCnds(cnds1);
     }
 
 }

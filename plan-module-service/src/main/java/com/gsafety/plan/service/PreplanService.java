@@ -9,4 +9,6 @@ public interface PreplanService extends IBaseService{
 
     void updateById(Preplan ppModel,String pd);
 
+    Preplan getByPpSn(String ppSn);
+
 }
