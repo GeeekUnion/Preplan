@@ -39,6 +39,7 @@ import com.gsafety.plan.service.SupplyService;
 public class SupplyAction extends ListAction<Supply> {
      @Resource
      private SupplyService supplyService;
+     private int id;
      private String supplyName;
      private String supplySn;
      private int supplyNumber;
@@ -77,6 +78,18 @@ public class SupplyAction extends ListAction<Supply> {
 			s.setSupplySn(supplySn);
 			s.setSupplyUnit(supplyUnit);
 			supplyService.save(s);
+		}catch(Exception e){
+			jsonObject.put("status", "nook");
+		}
+		return "jsonObject";
+	}
+    //地图里，删除某个资源点
+    public String delete(){
+    	jsonObject.put("status", "ok");
+		try{
+			System.out.println(id);
+			Supply s = supplyService.get(Supply.class,id);
+			supplyService.delete(s);
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
 		}
@@ -162,6 +175,12 @@ public class SupplyAction extends ListAction<Supply> {
 	}
 	public void setSupplyUnit(String supplyUnit) {
 		this.supplyUnit = supplyUnit;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	

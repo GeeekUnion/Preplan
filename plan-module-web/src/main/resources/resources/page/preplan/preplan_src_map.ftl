@@ -114,6 +114,7 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
+    	{field:'supplySn',title:'Sn',width:100,align:'center',hidden:'true'},    
         {field:'supplyName',title:'资源名称',width:100,align:'center'},    
         {field:'supplyNumber',title:'资源数量',width:100,align:'center'},    
         {field:'supplyUnit',title:'资源单位',width:100,align:'center'},    
@@ -136,6 +137,52 @@
 		 				content:'<iframe src="preplan_src_map_add.action" frameborder="0" width="100%" height="100%"/>'
 					});
 				
+				}
+			},{
+				id:'delete',
+				iconCls:'icon-remove',
+				text:'删除',
+				handler:function(){
+						var row=$("#dg").datagrid("getSelected");
+				
+						if(row){
+								$.messager.confirm('确认对话框', '您想要删除所选数据吗？', function(r){
+									if (r){
+										$.ajax({
+											url:'preplan_supply_delete.action',
+											method:'POST',
+											dataType:'json',
+											data:{'id':row.id},
+											success:function(data){
+												if(data.status=="ok"){
+													$.messager.alert('我的提示','删除成功！','info');
+													$("#dg").datagrid("reload");						
+													
+												}else{
+													$.messager.alert('我的提示','删除失败！','error');
+												
+												}
+											}
+										})
+									}
+								});		
+										
+						}else{
+							$.messager.show({
+								title:'我的提示',
+								msg:'请先选择一条记录！',
+								timeout:1000,
+								showType:'show',
+								style:{
+									right:'',
+									top:document.body.scrollTop+document.documentElement.scrollTop+200,
+									bottom:''
+								}
+							})
+						}
+					
+				
+					
 				}
 			}]
   
