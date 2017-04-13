@@ -90,6 +90,12 @@
   
 	    
     /*------------------模块编辑-----------------*/
+    
+    function closeModuleWin(){
+    	$('#addModuleWin').window('close')
+    	return '返回父页面属性';
+    }
+    
     //新添模块
 	function addModule(){
 		$('#addModuleWin').window({

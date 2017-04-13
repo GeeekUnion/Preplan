@@ -10,7 +10,11 @@
     <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script> 
     <script type="text/javascript" src="${getMC ("")}/js/datagrid-detailview.js"></script>  
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
-
+	
+	<link rel="stylesheet" type="text/css" href="${getTheme('default','')}/kindeditor/themes/default/default.css"/>
+	<script type="text/javascript" src="${getTheme('default','')}kindeditor/kindeditor-min.js"></script>
+	<script type="text/javascript" src="${getTheme('default','')}kindeditor/lang/zh_CN.js"></script>
+	
     <script type="text/javascript">
 	    $.extend($.fn.validatebox.defaults.rules, {    
 		    minLength: {    
@@ -21,30 +25,58 @@
 		    }    
 		});
 		
-    	function resetff(){
-			$("#ff").form("reset");
-		};
+		
+		var editor;
 		$(function(){
 			//初始化输入框
-			resetInput();
-		})
-        //初始化输入框
-		function resetInput(){
-			var moduleId=$('#moduleId').val();
-			if(typeof(moduleId)==="undefined" || moduleId==0){
-				resetff();
-				$('#mul_input').textbox({	
-				    validType:'minLength[5]',
-				    multiline:true,
-				    label: '内容:',                
-				    labelPosition: 'top',			         
+			resetInput();	
+			
+			//初始化富文本		
+			KindEditor.ready(function(K) {
+				editor = K.create('textarea[name="content"]', {
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					allowImageUpload : false,
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link']
 				});
+			});
+			
+			//初始化contentTip
+			$('#contentTip').tooltip({   
+				 position: 'right',    
+				 content: '内容不能为空！',    
+				 onShow: function(){        
+				 	$(this).tooltip('tip').css({
+					 	backgroundColor: '#FFFCCC',            
+						borderColor: '#D8B157'        
+					});    
+				 }
+				 
+			});
+		})
+		
+
+		
+		
+    	function resetff(){
+			$("#ff").form("reset");
+			editor.html('');
+			
+		};
+		
+        //初始化输入框
+		function resetInput(){			
+			var moduleId=$('#moduleId').val();
+			if(typeof(moduleId)==="undefined" || moduleId==0){				
 				$('#title_input').textbox({	
 				    required:true,
 				    missingMessage:'此输入框不能为空！',
 				    label: '标题:',                
 				    labelPosition: 'top',			         
-				});
+				});				
 			}else{
 				$.ajax({
 					type : "POST",
@@ -53,23 +85,15 @@
 					data : {
 							id : moduleId
 					},
-					success : function(data) {
-							console.log(data.content);
-							$('#title_input').val(data.title);
-							$('#mul_input').val(data.content);
+					success : function(data) {	
+							$('#title_input').val(data.title);						
 							$('#title_input').textbox({	
 							    required:true,
 							    missingMessage:'此输入框不能为空！',
 							    label: '标题:',                
 							    labelPosition: 'top',			         
-							});
-							$('#mul_input').textbox({	
-							    validType:'minLength[5]',
-							    multiline:true,
-							    label: '内容:',                
-							    labelPosition: 'top',			         
-							});
-							
+							});							
+							editor.appendHtml(data.content);														
 					},
 					error: function(){
 							console.log("error")								
@@ -83,6 +107,7 @@
 			$('#ff').form('submit', {
 				url: '${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
 				onSubmit: function(param){
+					param.content=editor.html();
 					var moduleId=$('#moduleId').val();
 					if(typeof(moduleId)==="undefined"){
 					
@@ -91,21 +116,34 @@
 					}
 					
 					var isValid = $(this).form('validate');
-					if (!isValid){
+					var isEmpty = editor.isEmpty();
+					if (!isValid || isEmpty){
 						$.messager.progress('close');	// 如果表单是无效的则隐藏进度条
+						if(isEmpty){
+							contentIsEmpty()			
+						}
+						return false;	// 返回false终止表单提交
 					}
-					return isValid;	// 返回false终止表单提交
+					
 				},
 				success: function(){
-					$.messager.progress('close');	// 如果提交成功则隐藏进度条
-					$.messager.alert('提示','操作成功！','info', 
+					$.messager.progress('close');	// 如果提交成功则隐藏进度条									
+					$.messager.alert('提示','保存成功！','info', 
 						function(){
-							resetInput();					
+							getCloseModuleWin();					
 						}											
 					);
 				}
 			});
-		}		 		
+		}	
+		
+		function getCloseModuleWin(){  
+			console.log(window.parent.closeModuleWin()); 
+		}	
+		function contentIsEmpty(){
+			$('#contentTip').tooltip('show');
+			setTimeout("$('#contentTip').tooltip('hide');",3000)	
+		} 		
     </script>
     </head>
 <!--1. 在整个页面创建布局面板-->
@@ -115,8 +153,9 @@
 	    <div style="margin-top:25px;margin-bottom:15px">     
 	        <input id="title_input" type="text" name="title" style="width:400px;" value=""/>   
 	    </div>   
-	    <div style="margin-bottom:15px;">     
-	        <input id="mul_input" type="text" name="content" style="height:150px;width:400px;" value=""/>   
+	    <div style="margin-bottom:15px;">   
+	    	<label id="contentTip" for="content">内容:</label>   	    	  
+	    	<textarea id="mul_input" name="content" style="width:600px;height:300px;visibility:hidden;display: block;"></textarea>       
 	    </div>
 	    <div style="margin-bottom:25px;text-align:center">	    	  
 	    	<a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" style="width:100px" onclick="resetff()">清空</a>
@@ -125,5 +164,7 @@
 	 </div>       
 	</form> 
 	<input id="moduleId" type="hidden" value="${moduleId}">
+	
 </body>
+
 </html>

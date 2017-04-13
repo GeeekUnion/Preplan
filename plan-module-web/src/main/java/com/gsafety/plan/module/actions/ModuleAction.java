@@ -116,7 +116,7 @@ public class ModuleAction extends ListAction<Module> {
         Module md=moduleService.get(Module.class, id);
         System.out.println(md);
         jsonObject.put("title",md.getTitle());
-        jsonObject.put("content",md.getTitle());
+        jsonObject.put("content",md.getContent());
         return "jsonObject";             
     }
 	
