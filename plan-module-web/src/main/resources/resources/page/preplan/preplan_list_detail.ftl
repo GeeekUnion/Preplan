@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="${getTheme('default','')}/esui.css"/>
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script> 
+    <script type="text/javascript" src="${getMC ("")}/js/datagrid-detailview.js"></script> 
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
     <script type="text/javascript">
@@ -17,13 +19,53 @@
  			$('#ppl_mission_dg').datagrid({
  			    url:'preplan_preplan_queryMissionByPpsn.action?ppSn='+pp_sn,			   	
 				rownumbers:true,
+				loadingMessage:'正在加载，请稍后...',
  			   	striped:true,
+ 			   	fitColumns:true,
  			   	singleSelect:true, 			    
  			    columns:[[    
- 			    	{field:'missionOrder',title:'任务序号',width:60,align:'center'},
- 					{field:'missionName',title:'任务名字',width:250,align:'center'},
- 					{field:'missionDept',title:'负责单位',width:250,align:'center'},
+ 			    	{field:'missionOrder',title:'序号',width:50,align:'center'},
+ 					{field:'missionName',title:'任务/模块名字',width:250,align:'left'},
+ 					{field:'missionState',title:'负责单位/查看模块内容',width:250,align:'center',
+				            formatter:function(value,row,index){	
+				            	if(row.missionState==="isMis"){
+				            	   	return row.missionDept;				            		
+				            	}else{
+					            	if(row.expand){
+					        			var d = '<a href="javascript:void(0)" onclick="colContentDetail('+index+')">关闭模块内容</a> ';
+					            		return d;	
+					        		}else{
+					        			var e = '<a href="javascript:void(0)" onclick="getContentDetail('+index+')">查看模块内容</a> ';
+					            		return e;
+					        		}
+				            	}			                				                
+				            }
+				    },
  			    ]],
+ 			    view: detailview, 
+	            detailFormatter: function(rowIndex, rowData){ 
+	            	if(rowData.missionState==="isMis"){
+	            		return '';
+	            	}else{
+	            		return '<p><strong>模块内容：</strong>'+rowData.missionDept+'</p>';
+	            	}	                
+	            },            
+	            onExpandRow: function(index,row){
+	            	row.expand = true;
+	            	$('#ppl_mission_dg').datagrid('refreshRow', index);
+	                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
+	                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
+	                $('#ppl_mission_dg').datagrid('clearSelections');//取消选择行    
+	                $('#ppl_mission_dg').datagrid('fixDetailRowHeight',index);
+	            },
+	            onCollapseRow: function(index,row){
+	            	row.expand = false;
+	            	$('#ppl_mission_dg').datagrid('refreshRow', index);
+	                var subCategory = $(this).datagrid('getRowDetail',index).find('table.subCategory');
+	                var pIndex=subCategory.datagrid('getParentRowIndex');//获得父亲Index
+	                $('#ppl_mission_dg').datagrid('clearSelections');//取消选择行    
+	                $('#ppl_mission_dg').datagrid('fixDetailRowHeight',index);
+	            },
  			    //加载成功
  			    onLoadSuccess:function(){
  			    	var rows = $("#ppl_mission_dg").datagrid("getRows"); //这段代码是获取当前页的所有行。
@@ -31,11 +73,7 @@
 					for(var i=0;i<rows.length;i++){					
 						//获取每一行的数据	
 						 misnSnArray.push(rows[i].missionSn);					
-					}
-					$('.delete_misn').linkbutton({    
-						    iconCls: 'icon-cancel',
-						    height:24   
-						});						
+					}					
 					//加载资源
 					$.ajax({
 						type : "POST",
@@ -65,11 +103,14 @@
 			$('#ppl_src_dg').datagrid({			   	
 				rownumbers:true,
 			 	striped:true,
+			 	loadingMessage:'正在加载，请稍后...',
+			 	fitColumns:true,
 			 	singleSelect:true, 			    
-			 	columns:[[    
-			 		{field:'srcName',title:'资源名字',width:250,align:'center'},
-			 		{field:'srcNumber',title:'资源数量',width:150,align:'center'},
-			 		{field:'srcUnit',title:'资源单位',width:'150',align:'center'}, 					
+			 	columns:[[    			 	
+			 		{field:'srcMis',title:'任务名字',width:150,align:'center'},
+			 		{field:'srcName',title:'资源名字',width:150,align:'center'},
+			 		{field:'srcNumber',title:'资源数量',width:125,align:'center'},
+			 		{field:'srcUnit',title:'资源单位',width:125,align:'center'}, 					
 			 	]], 			    
 				//加载失败   
 				onLoadError:function(){
@@ -105,6 +146,17 @@
 			window.print();  	
 			document.body.innerHTML = oldstr; 		
 		}
+    	
+    	//查看模块内容  	
+	    function getContentDetail(index){    	  	
+	    	$('#ppl_mission_dg').datagrid('expandRow',index);
+	    	$('#ppl_mission_dg').datagrid('fixDetailRowHeight',index);   	
+	    }  
+	    //关闭模块内容 
+	   function  colContentDetail(index){
+	   		$('#ppl_mission_dg').datagrid('collapseRow',index);
+	    	$('#ppl_mission_dg').datagrid('fixDetailRowHeight',index);  
+	   }
     	
     </script>
     </head>

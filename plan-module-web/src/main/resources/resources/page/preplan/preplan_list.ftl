@@ -20,7 +20,7 @@
 				pageNumber:1,
 				pageSize:20,
 				pageList:[20,40,80,100],
-				loadMsg:'正在加载，请稍后...',
+				loadingMessage:'正在加载，请稍后...',
 				rownumbers:true,
 				fitColumns:true,
  			   	striped:true,

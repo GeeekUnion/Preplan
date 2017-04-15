@@ -29,6 +29,7 @@ import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Domain;
 import com.gsafety.plan.po.Mission;
+import com.gsafety.plan.po.Module;
 import com.gsafety.plan.po.Person;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.Privilege;
@@ -37,6 +38,7 @@ import com.gsafety.plan.po.Supply;
 import com.gsafety.plan.service.DomainService;
 import com.gsafety.plan.service.IPersonService;
 import com.gsafety.plan.service.MissionService;
+import com.gsafety.plan.service.ModuleService;
 import com.gsafety.plan.service.PersonService;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
@@ -60,6 +62,8 @@ public class PreplanAction extends ListAction<Preplan>{
     private MissionService missionService;
     @Resource
     private ResourceRecordService rrService;
+    @Resource
+    private ModuleService moduleService;
     
     private String code;//传id
     private String ppSn;//值
@@ -340,8 +344,8 @@ public class PreplanAction extends ListAction<Preplan>{
         ppModel.setPreplanSn(ppSn);
         //根据预案Sn查询任务列表
         List<Mission> misnList= missionService.getListByPpsn(ppModel);
-        JSONArray array = new JSONArray();
-       
+        List<Module> moduleList=moduleService.getListByPpsn(ppSn);
+        JSONArray array = new JSONArray();       
         if(misnList.size()>0) {
           //封装任务列表
             for(Mission m : misnList) {
@@ -351,10 +355,19 @@ public class PreplanAction extends ListAction<Preplan>{
                 jo.put("missionName",m.getMissionName());
                 jo.put("missionDept",m.getResponDept());
                 jo.put("missionSn",m.getMissionSn());
+                jo.put("missionState", "isMis");
                 array.add(jo);               
             }
         }
         
+        for(Module md:moduleList) {
+            JSONObject jo2 = new JSONObject();
+            jo2.put("missionOrder",md.getOrder());//模块序号
+            jo2.put("missionName",md.getTitle());
+            jo2.put("missionDept",md.getContent()); 
+            jo2.put("missionState", "isMdu");
+            array.add(jo2); 
+        }
         
         //输出资源到页面
         String misstr = array.toString();
@@ -376,6 +389,7 @@ public class PreplanAction extends ListAction<Preplan>{
                 //根据任务sn查询资源列表
                 Mission misnModel=new Mission();
                 misnModel.setMissionSn(misnSnArray[i]);
+                Mission misn = missionService.getByMissionSn(misnModel.getMissionSn());
                 List<ResourceRecord> srcList =rrService.getListByPpsn(misnModel);
                 if(srcList.size()>0) {
                     for(ResourceRecord rr :srcList) {
@@ -384,6 +398,7 @@ public class PreplanAction extends ListAction<Preplan>{
                         jo2.put("srcName",rr.getResourceName());
                         jo2.put("srcNumber",rr.getResourceNumber());
                         jo2.put("srcUnit",rr.getResourceUnit());
+                        jo2.put("srcMis", misn.getMissionName());
                         srcArray.add(jo2);                    
                     } 
                 }
