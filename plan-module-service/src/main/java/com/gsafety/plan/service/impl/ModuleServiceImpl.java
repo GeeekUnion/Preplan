@@ -53,5 +53,16 @@ public class ModuleServiceImpl extends BaseServiceImpl implements ModuleService{
         joMax.put("rows",marray);
         return joMax;
     }
+    /*@name 根据预案SN返回模块列表不带分页
+     * 
+     * */
+    @Override
+    public List<Module> getListByPpsn(String ppSn) {
+        // TODO Auto-generated method stub
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        String hql = "from Module m where m.preplanSnM.preplanSn=:preplanSn";
+        hashMap.put("preplanSn",ppSn);
+        return baseDAO.getListByHql(hql,hashMap,Module.class);
+    }
 
 }

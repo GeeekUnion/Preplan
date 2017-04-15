@@ -103,7 +103,7 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
     }
     //通过Sn返回mission
 	public Mission getByMissionSn(String missionSn){
-		String hql="from Mission m where m.missionSn ="+missionSn;
+		String hql="from Mission m where m.missionSn ="+"'"+missionSn+"'";
 		Mission m =baseDAO.getUniqueByHql(hql,Mission.class);
 		return m;
 	}
