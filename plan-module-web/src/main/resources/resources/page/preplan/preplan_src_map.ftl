@@ -114,6 +114,7 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
+    	{field:'id',title:'id',width:100,align:'center',hidden:'true'},
     	{field:'supplySn',title:'Sn',width:100,align:'center',hidden:'true'},    
         {field:'supplyName',title:'资源名称',width:100,align:'center'},    
         {field:'supplyNumber',title:'资源数量',width:100,align:'center'},    
@@ -183,6 +184,36 @@
 					
 				
 					
+				}
+			},{
+				id:'update',
+				iconCls:'icon-edit',
+				text:'修改',
+				handler:function(){
+					var row=$("#dg").datagrid("getSelected");
+					if(row){
+								$('#win').window({
+					 				width:380,
+					 				height:330,
+					 				title:'信息修改',
+					 				cache:false,
+					 				content:'<iframe src="preplan_src_map_update.action" frameborder="0" width="100%" height="100%"/>'
+					 			});
+					}else{
+						$.messager.show({
+							title:'我的提示',
+							msg:'请先选择一条记录！',
+							timeout:1000,
+							showType:'show',
+							style:{
+								right:'',
+								top:document.body.scrollTop+document.documentElement.scrollTop+200,
+								bottom:''
+							}
+						});
+					} 
+
+				
 				}
 			}]
   

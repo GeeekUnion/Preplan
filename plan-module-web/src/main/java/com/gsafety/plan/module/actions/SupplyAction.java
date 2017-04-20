@@ -98,7 +98,25 @@ public class SupplyAction extends ListAction<Supply> {
 		}
 		return "jsonObject";
 	}
-    
+   //地图里，修改某个资源点
+    public String update(){
+    	jsonObject.put("status", "ok");
+		try{
+			System.out.println(supplyNumber);
+			Supply s = supplyService.get(Supply.class,id);
+			s.setSupplyLatitude(supplyLatitude);
+			s.setSupplyLongitude(supplyLongitude);
+			s.setSupplyName(supplyName);
+			s.setSupplyNumber(supplyNumber);
+			s.setSupplyPrincipal(supplyPrincipal);
+			s.setSupplyPrincipalPhone(supplyPrincipalPhone);
+			s.setSupplyUnit(supplyUnit);
+			supplyService.update(s);
+		}catch(Exception e){
+			jsonObject.put("status", "nook");
+		}
+		return "jsonObject";
+	}
     
     
     

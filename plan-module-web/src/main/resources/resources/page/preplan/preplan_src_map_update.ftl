@@ -12,7 +12,18 @@
 
     <script type="text/javascript">
         $(function(){
-        
+        var row=parent.$('#dg').datagrid('getSelected');	
+        //数据回显
+		$('#ff').form('load',{
+		    id:row.id,
+			supplyName:row.supplyName,
+			supplyNumber:row.supplyNumber,
+			supplyUnit:row.supplyUnit,
+			supplyLatitude:row.supplyLatitude,
+			supplyLongitude:row.supplyLongitude,
+			supplyPrincipal:row.supplyPrincipal,
+			supplyPrincipalPhone:row.supplyPrincipalPhone
+		})
         //重置
 	$("#reset").click(function(){
 		$("#ff").form("reset");
@@ -20,18 +31,21 @@
 	//提交 
 	$('#submit').click(function(){
 			$('#ff').form('submit', {    
-			    url:'preplan_supply_save.action',       
+			    url:'preplan_supply_update.action',    
+			    queryParams:{
+				    	'id':row.id 
+				    },         
 			    success:function(data){
 			    	var result = eval('(' + data + ')');
 			    	if(result.status=='ok'){
-			    		parent.$.messager.alert("提示信息","添加成功！");
+			    		parent.$.messager.alert("提示信息","修改成功！");
 						$("#ff").form("reset");
 						//关闭窗体
 						parent.$("#win").window("close");
 						//刷新dg
 						parent.$("#dg").datagrid("reload");
 				   	}else{
-				   		parent.$.messager.alert("提示信息","添加失败！",'error');
+				   		parent.$.messager.alert("提示信息","修改失败！",'error');
 					}
 			    }    
 			});
