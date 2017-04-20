@@ -602,7 +602,8 @@
                             success : function() {
                                     $.messager.alert('提示','删除成功！','info',
                                         function() {
-                                            $('#missrctt').datagrid('reload');                            
+                                            $('#missrctt').datagrid('reload');  
+                                            rowEditing2 = false;                          
                                         });                                 
                             },
                             error: function(){
@@ -662,6 +663,7 @@
 										function() {
 											$('#missrctt').datagrid('reload');
 											$('#missrctt').datagrid('clearSelections');//取消选择行									
+											rowEditing2 = false;
 										}); 								
 								},
 							error: function(){
@@ -682,13 +684,15 @@
     		$.messager.confirm('确认','该任务未保存，取消将删除该未保存任务，确认删除？',function(r){    
 			    if (r){    
 			    	$('#missrctt').datagrid('cancelEdit', index);
-			        $('#missrctt').datagrid('deleteRow',index);    
+			        $('#missrctt').datagrid('deleteRow',index);   
+			        rowEditing2 = false; 
 			    }    
 			});     		
     	}else{  
     		$.messager.confirm('确认','该任务未保存，取消将不保存修改，确认删除？',function(r){    
 			    if (r){    
-			       $('#missrctt').datagrid('cancelEdit', index);    
+			       $('#missrctt').datagrid('cancelEdit', index);  
+			       rowEditing2 = false;  
 			    }    
 			});  		        	
     	}         
