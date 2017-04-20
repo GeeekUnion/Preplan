@@ -12,7 +12,7 @@
 
     <script type="text/javascript">
          function Details(){
-     
+         
 			$('#win').window({
 				width:900,
 				height:450,
