@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+
 
 
 
@@ -69,13 +71,14 @@ public class SupplyAction extends ListAction<Supply> {
 		jsonObject.put("status", "ok");
 		Supply s = new Supply();
 		try{
+			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 			s.setSupplyLatitude(supplyLatitude);
 			s.setSupplyLongitude(supplyLongitude);
 			s.setSupplyName(supplyName);
 			s.setSupplyNumber(supplyNumber);
 			s.setSupplyPrincipal(supplyPrincipal);
 			s.setSupplyPrincipalPhone(supplyPrincipalPhone);
-			s.setSupplySn(supplySn);
+			s.setSupplySn(uuid);
 			s.setSupplyUnit(supplyUnit);
 			supplyService.save(s);
 		}catch(Exception e){

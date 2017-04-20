@@ -15,10 +15,11 @@
           var row=parent.$("#dg").datagrid("getSelected");
     	 console.log(row);
     
-        function Startup(){
+     function Startup(index){
+        $('#dgc').datagrid('selectRow',index);
         var row2=$("#dgc").datagrid("getSelected");  
         console.log(row2);
-      $.ajax({
+        $.ajax({
 			url:'preplan_event_choosePre.action',
 			method:'POST',
 			dataType:'json',
@@ -35,6 +36,7 @@
 				}
 			}
 		})
+		
                
     }
     
@@ -55,7 +57,7 @@
         {field:'preplanUID',title:'预案标识',width:'10%',align:'center'},  
         {field:'preplanDesc',title:'预案描述',width:'10%',align:'center'},  
         {field:'act',title:'操作',width:'100',align:'center',formatter:function(value,row,index){
-		        		  return "<a  href='#' onclick='Startup()' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"启动"+"</a>";				        		
+		        		  return "<a  href='#' onclick='Startup(" + index +")' data-options='iconCls:'icon-edit'' class='easyui-linkbutton' style='text-decoration:none'>"+"启动"+"</a>";				        		
 		        	}}
    						 ]], 
 		view: detailview, 
