@@ -560,6 +560,7 @@ public class PreplanAction extends ListAction<Preplan>{
         ppModel.setPreplanName(ppName);
         ppModel.setPreplanDesc(ppDesc);
         ppModel.setResponDept(ppDept);
+        ppModel.setPreplanUID(ppUid);
         preplanService.updateById(ppModel,pd);
         return "jsonArray";
     }

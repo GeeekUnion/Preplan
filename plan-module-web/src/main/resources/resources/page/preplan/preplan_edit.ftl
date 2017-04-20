@@ -11,6 +11,10 @@
     <script type="text/javascript" src="${getMC ("")}/js/datagrid-detailview.js"></script>  
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
 
+	<link rel="stylesheet" type="text/css" href="${getTheme('default','')}/kindeditor/themes/default/default.css"/>
+	<script type="text/javascript" src="${getTheme('default','')}kindeditor/kindeditor-min.js"></script>
+	<script type="text/javascript" src="${getTheme('default','')}kindeditor/lang/zh_CN.js"></script>
+	
     <script type="text/javascript">       
         //下拉框       	
     	$(function (){    		
@@ -41,12 +45,6 @@
 				    required:true,
 				    missingMessage:'此输入框不能为空！'			         
 			});
-			$('#ppe_input2').textbox({	
-			    required:true,
-			    multiline:true,
-			    missingMessage:'此输入框不能为空！',
-			    width:500,			         
-			});	
 			$('#orderVv').textbox({    
 			    required: true, 		    					
 				validType: 'onlyInteger', 
@@ -76,7 +74,37 @@
 				text:'第一步：填写预案基本信息'
 			}); 
 		});
-
+		$(function(){
+			//初始化contentTip
+			$('#contentTip').tooltip({   
+				 position: 'right',    
+				 content: '内容不能为空！',    
+				 onShow: function(){        
+				 	$(this).tooltip('tip').css({
+					 	backgroundColor: '#FFFCCC',            
+						borderColor: '#D8B157'        
+					});    
+				 }
+				 
+			});
+		})		
+	/*------------------编辑器初始化-----------------*/    	
+	var editorDesc;		
+	//初始化富文本		
+	KindEditor.ready(function(K) {
+		editorDesc = K.create('textarea[name="ppe_preplan_desc"]', {
+			resizeType : 1,
+			allowPreviewEmoticons : false,
+			allowImageUpload : false,
+			items : [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+		});
+	});
+	
+	
+	
 
 	/*------------------验证方法-----------------*/    
 	$.extend($.fn.validatebox.defaults.rules, {    
@@ -107,6 +135,11 @@
 	    }    
 	});
 	
+	//自定义显示不能为空
+	function contentIsEmpty(){
+		$('#contentTip').tooltip('show');
+		setTimeout("$('#contentTip').tooltip('hide');",3000)	
+	}
 
 	/*------------------保存预案-----------------*/
 			//保存预案
@@ -115,7 +148,7 @@
 					//预案名字
 					var preplanName=$('#ppe_input1').textbox('getValue');
 					//预案描述
-					var preplanDesc=$('#ppe_input2').textbox('getValue');
+					var preplanDesc=editorDesc.html()
 					//预案编号
 					var preplanUid=$('#ppe_input3').textbox('getValue');
 					//预案类型
@@ -124,18 +157,18 @@
 					var preplanDept=$('#ppe_dept_search').combobox('getText');
 					
 					var isValid1 = $('#ppe_input1').textbox('isValid');
-					var isValid2 = $('#ppe_input2').textbox('isValid');
+					var isValid2 = editorDesc.isEmpty();
 					var isValid3 = $('#ppe_input3').textbox('isValid');
 					var isValid4 = $('#ppe_search').combobox('isValid');
 					var isValid5 = $('#ppe_dept_search').combobox('isValid');
-					if(isValid1==false || isValid2==false || isValid3==false || isValid4==false || isValid5==false){
+					if(isValid1==false || isValid2==true || isValid3==false || isValid4==false || isValid5==false){
 					    	if(isValid1==false){
 					    		$("#ppe_input1").next('span').find('input').focus();
 					    		return isValid1;
 					    	};
-					    	if(isValid2==false){
-					    		$("#ppe_input2").next('span').find('textarea').focus();
-					    		return isValid2;
+					    	if(isValid2==true){
+					    		contentIsEmpty();
+					    		return false;
 					    	};
 					    	if(isValid3==false){
 					    		$("#ppe_input3").next('span').find('input').focus();
@@ -272,8 +305,8 @@
 		        <span><input id="ppe_dept_search" name="ppe_preplan_dept"></span>
 		    </div>
 		    <div class="border">   
-		        <span class="label_box"><label for="ppe_preplan_desc"><strong>预案描述:</strong></label></span>
-		        <input id="ppe_input2" name="ppe_preplan_desc"  style="height:100px">  
+		        <span class="label_box"><label for="ppe_preplan_desc" id="contentTip"><strong>预案描述:</strong></label></span>
+		        <textarea id="ppe_input2" name="ppe_preplan_desc" style="width:600px;height:300px;visibility:hidden;display: block;"></textarea>		        
 		        <span></span>
 		    </div>         
 		</div> 
@@ -569,7 +602,8 @@
                             success : function() {
                                     $.messager.alert('提示','删除成功！','info',
                                         function() {
-                                            $('#missrctt').datagrid('reload');                            
+                                            $('#missrctt').datagrid('reload');  
+                                            rowEditing2 = false;                          
                                         });                                 
                             },
                             error: function(){
@@ -629,6 +663,7 @@
 										function() {
 											$('#missrctt').datagrid('reload');
 											$('#missrctt').datagrid('clearSelections');//取消选择行									
+											rowEditing2 = false;
 										}); 								
 								},
 							error: function(){
@@ -649,13 +684,15 @@
     		$.messager.confirm('确认','该任务未保存，取消将删除该未保存任务，确认删除？',function(r){    
 			    if (r){    
 			    	$('#missrctt').datagrid('cancelEdit', index);
-			        $('#missrctt').datagrid('deleteRow',index);    
+			        $('#missrctt').datagrid('deleteRow',index);   
+			        rowEditing2 = false; 
 			    }    
 			});     		
     	}else{  
     		$.messager.confirm('确认','该任务未保存，取消将不保存修改，确认删除？',function(r){    
 			    if (r){    
-			       $('#missrctt').datagrid('cancelEdit', index);    
+			       $('#missrctt').datagrid('cancelEdit', index);  
+			       rowEditing2 = false;  
 			    }    
 			});  		        	
     	}         

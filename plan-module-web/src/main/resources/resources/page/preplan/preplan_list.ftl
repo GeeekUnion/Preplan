@@ -43,7 +43,7 @@
 		        	}}
  			    ]],
  			    toolbar: [{
- 			    	text:'修改预案属性',
+ 			    	text:'修改预案基本信息',
 					iconCls: 'icon-edit',
 					handler: function(){
 						var row =$('#ppltt').datagrid('getSelected');

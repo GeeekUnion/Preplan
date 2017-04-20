@@ -76,10 +76,11 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
         }
         else {
             Map<String, Object> hashMap = new HashMap<String, Object>();
-            String hql = "update Preplan p set p.preplanName=:preplanName,p.preplanDesc=:preplanDesc,p.responDept=:responDept where p.id=:id";            
+            String hql = "update Preplan p set p.preplanName=:preplanName,p.preplanDesc=:preplanDesc,p.responDept=:responDept,p.preplanUID=:preplanUID where p.id=:id";            
             hashMap.put("preplanName",ppModel.getPreplanName());
             hashMap.put("preplanDesc",ppModel.getPreplanDesc());
             hashMap.put("responDept",ppModel.getResponDept());
+            hashMap.put("preplanUID",ppModel.getPreplanUID());
             hashMap.put("id",ppModel.getId());
             baseDAO.updateByHql(hql,hashMap);
         }
