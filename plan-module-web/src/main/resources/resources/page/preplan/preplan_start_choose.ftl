@@ -53,6 +53,7 @@
 		 pageList:[15,30,50,100],
 		 
     	 columns:[[    
+    	{field:'preplanName',title:'预案名称',width:'10%',align:'center'}, 
         {field:'preplanSn',title:'预案编号',width:'10%',align:'center'},    
         {field:'preplanUID',title:'预案标识',width:'10%',align:'center'},  
         {field:'preplanDesc',title:'预案描述',width:'10%',align:'center'},  

@@ -16,7 +16,7 @@
 			$('#win').window({
 				width:900,
 				height:450,
-				title:'历史记录',
+				title:'可选预案',
 				cache:false,
 				
 

@@ -13,6 +13,21 @@
     <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 
     <script type="text/javascript">
+     function js_method(status,id){
+     
+       $('#win').window({
+				width:900,
+				height:450,
+				title:'可选预案',
+				cache:false,
+				queryParams: {
+					status: 'status',
+					id: 'id'
+	}
+				content:'<iframe src="preplan_state_missionDetail.action" frameborder="0" width="100%" height="100%"/>'
+			});
+    }
+    
     	function addMis(i){
     	  /*
 			$('#win').window({
@@ -35,7 +50,7 @@
 					//console.log(str)
 					//流程图代码
 					var code="st=>start: 事件名称"+"\n"
-							 +"e=>end: 完成:>http://www.baidu.com"+"\n";
+							 +"e=>end: 完成:>JavaScript:js_method()"+"\n";
 							 
 					var count=0;//计数器
 					//定义元素
@@ -43,11 +58,11 @@
 						count=count+1;
 						code=code+"op"+count+"=>operation: "+str[j].missionName
 						if(str[j].missionStatus=="0"){
-						  code=code+"|past"+"\n"	
+						  code=code+"|past:>JavaScript:js_method("+str[j].missionStatus+","+str[j].missionId+")"+"\n"	
 						}else if(str[j].missionStatus=="1"){
-						  code=code+"|current"+"\n"	
+						  code=code+"|current:>JavaScript:js_method("+str[j].missionStatus+","+str[j].missionId+")"+"\n"		
 						}else{
-					  	  code=code+"|future"+"\n"	
+					  	  code=code+"|future:>JavaScript:js_method("+str[j].missionStatus+","+str[j].missionId+")"+"\n"	
 						}
 						
 						
@@ -154,10 +169,12 @@
 <!--1. 在整个页面创建布局面板-->
 <body>
    
-   <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
+   
+    
+     
    
    <table id="dg"></table>  
-   
+    <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
            	
 
 

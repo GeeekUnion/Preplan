@@ -243,7 +243,7 @@
        //新建地图
         var map = new AMap.Map('container',{
             resizeEnable: true,
-            zoom: 5,
+            zoom: 20,
             center: [116.480983, 40.0958]
         });
         
@@ -295,7 +295,7 @@
  		//根据地址查询经纬度(地理编码)
  		    AMap.plugin('AMap.Geocoder',function(){
         var geocoder = new AMap.Geocoder({
-            city: "010"//城市，默认：“全国”
+           
         });
         var marker = new AMap.Marker({
             map:map,
