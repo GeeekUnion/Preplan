@@ -23,6 +23,8 @@ public class Person implements Serializable{
 	 private String personJob; 
 	 private int personNumber;  
 	 private String personSn;
+	 private String loginName;
+	 private String password;
 	 
 
 	 
@@ -31,7 +33,19 @@ public class Person implements Serializable{
 
 	 
 
-	 @Column(name="person_sn")
+	 public String getLoginName() {
+		return loginName;
+	}
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	@Column(name="person_sn")
 	 public String getPersonSn() {
 		return personSn;
 	}
