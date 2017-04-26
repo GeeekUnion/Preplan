@@ -40,6 +40,7 @@ public class PersonAction extends ListAction<Person> {
 	
 	/**
 	 * 预警管理登录
+	 * @param username,password
 	 * @return
 	 */
 	public String login(){
@@ -48,9 +49,10 @@ public class PersonAction extends ListAction<Person> {
 			Person pr=personService.getPersonByUname(username,password);	
 			if(password.equals(pr.getPassword())){
 				jsonObject="ok";
+			}else{
+				jsonObject="error";		
 			}
-		}
-		jsonObject="error";		
+		}		
 		return "jsonObject";
 	}
 	

@@ -34,20 +34,20 @@
     <div class="easyui-accordion" >				
 		<div title="预案及模块管理" data-options="iconCls:'icon-man'" >
 			<ul id="tt1" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-category'"><span><a href="#"  onclick="addTab('预案列表','preplan_list.action')">预案列表</a></span></li>
-				<li data-options="iconCls:'icon-product'"><span><a href="#"  onclick="addTab('预案编制','preplan_edit.action')">预案编制</a></span></li>	
-				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('模块编制','preplan_module.action')">模块编制</a></span></li>																				
+				<li data-options="iconCls:'icon-category'"><span><a href="#" ${hasPriv('preplan111-1')}"=="true"  onclick="addTab('预案列表','preplan_list.action',${hasPriv('preplan111-1')})">预案列表</a></span></li>
+				<li data-options="iconCls:'icon-product'"><span><a href="#"  onclick="addTab('预案编制','preplan_edit.action',${hasPriv('preplan111-2')})">预案编制</a></span></li>	
+				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('模块编制','preplan_module.action',${hasPriv('preplan111-3')})">模块编制</a></span></li>																				
 			</ul>
 		</div>
 		<div title="预案启动和执行" data-options="iconCls:'icon-system'">
 			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('启动预案','preplan_start.action')">启动预案</a></span></li>
-				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('执行情况','preplan_state.action')">执行情况</a></span></li>			
+				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('启动预案','preplan_start.action',${hasPriv('preplan112-1')})">启动预案</a></span></li>
+				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('执行情况','preplan_state.action',${hasPriv('preplan112-2')})">执行情况</a></span></li>			
 			</ul>
 		</div>
 		<div title="资源管理" data-options="iconCls:'icon-myf'">
 			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('资源列表','preplan_src_map.action')">资源列表</a></span></li>				
+				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('资源列表','preplan_src_map.action',${hasPriv('preplan113-1')})">资源列表</a></span></li>				
 			</ul>
 		</div>
 	</div>	
