@@ -31,5 +31,10 @@
 			<version>${cfw-version}</version>
 		</dependency>
 		<!-- 第三方技术组件依赖（组件个性化依赖） -->
+		<dependency>
+			<groupId>com.gsafety.cloudframework</groupId>
+			<artifactId>cloud-user-service</artifactId>
+			<version>1.2.0-RELEASE</version>
+		</dependency>
 	</dependencies>
 </project>
