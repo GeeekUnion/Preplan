@@ -18,13 +18,14 @@
        $('#win').window({
 				width:900,
 				height:450,
-				title:'可选预案',
+				title:'任务进展',
 				cache:false,
+				content:'<iframe src="preplan_state_missionDetail.action" frameborder="0" width="100%" height="100%"/>',
 				queryParams: {
 					status: 'status',
 					id: 'id'
 	}
-				content:'<iframe src="preplan_state_missionDetail.action" frameborder="0" width="100%" height="100%"/>'
+				
 			});
     }
     
