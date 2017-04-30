@@ -8,7 +8,7 @@ import com.gsafety.plan.po.Preplan;
 
 public interface MissionService extends IBaseService{
 
-	String getPage(int pageNumber, int pageSize);
+	
 
 	String getPageMis(int pageNumber, int pageSize);
 
@@ -18,5 +18,5 @@ public interface MissionService extends IBaseService{
     
     public Mission getByMissionSn(String missionSn);
     
-    
+    String getPage(int pageNumber, int pageSize);
 }

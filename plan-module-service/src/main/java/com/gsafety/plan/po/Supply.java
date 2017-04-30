@@ -28,6 +28,8 @@ public class Supply implements Serializable{
 	private String supplyPrincipal;
 	private String supplyPrincipalPhone;
     
+	private Inventory inventorySnM;
+	
     @Column(name="supply_sn")
 	public String getSupplySn() {
 		return supplySn;
@@ -91,6 +93,14 @@ public class Supply implements Serializable{
 	}
 	public void setSupplyUnit(String supplyUnit) {
 		this.supplyUnit = supplyUnit;
+	}
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="inventory_sn",referencedColumnName="inventory_sn")
+	public Inventory getInventorySnM() {
+		return inventorySnM;
+	}
+	public void setInventorySnM(Inventory inventorySnM) {
+		this.inventorySnM = inventorySnM;
 	}
 	
 	

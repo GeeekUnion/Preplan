@@ -31,7 +31,6 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 	public void setBaseDAO(IBaseDAO baseDAO) {
 		this.baseDAO = baseDAO;
 	}
-	
 	@Override
 	public String getPage(int pageNumber, int pageSize) {
 		String hql=" from Preplan p";
@@ -45,8 +44,6 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 			}else{
 				jo.put("eventName", p.getEventSn().getEventName());
 			}
-			
-			
 			jo.put("preplanSn", p.getPreplanSn());
 			jo.put("preplanName", p.getPreplanName());
 			Timestamp timestamp = p.getPreplanTime();
@@ -62,6 +59,7 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
+	
 	public String getPageMis(int pageNumber, int pageSize){
 		String hql=" from Mission m";
 		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Mission.class);
