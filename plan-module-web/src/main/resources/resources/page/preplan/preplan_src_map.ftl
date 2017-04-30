@@ -99,12 +99,74 @@
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=7c8b33d77321b79ab3ec833abfe8ff00"></script> 
     
     <script type="text/javascript">
-         
-    
+     
+	
     	$(function (){
+    	//查看某地点具体资源
+ 		function detailView(i){
+ 			$('#src_detail').window({
+				fit:true,
+				loadingMessage:'正在加载，请稍后...',
+				minimizable:false,
+				collapsible:false,
+				title:'当前预案详情',
+				cache:false,				
+				content:'<iframe src="preplan_src_map_detail.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
+			});
+ 		}
+    	
+    //update的相关方法↓
+	//提交 
+	$('#submit2').click(function(){
+			$('#ffUpdate').form('submit', {    
+			  
+			    url:'preplan_inventory_update.action',           
+			    success:function(data){
+			    	var result = eval('(' + data + ')');
+			    	if(result.status=='ok'){
+			    		$.messager.alert("提示信息","修改成功！");
+						$("#ffUpdate").form("reset");
+						//关闭窗体
+						$("#winUpdate").window("close");
+						//刷新dg
+						$("#dg").datagrid("reload");
+				   	}else{
+				   		$.messager.alert("提示信息","修改失败！",'error');
+					}
+			    }    
+			});
+		
+	})
+    	//Add的相关方法↓
+ 	      //重置
+	$("#reset").click(function(){
+		$("#ff").form("reset");
+	});
+	//提交 
+	$('#submit').click(function(){
+			$('#ffAdd').form('submit', {    
+			    url:'preplan_inventory_save.action',       
+			    success:function(data){
+			    	var result = eval('(' + data + ')');
+			    	if(result.status=='ok'){
+			    		$.messager.alert("提示信息","添加成功！");
+						$("#ffAdd").form("reset");
+						//关闭窗体
+						$("#winAdd").window("close");
+						//刷新dg
+						$("#dg").datagrid("reload");
+				   	}else{
+				   		$.messager.alert("提示信息","添加失败！",'error');
+					}
+			    }    
+			});
+		
+	})
+ 			
+ 			
  			
  		 $('#dg').datagrid({    
-  		 url:'preplan_supply_querySupply.action',    
+  		 url:'preplan_inventory_queryByPage.action',    
   		 singleSelect:true,
   		 loadmsg:'请等待',
 	     rownumbers:true,
@@ -115,28 +177,24 @@
 		 
     	 columns:[[    
     	{field:'id',title:'id',width:100,align:'center',hidden:'true'},
-    	{field:'supplySn',title:'Sn',width:100,align:'center',hidden:'true'},    
-        {field:'supplyName',title:'资源名称',width:100,align:'center'},    
-        {field:'supplyNumber',title:'资源数量',width:100,align:'center'},    
-        {field:'supplyUnit',title:'资源单位',width:100,align:'center'},    
-        {field:'supplyLatitude',title:'经度',width:100,align:'center'},
-        {field:'supplyLongitude',title:'纬度',width:150,align:'center'}, 
-        {field:'supplyPrincipal',title:'资源负责人',width:100,align:'center'}, 
-        {field:'supplyPrincipalPhone',title:'负责人电话',width:150,align:'center'},  
-       
+    	{field:'inventorySn',title:'Sn',width:100,align:'center',hidden:'true'},    
+        {field:'inventoryName',title:'仓库名称',width:100,align:'center'},     
+        {field:'inventoryLongitude',title:'经度',width:150,align:'center'}, 
+        {field:'inventoryLatitude',title:'纬度',width:100,align:'center'},
+        {field:'inventoryPrincipal',title:'负责人',width:100,align:'center'}, 
+        {field:'inventoryPrincipalPhone',title:'负责人电话',width:150,align:'center'},  
+        {field:'id',title:'操作',width:10,align:'center',
+ 								 formatter:function(value,row,index){
+ 								 			var i = row.id;
+		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看预案详情"+"</a>";				        		
+		        	}},
    						 ]],
    		 toolbar: [{
   			   	id:'add',
 		    	text:'添加',
 				iconCls: 'icon-add',
 				handler: function(){
-					$('#win').window({
-						width:380,
-		 				height:330,
-		 				title:'添加资源地',
-		 				cache:false,
-		 				content:'<iframe src="preplan_src_map_add.action" frameborder="0" width="100%" height="100%"/>'
-					});
+					$('#winAdd').window('open');
 				
 				}
 			},{
@@ -150,7 +208,7 @@
 								$.messager.confirm('确认对话框', '您想要删除所选数据吗？', function(r){
 									if (r){
 										$.ajax({
-											url:'preplan_supply_delete.action',
+											url:'preplan_inventory_delete.action',
 											method:'POST',
 											dataType:'json',
 											data:{'id':row.id},
@@ -192,13 +250,17 @@
 				handler:function(){
 					var row=$("#dg").datagrid("getSelected");
 					if(row){
-								$('#win').window({
-					 				width:380,
-					 				height:330,
-					 				title:'信息修改',
-					 				cache:false,
-					 				content:'<iframe src="preplan_src_map_update.action" frameborder="0" width="100%" height="100%"/>'
-					 			});
+					 //数据回显
+						$('#ffUpdate').form('load',{
+						    id:row.id,
+							inventoryName:row.inventoryName,
+						    inventoryLatitude:row.inventoryLatitude,
+						    inventoryLongitude:row.inventoryLongitude,
+						    inventoryPrincipal:row.inventoryPrincipal,
+						    inventoryPrincipalPhone:row.inventoryPrincipalPhone,
+						    
+						})
+						$('#winUpdate').window('open');
 					}else{
 						$.messager.show({
 							title:'我的提示',
@@ -215,7 +277,18 @@
 
 				
 				}
-			}]
+			}],
+			//成功加载出发
+ 			    onLoadSuccess:function(){
+	 			    	$('.detail_view').linkbutton({    
+						    iconCls: 'icon-search',
+						    height:24   
+						});
+						
+	 			    }
+ 		
+ 		
+ 		
   
 						});  
  		});
@@ -224,8 +297,76 @@
     </head>
 
 <body>
+
+	<div id="winAdd" class="easyui-window" title="My Window" style="width:300px;height:350px"   closed="true"
+	        data-options="iconCls:'icon-save',modal:true">   
+	    <form id="ffAdd" method="post">   
+	    <div style="margin: 15px;">   
+	        <label for="inventoryName">地点名称:&nbsp;</label>   
+	        <input id="inventoryName" class="easyui-textbox" type="text" name="inventoryName" data-options="required:true" />   
+	    </div>   
+	    <div style="margin: 15px;">   
+	        <label for="inventoryLongitude">经度:&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryLongitude" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryLatitude">纬度:&nbsp;&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryLatitude" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryPrincipal">负责人:&nbsp;&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryPrincipal" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryPrincipalPhone">负责人电话:</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryPrincipalPhone" data-options="required:true" />   
+	    </div>
+	      
+	    <div style="margin-top: 25px;text-align:center">
+	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  
+	    	<a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'">重置</a>  
+	    </div>      
+	</form> 
+	</div>  
+	
+	<div id="winUpdate" class="easyui-window" title="My Window" style="width:300px;height:350px"  closed="true"  
+	        data-options="iconCls:'icon-save',modal:true">   
+	     <form id="ffUpdate" method="post">   
+	      <div style="margin: 15px;">   
+	        <label for="id">地点名称:&nbsp;</label>   
+	        <input id="id" class="easyui-textbox" type="text" name="id"  />   
+	    </div>   
+	    <div style="margin: 15px;">   
+	        <label for="inventoryName">地点名称:&nbsp;</label>   
+	        <input id="inventoryName" class="easyui-textbox" type="text" name="inventoryName" data-options="required:true" />   
+	    </div>   
+	    <div style="margin: 15px;">   
+	        <label for="inventoryLongitude">经度:&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryLongitude" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryLatitude">纬度:&nbsp;&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryLatitude" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryPrincipal">负责人:&nbsp;&nbsp;&nbsp;</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryPrincipal" data-options="required:true" />   
+	    </div>
+	    <div style="margin: 15px;">   
+	        <label for="inventoryPrincipalPhone">负责人电话:</label>   
+	        <input class="easyui-textbox" type="text" name="inventoryPrincipalPhone" data-options="required:true" />   
+	    </div>
+	      
+	    <div style="margin-top: 25px;text-align:center">
+	    	<a id="submit2" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">修改</a>  
+	    	<a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'">重置</a>  
+	    </div>      
+	</form> 
+	</div>  
+	
+	
 	<table id="dg"></table>    
-    <div id="win" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div> 
+    <div id="src_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true" ></div> 
 	<div id="container" tabindex="0" style="position:absolute">
 	<div class ='map-panel'>
      输入地址显示位置:</br>
@@ -265,7 +406,7 @@
     				});
     				marker = new AMap.Marker({
     					icon: icon,
-    					position: [data[i].supplyLatitude,data[i].supplyLongitude],
+    					position: [data[i].supplyLongitude,data[i].supplyLatitude],
     					offset: new AMap.Pixel(-12,-12),
     					zIndex: 101,
     					title: data[i].supplyName,

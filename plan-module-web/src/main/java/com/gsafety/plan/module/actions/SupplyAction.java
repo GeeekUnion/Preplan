@@ -66,7 +66,7 @@ public class SupplyAction extends ListAction<Supply> {
         jsonArray =supplyService.getMapSupply();
 		return "jsonArray";
     }
-	//地图里，新增资源
+	//新增资源
     public String save(){
 		jsonObject.put("status", "ok");
 		Supply s = new Supply();
@@ -86,7 +86,7 @@ public class SupplyAction extends ListAction<Supply> {
 		}
 		return "jsonObject";
 	}
-    //地图里，删除某个资源点
+    //删除某个资源点
     public String delete(){
     	jsonObject.put("status", "ok");
 		try{
@@ -102,7 +102,7 @@ public class SupplyAction extends ListAction<Supply> {
     public String update(){
     	jsonObject.put("status", "ok");
 		try{
-			System.out.println(supplyNumber);
+			System.out.println(id);
 			Supply s = supplyService.get(Supply.class,id);
 			s.setSupplyLatitude(supplyLatitude);
 			s.setSupplyLongitude(supplyLongitude);
