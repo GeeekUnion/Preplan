@@ -99,21 +99,24 @@
     <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=7c8b33d77321b79ab3ec833abfe8ff00"></script> 
     
     <script type="text/javascript">
-     
-	
-    	$(function (){
-    	//查看某地点具体资源
+     //查看某地点具体资源
  		function detailView(i){
+ 		    
  			$('#src_detail').window({
-				fit:true,
+			  
 				loadingMessage:'正在加载，请稍后...',
+				width: 800,    
+                height: 400,    
 				minimizable:false,
 				collapsible:false,
-				title:'当前预案详情',
+				title:'当前资源地情况',
 				cache:false,				
-				content:'<iframe src="preplan_src_map_detail.action?code=' +i+ '" frameborder="0" width="100%" height="100%"/>'
+				content:'<iframe src="preplan_src_map_detail.action" frameborder="0" />'
 			});
  		}
+	
+    	$(function (){
+    	
     	
     //update的相关方法↓
 	//提交 
@@ -183,10 +186,10 @@
         {field:'inventoryLatitude',title:'纬度',width:100,align:'center'},
         {field:'inventoryPrincipal',title:'负责人',width:100,align:'center'}, 
         {field:'inventoryPrincipalPhone',title:'负责人电话',width:150,align:'center'},  
-        {field:'id',title:'操作',width:10,align:'center',
+        {field:'tt',title:'操作',width:150,align:'center',
  								 formatter:function(value,row,index){
  								 			var i = row.id;
-		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看预案详情"+"</a>";				        		
+		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看该资源地资源"+"</a>";				        		
 		        	}},
    						 ]],
    		 toolbar: [{
@@ -334,7 +337,7 @@
 	     <form id="ffUpdate" method="post">   
 	      <div style="margin: 15px;">   
 	        <label for="id">地点名称:&nbsp;</label>   
-	        <input id="id" class="easyui-textbox" type="text" name="id"  />   
+	        <input id="id" class="easyui-textbox" type="text" name="id" hidden="true" />   
 	    </div>   
 	    <div style="margin: 15px;">   
 	        <label for="inventoryName">地点名称:&nbsp;</label>   

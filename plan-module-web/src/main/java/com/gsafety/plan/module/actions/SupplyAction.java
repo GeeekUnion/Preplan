@@ -29,6 +29,8 @@ import org.apache.struts2.convention.annotation.Namespace;
 
 
 
+
+
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Event;
 import com.gsafety.plan.po.Supply;
@@ -50,17 +52,23 @@ public class SupplyAction extends ListAction<Supply> {
      private String supplyLongitude;
      private String supplyPrincipal;
      private String supplyPrincipalPhone;
+     private String  code;         //代指iventory的sn
+     private int iId;        //代指iventory的id
+     private int page;
+     private int rows;
      private JSONArray jsonArray = new JSONArray();
      private JSONObject jsonObject = new JSONObject();
 	
-	//查询所有的supply
-    public String queryAllSupply() throws IOException{
-    	String str=supplyService.getAllSupply();
-		out().print(str);
-		out().flush();
-		out().close();
-		return "jsonArray";
-    }
+   //查询所有Inventory
+  	public String queryByPage() throws IOException{
+  		System.out.println(code);
+  		String str=supplyService.getPageByCode(page, rows,code);
+  		
+  		out().print(str);
+  		out().flush();
+  		out().close();
+  		return "jsonArray";
+  	}
     //地图里，查询所有supply
     public String querySupply(){
         jsonArray =supplyService.getMapSupply();
@@ -203,6 +211,31 @@ public class SupplyAction extends ListAction<Supply> {
 	public void setId(int id) {
 		this.id = id;
 	}
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getRows() {
+		return rows;
+	}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public int getiId() {
+		return iId;
+	}
+	public void setiId(int iId) {
+		this.iId = iId;
+	}
+	
 	
 	
 }
