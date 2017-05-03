@@ -105,35 +105,35 @@ public class MissionServiceImpl extends BaseServiceImpl implements MissionServic
 		Mission m =baseDAO.getUniqueByHql(hql,Mission.class);
 		return m;
 	}
-	//
-//	public String getByPreSn(String preplanSn,int pageNumber, int pageSize){
-//		 Preplan preModel =new Preplan();
-//		 preModel.setPreplanSn(preplanSn);
-//		 Map<String ,Object> map =new HashMap<String ,Object>();
-//		 map.put("preplanSnM", preModel);
-//		 String hql="from Mission m where preplanSnM =:preplanSnM";
-//		 List<Mission> miList =baseDAO.getListByHql(hql, map, Mission.class);
-//		
-//		 JSONArray array = new JSONArray();
-//		 int total=0;
-//		 if(miList.size()>0){
-//			 for(Mission m:miList){
-//				 JSONObject jo =new JSONObject();
-//				 jo.put("missionDefault", m.getMissionDefault());
-//				 jo.put("missionName", m.getMissionName());
-//				 jo.put("preplanSnM", m.getPreplanSnM().getPreplanSn());
-//				 jo.put("missionSn", m.getMissionSn());
-//				 jo.put("missionMethod",m.getMissionMethod() );
-//				 jo.put("missionStatus",m.getMissionStatus() );
-//			 	 jo.put("responDept", m.getResponDept());
-//			 	 jo.put("responPerson", m.getResponPerson());
-//			 	    total+=1;
-//			     	array.add(jo);
-//			 } 
-//		 }
-//		String str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";
-//        return str;
-//	}
+	
+	public String getByPreSn(String preplanSn,int pageNumber, int pageSize){
+		 Preplan preModel =new Preplan();
+		 preModel.setPreplanSn(preplanSn);
+		 Map<String ,Object> map =new HashMap<String ,Object>();
+		 map.put("preplanSnM", preModel);
+		 String hql="from Mission m where preplanSnM =:preplanSnM";
+		 List<Mission> miList =baseDAO.getListByHql(hql, map, Mission.class);
+		
+		 JSONArray array = new JSONArray();
+		 int total=0;
+		 if(miList.size()>0){
+			 for(Mission m:miList){
+				 JSONObject jo =new JSONObject();
+				 jo.put("missionDefault", m.getMissionDefault());
+				 jo.put("missionName", m.getMissionName());
+				 jo.put("preplanSnM", m.getPreplanSnM().getPreplanSn());
+				 jo.put("missionSn", m.getMissionSn());
+				 jo.put("missionMethod",m.getMissionMethod() );
+				 jo.put("missionStatus",m.getMissionStatus() );
+			 	 jo.put("responDept", m.getResponDept());
+			 	 jo.put("responPerson", m.getResponPerson());
+			 	    total+=1;
+			     	array.add(jo);
+			 } 
+		 }
+		String str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";
+        return str;
+	}
 	
 	
 	

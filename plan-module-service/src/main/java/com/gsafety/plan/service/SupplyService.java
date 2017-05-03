@@ -5,7 +5,11 @@ import net.sf.json.JSONArray;
 import com.gsafety.cloudframework.common.base.service.IBaseService;
 
 public interface SupplyService extends IBaseService{
-	public String getAllSupply();
+	public String getPageByCode(int pageNumber, int pageSize,String code);
+	
+	
+	
+	
 	public JSONArray getMapSupply();
 
 	
