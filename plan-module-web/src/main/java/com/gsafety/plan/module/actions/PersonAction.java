@@ -2,26 +2,19 @@ package com.gsafety.plan.module.actions;
 
 
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.interceptor.SessionAware;
 
 
-
-
-
-
-
-
-
-
-import com.gsafety.cloudframework.common.base.conditions.Cnds;
-import com.gsafety.cloudframework.common.base.util.encrypt.DESCoder;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Person;
 import com.gsafety.plan.service.PersonService;
-import com.gsafety.plan.service.PreplanService;
+
 
 /**
  * @author Administrator
@@ -29,7 +22,7 @@ import com.gsafety.plan.service.PreplanService;
  *
  */
 @Namespace("/preplan")
-public class PersonAction extends ListAction<Person> {
+public class PersonAction extends ListAction<Person> implements SessionAware {
 	
 	 @Resource
 	 private PersonService personService;   
@@ -37,6 +30,8 @@ public class PersonAction extends ListAction<Person> {
 	private String username;
 	private String password;
 	private String jsonObject;
+	//用于封装会话session
+	protected Map<String, Object> session;  
 	
 	/**
 	 * 预警管理登录
@@ -48,6 +43,8 @@ public class PersonAction extends ListAction<Person> {
 		if(StringUtils.isNotEmpty(username)) {
 			Person pr=personService.getPersonByUname(username,password);	
 			if(password.equals(pr.getPassword())){
+			    session.put("preplanUsername",pr.getLoginName());  
+			    System.out.println(session.get("preplanUsername"));
 				jsonObject="ok";
 			}else{
 				jsonObject="error";		
@@ -55,6 +52,14 @@ public class PersonAction extends ListAction<Person> {
 		}		
 		return "jsonObject";
 	}
+	public String loginOut(){
+    	if(null != session) {
+    		session.clear();
+    		jsonObject="ok";
+    	}
+		return "jsonObject";
+	}
+	
 	
 	public String getUsername() {
 		return username;
@@ -79,6 +84,11 @@ public class PersonAction extends ListAction<Person> {
     public void setJsonObject(String jsonObject) {
         this.jsonObject = jsonObject;
     }
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session=session;
+	}
     
 
 }

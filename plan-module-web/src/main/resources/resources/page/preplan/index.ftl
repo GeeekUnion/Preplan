@@ -23,31 +23,47 @@
 	    <div class="fl northLeft">
 			 <h1 class="fl mgl" style="font-size:32px;">预警管理系统</h1>
 	    </div>   
-		<div class="fr northRight">
-			<span>欢迎您</span>
+		<div class="fr northRight panel-title">
+			<#if null != preplanUsername>
+				<span>欢迎您：${preplanUsername}</span>
+				<span>&nbsp;|&nbsp;</span>
+				<span><a href="javascript:void(0)" onclick="loginOut()">退出系统</a></span>
+			</#if>		
 		</div>
 	</div>
 </div>
-
+		
 <!--1.2 region="west",必须指明宽度-->
 <div region="west" class="west"  title="导航菜单" split="true"  >
     <div class="easyui-accordion" >				
-		<div title="预案及模块管理" data-options="iconCls:'icon-man'" >
-			<ul id="tt1" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-category'"><span><a href="#" ${hasPriv('preplan111-1')}"=="true"  onclick="addTab('预案列表','preplan_list.action',${hasPriv('preplan111-1')})">预案列表</a></span></li>
-				<li data-options="iconCls:'icon-product'"><span><a href="#"  onclick="addTab('预案编制','preplan_edit.action',${hasPriv('preplan111-2')})">预案编制</a></span></li>	
-				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('模块编制','preplan_module.action',${hasPriv('preplan111-3')})">模块编制</a></span></li>																				
+		<div title="预案及模块管理" data-options="iconCls:'icon-product'" >
+			<ul id="tt1" class="">		
+				<#if hasPriv('preplan111-1')==true>
+				   <li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"   onclick="addTab('预案列表','${pageContext.request.contextPath}/plan/preplan/preplan_list.action',${hasPriv('preplan111-1')})">预案列表</a></span></li>
+				</#if>		
+				<#if hasPriv('preplan111-2')==true>	
+					<li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"  onclick="addTab('预案编制','${pageContext.request.contextPath}/plan/preplan/preplan_edit.action',${hasPriv('preplan111-2')})">预案编制</a></span></li>	
+				</#if>	
+				<#if hasPriv('preplan111-3')==true>	
+					<li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"  onclick="addTab('模块编制','${pageContext.request.contextPath}/plan/preplan/preplan_module.action',${hasPriv('preplan111-3')})">模块编制</a></span></li>																		
+				</#if>														
 			</ul>
 		</div>
-		<div title="预案启动和执行" data-options="iconCls:'icon-system'">
-			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('启动预案','preplan_start.action',${hasPriv('preplan112-1')})">启动预案</a></span></li>
-				<li data-options="iconCls:'icon-center'"><span><a href="#"  onclick="addTab('执行情况','preplan_state.action',${hasPriv('preplan112-2')})">执行情况</a></span></li>			
+		<div title="预案启动和执行" data-options="iconCls:'icon-menu'">
+			<ul id="tt3" class="">
+				<#if hasPriv('preplan112-1')==true>	
+					<li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"  onclick="addTab('启动预案','${pageContext.request.contextPath}/plan/preplan/preplan_start.action',${hasPriv('preplan112-1')})">启动预案</a></span></li>
+				</#if>
+				<#if hasPriv('preplan112-2')==true>	
+					<li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"  onclick="addTab('执行情况','${pageContext.request.contextPath}/plan/preplan/preplan_state.action',${hasPriv('preplan112-2')})">执行情况</a></span></li>			
+				</#if>								
 			</ul>
 		</div>
 		<div title="资源管理" data-options="iconCls:'icon-myf'">
-			<ul id="tt3" class="easyui-tree esuitree">
-				<li data-options="iconCls:'icon-menu'"><span><a href="#"  onclick="addTab('资源列表','preplan_src_map.action',${hasPriv('preplan113-1')})">资源列表</a></span></li>				
+			<ul id="tt3" class="">
+				<#if hasPriv('preplan113-1')==true>	
+					<li class="tree-title" style="display:list-item"><span><a href="javascript:void(0)"  onclick="addTab('资源列表','${pageContext.request.contextPath}/plan/preplan/preplan_src_map.action',${hasPriv('preplan113-1')})">资源列表</a></span></li>				
+				</#if>				
 			</ul>
 		</div>
 	</div>	
@@ -77,6 +93,24 @@
 	function tabsClose(title){
 		closeTab(title)
 	}
+	
+	function loginOut(){
+		$.ajax({
+			url:'/plan/preplan/preplan_person_loginOut.action',
+			method:'POST',
+			dataType:'json',
+			data:{
+			},
+			success:function(data){
+				if(data=="ok"){
+		        	location.href ="/plan/preplan/login.action";   
+		        }else{
+					$.messager.alert('提示','未知错误，请重试！','error');	
+		        }
+			}
+		})
+	}
+	
 </script>
 	
 </body>
