@@ -40,7 +40,6 @@ PersonService{
 		EmsOrg org =new EmsOrg();
 		EmsMenu defaultMenu =new EmsMenu();
 		LoginActionHelper.sessionBeanHandler(null, eu, org, defaultMenu);
-//		SessionBean sessionBean = new SessionBean();
 //		PrivBean privBean = emsPrivsBusiness.getPrivByUserId(eu.getId());		
 //		EmsPrivVo emsPrivVo = new EmsPrivVo();//创建sessionbean需要的属性vo
 //		BeanUtils.copyProperties(privBean.getPrivVo(), emsPrivVo);
@@ -48,9 +47,9 @@ PersonService{
 //		System.out.println(emsPrivsBusiness.getEmsPrivs(eu.getId()));
 
 		Person pr=new Person();		
-		try {
-			
+		try {			
 			pr.setPassword(DESCoder.decrypt(eu.getPassword(), AuthConstant.PASSWORD_KEY));
+			pr.setLoginName(username);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
