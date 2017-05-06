@@ -45,45 +45,33 @@ public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
 			 jo.put("supplyNumber", s.getSupplyNumber());
 			 jo.put("supplyUnit", s.getSupplyUnit());
 			 jo.put("id", s.getId());
-			 jo.put("supplyLatitude", s.getSupplyLatitude());
-			 jo.put("supplyLongitude", s.getSupplyLongitude());
-			 jo.put("supplyPrincipal", s.getSupplyPrincipal());
-			 jo.put("supplyPrincipalPhone", s.getSupplyPrincipalPhone());
+			 //下面是inventory部分
+			 jo.put("idIn",s.getInventorySnM().getId() );
+			 jo.put("inventoryName",s.getInventorySnM().getInventoryName() );
+			 jo.put("code", s.getInventorySnM().getInventorySn());
+			 jo.put("inventoryLatitude", s.getInventorySnM().getInventoryLatitude());
+			 jo.put("inventoryLongitude", s.getInventorySnM().getInventoryLongitude());
+			 jo.put("inventoryPrincipal", s.getInventorySnM().getInventoryPrincipal());
+			 jo.put("inventoryPrincipalPhone", s.getInventorySnM().getInventoryPrincipalPhone());
 			 array.add(jo);	 
 		 }
 	        return array;
 		
 	}
 
-//	@Override
-//	public String getPageByCode(int pageNumber, int pageSize,String code) {
-//		
-//		String hql="  from Supply s where s.inventorySnM.inventorySn="+code;
-//		//不是getpageByHql吗方法
-//		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Supply.class);
-//		
-//		List<Supply> sList= (List<Supply>)  pResult.getList();
-//		 JSONArray array = new JSONArray();
-//		 for(Supply s:sList){
-//			 JSONObject jo = new JSONObject();
-//			 jo.put("supplyName", s.getSupplyName());
-//			 jo.put("supplySn", s.getSupplySn());
-//			 jo.put("supplyNumber", s.getSupplyNumber());
-//			 jo.put("supplyUnit", s.getSupplyUnit());
-//			 jo.put("id", s.getId());
-//			 array.add(jo);	 
-//		 }
-//		 String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
-//	        return str;
-//		
-//	}
+     //输出方式有问题
 	@Override
-	public String getPageByCode(int pageNumber, int pageSize,String code) {
+	public JSONObject getPageByCode(int pageNumber, int pageSize,String code) {
 		Inventory iModel = new Inventory();
 		iModel.setInventorySn(code);
 		Map<String ,Object> map =new HashMap<String ,Object>();
 		 map.put("inventorySnM", iModel);
-		String hql="  from Supply s where s.inventorySnM.inventorySn=:code";
+		String hql="  from Supply s where s.inventorySnM=:inventorySnM";
+		//String hql2="select count(s)  from Supply s where s.inventorySnM.inventorySn="+code;
+		
+		System.out.println(hql);
+		//System.out.println(hql2);
+		
 		 List<Supply> sList =baseDAO.getListByHql(hql, map, Supply.class);
 		 JSONArray array = new JSONArray();
 		 int total=0;
@@ -97,9 +85,41 @@ public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
 			 total+=1;
 			 array.add(jo);	 
 		 }
+		  JSONObject jsonObject = new JSONObject();
+		  jsonObject.put("row",array);
+		  jsonObject.put("total",total );
+		 return jsonObject;
+		
+	}
+
+	@Override
+	public String getPageByCode2(int pageNumber, int pageSize, String code) {
+		Inventory iModel = new Inventory();
+		iModel.setInventorySn(code);
+		Map<String ,Object> map =new HashMap<String ,Object>();
+		 map.put("inventorySnM", iModel);
+		String hql="  from Supply s where s.inventorySnM=:inventorySnM";
+		//String hql2="select count(s)  from Supply s where s.inventorySnM.inventorySn="+code;
+		
+		System.out.println(hql);
+		//System.out.println(hql2);
+		
+		 List<Supply> sList =baseDAO.getListByHql(hql, map, Supply.class);
+		 JSONArray array = new JSONArray();
+		 int total=0;
+		 for(Supply s:sList){
+			 JSONObject jo = new JSONObject();
+			 jo.put("supplyName", s.getSupplyName());
+			 jo.put("supplySn", s.getSupplySn());
+			 jo.put("supplyNumber", s.getSupplyNumber());
+			 jo.put("supplyUnit", s.getSupplyUnit());
+			 jo.put("code", s.getInventorySnM().getInventorySn());
+			 jo.put("id", s.getId());
+			 total+=1;
+			 array.add(jo);	 
+		 }
 		 String str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";
 	        return str;
-		
 	}
 	
 

@@ -15,6 +15,7 @@ import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Inventory;
 import com.gsafety.plan.po.Preplan;
+import com.gsafety.plan.po.Supply;
 import com.gsafety.plan.service.InventoryService;
 import com.gsafety.plan.service.SupplyService;
 @Service
@@ -50,6 +51,25 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
 	}
+	@Override
+	public JSONArray getMapInventory() {
+		 String hql="from Inventory i";
+		 List<Inventory> sList= (List<Inventory>) baseDAO.getListByHql(hql);
+		 JSONArray array = new JSONArray();
+		 for(Inventory p:sList){
+			 JSONObject jo = new JSONObject();
+			    jo.put("id", p.getId());
+			    jo.put("inventoryName", p.getInventoryName());
+			    jo.put("inventorySn", p.getInventorySn());
+			    jo.put("inventoryLatitude", p.getInventoryLatitude());
+			    jo.put("inventoryLongitude", p.getInventoryLongitude());
+			    jo.put("inventoryPrincipal", p.getInventoryPrincipal());
+			    jo.put("inventoryPrincipalPhone", p.getInventoryPrincipalPhone());
+					array.add(jo);
+		 }
+	        return array;
+		
 	
-	
+}
+
 }
