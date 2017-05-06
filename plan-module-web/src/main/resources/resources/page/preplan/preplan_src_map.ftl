@@ -102,6 +102,7 @@
      //查看某地点具体资源
  		function detailView(i){
  		    
+ 		    $('#hiddenId').val(i);
  			$('#src_detail').window({
 			  
 				loadingMessage:'正在加载，请稍后...',
@@ -111,7 +112,7 @@
 				collapsible:false,
 				title:'当前资源地情况',
 				cache:false,				
-				content:'<iframe src="preplan_src_map_detail.action" frameborder="0" />'
+				content:'<iframe src="preplan_src_map_detail.action" frameborder="0" width="100%" height="100%" />'
 			});
  		}
 	
@@ -368,7 +369,9 @@
 	</div>  
 	
 	
-	<table id="dg"></table>    
+	<table id="dg">
+	<input type="hidden" id="hiddenId">
+	</table>    
     <div id="src_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true" ></div> 
 	<div id="container" tabindex="0" style="position:absolute">
 	<div class ='map-panel'>
@@ -402,6 +405,7 @@
  				 var markers = []; 
  				   var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
         for (var i = 0; i < data.length; i += 1) {
+                    var code=data[i].inventorySn;
     			    var marker;
     				var icon = new AMap.Icon({
     					image: 'http://vdata.amap.com/icons/b18/1/2.png',
@@ -409,14 +413,15 @@
     				});
     				marker = new AMap.Marker({
     					icon: icon,
-    					position: [data[i].supplyLongitude,data[i].supplyLatitude],
+    					position: [data[i].inventoryLongitude,data[i].inventoryLatitude],
     					offset: new AMap.Pixel(-12,-12),
     					zIndex: 101,
-    					title: data[i].supplyName,
+    					title: data[i].inventoryName,
     					map: map
     				});
     			
-    			     marker.content = data[i].supplyName+ '<span style="font-size:11px;color:#F00;">' + data[i].supplyNumber+ '</span>'+data[i].supplyUnit  +   "<hr>负责人:"+data[i].supplyPrincipal     +"<hr>电话："+data[i].supplyPrincipalPhone;
+    			     marker.content = data[i].inventoryName+ '<span style="font-size:11px;color:#F00;">' +"" + '</span>'+ "" +   "<hr>负责人:"+data[i].inventoryPrincipal     +"<hr>电话："+data[i].inventoryPrincipalPhone+
+    			     "<a  href='#' onclick='detailView(" +code+ ")'  class='detail_view' >"+"查看该资源地资源"+"</a>";
                      marker.on('click', markerClick);
                      marker.emit('click', {target: marker});
     			    

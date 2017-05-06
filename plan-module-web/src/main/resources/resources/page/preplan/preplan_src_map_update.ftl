@@ -12,17 +12,13 @@
 
     <script type="text/javascript">
         $(function(){
-        var row=parent.$('#dg').datagrid('getSelected');	
+        var row=parent.$('#dgDetail').datagrid('getSelected');	
         //数据回显
 		$('#ff').form('load',{
 		    id:row.id,
 			supplyName:row.supplyName,
 			supplyNumber:row.supplyNumber,
 			supplyUnit:row.supplyUnit,
-			supplyLatitude:row.supplyLatitude,
-			supplyLongitude:row.supplyLongitude,
-			supplyPrincipal:row.supplyPrincipal,
-			supplyPrincipalPhone:row.supplyPrincipalPhone
 		})
         //重置
 	$("#reset").click(function(){
@@ -41,9 +37,9 @@
 			    		parent.$.messager.alert("提示信息","修改成功！");
 						$("#ff").form("reset");
 						//关闭窗体
-						parent.$("#win").window("close");
+						parent.$("#winDetailUpdate").window("close");
 						//刷新dg
-						parent.$("#dg").datagrid("reload");
+						parent.$("#dgDetail").datagrid("reload");
 				   	}else{
 				   		parent.$.messager.alert("提示信息","修改失败！",'error');
 					}
@@ -75,22 +71,7 @@
 	        <label for="supplyUnit">资源单位:&nbsp;</label>   
 	        <input class="easyui-textbox" type="text" name="supplyUnit" data-options="required:true" />   
 	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyLatitude">经度:&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyLatitude" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyLongitude">纬度:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyLongitude" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyPrincipal">负责人:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyPrincipal" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyPrincipalPhone">负责人电话:</label>   
-	        <input class="easyui-textbox" type="text" name="supplyPrincipalPhone" data-options="required:true,validType:'length[11]'" />   
-	    </div>
+	   
 	      
 	    <div style="margin-top: 25px;text-align:center">
 	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  

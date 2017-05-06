@@ -43,7 +43,11 @@ public class InventoryAction extends ListAction<Inventory> {
  		return out;
  	}
 	
-
+    public String queryAllInventory(){
+    	jsonArray=inventoryService.getMapInventory();
+    	return "jsonArray";
+    	
+    }
 
 
    //查询所有Inventory

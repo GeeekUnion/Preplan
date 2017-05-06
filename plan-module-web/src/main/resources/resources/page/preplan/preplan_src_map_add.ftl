@@ -11,6 +11,13 @@
 	<script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 
     <script type="text/javascript">
+    //获得父类的父类iId属性，实际上是inventory的iId
+     var row=parent.parent.$("#dg").datagrid("getSelected");
+    var code=row.inventorySn;
+    var idInventory=row.id;
+     console.log(code);
+     console.log(idInventory);
+     
         $(function(){
         
         //重置
@@ -20,16 +27,19 @@
 	//提交 
 	$('#submit').click(function(){
 			$('#ff').form('submit', {    
-			    url:'preplan_supply_save.action',       
+			    url:'preplan_supply_save.action',  
+                queryParams:{ code: code,
+                              idInventory:idInventory,  
+                 }, 
 			    success:function(data){
 			    	var result = eval('(' + data + ')');
 			    	if(result.status=='ok'){
 			    		parent.$.messager.alert("提示信息","添加成功！");
 						$("#ff").form("reset");
 						//关闭窗体
-						parent.$("#win").window("close");
+						parent.$("#winDetailAdd").window("close");
 						//刷新dg
-						parent.$("#dg").datagrid("reload");
+						parent.$("#dgDetail").datagrid("reload");
 				   	}else{
 				   		parent.$.messager.alert("提示信息","添加失败！",'error');
 					}
@@ -61,22 +71,7 @@
 	        <label for="supplyUnit">资源单位:&nbsp;</label>   
 	        <input class="easyui-textbox" type="text" name="supplyUnit" data-options="required:true" />   
 	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyLatitude">经度:&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyLatitude" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyLongitude">纬度:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyLongitude" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyPrincipal">负责人:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="supplyPrincipal" data-options="required:true" />   
-	    </div>
-	    <div style="margin: 15px;">   
-	        <label for="supplyPrincipalPhone">负责人电话:</label>   
-	        <input class="easyui-textbox" type="text" name="supplyPrincipalPhone" data-options="required:true,validType:'length[11]'" />   
-	    </div>
+	   
 	      
 	    <div style="margin-top: 25px;text-align:center">
 	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  

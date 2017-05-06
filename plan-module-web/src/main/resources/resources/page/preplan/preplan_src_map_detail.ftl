@@ -11,16 +11,24 @@
 	<script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 
     <script type="text/javascript">
+ 
+    var hiddenId=parent.$("#hiddenId").val();
      var row=parent.$("#dg").datagrid("getSelected");
+     if(row!=null){
       var code=row.inventorySn;
+      }else{
+      var code=hiddenId;
+      }
       console.log(code+"666");
+      
+      
       $(function (){
       
        
       $('#dgDetail').datagrid({    
-  		 url:'',    
+  		 url:'preplan_supply_queryByPage.action',    
   		 fitColumns:true,
-  		 fit:true,
+  		 fit:true ,
   		 singleSelect:true,
   		 loadmsg:'请等待',
 	     rownumbers:true,
@@ -33,10 +41,10 @@
 	             	},
     	 columns:[[    
     	{field:'id',title:'id',width:100,align:'center',hidden:'true'},
-    	{field:'supplySn',title:'Sn',width:"33%",align:'center',hidden:'true'},    
-        {field:'supplyName',title:'资源名称',width:"33%",align:'center'},    
-        {field:'supplyNumber',title:'资源数量',width:"33%",align:'center'},    
-        {field:'supplyUnit',title:'资源单位',width:"33%",align:'center'},    
+    	{field:'supplySn',title:'Sn',width:200,align:'center',hidden:'true'},    
+        {field:'supplyName',title:'资源名称',width:200,align:'center'},    
+        {field:'supplyNumber',title:'资源数量',width:200,align:'center'},    
+        {field:'supplyUnit',title:'资源单位',width:200,align:'center'},    
      
    						 ]],
    		 toolbar: [{
@@ -45,8 +53,8 @@
 				iconCls: 'icon-add',
 				handler: function(){
 					$('#winDetailAdd').window({
-						width:380,
-		 				height:330,
+						width:400,
+		 				height:230,
 		 				title:'添加资源地',
 		 				cache:false,
 		 				content:'<iframe src="preplan_src_map_add.action" frameborder="0" width="100%" height="100%"/>'
@@ -105,17 +113,13 @@
 				handler:function(){
 					var row=$("#dgDetail").datagrid("getSelected");
 					if(row){
-					 //数据回显
-						$('#ffUpdate').form('load',{
-						    id:row.id,
-							inventoryName:row.inventoryName,
-						    inventoryLatitude:row.inventoryLatitude,
-						    inventoryLongitude:row.inventoryLongitude,
-						    inventoryPrincipal:row.inventoryPrincipal,
-						    inventoryPrincipalPhone:row.inventoryPrincipalPhone,
-						    
-						})
-						$('#winUpdate').window('open');
+								$('#winDetailUpdate').window({
+					 				width:380,
+					 				height:330,
+					 				title:'信息修改',
+					 				cache:false,
+					 				content:'<iframe src="preplan_src_map_update.action" frameborder="0" width="100%" height="100%"/>'
+					 			});
 					}else{
 						$.messager.show({
 							title:'我的提示',
@@ -143,9 +147,9 @@
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body>
-  <div id="winDetailAdd"></div>  
- <table id="dgDetail" ></table>  
-    
+ <table id="dgDetail"  ></table>  
+  <div id="winDetailAdd"  data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>  
+    <div id="winDetailUpdate"  data-options="collapsible:false,minimizable:false,maximizable:false,modal:true"></div>  
 	
 </body>
 </html>
