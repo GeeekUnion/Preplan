@@ -11,15 +11,80 @@
 	<script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
 	
     <script type="text/javascript">
-       
+       $(function (){
+       var queryParams = parent.$('#win').window('options').queryParams;
+       var status =queryParams.status;
+       var id =queryParams.id;
+ 		//console.log(status+"666"+id);
  		
+ 			$.ajax({
+        		url:'preplan_mission_queryBymissionSn.action',
+        		data:{
+        		id:id
+        		},
+    			dataType:'json',
+    			method:'POST',
+    			success:function(data){
+    		    console.log(data[0].missionMethod);
+    				var html="";
+    				var html2="";
+    				var html3="";
+    				
+    				html=html+data[0].missionName
+    				html2=html2+data[0].missionStatus
+    				html3=html3+data[0].missionMethod
+
+    				
+    				$('#missionName').html(html);
+    				$('#missionStatus').html(html2);
+    				$('#missionMethod').html(html3);
+    				
+    				
+    				
+    			}
+        	})
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		
+ 		});
     </script>
     </head>
 
 <body>
    
    <table id="dg"></table>  
-    
+    <div class="btm-area" id="missionDetail">
+    	<div id="ppe_preplan" class="pp_preplan">   
+		    <div class="border">   
+		       <span class="label_box"><label for="missionName" ><strong>任务名称:</strong></label></span>  
+		        <span> 
+		        	<div id="missionName" name="missionName" value="${data[0].missionName}">   </div>
+		        </span>
+		    </div>
+		    <div class="border">   
+		       <span class="label_box"><label for="missionStatus" ><strong>任务状态:</strong></label></span>  
+		        <span> 
+		        	<div id="missionStatus" name="missionStatus" value="${data[0].missionStatus}">   </div>   
+		        </span>
+		    </div>
+		  
+		    
+		    <div class="border">   
+		        <span class="label_box"><label for="ppe_preplan_desc" id="contentTip"><strong>任务完成情况:</strong></label></span>		            
+		        <span>
+		        	<textarea id="missionMethod" name="missionMethod" style="width:600px;height:300px;visibility:hidden;display: block;">${data[0].missionMethod}</textarea>		        
+		        </span>
+		    </div>        
+		</div>
+		
+</div>	
+		
     
 	
 </body>

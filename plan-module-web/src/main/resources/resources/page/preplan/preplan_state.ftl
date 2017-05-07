@@ -14,7 +14,7 @@
 
     <script type="text/javascript">
      function js_method(status,id){
-     
+     //打开具体任务详情
        $('#win').window({
 				width:900,
 				height:450,
@@ -22,8 +22,8 @@
 				cache:false,
 				content:'<iframe src="preplan_state_missionDetail.action" frameborder="0" width="100%" height="100%"/>',
 				queryParams: {
-					status: 'status',
-					id: 'id'
+					status: status,
+					id: id
 	}
 				
 			});

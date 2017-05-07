@@ -30,7 +30,7 @@ public class MissionAction extends ListAction<Mission> {
 	private int page;
 	private int rows;
 	//预案的
-	private String id;
+	private int id;
 	private String preplanSn;                       
 	private String preplanName;
 	private Timestamp preplanTime;
@@ -96,21 +96,21 @@ public class MissionAction extends ListAction<Mission> {
         out().close();   
         return "jsonArray";
     }
-	//根据missionSn获得mission,没有put所有的属性
+	//根据mission的id获得mission,没有put所有的属性
     public String queryBymissionSn(){
         JSONObject jo = new JSONObject();
-        JSONArray array = new JSONArray();
+        jsonArray = new JSONArray();
+        System.out.println(id);
     	Mission m = missionService.get(Mission.class,id);
     	if(m!=null){
     		jo.put("missionDefault", m.getMissionDefault());
     		jo.put("missionMethod", m.getMissionMethod());
     		jo.put("missionName", m.getMissionName());
-    		jo.put("missionOrder", m.getMissionOrder());
     		jo.put("missionSn", m.getMissionSn());
     		jo.put("missionStatus", m.getMissionStatus());
-    		array.add(jo);
+    		jsonArray.add(jo);
     	}else{
-    		
+    		System.out.println("错误！！！！！！");
     	}
     	
     	return "jsonArray";
@@ -176,12 +176,13 @@ public class MissionAction extends ListAction<Mission> {
 	public void setPreplanTime(Timestamp preplanTime) {
 		this.preplanTime = preplanTime;
 	}
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
-	} 
+	}
+	
 	
 	
 	

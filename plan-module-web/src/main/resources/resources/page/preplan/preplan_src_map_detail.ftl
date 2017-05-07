@@ -13,6 +13,7 @@
     <script type="text/javascript">
  
     var hiddenId=parent.$("#hiddenId").val();
+    
      var row=parent.$("#dg").datagrid("getSelected");
      if(row!=null){
       var code=row.inventorySn;

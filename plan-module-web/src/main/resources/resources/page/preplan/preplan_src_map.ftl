@@ -302,7 +302,7 @@
 
 <body>
 
-	<div id="winAdd" class="easyui-window" title="My Window" style="width:300px;height:350px"   closed="true"
+	<div id="winAdd" class="easyui-window" title="新加资源点" style="width:300px;height:350px"   closed="true"
 	        data-options="iconCls:'icon-save',modal:true">   
 	    <form id="ffAdd" method="post">   
 	    <div style="margin: 15px;">   
@@ -333,12 +333,11 @@
 	</form> 
 	</div>  
 	
-	<div id="winUpdate" class="easyui-window" title="My Window" style="width:300px;height:350px"  closed="true"  
+	<div id="winUpdate" class="easyui-window" title="修改资源点" style="width:300px;height:350px"  closed="true"  
 	        data-options="iconCls:'icon-save',modal:true">   
 	     <form id="ffUpdate" method="post">   
 	      <div style="margin: 15px;">   
-	        <label for="id">地点名称:&nbsp;</label>   
-	        <input id="id" class="easyui-textbox" type="text" name="id" hidden="true" />   
+	        <input id="id" class="easyui-textbox" type="hidden" name="id"  />   
 	    </div>   
 	    <div style="margin: 15px;">   
 	        <label for="inventoryName">地点名称:&nbsp;</label>   

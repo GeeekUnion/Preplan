@@ -22,7 +22,12 @@
 		})
         //重置
 	$("#reset").click(function(){
-		$("#ff").form("reset");
+		$('#ff').form('load',{
+		    id:row.id,
+			supplyName:row.supplyName,
+			supplyNumber:row.supplyNumber,
+			supplyUnit:row.supplyUnit,
+		})
 	});
 	//提交 
 	$('#submit').click(function(){
@@ -74,7 +79,7 @@
 	   
 	      
 	    <div style="margin-top: 25px;text-align:center">
-	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  
+	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">修改</a>  
 	    	<a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'">重置</a>  
 	    </div>      
 	</form> 	
