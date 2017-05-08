@@ -26,13 +26,21 @@
     			method:'POST',
     			success:function(data){
     		    console.log(data[0].missionMethod);
+    		        var  s="";
     				var html="";
     				var html2="";
     				var html3="";
+    				if(data[0].missionStatus==2){
+    				  s="已完成";
+    				}else if(data[0].missionStatus==1){
+    				  s="正在进行";
+    				}else{
+    				  s="尚未开始";
+    				}
     				
-    				html=html+data[0].missionName
-    				html2=html2+data[0].missionStatus
-    				html3=html3+data[0].missionMethod
+    				html=html+data[0].missionName;
+    				html2=html2+s;
+    				html3=html3+data[0].missionMethod;
 
     				
     				$('#missionName').html(html);

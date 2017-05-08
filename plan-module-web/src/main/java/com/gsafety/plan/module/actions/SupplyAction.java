@@ -54,10 +54,10 @@ public class SupplyAction extends ListAction<Supply> {
      private String supplySn;
      private int supplyNumber;
      private String supplyUnit;
-     private String supplyLatitude;
-     private String supplyLongitude;
-     private String supplyPrincipal;
-     private String supplyPrincipalPhone;
+//     private String supplyLatitude;
+//     private String supplyLongitude;
+//     private String supplyPrincipal;
+//     private String supplyPrincipalPhone;
      private String  code;         //代指iventory的sn
    
      private int idInventory; //代指iventory的id
@@ -182,30 +182,30 @@ public class SupplyAction extends ListAction<Supply> {
 	public void setSupplyNumber(int supplyNumber) {
 		this.supplyNumber = supplyNumber;
 	}
-	public String getSupplyLatitude() {
-		return supplyLatitude;
-	}
-	public void setSupplyLatitude(String supplyLatitude) {
-		this.supplyLatitude = supplyLatitude;
-	}
-	public String getSupplyLongitude() {
-		return supplyLongitude;
-	}
-	public void setSupplyLongitude(String supplyLongitude) {
-		this.supplyLongitude = supplyLongitude;
-	}
-	public String getSupplyPrincipal() {
-		return supplyPrincipal;
-	}
-	public void setSupplyPrincipal(String supplyPrincipal) {
-		this.supplyPrincipal = supplyPrincipal;
-	}
-	public String getSupplyPrincipalPhone() {
-		return supplyPrincipalPhone;
-	}
-	public void setSupplyPrincipalPhone(String supplyPrincipalPhone) {
-		this.supplyPrincipalPhone = supplyPrincipalPhone;
-	}
+//	public String getSupplyLatitude() {
+//		return supplyLatitude;
+//	}
+//	public void setSupplyLatitude(String supplyLatitude) {
+//		this.supplyLatitude = supplyLatitude;
+//	}
+//	public String getSupplyLongitude() {
+//		return supplyLongitude;
+//	}
+//	public void setSupplyLongitude(String supplyLongitude) {
+//		this.supplyLongitude = supplyLongitude;
+//	}
+//	public String getSupplyPrincipal() {
+//		return supplyPrincipal;
+//	}
+//	public void setSupplyPrincipal(String supplyPrincipal) {
+//		this.supplyPrincipal = supplyPrincipal;
+//	}
+//	public String getSupplyPrincipalPhone() {
+//		return supplyPrincipalPhone;
+//	}
+//	public void setSupplyPrincipalPhone(String supplyPrincipalPhone) {
+//		this.supplyPrincipalPhone = supplyPrincipalPhone;
+//	}
 	public String getSupplyUnit() {
 		return supplyUnit;
 	}

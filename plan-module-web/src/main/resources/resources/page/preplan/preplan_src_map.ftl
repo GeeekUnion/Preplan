@@ -307,24 +307,26 @@
 	    <form id="ffAdd" method="post">   
 	    <div style="margin: 15px;">   
 	        <label for="inventoryName">地点名称:&nbsp;</label>   
-	        <input id="inventoryName" class="easyui-textbox" type="text" name="inventoryName" data-options="required:true" />   
+	        <input id="inventoryName" class="easyui-validatebox" type="text" name="inventoryName" data-options="required:true" />   
 	    </div>   
 	    <div style="margin: 15px;">   
 	        <label for="inventoryLongitude">经度:&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="inventoryLongitude" data-options="required:true" />   
+	        <input class="easyui-numberbox" type="text" name="inventoryLongitude" required="true"  min="0" max="180" missingMessage="经度必须位于0到180之间"/>   
 	    </div>
 	    <div style="margin: 15px;">   
 	        <label for="inventoryLatitude">纬度:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="inventoryLatitude" data-options="required:true" />   
+	        <input class="easyui-numberbox" type="text" name="inventoryLatitude" data-options="required:true" min="0" max="90"  missingMessage="经度必须位于0到90之间"/>   
 	    </div>
 	    <div style="margin: 15px;">   
 	        <label for="inventoryPrincipal">负责人:&nbsp;&nbsp;&nbsp;</label>   
-	        <input class="easyui-textbox" type="text" name="inventoryPrincipal" data-options="required:true" />   
+	        <input class="easyui-validatebox" type="text" name="inventoryPrincipal" data-options="required:true" />   
 	    </div>
 	    <div style="margin: 15px;">   
 	        <label for="inventoryPrincipalPhone">负责人电话:</label>   
-	        <input class="easyui-textbox" type="text" name="inventoryPrincipalPhone" data-options="required:true" />   
+	        <input class="easyui-validatebox" type="text" name="inventoryPrincipalPhone" required="true" validType="length[11,11]"  />   
 	    </div>
+	    
+	     
 	      
 	    <div style="margin-top: 25px;text-align:center">
 	    	<a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  
