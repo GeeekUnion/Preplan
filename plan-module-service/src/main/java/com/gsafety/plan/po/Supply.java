@@ -23,10 +23,10 @@ public class Supply implements Serializable{
 	private int supplyNumber;
 	private String supplyUnit; //物资单位
     private String supplySn;
-    private String supplyLongitude;
-    private String supplyLatitude;
-	private String supplyPrincipal;
-	private String supplyPrincipalPhone;
+//    private String supplyLongitude;
+//    private String supplyLatitude;
+//	private String supplyPrincipal;
+//	private String supplyPrincipalPhone;
     
 	private Inventory inventorySnM;
 	
@@ -59,34 +59,34 @@ public class Supply implements Serializable{
 	public void setSupplyNumber(int supplyNumber) {
 		this.supplyNumber = supplyNumber;
 	}
-	@Column(name="supply_longitude")
-	public String getSupplyLongitude() {
-		return supplyLongitude;
-	}
-	public void setSupplyLongitude(String supplyLongitude) {
-		this.supplyLongitude = supplyLongitude;
-	}
-	@Column(name="supply_latitude")
-	public String getSupplyLatitude() {
-		return supplyLatitude;
-	}
-	public void setSupplyLatitude(String supplyLatitude) {
-		this.supplyLatitude = supplyLatitude;
-	}
-	@Column(name="supply_pri")
-	public String getSupplyPrincipal() {
-		return supplyPrincipal;
-	}
-	public void setSupplyPrincipal(String supplyPrincipal) {
-		this.supplyPrincipal = supplyPrincipal;
-	}
-	@Column(name="supply_priphone")
-	public String getSupplyPrincipalPhone() {
-		return supplyPrincipalPhone;
-	}
-	public void setSupplyPrincipalPhone(String supplyPrincipalPhone) {
-		this.supplyPrincipalPhone = supplyPrincipalPhone;
-	}
+//	@Column(name="supply_longitude")
+//	public String getSupplyLongitude() {
+//		return supplyLongitude;
+//	}
+//	public void setSupplyLongitude(String supplyLongitude) {
+//		this.supplyLongitude = supplyLongitude;
+//	}
+//	@Column(name="supply_latitude")
+//	public String getSupplyLatitude() {
+//		return supplyLatitude;
+//	}
+//	public void setSupplyLatitude(String supplyLatitude) {
+//		this.supplyLatitude = supplyLatitude;
+//	}
+//	@Column(name="supply_pri")
+//	public String getSupplyPrincipal() {
+//		return supplyPrincipal;
+//	}
+//	public void setSupplyPrincipal(String supplyPrincipal) {
+//		this.supplyPrincipal = supplyPrincipal;
+//	}
+//	@Column(name="supply_priphone")
+//	public String getSupplyPrincipalPhone() {
+//		return supplyPrincipalPhone;
+//	}
+//	public void setSupplyPrincipalPhone(String supplyPrincipalPhone) {
+//		this.supplyPrincipalPhone = supplyPrincipalPhone;
+//	}
 	@Column(name="supply_unit")
 	public String getSupplyUnit() {
 		return supplyUnit;
