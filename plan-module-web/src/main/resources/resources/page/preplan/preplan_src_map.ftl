@@ -1,88 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"> 
 		<style type="text/css">
-		      #container{
-		        position: absolute;
-		        height: 500px;
-		        width:1000px;
-		        margin: 0px;
-		      }
-			  .info {
-	            border: solid 1px silver;
-	        }
-	        div.info-top {
-	            position: relative;
-	            background: none repeat scroll 0 0 #F9F9F9;
-	            border-bottom: 1px solid #CCC;
-	            border-radius: 5px 5px 0 0;
-	        }
-	        div.info-top div {
-	            display: inline-block;
-	            color: #333333;
-	            font-size: 14px;
-	            font-weight: bold;
-	            line-height: 31px;
-	            padding: 0 10px;
-	        }
-	        div.info-top img {
-	            position: absolute;
-	            top: 10px;
-	            right: 10px;
-	            transition-duration: 0.25s;
-	        }
-	        div.info-top img:hover {
-	            box-shadow: 0px 0px 5px #000;
-	        }
-	        div.info-middle {
-	            font-size: 12px;
-	            padding: 6px;
-	            line-height: 20px;
-	        }
-	        div.info-bottom {
-	            height: 0px;
-	            width: 100%;
-	            clear: both;
-	            text-align: center;
-	        }
-	        div.info-bottom img {
-	            position: relative;
-	            z-index: 104;
-	        }
-	        span {
-	            margin-left: 5px;
-	            font-size: 11px;
-	        }
-	        .info-middle img {
-	            float: left;
-	            margin-right: 6px;
-	        }
-	        
-	        
-	        
-	        
-	        
-	    .map-panel {
-	    z-index:100;
-        color: #333;
-        padding: 6px;
-        border: 1px solid silver;
-        box-shadow: 3px 4px 3px 0px silver;
-        position: absolute;
-        background-color: #eee;
-        top: 10px;
-        right: 10px;
-        border-radius: 5px;
-        overflow: hidden;
-        line-height: 20px;
-      }
-      #input{
-        width: 250px;
-        height: 25px;
-      }
-	        
+	 html,body{margin:0;padding:0;}
+    #dituContent{
+    height:100%;
+    z-index:100
+    }  
 	        
 	        
 	        
@@ -95,8 +22,7 @@
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
-    <!--高德地图api-->
-    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=7c8b33d77321b79ab3ec833abfe8ff00"></script> 
+   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR">
     
     <script type="text/javascript">
      //查看某地点具体资源
@@ -373,151 +299,121 @@
 	<table id="dg">
 	<input type="hidden" id="hiddenId">
 	</table>    
-    <div id="src_detail" data-options="collapsible:false,minimizable:false,maximizable:false,modal:true" ></div> 
-	<div id="container" tabindex="0" style="position:absolute">
-	<div class ='map-panel'>
-     输入地址显示位置:</br>
-     <input id = 'input' value = '阜通东大街8号'> </input>
-     <div id = 'message'></div>
-     <div id='geocodes'> </div>
-   </div>
-	</div>
-	
-	<!--根据地址查询经纬度(地理编码)-->
-	
- 
    
-    <script type="text/javascript">
-       //新建地图
-        var map = new AMap.Map('container',{
-            resizeEnable: true,
-            zoom: 20,
-            center: [116.480983, 40.0958]
-        });
-        
-        //ajax引用
+   <!--百度地图容器-->
+  <div style="width:697px;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
+   
+
+	
+</body>
+<script type="text/javascript">
+	    var s;//经度
+	    var w;//纬度
+	
+    	//右键单击map出现右键菜单事件
+    	function RightClickMap(s,w){
+    	var createMarker = function(map){
+    	$('#winAdd').window('open');
+    	};
+    	var markerMenu=new BMap.ContextMenu();
+    	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));
+    	map.addContextMenu(markerMenu);//给标记添加右键菜单
+    	} 
+    	
+    	//右键单击Maker出现右键菜单事件
+    	function RightClickMaker(s,w,marker){  	
+    	var removeMarker = function(e,ee,marker){//右键删除站点
+    	
+    	console.log(marker);
+    	}
+	    var updateMarker = function(e,ee,marker){//右键更新站点
+		if (confirm("要修改站点"+""+"的站名吗？")){
+		if(true){
+	  
+    	console.log(marker);
+	    
+		
+		}
+		} 
+		};
+	
+		
+ 
+    	var markerMenu=new BMap.ContextMenu();
+		markerMenu.addItem(new BMap.MenuItem('删除站点',removeMarker.bind(marker)));
+		markerMenu.addItem(new BMap.MenuItem('修改站名',updateMarker.bind(marker)));
+		marker.addContextMenu(markerMenu);//给标记添加右键菜单
+    	} 
+    	
+    //创建和初始化地图函数：
+    function initMap(){
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+    }
+    
+    //创建地图函数：
+    function createMap(){
+        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(116.365282,39.907353);//定义一个中心点坐标
+        map.centerAndZoom(point,15);//设定地图的中心点和坐标并将地图显示在地图容器中
+    	map.addEventListener("rightclick",function(e){
+    	    s = e.point.lng;//经度
+        	w = e.point.lat;//维度
+        	if(e.overlay){//判断右键单击的是否是marker	
+            RightClickMaker
+        	}else{
+        	RightClickMap(s,w);//右键单击map出现右键菜单事件
+        	}
+        	});
+
+        window.map = map;//将map变量存储在全局
+    }
+    //ajax显示Maker
          $.ajax({
  			url:'preplan_supply_querySupply.action',
  			type:'POST',
  			data:{
  			},
  			success:function(res){    
- 				var data=eval('('+res+')');
- 				 var markers = []; 
- 				   var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
-        for (var i = 0; i < data.length; i += 1) {
-                    var code=data[i].inventorySn;
-    			    var marker;
-    				var icon = new AMap.Icon({
-    					image: 'http://vdata.amap.com/icons/b18/1/2.png',
-    					size: new AMap.Size(24, 24)
-    				});
-    				marker = new AMap.Marker({
-    					icon: icon,
-    					position: [data[i].inventoryLongitude,data[i].inventoryLatitude],
-    					offset: new AMap.Pixel(-12,-12),
-    					zIndex: 101,
-    					title: data[i].inventoryName,
-    					map: map
-    				});
-    			
-    			     marker.content = data[i].inventoryName+ '<span style="font-size:11px;color:#F00;">' +"" + '</span>'+ "" +   "<hr>负责人:"+data[i].inventoryPrincipal     +"<hr>电话："+data[i].inventoryPrincipalPhone+
-    			     "<a  href='#' onclick='detailView(" +code+ ")'  class='detail_view' >"+"查看该资源地资源"+"</a>";
-                     marker.on('click', markerClick);
-                     marker.emit('click', {target: marker});
-    			    
-           markers.push(marker);
+ 		     var data=eval('('+res+')');
+             console.log(data);
+            
+	 for (var i = 0; i < data.length; i += 1) {
+		var point = new BMap.Point(data[i].inventoryLongitude, data[i].inventoryLatitude);
+		var marker = new BMap.Marker(point);
+	    map.addOverlay(marker);
+		RightClickMaker(marker);//右键单击marker出现右键菜单事件
+		
+	}      
         }         //循环结束
-        
-        
-        function markerClick(e) {
-        infoWindow.setContent(e.target.content);
-        infoWindow.open(map, e.target.getPosition());
-    }
-           map.setFitView();
- 				
- 			},
- 			error:function(){
- 				
- 			},
  		});	
  		
- 		//根据地址查询经纬度(地理编码)
- 		    AMap.plugin('AMap.Geocoder',function(){
-        var geocoder = new AMap.Geocoder({
-           
-        });
-        var marker = new AMap.Marker({
-            map:map,
-            bubble:true
-        })
-        var input = document.getElementById('input');
-        input.onchange = function(e){
-            var address = input.value;
-            geocoder.getLocation(address,function(status,result){
-              if(status=='complete'&&result.geocodes.length){
-                marker.setPosition(result.geocodes[0].location);
-                console.log(result.geocodes[0].location);
-                $('#geocodes')[0].innerHTML='经纬度:('+result.geocodes[0].location.I+','+result.geocodes[0].location.M+')';
-                map.setCenter(marker.getPosition())
-                document.getElementById('message').innerHTML = ''
-              }else{
-                document.getElementById('message').innerHTML = '获取位置失败'
-              }
-            })
-        }
-        input.onchange();
-
-    });
-  
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
     
-  
-    
-    
-        
-        
-        
-        
-        //引入基础控件
-        AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView'],
-    function(){
-        map.addControl(new AMap.ToolBar());
-
-        map.addControl(new AMap.Scale());
-
-        map.addControl(new AMap.OverView({isOpen:true}));
-});
-         
-    </script>
-	<script type='text/javascript'>
 	
+    
+    //地图事件设置函数：
+    function setMapEvent(){
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+    
+    //地图控件添加函数：
+    function addMapControl(){
+        //向地图中添加缩放控件
+	var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+	map.addControl(ctrl_nav);
+        //向地图中添加缩略图控件
+	var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+	map.addControl(ctrl_ove);
+        //向地图中添加比例尺控件
+	var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+	map.addControl(ctrl_sca);
+    }
+    
+    
+    initMap();//创建和初始化地图
 </script>
-	 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-</body>
 </html>
