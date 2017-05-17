@@ -267,46 +267,52 @@ public class PreplanAction extends ListAction<Preplan>{
         
     }
     
+    public String queryPlanList(){
+    		preplanService.getPageList(page,rows);
+    	 return "plan_edit";
+    }
+    
     //预案列表
     public String queryPreplanList() throws IOException {
         String str="";
-        if(code != null) {
-            //如下
-            JSONArray array = new JSONArray();
-            int total=0;//记录数
-            Domain d=domainService.get(Domain.class,Integer.parseInt(code));
-                    if(d.getPreplan() != null) {
-                        Set<Preplan> preplanSet =d.getPreplan();
-                        Iterator<Preplan> ppModel = preplanSet.iterator();
-                        //遍历所有符合条件的预案
-                        while(ppModel.hasNext()){
-                            Preplan p=ppModel.next();
-                            JSONObject jo = new JSONObject();                            
-                            jo.put("id",p.getId());
-                            jo.put("preplanUid",p.getPreplanUID());
-                            jo.put("preplanName",p.getPreplanName());  
-                            jo.put("responDept",p.getResponDept()); 
-                            jo.put("preplanSn",p.getPreplanSn());                                                    
-                            jo.put("preplanType",d.getDomainName());
-                            if(p.getPreplanTime() != null) {
-                                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
-                            }
-                            else {
-                                jo.put("preplanTime",""); 
-                            }
-                            jo.put("preplanUID",p.getPreplanUID());
-                            jo.put("preplanDesc",p.getPreplanDesc());
-                            total+=1;
-                            array.add(jo);    
-                        }
-                        
-                    }
-            str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";   
+        if(null != ppDept && ppDept.length()>0) {
+        	//封装预案列表        
+            str =preplanService.getPageList(page,rows);     
+//            //如下
+//            JSONArray array = new JSONArray();
+//            int total=0;//记录数
+//            Domain d=domainService.get(Domain.class,Integer.parseInt(code));
+//                    if(d.getPreplan() != null) {
+//                        Set<Preplan> preplanSet =d.getPreplan();
+//                        Iterator<Preplan> ppModel = preplanSet.iterator();
+//                        //遍历所有符合条件的预案
+//                        while(ppModel.hasNext()){
+//                            Preplan p=ppModel.next();
+//                            JSONObject jo = new JSONObject();                            
+//                            jo.put("id",p.getId());
+//                            jo.put("preplanUid",p.getPreplanUID());
+//                            jo.put("preplanName",p.getPreplanName());  
+//                            jo.put("responDept",p.getResponDept()); 
+//                            jo.put("preplanSn",p.getPreplanSn());                                                    
+//                            jo.put("preplanType",d.getDomainName());
+//                            if(p.getPreplanTime() != null) {
+//                                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
+//                            }
+//                            else {
+//                                jo.put("preplanTime",""); 
+//                            }
+//                            jo.put("preplanUID",p.getPreplanUID());
+//                            jo.put("preplanDesc",p.getPreplanDesc());
+//                            total+=1;
+//                            array.add(jo);    
+//                        }
+//                        
+//                    }
+//            str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";   
 
         }
         else {
-            //封装预案列表        
-            str =preplanService.getPageList(page,rows);                      
+                            
             
         }
         //输出资源到页面

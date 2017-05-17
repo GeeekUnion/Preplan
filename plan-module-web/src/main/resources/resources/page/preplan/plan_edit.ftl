@@ -2,6 +2,7 @@
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
+
 <html lang="en">
     <!--<![endif]-->
     <!-- BEGIN HEAD -->
@@ -46,32 +47,6 @@
                                 <span>预案编制</span>
                             </li>
                         </ul>
-                        <div class="page-toolbar">
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn green btn-sm btn-outline dropdown-toggle" data-toggle="dropdown"> Actions
-                                    <i class="fa fa-angle-down"></i>
-                                </button>
-                                <ul class="dropdown-menu pull-right" role="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-bell"></i> Action</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-shield"></i> Another action</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-user"></i> Something else here</a>
-                                    </li>
-                                    <li class="divider"> </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="icon-bag"></i> Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                     <!-- END PAGE BAR -->    
                     <!-- BEGIN PAGE TITLE-->
@@ -83,164 +58,18 @@
                     <div class="portlet box green">
                         <div class="portlet-title">
                             <div class="caption">
-                                <i class="fa fa-globe"></i>Header & Footer Fixed </div>
+                                <i class="fa fa-globe"></i>预案列表 </div>
                             <div class="actions">
+                                <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_base_msg.action" class="btn btn-default btn-sm btn-circle">
+                                    <i class="fa fa-plus"></i> 新增预案 </a>
                                 <a href="javascript:;" class="btn btn-default btn-sm btn-circle">
-                                    <i class="fa fa-plus"></i> Add </a>
-                                <a href="javascript:;" class="btn btn-default btn-sm btn-circle">
-                                    <i class="fa fa-print"></i> Print </a>
+                                    <i class="fa fa-print"></i> 打印 </a>
+
                             </div>
                         </div>
-                        <div class="portlet-body">
-                            <table class="table table-striped table-bordered table-hover table-header-fixed" id="sample_2">
-                                <thead>
-                                    <tr>
-                                        <th> Rendering engine </th>
-                                        <th> Browser </th>
-                                        <th> Platform(s) </th>
-                                        <th> Engine version </th>
-                                        <th> CSS grade </th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th> Rendering engine </th>
-                                        <th> Browser </th>
-                                        <th> Platform(s) </th>
-                                        <th> Engine version </th>
-                                        <th> CSS grade </th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> Internet Explorer 4.0 </td>
-                                        <td> Win 95+ </td>
-                                        <td> 4 </td>
-                                        <td> X </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> Internet Explorer 5.0 </td>
-                                        <td> Win 95+ </td>
-                                        <td> 5 </td>
-                                        <td> C </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> Internet Explorer 5.5 </td>
-                                        <td> Win 95+ </td>
-                                        <td> 5.5 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> Internet Explorer 6 </td>
-                                        <td> Win 98+ </td>
-                                        <td> 6 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> Internet Explorer 7 </td>
-                                        <td> Win XP SP2+ </td>
-                                        <td> 7 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Trident </td>
-                                        <td> AOL browser (AOL desktop) </td>
-                                        <td> Win XP </td>
-                                        <td> 6 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Firefox 1.0 </td>
-                                        <td> Win 98+ / OSX.2+ </td>
-                                        <td> 1.7 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Firefox 1.5 </td>
-                                        <td> Win 98+ / OSX.2+ </td>
-                                        <td> 1.8 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Firefox 2.0 </td>
-                                        <td> Win 98+ / OSX.2+ </td>
-                                        <td> 1.8 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Firefox 3.0 </td>
-                                        <td> Win 2k+ / OSX.3+ </td>
-                                        <td> 1.9 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Camino 1.0 </td>
-                                        <td> OSX.2+ </td>
-                                        <td> 1.8 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Camino 1.5 </td>
-                                        <td> OSX.3+ </td>
-                                        <td> 1.8 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Netscape 7.2 </td>
-                                        <td> Win 95+ / Mac OS 8.6-9.2 </td>
-                                        <td> 1.7 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Netscape Browser 8 </td>
-                                        <td> Win 98SE+ </td>
-                                        <td> 1.7 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Netscape Navigator 9 </td>
-                                        <td> Win 98+ / OSX.2+ </td>
-                                        <td> 1.8 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Mozilla 1.0 </td>
-                                        <td> Win 95+ / OSX.1+ </td>
-                                        <td> 1 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Mozilla 1.1 </td>
-                                        <td> Win 95+ / OSX.1+ </td>
-                                        <td> 1.1 </td>
-                                        <td> A </td>
-                                    </tr>
-                                    <tr>
-                                        <td> Gecko </td>
-                                        <td> Mozilla 1.2 </td>
-                                        <td> Win 95+ / OSX.1+ </td>
-                                        <td> 1.2 </td>
-                                        <td> A </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        
+							<#include "/decorators/plan_list.ftl">   
+                        
                     </div>
                     <!-- END EXAMPLE TABLE PORTLET-->                    
                 </div>
@@ -264,7 +93,8 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
-       
+       	
+
     </body>
 
 </html>

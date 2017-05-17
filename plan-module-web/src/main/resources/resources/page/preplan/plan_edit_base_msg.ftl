@@ -78,7 +78,7 @@
                             <div class="portlet light portlet-fit portlet-form bordered">                               
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
-                                    <form action="#" id="form_sample_2" class="form-horizontal">
+                                    <form action="${pageContext.request.contextPath}/plan/preplan/plan_edit_general_rule.action" id="form_sample_2" class="form-horizontal">
                                         <div class="form-body">
                                             <div class="alert alert-danger display-hide">
                                                 <button class="close" data-close="alert"></button> 请按照要求填写预案基本信息。</div>
@@ -115,24 +115,9 @@
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
-                                                        <select name="domain" id="domain_list" class="form-control">
+                                                        <select name="domain" id="domain_list" class="form-control">                                                       	
                                                             <option value=""></option>
-                                                            <option value="AF">Afghanistan</option>
-                                                            <option value="AL">Albania</option>
-                                                            <option value="DZ">Algeria</option>
-                                                            <option value="AS">American Samoa</option>
-                                                            <option value="AD">Andorra</option>
-                                                            <option value="AO">Angola</option>
-                                                            <option value="AI">Anguilla</option>
-                                                            <option value="AR">Argentina</option>
-                                                            <option value="AM">Armenia</option>
-                                                            <option value="AW">Aruba</option>
-                                                            <option value="AU">Australia</option>
-                                                        
-                                                            <option value="EH">Western Sahara</option>
-                                                            <option value="YE">Yemen</option>
-                                                            <option value="ZM">Zambia</option>
-                                                            <option value="ZW">Zimbabwe</option>
+                                                            
                                                         </select>
                                                     </div>    
                                                 </div>
@@ -158,7 +143,7 @@
                                                         <i class="fa"></i>
                                                         <select name="reviewOrg" id="review_list" class="form-control">
                                                             <option value=""></option>
-                                                            <option value="AF">Afghanistan</option>
+                                                            
                                                             <option value="AL">Albania</option>
                                                             <option value="DZ">Algeria</option>
                                                             <option value="AS">American Samoa</option>
@@ -211,7 +196,33 @@
         <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/form-validation.min.js"></script>        
         <!-- END PAGE LEVEL PLUGINS -->
+        <script>         
+			$(function(){
+	        	$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_domain_queryAllDomain.action",
+					dataType : "json",
+					data : {
+
+					},
+					success : function(data) {
+					    var html='';                             
+ 						for(var i=0;i<data.length;i++){
+							html= html+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
+						}	
+						
+                        //document.write(html1+html+html2); 
+                        $('#domain_list').append(html) 		
+						//$('#planListBody').append(html1+html+html2);	
+						//$("#planListBody").fadeIn('show');
+					},
+					error: function(){
+						sweetAlert("加载失败", "未知错误，请重试!", "error");									
+					}
+				});
+	        })
         
+        </script>
     </body>
 
 </html>

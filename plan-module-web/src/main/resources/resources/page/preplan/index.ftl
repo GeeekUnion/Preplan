@@ -16,7 +16,8 @@
     </head>
 <!--1. 在整个页面创建布局面板-->
 <body class="easyui-layout" scroll="no">
-
+	
+	
 <!--1.1 egion="north"，指明高度，可以自适应-->
 <div region="north" class="north" scroll="no">
 	<div class="header">
