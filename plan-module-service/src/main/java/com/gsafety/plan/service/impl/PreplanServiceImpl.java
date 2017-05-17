@@ -19,6 +19,9 @@ import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Domain;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.PreplanService;
+import com.opensymphony.xwork2.ActionContext;
+
+import freemarker.template.Template;
 @Service
 public class PreplanServiceImpl extends BaseServiceImpl implements PreplanService{
 
@@ -28,6 +31,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
         String hql = "from Preplan p";
         PageResult pResult = baseDAO.getPageByHql(hql,page,rows,Preplan.class);
         List<Preplan> pList =(List<Preplan>) pResult.getList();
+        ActionContext.getContext().put("planList",pList);//预案列表
         JSONArray array = new JSONArray();
         for(Preplan p : pList) {
             JSONObject jo = new JSONObject();
