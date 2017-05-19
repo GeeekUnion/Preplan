@@ -37,13 +37,15 @@
 	                ],
 	                "columnDefs": [ {
 			            "targets": -1,//最后一列
-			            "data": "id",
-			            "defaultContent": '<a href="javascript:;" class="btn blue" onclick="alterPlan()">'
+			            "data": null,
+			            render: function(data, type, row, meta) {
+				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan()">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
+				        }
 			        } ],
 			        "oLanguage": {
 			            "sLengthMenu": "每页显示 _MENU_ 条",
