@@ -36,25 +36,23 @@ PersonService{
 		WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("loginName", username));
 		cnds1.and(set);
 		EmsUser eu = (EmsUser) baseDAO.getUniqueByCnds(cnds1);
-		
-		EmsOrg org =new EmsOrg();
-		EmsMenu defaultMenu =new EmsMenu();
-		
-//		PrivBean privBean = emsPrivsBusiness.getPrivByUserId(eu.getId());		
-//		EmsPrivVo emsPrivVo = new EmsPrivVo();//创建sessionbean需要的属性vo
-//		BeanUtils.copyProperties(privBean.getPrivVo(), emsPrivVo);
-//		sessionBean.setPriv(emsPrivVo);
-//		System.out.println(emsPrivsBusiness.getEmsPrivs(eu.getId()));
+		Person pr=new Person();     
+		if(null != eu) {
+		     EmsOrg org =new EmsOrg();
+		        EmsMenu defaultMenu =new EmsMenu();
+		        
 
-		Person pr=new Person();		
-		try {	
-		    LoginActionHelper.sessionBeanHandler(null, eu, org, defaultMenu);
-			pr.setPassword(DESCoder.decrypt(eu.getPassword(), AuthConstant.PASSWORD_KEY));
-			pr.setLoginName(username);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		        
+		        try {   
+		            LoginActionHelper.sessionBeanHandler(null, eu, org, defaultMenu);
+		            pr.setPassword(DESCoder.decrypt(eu.getPassword(), AuthConstant.PASSWORD_KEY));
+		            pr.setLoginName(username);
+		        } catch (Exception e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		        }   
 		}
+
 		
 		
 		return pr;
