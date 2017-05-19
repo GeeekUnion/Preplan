@@ -19,10 +19,10 @@ var Login = function () {
 
 	            messages: {
 	                username: {
-	                    required: "Username is required."
+	                    required: "必须输入用户名"
 	                },
 	                password: {
-	                    required: "Password is required."
+	                    required: "必须输入密码"
 	                }
 	            },
 
@@ -38,14 +38,37 @@ var Login = function () {
 	            success: function (label) {
 	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
+	                
 	            },
 
 	            errorPlacement: function (error, element) {
 	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
-	            submitHandler: function (form) {
-	                form.submit();
+	            submitHandler: function (form) {	            	
+	            	$('#error').html('<div class="panel-heading"></div>').hide();
+	            	$.ajax({  
+	                    type: 'post',  
+	                    url: "/plan/preplan/preplan_person_login.action", 
+	                    data:{
+                            username:$('#username').val(),
+                            password:$('#password').val()
+                        },
+	                    success:function(data){
+	                    	//console.log(data=="\"ok\"");
+                            if(data=="\"ok\""){
+                                location.href ="/plan/preplan/plan_index.action";   
+                            }else{
+                                $("#error div").append("用户名或密码错误！");
+                                $('#error').fadeIn('slow');
+                            }
+                        }   
+	                }); 
+                    setTimeout(function(){
+                        $('#error').fadeOut('slow');
+                    },2000)
+                    $('.login-form .form-group').removeClass('has-error');
+	                return false; // 阻止表单自动提交事件
 	            }
 	        });
 
@@ -255,10 +278,10 @@ var Login = function () {
 
             // init background slide images
 		    $.backstretch([
-		        "../assets/pages/media/bg/1.jpg",
-		        "../assets/pages/media/bg/2.jpg",
-		        "../assets/pages/media/bg/3.jpg",
-		        "../assets/pages/media/bg/4.jpg"
+		        "../static/module/plan-module/resources/theme/assets/pages/media/bg/1.jpg",
+		        "../static/module/plan-module/resources/theme/assets/pages/media/bg/2.jpg",
+		        "../static/module/plan-module/resources/theme/assets/pages/media/bg/3.jpg",
+		        "../static/module/plan-module/resources/theme/assets/pages/media/bg/4.jpg"
 		        ], {
 		          fade: 1000,
 		          duration: 8000

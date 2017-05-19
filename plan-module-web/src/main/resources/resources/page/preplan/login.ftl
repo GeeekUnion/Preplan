@@ -64,6 +64,7 @@
 							<div class="login_form">
 								<form id="form">
 									<div id="error" style="display:none;color:#FF0000;margin:10px 0;">	
+										<div></div>
 									</div>
 									<div class="form-group">
 									    <input type="email" name="email" class="form-control" id="email" placeholder="请输入用户名" required style="padding:10px;width:252px">
