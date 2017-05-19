@@ -60,7 +60,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             } 
             array.add(jo);
         }
-        String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
+        String str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
         System.out.println(str);
         return str;
     }
