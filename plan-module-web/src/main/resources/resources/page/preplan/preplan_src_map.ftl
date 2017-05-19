@@ -22,9 +22,14 @@
     <script type="text/javascript" src="${getMC ("")}/js/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/esui.js"></script>
     <script type="text/javascript" src="${getMC ("")}/js/easyui-lang-zh_CN.js"></script>
-   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR">
+    
+    <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR">
     
     <script type="text/javascript">
+     
+	
+ 			
      //查看某地点具体资源
  		function detailView(i){
  		    
@@ -42,186 +47,7 @@
 			});
  		}
 	
-    	$(function (){
     	
-    	
-    //update的相关方法↓
-	//提交 
-	$('#submit2').click(function(){
-			$('#ffUpdate').form('submit', {    
-			  
-			    url:'preplan_inventory_update.action',           
-			    success:function(data){
-			    	var result = eval('(' + data + ')');
-			    	if(result.status=='ok'){
-			    		$.messager.alert("提示信息","修改成功！");
-						$("#ffUpdate").form("reset");
-						//关闭窗体
-						$("#winUpdate").window("close");
-						//刷新dg
-						$("#dg").datagrid("reload");
-				   	}else{
-				   		$.messager.alert("提示信息","修改失败！",'error');
-					}
-			    }    
-			});
-		
-	})
-    	//Add的相关方法↓
- 	      //重置
-	$("#reset").click(function(){
-		$("#ff").form("reset");
-	});
-	//提交 
-	$('#submit').click(function(){
-			$('#ffAdd').form('submit', {    
-			    url:'preplan_inventory_save.action',       
-			    success:function(data){
-			    	var result = eval('(' + data + ')');
-			    	if(result.status=='ok'){
-			    		$.messager.alert("提示信息","添加成功！");
-						$("#ffAdd").form("reset");
-						//关闭窗体
-						$("#winAdd").window("close");
-						//刷新dg
-						$("#dg").datagrid("reload");
-				   	}else{
-				   		$.messager.alert("提示信息","添加失败！",'error');
-					}
-			    }    
-			});
-		
-	})
- 			
- 			
- 			
- 		 $('#dg').datagrid({    
-  		 url:'preplan_inventory_queryByPage.action',    
-  		 singleSelect:true,
-  		 loadmsg:'请等待',
-	     rownumbers:true,
-  		 pagination:true,
-		 pageNumber:1,
-		 pageSize:15,
-		 pageList:[15,30,50,100],
-		 
-    	 columns:[[    
-    	{field:'id',title:'id',width:100,align:'center',hidden:'true'},
-    	{field:'inventorySn',title:'Sn',width:100,align:'center',hidden:'true'},    
-        {field:'inventoryName',title:'仓库名称',width:100,align:'center'},     
-        {field:'inventoryLongitude',title:'经度',width:150,align:'center'}, 
-        {field:'inventoryLatitude',title:'纬度',width:100,align:'center'},
-        {field:'inventoryPrincipal',title:'负责人',width:100,align:'center'}, 
-        {field:'inventoryPrincipalPhone',title:'负责人电话',width:150,align:'center'},  
-        {field:'tt',title:'操作',width:150,align:'center',
- 								 formatter:function(value,row,index){
- 								 			var i = row.id;
-		        		  					return "<a  href='#' onclick='detailView(" +i+ ")'  class='detail_view' >"+"查看该资源地资源"+"</a>";				        		
-		        	}},
-   						 ]],
-   		 toolbar: [{
-  			   	id:'add',
-		    	text:'添加',
-				iconCls: 'icon-add',
-				handler: function(){
-					$('#winAdd').window('open');
-				
-				}
-			},{
-				id:'delete',
-				iconCls:'icon-remove',
-				text:'删除',
-				handler:function(){
-						var row=$("#dg").datagrid("getSelected");
-				
-						if(row){
-								$.messager.confirm('确认对话框', '您想要删除所选数据吗？', function(r){
-									if (r){
-										$.ajax({
-											url:'preplan_inventory_delete.action',
-											method:'POST',
-											dataType:'json',
-											data:{'id':row.id},
-											success:function(data){
-												if(data.status=="ok"){
-													$.messager.alert('我的提示','删除成功！','info');
-													$("#dg").datagrid("reload");						
-													
-												}else{
-													$.messager.alert('我的提示','删除失败！','error');
-												
-												}
-											}
-										})
-									}
-								});		
-										
-						}else{
-							$.messager.show({
-								title:'我的提示',
-								msg:'请先选择一条记录！',
-								timeout:1000,
-								showType:'show',
-								style:{
-									right:'',
-									top:document.body.scrollTop+document.documentElement.scrollTop+200,
-									bottom:''
-								}
-							})
-						}
-					
-				
-					
-				}
-			},{
-				id:'update',
-				iconCls:'icon-edit',
-				text:'修改',
-				handler:function(){
-					var row=$("#dg").datagrid("getSelected");
-					if(row){
-					 //数据回显
-						$('#ffUpdate').form('load',{
-						    id:row.id,
-							inventoryName:row.inventoryName,
-						    inventoryLatitude:row.inventoryLatitude,
-						    inventoryLongitude:row.inventoryLongitude,
-						    inventoryPrincipal:row.inventoryPrincipal,
-						    inventoryPrincipalPhone:row.inventoryPrincipalPhone,
-						    
-						})
-						$('#winUpdate').window('open');
-					}else{
-						$.messager.show({
-							title:'我的提示',
-							msg:'请先选择一条记录！',
-							timeout:1000,
-							showType:'show',
-							style:{
-								right:'',
-								top:document.body.scrollTop+document.documentElement.scrollTop+200,
-								bottom:''
-							}
-						});
-					} 
-
-				
-				}
-			}],
-			//成功加载出发
- 			    onLoadSuccess:function(){
-	 			    	$('.detail_view').linkbutton({    
-						    iconCls: 'icon-search',
-						    height:24   
-						});
-						
-	 			    }
- 		
- 		
- 		
-  
-						});  
- 		});
  		
     </script>
     </head>
@@ -290,7 +116,7 @@
 	      
 	    <div style="margin-top: 25px;text-align:center">
 	    	<a id="submit2" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">修改</a>  
-	    	<a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'">重置</a>  
+	    	<a id="reset2" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-undo'">重置</a>  
 	    </div>      
 	</form> 
 	</div>  
@@ -309,6 +135,8 @@
 <script type="text/javascript">
 	    var s;//经度
 	    var w;//纬度
+	var eventIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/事件 (1).png", new BMap.Size(20,20));
+	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
 	
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
@@ -321,7 +149,7 @@
     	} 
     	
     	//右键单击Maker出现右键菜单事件
-    	function RightClickMaker(s,w,marker){  	
+    	function RightClickMaker(marker){  	
     	var removeMarker = function(e,ee,marker){//右键删除站点
     	
     	console.log(marker);
@@ -355,13 +183,40 @@
     //创建地图函数：
     function createMap(){
         var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-        var point = new BMap.Point(116.365282,39.907353);//定义一个中心点坐标
+        var point = new BMap.Point(116.404, 39.915);//定义一个中心点坐标
         map.centerAndZoom(point,15);//设定地图的中心点和坐标并将地图显示在地图容器中
+        
+        var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+    	map.addOverlay(circle);
+    	
+    	var myPoint = new BMap.Point(116.404, 39.90) ;
+    	var yourPoint = new BMap.Point(116.404, 39.9152) ;
+    	var marker2 = new BMap.Marker(myPoint,{icon:inventoryIcon});
+    	var marker3 = new BMap.Marker(yourPoint,{icon:inventoryIcon});
+	    map.addOverlay(marker2);
+	    map.addOverlay(marker3);
+	    
+      if(BMapLib.GeoUtils.isPointInCircle(myPoint,circle)){
+      console.log("1 true");
+     }else{
+     console.log("1 false");
+     }
+     
+     if(BMapLib.GeoUtils.isPointInCircle(yourPoint,circle)){
+      console.log("2 true");
+     }else{
+     console.log("2 false");
+     }
+     
+     
+     
+    	
+    	
     	map.addEventListener("rightclick",function(e){
     	    s = e.point.lng;//经度
         	w = e.point.lat;//维度
         	if(e.overlay){//判断右键单击的是否是marker	
-            RightClickMaker
+            
         	}else{
         	RightClickMap(s,w);//右键单击map出现右键菜单事件
         	}
@@ -371,7 +226,7 @@
     }
     //ajax显示Maker
          $.ajax({
- 			url:'preplan_supply_querySupply.action',
+ 			url:'preplan_event_queryAll.action',
  			type:'POST',
  			data:{
  			},
@@ -380,8 +235,8 @@
              console.log(data);
             
 	 for (var i = 0; i < data.length; i += 1) {
-		var point = new BMap.Point(data[i].inventoryLongitude, data[i].inventoryLatitude);
-		var marker = new BMap.Marker(point);
+		var point = new BMap.Point(data[i].longitude, data[i].latitude);
+		var marker = new BMap.Marker(point,{icon:eventIcon});
 	    map.addOverlay(marker);
 		RightClickMaker(marker);//右键单击marker出现右键菜单事件
 		
@@ -415,5 +270,64 @@
     
     
     initMap();//创建和初始化地图
+    
+    
+    
+    
+    
+    
+     $(function(){
+      //update的相关方法↓
+	//提交 
+	$('#submit2').click(function(){
+			$('#ffUpdate').form('submit', {    
+			  
+			    url:'preplan_inventory_update.action',           
+			    success:function(data){
+			    	var result = eval('(' + data + ')');
+			    	if(result.status=='ok'){
+			    		$.messager.alert("提示信息","修改成功！");
+						$("#ffUpdate").form("reset");
+						//关闭窗体
+						$("#winUpdate").window("close");
+						//刷新dg
+						$("#dg").datagrid("reload");
+				   	}else{
+				   		$.messager.alert("提示信息","修改失败！",'error');
+					}
+			    }    
+			});
+		
+	})
+    	//Add的相关方法↓
+ 	      //重置
+	$("#reset").click(function(){
+		$("#ffAdd").form("reset");
+	});
+	
+	
+	//提交 
+	$('#submit').click(function(){
+
+			$('#ffAdd').form('submit', {    
+			    url:'preplan_inventory_save.action',       
+			    success:function(data){
+			    	var result = eval('(' + data + ')');
+			    	if(result.status=='ok'){
+			    		$.messager.alert("提示信息","添加成功！");
+						$("#ffAdd").form("reset");
+						//关闭窗体
+						$("#winAdd").window("close");
+						//刷新dg
+						$("#dg").datagrid("reload");
+				   	}else{
+				   		$.messager.alert("提示信息","添加失败！",'error');
+					}
+			    }    
+			});
+		
+	})
+	
+	})
 </script>
 </html>

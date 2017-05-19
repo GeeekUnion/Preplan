@@ -24,11 +24,13 @@ public class InventoryAction extends ListAction<Inventory> {
 	 private int id;
 	 private String inventoryName;
 	 private String inventorySn;      
-	 private String inventoryLongitude;   //经度
-	 private String inventoryLatitude;    //纬度
+	 private Double inventoryLongitude;   //经度
+	 private Double inventoryLatitude;    //纬度
      private String inventoryPrincipal;   //负责人	
      private String inventoryPrincipalPhone;  //负责人电话
 	 
+  
+     
 	 private int page;
 	 private int rows;
 	 private JSONArray jsonArray = new JSONArray();
@@ -205,33 +207,25 @@ public class InventoryAction extends ListAction<Inventory> {
 
 
 
-		public String getInventoryLongitude() {
+		
+
+
+
+		public Double getInventoryLongitude() {
 			return inventoryLongitude;
 		}
 
-
-
-
-		public void setInventoryLongitude(String inventoryLongitude) {
+		public void setInventoryLongitude(Double inventoryLongitude) {
 			this.inventoryLongitude = inventoryLongitude;
 		}
 
-
-
-
-		public String getInventoryLatitude() {
+		public Double getInventoryLatitude() {
 			return inventoryLatitude;
 		}
 
-
-
-
-		public void setInventoryLatitude(String inventoryLatitude) {
+		public void setInventoryLatitude(Double inventoryLatitude) {
 			this.inventoryLatitude = inventoryLatitude;
 		}
-
-
-
 
 		public String getInventoryPrincipal() {
 			return inventoryPrincipal;

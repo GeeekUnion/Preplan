@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
@@ -32,13 +33,20 @@ public class EventAction extends ListAction<Event>{
 	private String eventName;
 	private Timestamp eventOccurTime;
 	private String eventOccurPlace;
+	private Double longitude;
+	private Double latitude;
+	
 	
 	private String preplanSn;
 	private int page;
 	private int rows;
-	
+	private JSONArray jsonArray = new JSONArray();
 	private JSONObject jsonObject = new JSONObject();
 	
+	public String queryAll(){
+    	jsonArray=eventService.queryAllEvent();
+    	return "jsonArray";
+    }
 	
 	
 	public PrintWriter out() throws IOException {
@@ -155,6 +163,36 @@ public class EventAction extends ListAction<Event>{
 	}
 	public void setId2(int id2) {
 		this.id2 = id2;
+	}
+
+
+	public JSONArray getJsonArray() {
+		return jsonArray;
+	}
+
+
+	public void setJsonArray(JSONArray jsonArray) {
+		this.jsonArray = jsonArray;
+	}
+
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 	
 	
