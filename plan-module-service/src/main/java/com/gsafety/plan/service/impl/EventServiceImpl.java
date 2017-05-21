@@ -14,6 +14,7 @@ import com.gsafety.cloudframework.common.base.dao.IBaseDAO;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Event;
+import com.gsafety.plan.po.Inventory;
 import com.gsafety.plan.service.EventService;
 @Service
 public class EventServiceImpl extends BaseServiceImpl implements EventService{
@@ -52,6 +53,25 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 		}
 		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
         return str;
+	}
+
+	@Override
+	public JSONArray queryAllEvent() {
+		 String hql="from Event e";
+		 List<Event> sList= (List<Event>) baseDAO.getListByHql(hql);
+		 JSONArray array = new JSONArray();
+		 for(Event p:sList){
+			 JSONObject jo = new JSONObject();
+			    jo.put("id", p.getId());
+			    jo.put("eventName", p.getEventName());
+			    jo.put("eventOccurPlace", p.getEventOccurPlace());
+			    jo.put("eventOccurTime", p.getEventOccurTime());
+			    jo.put("eventSn", p.getEventSn());
+			    jo.put("latitude", p.getLatitude());
+			    jo.put("longitude", p.getLongitude());
+					array.add(jo);
+		 }
+	        return array;
 	}
 	
 	

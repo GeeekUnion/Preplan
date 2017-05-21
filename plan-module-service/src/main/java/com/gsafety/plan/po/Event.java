@@ -28,6 +28,8 @@ public class Event implements Serializable{
 	private String eventName;
 	private Timestamp eventOccurTime;
 	private String eventOccurPlace;
+	private Double longitude;   //经度
+    private Double latitude;    //纬度
 	
 	
 	@Id
@@ -66,15 +68,21 @@ public class Event implements Serializable{
 	public void setEventOccurPlace(String eventOccurPlace) {
 		this.eventOccurPlace = eventOccurPlace;
 	}
+	@Column(name="event_longitude",nullable=false)
+	public Double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+	@Column(name="event_latitude",nullable=false)
+	public Double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
 	
-//	@OneToOne(cascade = {CascadeType.ALL})    
-//	@JoinColumn(name = "preplan_sn", unique = true,referencedColumnName="preplan_sn")    
-//	public Preplan getPreplanSn() {
-//		return preplanSn;
-//	}
-//	public void setPreplanSn(Preplan preplanSn) {
-//		this.preplanSn = preplanSn;
-//	}
 
 	
 	

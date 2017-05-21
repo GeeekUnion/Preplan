@@ -20,8 +20,8 @@ public class Inventory implements Serializable{
 	private int id;
 	private String inventoryName;
 	private String inventorySn;      
-	private String inventoryLongitude;   //经度
-    private String inventoryLatitude;    //纬度
+	private Double inventoryLongitude;   //经度
+    private Double inventoryLatitude;    //纬度
     private String inventoryPrincipal;   //负责人
 	private String inventoryPrincipalPhone;  //负责人电话
 	
@@ -55,19 +55,19 @@ public class Inventory implements Serializable{
 	}
     
 	@Column(name="inventory_longitude")
-	public String getInventoryLongitude() {
+	public Double getInventoryLongitude() {
 		return inventoryLongitude;
 	}
 
-	public void setInventoryLongitude(String inventoryLongitude) {
+	public void setInventoryLongitude(Double inventoryLongitude) {
 		this.inventoryLongitude = inventoryLongitude;
 	}
 	@Column(name="inventory_latitude")
-	public String getInventoryLatitude() {
+	public Double getInventoryLatitude() {
 		return inventoryLatitude;
 	}
 
-	public void setInventoryLatitude(String inventoryLatitude) {
+	public void setInventoryLatitude(Double inventoryLatitude) {
 		this.inventoryLatitude = inventoryLatitude;
 	}
 	@Column(name="inventory_pri")
