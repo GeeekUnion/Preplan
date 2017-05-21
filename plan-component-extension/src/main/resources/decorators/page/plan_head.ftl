@@ -21,13 +21,14 @@
                   	<#if null != preplanUsername>
 							<li class="dropdown dropdown-user">
 	                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+	                                <i class="icon-user"></i> 
 	                                <span class="username username-hide-on-mobile">${preplanUsername}</span>
 	                                <i class="fa fa-angle-down"></i>
 	                            </a>
 	                            <ul class="dropdown-menu dropdown-menu-default">
 	                                <li>
 	                                    <a href="javascript:;">
-	                                        <i class="icon-user"></i> My Profile 
+	                                        <i class="icon-user"></i> ${Session.session_bean.org.orgName}
 	                                    </a>
 	                                </li>
 	                                <li>

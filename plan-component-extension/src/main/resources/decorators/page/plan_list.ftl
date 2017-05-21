@@ -20,7 +20,6 @@
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanList.action",
 					    "type": "POST",
 					    "data": function ( d ) {
-					    	d.ppDept = '110'
 
 					    }
 					},
