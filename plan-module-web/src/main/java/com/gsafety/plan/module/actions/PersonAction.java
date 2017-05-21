@@ -43,8 +43,9 @@ public class PersonAction extends ListAction<Person> implements SessionAware {
 		if(StringUtils.isNotEmpty(username)) {
 			Person pr=personService.getPersonByUname(username,password);	
 			if(password.equals(pr.getPassword())){
+			    session.put("preplanOrgCode",pr.getOrgCode());  
 			    session.put("preplanUsername",pr.getLoginName());  
-			    System.out.println(session.get("preplanUsername"));
+			    
 				jsonObject="ok";
 			}else{
 				jsonObject="error";		

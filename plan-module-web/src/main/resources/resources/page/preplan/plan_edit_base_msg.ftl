@@ -78,7 +78,7 @@
                             <div class="portlet light portlet-fit portlet-form bordered">                               
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
-                                    <form action="${pageContext.request.contextPath}/plan/preplan/plan_edit_general_rule.action" id="form_sample_2" class="form-horizontal">
+                                    <form id="baseMsgForm" class="form-horizontal">
                                         <div class="form-body">
                                             <div class="alert alert-danger display-hide">
                                                 <button class="close" data-close="alert"></button> 请按照要求填写预案基本信息。</div>
@@ -91,7 +91,7 @@
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
-                                                        <input type="text" class="form-control" name="preplanSn" />
+                                                        <input type="text" class="form-control" name="preplanSn" id="preplanSn"/>
                                                         <span class="help-block"> 请输入预案编号。</span>
                                                     </div>   
                                                 </div>
@@ -103,7 +103,7 @@
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
-                                                        <input type="text" class="form-control" name="preplanName" />
+                                                        <input type="text" class="form-control" name="preplanName" id="preplanName"/>
                                                         <span class="help-block"> 请输入大于5个字的预案名称. </span>
                                                     </div>   
                                                 </div>
@@ -129,7 +129,7 @@
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
-                                                        <textarea class="form-control"  rows="4" name="preplanDesc"></textarea>
+                                                        <textarea class="form-control"  rows="4" name="preplanDesc" id="preplanDesc"></textarea>
                                                         <span class="help-block"> 请输入小于500字的预案描述</span>
                                                     </div>    
                                                 </div>
@@ -142,23 +142,8 @@
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
                                                         <select name="reviewOrg" id="review_list" class="form-control">
-                                                            <option value=""></option>
-                                                            
-                                                            <option value="AL">Albania</option>
-                                                            <option value="DZ">Algeria</option>
-                                                            <option value="AS">American Samoa</option>
-                                                            <option value="AD">Andorra</option>
-                                                            <option value="AO">Angola</option>
-                                                            <option value="AI">Anguilla</option>
-                                                            <option value="AR">Argentina</option>
-                                                            <option value="AM">Armenia</option>
-                                                            <option value="AW">Aruba</option>
-                                                            <option value="AU">Australia</option>
-                                                        
-                                                            <option value="EH">Western Sahara</option>
-                                                            <option value="YE">Yemen</option>
-                                                            <option value="ZM">Zambia</option>
-                                                            <option value="ZW">Zimbabwe</option>
+                                                            <option value=""></option>                                                            
+                                                           
                                                         </select>
                                                     </div>    
                                                 </div>
@@ -167,7 +152,7 @@
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
-                                                <a href="planEditGeneralRule .html" class="btn green" role="button">下个页面</a>
+                                                <a href="javascript:;" class="btn green" role="button">保存</a>
                                                     <button type="submit" class="btn green">下一步</button>
                                                 </div>
                                             </div>
@@ -198,6 +183,7 @@
         <!-- END PAGE LEVEL PLUGINS -->
         <script>         
 			$(function(){
+				//查询所有分类
 	        	$.ajax({
 					type : "POST",
 					url : "${pageContext.request.contextPath}/plan/preplan/preplan_domain_queryAllDomain.action",
@@ -220,9 +206,116 @@
 						sweetAlert("加载失败", "未知错误，请重试!", "error");									
 					}
 				});
+				//查询审核部门
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_department_getDepartment.action",
+					dataType : "json",
+					data : {
+
+					},
+					success : function(data) {
+						console.log(data);
+					    var html='';     
+					    if(null != data){
+					    	html= html+'<option value="'+data.orgCode+'">'+data.orgName+'</option>'
+					    }                        						
+                        $('#review_list').append(html) 		
+
+					},
+					error: function(){
+						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+					}
+				});
+				
+			//查询审核部门	
+			var form2 = $('#baseMsgForm');
+            var error2 = $('.alert-danger', form2);
+            var success2 = $('.alert-success', form2);
+
+            form2.validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error', // default input error message class
+                focusInvalid: false, // do not focus the last invalid input
+                ignore: "",  // validate all fields including form hidden input
+                rules: {
+                    preplanSn: {
+                        required: true
+                    },
+                    preplanName: {
+                        required: true
+                    },
+                    domain: {
+                        required: true
+                    },
+                    preplanDesc: {
+                        required: true,
+                        maxlength:500
+                    },
+                    reviewOrg: {
+                        required: true
+                    }
+                },
+
+                invalidHandler: function (event, validator) { //display error alert on form submit              
+                    success2.hide();
+                    error2.show();
+                    App.scrollTo(error2, -200);
+                },
+
+                errorPlacement: function (error, element) { // render error placement for each input type
+                    var icon = $(element).parent('.input-icon').children('i');
+                    icon.removeClass('fa-check').addClass("fa-warning");  
+                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+                },
+
+                highlight: function (element) { // hightlight error inputs
+                    $(element)
+                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                },
+
+                unhighlight: function (element) { // revert the change done by hightlight
+                    
+                },
+
+                success: function (label, element) {
+                    var icon = $(element).parent('.input-icon').children('i');
+                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+                    icon.removeClass("fa-warning").addClass("fa-check");
+                },
+
+                submitHandler: function (form) {
+                var ppName=$('#preplanName').val()
+                var ppDesc=$('#preplanDesc').val()
+                var ppUid=$('#preplanSn').val()
+                var ppType=$('#domain_list').val();
+                var ppDept=$('#review_list').val();
+                  $.ajax({  
+	                    type: 'post',  
+	                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
+	                    data:{
+	                    	ppName : ppName,
+							ppDesc : ppDesc,
+							ppType : ppType,
+							ppDept : ppDept,
+							ppUid  : ppUid
+                        },
+	                    success:function(data){
+	                     	if(data=="\"error\""){
+                             	swal('提交出错', '未知错误，请确定您已经登录!', 'error');	   
+                            }else{
+                            	location.href ="/plan/preplan/plan_edit_general_rule.action";   
+                            }
+                        }   
+	                }); 
+	                return false; // 阻止表单自动提交事件
+                }
+            });
+				
 	        })
         
         </script>
+        
     </body>
 
 </html>

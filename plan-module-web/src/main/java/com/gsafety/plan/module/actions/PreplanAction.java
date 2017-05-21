@@ -22,6 +22,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
@@ -47,7 +48,7 @@ import com.gsafety.plan.service.SupplyService;
 import com.opensymphony.xwork2.ActionContext;
 
 @Namespace("/preplan")
-public class PreplanAction extends ListAction<Preplan>{
+public class PreplanAction extends ListAction<Preplan>implements SessionAware{
   //注入service
 	
     @Resource
@@ -87,6 +88,8 @@ public class PreplanAction extends ListAction<Preplan>{
     
     private String jsonObject;//返回判断
     
+    //用于封装会话session
+    protected Map<String, Object> session;  
     
     
     // 输出
@@ -272,12 +275,21 @@ public class PreplanAction extends ListAction<Preplan>{
     	 return "plan_edit";
     }
     
-    //预案列表
+    /**
+     *根据登录的用户查询预案列表
+     **/
     public String queryPreplanList() throws IOException {
         String str="";
-        if(null != ppDept && ppDept.length()>0) {
-        	//封装预案列表        
-            str =preplanService.getPageList(page,rows);     
+        String orgCode=session.get("preplanOrgCode").toString();
+        if(null != orgCode || orgCode.length()>0) {
+            Person p=new Person();
+            p.setOrgCode(orgCode);
+            str=preplanService.getPageListByUser(page,rows,p);
+        }        
+//        if(null != ppDept && ppDept.length()>0) {
+//
+//        	//封装预案列表        
+//            str =preplanService.getPageList(page,rows);     
 //            //如下
 //            JSONArray array = new JSONArray();
 //            int total=0;//记录数
@@ -309,12 +321,12 @@ public class PreplanAction extends ListAction<Preplan>{
 //                        
 //                    }
 //            str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";   
-
-        }
-        else {
-                            
-            
-        }
+//
+//        }
+//        else {
+//                            
+//            
+//        }
         //输出资源到页面
         out().print(str);
         out().flush();
@@ -725,5 +737,8 @@ public class PreplanAction extends ListAction<Preplan>{
     public void setMisnOrder(String misnOrder) {
         this.misnOrder = misnOrder;
     }
-    
+    @Override
+    public void setSession(Map<String, Object> session) {
+        this.session=session;
+    }
 }
