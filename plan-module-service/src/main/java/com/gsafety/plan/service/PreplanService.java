@@ -1,6 +1,7 @@
 package com.gsafety.plan.service;
 
 import com.gsafety.cloudframework.common.base.service.IBaseService;
+import com.gsafety.plan.po.Person;
 import com.gsafety.plan.po.Preplan;
 
 public interface PreplanService extends IBaseService{
@@ -10,5 +11,7 @@ public interface PreplanService extends IBaseService{
     void updateById(Preplan ppModel,String pd);
 
     Preplan getByPpSn(String ppSn);
+
+    String getPageListByUser(int page, int rows, Person p);
 
 }

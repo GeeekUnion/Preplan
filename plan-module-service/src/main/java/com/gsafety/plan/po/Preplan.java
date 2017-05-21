@@ -33,7 +33,7 @@ public class Preplan implements Serializable {
 	private Timestamp preplanTime;            //预案启动时间
 	private Boolean preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
-	private String responPerson;              //负责人，暂无对应表
+	private String responPerson;              //负责人，暂无对应表	
 
 	private Event eventSn;
 	
@@ -81,7 +81,7 @@ public class Preplan implements Serializable {
 	public void setPreplanStatus(Boolean preplanStatus) {
 		this.preplanStatus = preplanStatus;
 	}
-    @Column(name="respon_dept")
+    @Column(name="preplan_org_code")
 	public String getResponDept() {
 		return responDept;
 	}

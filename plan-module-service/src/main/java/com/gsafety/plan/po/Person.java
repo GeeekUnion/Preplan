@@ -25,7 +25,7 @@ public class Person implements Serializable{
 	 private String personSn;
 	 private String loginName;
 	 private String password;
-	 
+	 private String orgCode;
 
 	 
 	 
@@ -74,6 +74,12 @@ public class Person implements Serializable{
 	public void setPersonNumber(int personNumber) {
 		this.personNumber = personNumber;
 	}
+    public String getOrgCode() {
+        return orgCode;
+    }
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
 
 	
 	

@@ -38,15 +38,16 @@ PersonService{
 		EmsUser eu = (EmsUser) baseDAO.getUniqueByCnds(cnds1);
 		Person pr=new Person();     
 		if(null != eu) {
-		     EmsOrg org =new EmsOrg();
-		        EmsMenu defaultMenu =new EmsMenu();
-		        
-
-		        
+		        Cnds cndsOrg = Cnds.me(EmsOrg.class);
+		        WhereSet setOrg = ConditionBuilder.whereSet(ConditionBuilder.eq("orgCode", eu.getOrgCode()));
+		        cndsOrg.and(setOrg);
+		        EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
+		        EmsMenu defaultMenu =new EmsMenu();		        		        
 		        try {   
 		            LoginActionHelper.sessionBeanHandler(null, eu, org, defaultMenu);
 		            pr.setPassword(DESCoder.decrypt(eu.getPassword(), AuthConstant.PASSWORD_KEY));
 		            pr.setLoginName(username);
+		            pr.setOrgCode(org.getOrgCode());
 		        } catch (Exception e) {
 		            // TODO Auto-generated catch block
 		            e.printStackTrace();
