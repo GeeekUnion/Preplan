@@ -33,8 +33,9 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 
 	@Override
 	public String getPage(int pageNumber, int pageSize) {
+		String str="";
 		String hql=" from Inventory i";
-		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Preplan.class);
+		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Inventory.class);
 		List<Inventory> pList= (List<Inventory>)  pResult.getList();
 		JSONArray array = new JSONArray();
 		for(Inventory p:pList){
@@ -48,7 +49,8 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 		    jo.put("inventoryPrincipalPhone", p.getInventoryPrincipalPhone());
 				array.add(jo);
 		}
-		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
+		 str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
+         System.out.println(str);    
         return str;
 	}
 	@Override
