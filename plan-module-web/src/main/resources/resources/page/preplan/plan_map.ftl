@@ -55,9 +55,36 @@
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
                     <!--BEGIN MAP CONTENT-->
+                    <!--MAP container-->
                    <div style="width:697px;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
                    
-                   
+			         <div class="portlet box green">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-globe"></i>防控信息 </div>
+                            <div class="actions">
+                                <a href="${pageContext.request.contextPath}/plan/preplan/" class="btn btn-default btn-sm btn-circle">
+                                    <i class="fa fa-plus"></i> 新增 </a>
+                        </div>
+                        </div>
+                        
+						<div class="portlet-body" id="">
+						<table id="planListTable" class="display" cellspacing="0" width="100%">
+					        <thead>
+					            <tr>
+					                <th>预案编号</th>
+					                <th>预案名称 </th>
+					                <th>负责人</th>
+					                <th>负责人联系方式</th>
+					                <th>操作</th>
+					            </tr>
+					        </thead>
+					
+					    </table>
+					</div>
+                        
+                    </div>
+
                    
                    
                    
@@ -113,9 +140,35 @@
     	function RightClickMaker(marker,point){  	
     	var watchMarker = function(e,ee,marker){//右键查看附近
     	console.log(point);
-    	map.removeOverlay(circle2);
-    	var circle2 = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+    	
+    	map.clearOverlays(); 
+    	var circle2 = new BMap.Circle(point,5000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
     	map.addOverlay(circle2);
+    	
+    	 //ajax显示Maker(Inventory)
+         $.ajax({
+ 			url:'preplan_inventory_queryAllInventory.action',
+ 			type:'POST',
+ 			data:{
+ 			},
+ 			success:function(res){    
+ 		     var data=eval('('+res+')');
+        for (var i = 0; i < data.length; i += 1) {
+		var pointInventory = new BMap.Point(data[i].inventoryLongitude, data[i].inventoryLatitude);
+		//如果资源点在圈内，就让他生产marker并显示出来
+		if(BMapLib.GeoUtils.isPointInCircle(pointInventory,circle2)){
+        var markerInventory = new BMap.Marker(pointInventory);
+	    map.addOverlay(markerInventory);
+     }else{
+     console.log(" this is't in circle");
+     }
+		
+		
+		
+	}      
+        }         
+ 		});	
+    	
     	
     	
     	}
@@ -202,7 +255,11 @@
             
 	 for (var i = 0; i < data.length; i += 1) {
 		var point = new BMap.Point(data[i].longitude, data[i].latitude);
-		var marker = new BMap.Marker(point,{icon:eventIcon});
+		var marker = new BMap.Marker(point,
+		{
+		icon:eventIcon,
+		enableMassClear:false     //防止被大规模清除
+		});
 	    map.addOverlay(marker);
 		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
 		
@@ -211,24 +268,7 @@
         }        
  		});	
  		
- 		 //ajax显示Maker(Inventory)
-         $.ajax({
- 			url:'preplan_inventory_queryAllInventory.action',
- 			type:'POST',
- 			data:{
- 			},
- 			success:function(res){    
- 		     var data=eval('('+res+')');
-             console.log(data);
-        for (var i = 0; i < data.length; i += 1) {
-		var point = new BMap.Point(data[i].inventoryLongitude, data[i].inventoryLatitude);
-		var marker = new BMap.Marker(point);
-	    map.addOverlay(marker);
-		RightClickMaker(marker);//右键单击marker出现右键菜单事件
-		
-	}      
-        }         
- 		});	
+ 		
  		
     
 	
@@ -315,5 +355,54 @@
 	})
 	
 	})
+	//显示列表
+	$(document).ready(function() {
+				$('#planListTable').dataTable( {
+					"ajax": {
+					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
+					    "type": "POST",
+					    "data": function ( d ) {
+
+					    }
+					},
+				  	"deferRender": true,
+				  	"searching": true,
+				  	"processing": true,
+			        "columns": [
+	                    { "data": "inventorySn", align:"center" },
+	                    { "data": "inventoryName" },
+	                    { "data": "inventoryPrincipal" },
+	                    { "data": "inventoryPrincipalPhone" },
+	                    { "formatNumber": "preplanTime" }
+	                ],
+	                "columnDefs": [ {
+			            "targets": -1,//最后一列
+			            "data": null,
+			            render: function(data, type, row, meta) {
+				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
+	                                      +          	'<i class="fa fa-edit">编制 </i>'
+	                                      +      '</a>'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  			'<i class="fa fa-times">删除</i>'
+	                                      +      '</a>'
+				        }
+			        } ],
+			        "oLanguage": {
+			            "sLengthMenu": "每页显示 _MENU_ 条",
+			            "sZeroRecords": "没有找到符合条件的数据",
+			            "sInfo": "当前第 _START_ - _END_ 条　共计 _TOTAL_ 条",
+			            "sInfoEmpty": "没有记录",
+			            "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
+			            "sSearch": "搜索",
+			            "sProcessing": "数据加载中...",
+			            "oPaginate": {
+			                "sFirst": "首页",
+			                "sPrevious": "上一页",
+			                "sNext": "下一页",
+			                "sLast": "尾页"
+			            }
+			        }
+				});
+			} );
 </script>
 </html>
