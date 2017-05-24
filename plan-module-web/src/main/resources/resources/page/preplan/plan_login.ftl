@@ -53,7 +53,7 @@
                         <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" id="password" /> </div>
                 </div>
                 <div class="form-actions">
-                    <button type="submit" id="loginBtn" class="btn green pull-right"> Login </button>
+                    <button type="submit" id="loginBtn" class="btn green pull-right"> 登录 </button>
                 </div>
 
             </form>

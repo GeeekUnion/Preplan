@@ -169,10 +169,12 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                 ppModel.setDomain(set);
                 jsonObject = ppModel.getPreplanSn();
                 if(ppSn == null) {
+                    ppModel.setPreplanStatus("待完成");
                     preplanService.save(ppModel);
                 }else {
                     preplanService.update(ppModel);
                 }
+                jsonObject=ppModel.getPreplanSn();
                                 
             }else{
                 jsonObject = "error";

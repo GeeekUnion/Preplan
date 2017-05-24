@@ -65,6 +65,9 @@
                                                 <div class="mt-step-title uppercase font-grey-cascade">总则</div>
                                                 <div class="mt-step-content font-grey-cascade">（填写总则信息）</div>
                                             </div>
+                                            <div class="col-md-8 col-sm-6 col-xs-12 pull-right">
+                                            	<#include "/decorators/edit_right_menu.ftl"> 
+                                            </div>
                                         </div>                                     
                                     </div>
                                 </div>
@@ -90,9 +93,9 @@
                                </div>                               
                                 <div class="portlet-body">
                                     <!-- BEGIN FORM-->
-                                    <form action="#" id="form_sample_2" class="form-horizontal">
+                                    <form action="#" id="form_sample_3" class="form-horizontal">
                                         <div class="form-body">
-                                            <textarea name="content" class="xheditor" style="width:100%;min-height: 450px; "></textarea>                                           
+                                            <textarea name="editor1" class="xheditor" style="width:100%;min-height: 450px; " id="xheditor"></textarea>                                           
                                         </div>
                                         <div class="form-actions">
                                             <div class="row">
@@ -150,6 +153,38 @@
         <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
         <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script>              
         <!-- END PAGE LEVEL SCRIPTS -->
+        <script type="text/javascript">
+        	function saveModule(){
+        	
+        	}        
+        	function submitModule(){
+        		var xhedit=$('#xheditor').xheditor();
+        		var planContent=xhedit.getSource();
+        		if(null===planContent || planContent===""){
+        			console.log("k")
+        		}else{
+        		
+        		}	 	
+        	}
+        	
+        	function submitModule(){
+        		var moduleId=null;
+        		$.ajax({
+					type : "POST",
+					url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
+					dataType : "json",
+					data : {
+							id : moduleId
+					},
+					success : function(data) {	
+																			
+					},
+					error: function(){
+							console.log("error")								
+					}
+				});
+        	}        	        	
+        </script>
         
     </body>
 
