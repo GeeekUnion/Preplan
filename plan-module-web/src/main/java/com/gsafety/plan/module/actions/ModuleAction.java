@@ -69,6 +69,7 @@ public class ModuleAction extends ListAction<Module> {
                 md.setOrder(order);
                 md.setContent(content);
                 md.setModuleSn(uuidModule);
+                md.setPreplanSnM(pl);
                 md.setModuleCheck(true);
                 moduleService.save(md);
             }
