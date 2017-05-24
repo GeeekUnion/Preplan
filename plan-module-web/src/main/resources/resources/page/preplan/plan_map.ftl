@@ -115,17 +115,20 @@
         <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR&services=&t=20170517145936"></script>
     </body>
 <script type="text/javascript">
+		var arrPoint = new Array()
 	    var s;//经度
 	    var w;//纬度
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/事件 (1).png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
 	
-	
+	      
 		//单击maker事件
-		function clickMap(marker){
-			var p = marker.getPosition();  //获取marker的位置
-			alert("marker的位置是" + p.lng + "," + p.lat);    
-		}
+		function showInfo(marker,arrPoint){  
+		 for (var i = 0; i < arrPoint.length; i += 1) {
+		 console.log(arrPoint[i]);
+		 }
+	     
+	   }  
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
@@ -139,7 +142,7 @@
     	//右键单击Maker出现右键菜单事件
     	function RightClickMaker(marker,point){  	
     	var watchMarker = function(e,ee,marker){//右键查看附近
-    	console.log(point);
+    	
     	
     	map.clearOverlays(); 
     	var circle2 = new BMap.Circle(point,5000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
@@ -239,9 +242,13 @@
         	RightClickMap(s,w);//右键单击map出现右键菜单事件
         	}
         	});
+       
 
         window.map = map;//将map变量存储在全局
     }
+    
+
+    
     
     //ajax显示Maker(EVENT)
          $.ajax({
@@ -253,8 +260,10 @@
  		     var data=eval('('+res+')');
        
             
-	 for (var i = 0; i < data.length; i += 1) {
+	 for (var i = 0; i < data.length; i++) {
 		var point = new BMap.Point(data[i].longitude, data[i].latitude);
+		arrPoint.push(point);
+		console.log(i)
 		var marker = new BMap.Marker(point,
 		{
 		icon:eventIcon,
@@ -262,6 +271,9 @@
 		});
 	    map.addOverlay(marker);
 		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
+		marker.addEventListener("click",function(){  
+                showInfo(marker,arrPoint);  
+            });  
 		
 		
 	}       //循环结束
