@@ -31,7 +31,7 @@ public class Preplan implements Serializable {
 	private String preplanName;
 	private String preplanDesc;
 	private Timestamp preplanTime;            //预案启动时间
-	private Boolean preplanStatus;            //预案状态
+	private String preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表	
 
@@ -75,10 +75,10 @@ public class Preplan implements Serializable {
 		this.preplanTime = preplanTime;
 	}
     @Column(name="preplan_status")
-	public Boolean getPreplanStatus() {
+	public String getPreplanStatus() {
 		return preplanStatus;
 	}
-	public void setPreplanStatus(Boolean preplanStatus) {
+	public void setPreplanStatus(String preplanStatus) {
 		this.preplanStatus = preplanStatus;
 	}
     @Column(name="preplan_org_code")
