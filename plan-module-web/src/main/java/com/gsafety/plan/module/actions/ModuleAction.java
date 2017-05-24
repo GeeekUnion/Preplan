@@ -54,36 +54,32 @@ public class ModuleAction extends ListAction<Module> {
      *@returns 
      * */
 	public String saveOrUpdateModule() {
-	    System.out.println("标题："+title+"，内容："+content);
-	    if(preplanSn == null) {
-	        if(id==0) {
-	            Module md=new Module();
-	            String uuidModule = UUID.randomUUID().toString();           
-	            md.setTitle(title);
-	            md.setContent(content);
-	            md.setModuleSn(uuidModule);
-	            md.setModuleCheck(true);
-	            moduleService.save(md);
-	        }
-	        else {
-	            Module md=moduleService.get(Module.class, id);
-	            md.setContent(content);
-	            md.setTitle(title);
-	            moduleService.update(md);
-	        }
+	    System.out.println("id："+id+"，"+"order："+order+"，内容："+content);
+	    JSONObject jo = new JSONObject();
+	    if(preplanSn.isEmpty()) {	        
+	        jo.put("status","error");
+	        jsonObject=jo;
 	    }else {
-	        Module oldMd=moduleService.get(Module.class, id);	        
-            Module md=new Module();
             Preplan pl=new Preplan();
             pl.setPreplanSn(preplanSn);
-            String uuidModule = UUID.randomUUID().toString();
-            md.setOrder(order);
-            md.setTitle(oldMd.getTitle());
-            md.setContent(oldMd.getContent());
-            md.setPreplanSnM(pl);
-            md.setModuleSn(uuidModule);
-            md.setModuleCheck(false);
-            moduleService.save(md); 
+            //id为0则是新模块
+           if(id==0) {
+                Module md=new Module();
+                String uuidModule = UUID.randomUUID().toString();  
+                md.setOrder(order);
+                md.setContent(content);
+                md.setModuleSn(uuidModule);
+                md.setModuleCheck(true);
+                moduleService.save(md);
+            }
+            else {                
+                Module md=moduleService.get(Module.class, id);            
+                md.setContent(content);
+                moduleService.saveOrUpdate(md);
+            }
+            jo.put("status",preplanSn);
+            jsonObject=jo;
+	        
 	    }	    
 	    return "jsonObject"; 
 	}

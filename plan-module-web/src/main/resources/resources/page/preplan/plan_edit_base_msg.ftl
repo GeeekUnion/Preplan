@@ -304,7 +304,7 @@
 	                     	if(data=="\"error\""){
                              	swal('提交出错', '未知错误，请确定您已经登录!', 'error');	   
                             }else{
-                            	location.href ="/plan/preplan/plan_edit_general_rule.action";   
+                            	location.href ="/plan/preplan/plan_edit_general_rule.action"+"?ppSn="+data.replace(/\"/g,"");   
                             }
                         }   
 	                }); 

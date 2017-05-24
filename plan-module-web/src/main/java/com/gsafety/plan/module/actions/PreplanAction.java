@@ -101,6 +101,13 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         return out;
     }
     
+    
+    public String editSkip() {
+        
+        ActionContext.getContext().put("planSn",ppSn);//预案责任单位
+        return "url";   
+    }
+    
     //预案页面加载资源
     public String queryAllSrc() {
         //查询人力资源
@@ -169,11 +176,14 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                 ppModel.setDomain(set);
                 jsonObject = ppModel.getPreplanSn();
                 if(ppSn == null) {
-                    ppModel.setPreplanStatus("待完成");
+                    ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);
-                }else {
+                    
+                    
+                }else {                    
                     preplanService.update(ppModel);
                 }
+               
                 jsonObject=ppModel.getPreplanSn();
                                 
             }else{
@@ -739,6 +749,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public void setMisnOrder(String misnOrder) {
         this.misnOrder = misnOrder;
     }
+
     @Override
     public void setSession(Map<String, Object> session) {
         this.session=session;

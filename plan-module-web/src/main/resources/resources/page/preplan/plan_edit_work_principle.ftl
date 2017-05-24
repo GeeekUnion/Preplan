@@ -80,13 +80,13 @@
                             <div class="portlet light portlet-fit portlet-form bordered">    
                                <div class="portlet-title">
                                     <div class="caption">
-                                        <span class="caption-subject font-green bold uppercase" style="font-size:25px">2.1编写目的</span>
+                                        <span class="caption-subject font-green bold uppercase" style="font-size:25px">2.4工作原则</span>
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group">
                                             
                                             <a class="btn green btn-outline btn-circle btn-sm" href="#editRequire"> 
-                                                <i class="fa fa-info font-green"></i>&nbsp;编写要求  
+                                                <i class="fa fa-info font-green"></i>&nbsp;编写要求及示例 
                                             </a>
                                         </div>
                                     </div>
@@ -116,15 +116,15 @@
                         <div class="col-xs-12">
                             <div class="note note-info">
                                 <h3 id="editRequire">编写要求</h3>
-                                <p>应简要说明预案基于突发事件处置而预计达成的目标，可根据预案的类别及城镇的特点选取以下方面 </p>
-                                <p>（1）受灾地区民众的生命、健康和财产安全保证；
-                                <p>（2）城镇安全和经济社会发展秩序保证；
-                                <p>（3）灾后秩序恢复保证；
-                                <p>（4）救援人员的生命和健康安全保证；
-                                <p>（5）业务连续性的保持；
-                                <p>（6）财产、设施、设备、基础建设的保护；
-                                <p>（7）环境的保护；
-                                <p>（8）特定类型突发事件应对能力的提高，以及相应体制、机制的建立。
+                                <p>应简要点明突发事件应对的指导思想、基本原则和工作要求，可包含但不限于以下方面：</p>
+                                <p>（1）面对突发事件时所表现的行为方式和价值选择；</p>
+								<p>（2）指挥要求；</p>
+								<p>（3）管理要求；</p>
+								<p>（4）应对要求；</p>
+								<p>（5）协作要求。</p>
+                                
+                                <h3>示例</h3>
+                                <p>以人为本，抢险救灾先人后物；以防为主、防救结合；统一指挥，分级负责；依法规范，加强管理；科学决策、快速反应、果断处置；团结协作、协同应对。</p>
                                 
                             </div>
                         </div>
@@ -136,6 +136,7 @@
            
         </div>
         <!-- END CONTAINER -->
+
 		<#include "/decorators/plan_footer.ftl"> 
         <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
@@ -180,7 +181,7 @@
         	
         	function submitModuleAjax(planContent,planSn){
         		var moduleId=0;
-        		var order="0101";
+        		var order="0104";
         		$.ajax({
 					type : "POST",
 					url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
@@ -192,18 +193,18 @@
 							preplanSn:planSn
 					},
 					success : function(data) {	
-						console.log(data.status);
+						console.log(data);
 						if(data=="\"error\""){
 							swal('提交出错', '未知错误，请确定您已经登录!', 'error');	 	
-						}else{
-							location.href ="/plan/preplan/plan_edit_depend_on.action"+"?ppSn="+data.status.replace(/\"/g,"");     
+						}else{							
+							location.href ="/plan/preplan/plan_edit_risk_rating.action"+"?ppSn="+data.status.replace(/\"/g,"");     
 						}													
 					},
 					error: function(){
 							swal('提交出错', '未知错误，请确定您已经登录!', 'error');	 					
 					}
 				});
-        	}        	        	
+        	}           	     	        	
         </script>
         
     </body>
