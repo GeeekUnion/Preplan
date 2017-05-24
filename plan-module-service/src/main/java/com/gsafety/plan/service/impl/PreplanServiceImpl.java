@@ -105,8 +105,9 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
     public String getPageListByUser(int page, int rows, Person ps) {  
         Map<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("responDept",ps.getOrgCode());
+        hashMap.put("preplanStatus", "已完成");
         //String sql="SELECT * from pre_preplan AS p WHERE p.ems_org_code= "+"\'"+ps.getOrgCode()+"\'";
-        String hql = "from Preplan p where p.responDept=:responDept";
+        String hql = "from Preplan p where p.responDept=:responDept and p.preplanStatus=:preplanStatus";
         PageResult pResult = baseDAO.getPageByHql(hql,page,rows,hashMap,Preplan.class);
         List<Preplan> pList =(List<Preplan>) pResult.getList();
         String str="";
