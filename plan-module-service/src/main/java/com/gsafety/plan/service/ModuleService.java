@@ -14,4 +14,6 @@ public interface ModuleService extends IBaseService{
 
     List<Module> getListByPpsn(String ppSn);
 
+    Module getUniqueByPpsnOrder(String preplanSn, String order);
+
 }
