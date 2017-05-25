@@ -115,18 +115,36 @@
         <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR&services=&t=20170517145936"></script>
     </body>
 <script type="text/javascript">
-		var arrPoint = new Array()
+		var points = new Array();
+		var markers = new Array();
 	    var s;//经度
 	    var w;//纬度
-	var eventIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/事件 (1).png", new BMap.Size(20,20));
+	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
 	
-	      
+	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+	var point = new BMap.Point(116.331398,39.897445);
+	map.centerAndZoom(point,12);
+	
+	var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			var mk = new BMap.Marker(r.point);
+			map.addOverlay(mk);
+			map.panTo(r.point);
+			alert('您的位置：'+r.point.lng+','+r.point.lat);
+		}
+		else {
+			alert('failed'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true})
+	
+	  
 		//单击maker事件
-		function showInfo(marker,arrPoint){  
-		 for (var i = 0; i < arrPoint.length; i += 1) {
-		 console.log(arrPoint[i]);
-		 }
+		function showInfo(marker,point){  
+		 console.log(point);
+		 
+		
 	     
 	   }  
     	//右键单击map出现右键菜单事件
@@ -206,33 +224,9 @@
     
     //创建地图函数：
     function createMap(){
-        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-        var point = new BMap.Point(116.404, 39.915);//定义一个中心点坐标
-        map.centerAndZoom(point,15);//设定地图的中心点和坐标并将地图显示在地图容器中
         
-        var circle = new BMap.Circle(point,1000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
-    	map.addOverlay(circle);
-    	
-    	var myPoint = new BMap.Point(116.404, 39.90) ;
-    	var yourPoint = new BMap.Point(116.404, 39.9152) ;
-    	var marker2 = new BMap.Marker(myPoint,{icon:inventoryIcon});
-    	var marker3 = new BMap.Marker(yourPoint,{icon:inventoryIcon});
-	    map.addOverlay(marker2);
-	    map.addOverlay(marker3);
-	    
-      if(BMapLib.GeoUtils.isPointInCircle(myPoint,circle)){
-      console.log("1 true");
-     }else{
-     console.log("1 false");
-     }
-     
-     if(BMapLib.GeoUtils.isPointInCircle(yourPoint,circle)){
-      console.log("2 true");
-     }else{
-     console.log("2 false");
-     }
-     
- 
+        
+
     	map.addEventListener("rightclick",function(e){
     	    s = e.point.lng;//经度
         	w = e.point.lat;//维度
@@ -262,24 +256,29 @@
             
 	 for (var i = 0; i < data.length; i++) {
 		var point = new BMap.Point(data[i].longitude, data[i].latitude);
-		arrPoint.push(point);
-		console.log(i)
 		var marker = new BMap.Marker(point,
 		{
 		icon:eventIcon,
 		enableMassClear:false     //防止被大规模清除
 		});
+		points.push(point);
 	    map.addOverlay(marker);
 		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
-		marker.addEventListener("click",function(){  
-                showInfo(marker,arrPoint);  
+		//给标注点添加点击事件。使用立即执行函数和闭包  
+        (function() {  
+            var thePoint = points[i];  
+            marker.addEventListener("click",function(){  
+                showInfo(this,thePoint);  
             });  
+        })();  
 		
 		
 	}       //循环结束
         }        
  		});	
  		
+ 		
+ 	
  		
  		
     
