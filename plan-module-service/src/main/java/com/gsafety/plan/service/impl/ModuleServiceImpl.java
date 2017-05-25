@@ -9,6 +9,9 @@ import net.sf.json.JSONObject;
 
 import org.springframework.stereotype.Service;
 
+import com.gsafety.cloudframework.common.base.conditions.Cnds;
+import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
+import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Module;
@@ -63,6 +66,15 @@ public class ModuleServiceImpl extends BaseServiceImpl implements ModuleService{
         String hql = "from Module m where m.preplanSnM.preplanSn=:preplanSn";
         hashMap.put("preplanSn",ppSn);
         return baseDAO.getListByHql(hql,hashMap,Module.class);
+    }
+    @Override
+    public Module getUniqueByPpsnOrder(String preplanSn, String order) {
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        String hql = "from Module m where m.preplanSnM.preplanSn=:preplanSn and m.order=:order";
+        hashMap.put("preplanSn",preplanSn);
+        hashMap.put("order",order);  
+        Module md=baseDAO.getUniqueByHql(hql,hashMap,Module.class);
+        return md;
     }
 
 }
