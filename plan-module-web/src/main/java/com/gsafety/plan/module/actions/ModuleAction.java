@@ -64,14 +64,21 @@ public class ModuleAction extends ListAction<Module> {
             pl.setPreplanSn(preplanSn);
             //id为0则是新模块
            if(id==0) {
-                Module md=new Module();
-                String uuidModule = UUID.randomUUID().toString();  
-                md.setOrder(order);
-                md.setContent(content);
-                md.setModuleSn(uuidModule);
-                md.setPreplanSnM(pl);
-                md.setModuleCheck(true);
-                moduleService.save(md);
+                Module oldMd=moduleService.getUniqueByPpsnOrder(preplanSn,order);                  
+                if(oldMd != null) {
+                    oldMd.setContent(content);
+                    moduleService.update(oldMd);
+                }else{
+                    Module md=new Module();
+                    String uuidModule = UUID.randomUUID().toString();  
+                    md.setOrder(order);
+                    md.setContent(content);
+                    md.setModuleSn(uuidModule);
+                    md.setPreplanSnM(pl);
+                    md.setModuleCheck(true);
+                    moduleService.save(md);
+                }
+                
             }
             else {                
                 Module md=moduleService.get(Module.class, id);            

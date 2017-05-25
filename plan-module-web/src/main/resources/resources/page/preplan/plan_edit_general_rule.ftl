@@ -101,7 +101,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
                                                 	<button type="button" class="btn blue" onclick="saveModule()">保存</button>
-                                                    <button type="button" class="btn green" onclick="submitModule()">下一步</button>
+                                                    <button type="button" class="btn green" onclick="submitModule(1010,plan_edit_depend_on.action)">下一步</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,56 +154,7 @@
         <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script>              
         <!-- END PAGE LEVEL SCRIPTS -->
         <script type="text/javascript">
-        	function saveModule(){
-        	
-        	}        
-        	function submitModule(){
-        		var xhedit=$('#xheditor').xheditor();
-        		var planContent=xhedit.getSource();
-        		var planSn=$('#planSn').val();
-        		if(null===planContent || planContent===""){  
-        			swal({   
-        				title: "内容不能为空",   
-        				timer: 2000,   
-        				showConfirmButton: false 
-        			});		
-	
-        		} else{
-        		    if(null === planSn || planSn=="") {
-        				swal('预案基本信息未编制', '要先编制预案基本信息才能编写该模块哦!', 'error');	 			
-        			}        			        			
-        			else{
-        				submitModuleAjax(planContent,planSn);	
-        			}
-        		}	
-        	}
-        	
-        	function submitModuleAjax(planContent,planSn){
-        		var moduleId=0;
-        		var order="0101";
-        		$.ajax({
-					type : "POST",
-					url:'${pageContext.request.contextPath}/plan/preplan/preplan_module_saveOrUpdateModule.action',
-					dataType : "json",
-					data : {
-							id : moduleId,
-							order:order,
-							content:planContent,
-							preplanSn:planSn
-					},
-					success : function(data) {	
-						console.log(data.status);
-						if(data=="\"error\""){
-							swal('提交出错', '未知错误，请确定您已经登录!', 'error');	 	
-						}else{
-							location.href ="/plan/preplan/plan_edit_depend_on.action"+"?ppSn="+data.status.replace(/\"/g,"");     
-						}													
-					},
-					error: function(){
-							swal('提交出错', '未知错误，请确定您已经登录!', 'error');	 					
-					}
-				});
-        	}        	        	
+        	        	
         </script>
         
     </body>

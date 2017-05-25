@@ -62,9 +62,12 @@
                                     <div class="mt-element-step">
                                         <div class="row step-thin">
                                             <div class="col-md-4 col-sm-6 col-xs-12 bg-grey mt-step-col active">
-                                                <div class="mt-step-number bg-white font-grey">2</div>
+                                                <div class="mt-step-number bg-white font-grey">1</div>
                                                 <div class="mt-step-title uppercase font-grey-cascade">预案基本信息填写</div>
                                                 <div class="mt-step-content font-grey-cascade">（这里填写预案的基本信息）</div>
+                                            </div>
+                                            <div class="col-md-8 col-sm-6 col-xs-12">
+                                            	<#include "/decorators/edit_right_menu.ftl"> 	
                                             </div>
                                         </div>                                     
                                     </div>
