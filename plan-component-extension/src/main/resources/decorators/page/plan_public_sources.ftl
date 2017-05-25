@@ -17,6 +17,7 @@
         <link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/layouts/layout/css/custom.min.css" />        
 <!-- END THEME LAYOUT STYLES <link rel="shortcut icon" href="favicon.ico" />-->
 		<link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/sweetalert.css" />  
+		<link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/global/plugins/jstree/dist/themes/default/style.min.css" />  
 <!-- BEGIN CORE PLUGINS -->
 
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.min.js"></script>
@@ -40,3 +41,8 @@
 	<script type="text/javascript" src="${getTheme('default','')}assets/layouts/global/scripts/quick-sidebar.min.js"></script>
 <!-- END THEME LAYOUT SCRIPTS -->
 	<script type="text/javascript" src="${getMC ("")}/js/sweetalert.min.js"></script>
+	<script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jstree/dist/jstree.min.js"></script>
+	<script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/ui-tree.min.js"></script>
+	
+	
+	
