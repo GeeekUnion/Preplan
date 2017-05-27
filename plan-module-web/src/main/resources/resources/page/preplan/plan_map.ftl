@@ -112,8 +112,10 @@
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
        	<!--MAP PLUGINS -->
+       	<!--计算经纬度的api-->
         <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils.js"></script>
         <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR&services=&t=20170517145936"></script>
+        <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
     </body>
 <script type="text/javascript">
 		var points = new Array();
@@ -124,23 +126,32 @@
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
 	
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-	var point = new BMap.Point(116.331398,39.897445);
-	map.centerAndZoom(point,12);
-	
-	var geolocation = new BMap.Geolocation();
-	geolocation.getCurrentPosition(function(r){
-		if(this.getStatus() == BMAP_STATUS_SUCCESS){
-			var mk = new BMap.Marker(r.point);
-			map.addOverlay(mk);
-			map.panTo(r.point);
-			alert('您的位置：'+r.point.lng+','+r.point.lat);
-		}
-		else {
-			alert('failed'+this.getStatus());
-		}        
-	},{enableHighAccuracy: true})
-	
-	  
+ var longitude, latitude;    
+    navigator.geolocation.getCurrentPosition(function (position) {    
+        //alert("1");  
+        longitude = position.coords.longitude;    
+        latitude = position.coords.latitude;    
+    });    
+    setTimeout(function () {    
+        var gpsPoint = new BMap.Point(longitude, latitude);    
+        BMap.Convertor.translate(gpsPoint, 0, function (point) {    
+            var geoc = new BMap.Geocoder();    
+            geoc.getLocation(point, function (rs) {    
+                          
+                map.addControl(new BMap.NavigationControl());   
+                map.addControl(new BMap.ScaleControl());   
+                map.addControl(new BMap.OverviewMapControl());   
+                map.centerAndZoom(point, 18);   
+                map.addOverlay(new BMap.Marker(point)) ;  
+                  
+                //alert("2");  
+                var addComp = rs.addressComponents;    
+                alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);    
+                alert('您的位置：'+rs.point.lng+','+rs.point.lat);  
+            });    
+        });    
+    }, 1000);   
+    
 		//单击maker事件
 		function showInfo(marker,point){  
 		 console.log(point);
