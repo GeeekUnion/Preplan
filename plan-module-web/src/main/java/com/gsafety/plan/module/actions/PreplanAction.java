@@ -40,6 +40,7 @@ import com.gsafety.plan.service.DomainService;
 import com.gsafety.plan.service.IPersonService;
 import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.ModuleService;
+import com.gsafety.plan.service.PageMsgService;
 import com.gsafety.plan.service.PersonService;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
@@ -65,6 +66,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private ResourceRecordService rrService;
     @Resource
     private ModuleService moduleService;
+    
+    @Resource
+    private PageMsgService pageMsgService;
     
     private String code;//传id
     private String ppSn;//值
@@ -103,8 +107,18 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     
     public String editSkip() {
-        
-        ActionContext.getContext().put("planSn",ppSn);//预案责任单位
+        ActionContext.getContext().put("moduleOrder","\'"+code+"\'");//第一布
+        String moduleOrderNext=""; 
+        if(null!=code) {
+            int codeNext=Integer.parseInt(code)+1;
+            if(codeNext>9) {
+                moduleOrderNext="\'00"+codeNext+"\'";  
+              }else {
+                moduleOrderNext="\'000"+codeNext+"\'"; 
+              }
+        }                       
+        ActionContext.getContext().put("moduleOrderNext",moduleOrderNext);//下一步
+        ActionContext.getContext().put("planSn",ppSn);//预案Sn
         return "url";   
     }
     
@@ -149,7 +163,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     //保存预案
     public String saveOnlyPreplan() {
         Preplan ppModel=new Preplan();
-        if(ppSn == null) {
+        if(ppSn == null || ppSn.length()<=0) {
             //获得当前预案时间
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             //获得当前预案UUID（preplan_sn）

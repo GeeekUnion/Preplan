@@ -92,6 +92,26 @@ public class ModuleAction extends ListAction<Module> {
 	    return "jsonObject"; 
 	}
 	
+	
+	 /*@name 根据preplanSn,order获得模块信息
+     *@param  模块属性
+     *@returns 
+     * */
+	public String getModuleByPpsnOrder(){
+	   
+	    Module md=moduleService.getUniqueByPpsnOrder(preplanSn,order);
+	    if(null != md) {
+	        jsonObject.put("moduleSn", md.getModuleSn());
+	        jsonObject.put("moduleContent", md.getContent());
+	    }else {
+	        jsonObject.put("moduleSn","");
+            jsonObject.put("moduleContent","");
+	    }
+	    
+	    
+	    return "jsonObject";
+	}
+	
 	/*@name 删除模块 
      *@param  模块id
      *@returns 

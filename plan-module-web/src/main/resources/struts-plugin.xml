@@ -91,8 +91,14 @@
 			</result>					
 		</action>
 		<!-- Preplan拦截和结果配置根据url跳转页面 -->
+		<action name="plan_edit_base_msg" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
+			<result name="url">preplan/plan_edit_base_msg.ftl</result>				
+		</action>
+		<action name="plan_edit_index">
+			<result>preplan/plan_edit_index.ftl</result>				
+		</action>
 		<action name="plan_edit_*" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
-			<result name="url">preplan/plan_edit_{1}.ftl</result>				
+			<result name="url">preplan/plan_edit_module.ftl</result>				
 		</action>
 		<!-- Mission拦截和结果配置 -->
 		<action name="preplan_mission_*" class="com.gsafety.plan.module.actions.MissionAction" method="{1}">

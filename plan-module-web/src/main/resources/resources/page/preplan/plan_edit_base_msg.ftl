@@ -293,6 +293,7 @@
                 var ppUid=$('#preplanSn').val()
                 var ppType=$('#domain_list').val();
                 var ppDept=$('#review_list').val();
+                var ppSn=$('#planSn').val();
                   $.ajax({  
 	                    type: 'post',  
 	                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
@@ -301,13 +302,15 @@
 							ppDesc : ppDesc,
 							ppType : ppType,
 							ppDept : ppDept,
-							ppUid  : ppUid
+							ppUid  : ppUid,
+							ppSn   : ppSn
                         },
 	                    success:function(data){
 	                     	if(data=="\"error\""){
                              	swal('提交出错', '未知错误，请确定您已经登录!', 'error');	   
                             }else{
-                            	location.href ="/plan/preplan/plan_edit_general_rule.action"+"?ppSn="+data.replace(/\"/g,"");   
+                            	var oooorder="0001";
+                            	getPageMsg(oooorder,data.replace(/\"/g,""))  
                             }
                         }   
 	                }); 
