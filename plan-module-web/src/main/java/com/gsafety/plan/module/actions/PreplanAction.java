@@ -91,6 +91,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private int rows;
     
     private String jsonObject;//返回判断
+    private JSONArray myJsonArray = new JSONArray();
     
     //用于封装会话session
     protected Map<String, Object> session;  
@@ -189,7 +190,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                 set.add(dmModel);
                 ppModel.setDomain(set);
                 jsonObject = ppModel.getPreplanSn();
-                if(ppSn == null) {
+                if(ppSn == null || ppSn.length()<=0) {
                     ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);
                     
@@ -209,6 +210,31 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             e.printStackTrace(); 
         }
         return "jsonObject";
+    }
+    
+    /**
+     * TODO(根据预案sn查询预案)
+     * 
+     * */
+    public String getUniqueByPreplanSn() {
+        if(null != ppSn && ppSn.length()>0) {            
+           Preplan p= preplanService.getByPpSn(ppSn);
+           if(null!=p) {
+               JSONObject jo=new JSONObject();   
+               Set<Domain> set=p.getDomain();
+               int preplanDomainId=0;
+               for (Domain d : set) {  
+                   preplanDomainId=d.getId();
+               }  
+               jo.put("preplanDesc",p.getPreplanDesc());
+               jo.put("preplanName",p.getPreplanName());
+               jo.put("preplanUID",p.getPreplanUID());
+               jo.put("preplanDomain",preplanDomainId);               
+               myJsonArray.add(jo);
+           }
+        }
+        return "myJsonArray"; 
+        
     }
     
     //保存预案和相关任务
@@ -763,6 +789,16 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public void setMisnOrder(String misnOrder) {
         this.misnOrder = misnOrder;
     }
+
+    public JSONArray getMyJsonArray() {
+        return myJsonArray;
+    }
+
+
+    public void setMyJsonArray(JSONArray myJsonArray) {
+        this.myJsonArray = myJsonArray;
+    }
+
 
     @Override
     public void setSession(Map<String, Object> session) {

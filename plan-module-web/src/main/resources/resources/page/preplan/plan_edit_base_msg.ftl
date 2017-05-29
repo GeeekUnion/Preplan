@@ -186,140 +186,180 @@
         <!-- END PAGE LEVEL PLUGINS -->
         <script>         
 			$(function(){
-				//查询所有分类
-	        	$.ajax({
-					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_domain_queryAllDomain.action",
-					dataType : "json",
-					data : {
+				getPlanBaseMsg();//查询已有预案信息	
+	            				
+				//提交
+				var form2 = $('#baseMsgForm');
+	            var error2 = $('.alert-danger', form2);
+	            var success2 = $('.alert-success', form2);
+	
+	            form2.validate({
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block help-block-error', // default input error message class
+	                focusInvalid: false, // do not focus the last invalid input
+	                ignore: "",  // validate all fields including form hidden input
+	                rules: {
+	                    preplanSn: {
+	                        required: true
+	                    },
+	                    preplanName: {
+	                        required: true
+	                    },
+	                    domain: {
+	                        required: true
+	                    },
+	                    preplanDesc: {
+	                        required: true,
+	                        maxlength:500
+	                    },
+	                    reviewOrg: {
+	                        required: true
+	                    }
+	                },
+	
+	                invalidHandler: function (event, validator) { //display error alert on form submit              
+	                    success2.hide();
+	                    error2.show();
+	                    App.scrollTo(error2, -200);
+	                },
+	
+	                errorPlacement: function (error, element) { // render error placement for each input type
+	                    var icon = $(element).parent('.input-icon').children('i');
+	                    icon.removeClass('fa-check').addClass("fa-warning");  
+	                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+	                },
+	
+	                highlight: function (element) { // hightlight error inputs
+	                    $(element)
+	                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+	                },
+	
+	                unhighlight: function (element) { // revert the change done by hightlight
+	                    
+	                },
+	
+	                success: function (label, element) {
+	                    var icon = $(element).parent('.input-icon').children('i');
+	                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+	                    icon.removeClass("fa-warning").addClass("fa-check");
+	                },
+	
+	                submitHandler: function (form) {
+	                var ppName=$('#preplanName').val()
+	                var ppDesc=$('#preplanDesc').val()
+	                var ppUid=$('#preplanSn').val()
+	                var ppType=$('#domain_list').val();
+	                var ppDept=$('#review_list').val();
+	                var ppSn=$('#planSn').val();
+	                  $.ajax({  
+		                    type: 'post',  
+		                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
+		                    data:{
+		                    	ppName : ppName,
+								ppDesc : ppDesc,
+								ppType : ppType,
+								ppDept : ppDept,
+								ppUid  : ppUid,
+								ppSn   : ppSn
+	                        },
+		                    success:function(data){
+		                     	if(data=="\"error\""){
+	                             	swal('提交出错', '未知错误，请确定您已经登录!', 'error');	   
+	                            }else{
+	                            	var oooorder="0001";
+	                            	getPageMsg(oooorder,data.replace(/\"/g,""))  
+	                            }
+	                        }   
+		                }); 
+		                return false; // 阻止表单自动提交事件
+	                }
+	            });
+				
+	        })
+        	
+        	function getPlanBaseMsg(){
+        		var preplanDomainId=0;
+        		var preplanDeparmentId=0;
+        		var planSn=$('#planSn').val();
 
-					},
-					success : function(data) {
-					    var html='';                             
- 						for(var i=0;i<data.length;i++){
-							html= html+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
-						}	
-						
-                        //document.write(html1+html+html2); 
-                        $('#domain_list').append(html) 		
-						//$('#planListBody').append(html1+html+html2);	
-						//$("#planListBody").fadeIn('show');
-					},
-					error: function(){
-						sweetAlert("加载失败", "未知错误，请重试!", "error");									
-					}
-				});
-				//查询审核部门
+            	//查询预案基本信息
 				$.ajax({
 					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_department_getDepartment.action",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_getUniqueByPreplanSn.action",
 					dataType : "json",
 					data : {
-
+						ppSn:planSn
 					},
 					success : function(data) {
-						console.log(data);
-					    var html='';     
-					    if(null != data){
-					    	html= html+'<option value="'+data.orgCode+'">'+data.orgName+'</option>'
-					    }                        						
-                        $('#review_list').append(html) 		
-
+						if(data.length>0){
+							$('#preplanSn').val(data[0].preplanUID);//预案编号	
+							$('#preplanName').val(data[0].preplanName);//预案名字
+							$('#preplanDesc').val(data[0].preplanDesc);//预案描述
+							preplanDomainId=data[0].preplanDomain;
+						} 
+						//查询所有分类
+		        	$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_domain_queryAllDomain.action",
+						dataType : "json",
+						data : {
+	
+						},
+						success : function(data) {
+						    var html='';                             
+	 						for(var i=0;i<data.length;i++){
+	 							if(data[i].id==preplanDomainId){
+	 								html= html+'<option value="'+data[i].id+'" selected="selected">'+data[i].domain_name+'</option>'
+	 							}else{
+	 								html= html+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
+	 							}
+								
+							}	
+							
+	                        //document.write(html1+html+html2); 
+	                        $('#domain_list').append(html);		
+							//$('#planListBody').append(html1+html+html2);	
+							//$("#planListBody").fadeIn('show');
+						},
+						error: function(){
+							sweetAlert("加载失败", "未知错误，请重试!", "error");									
+						}
+					});
+					//查询审核部门
+					$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_department_getDepartment.action",
+						dataType : "json",
+						data : {
+	
+						},
+						success : function(data) {
+							console.log(data);
+						    var html='';     
+						    if(null != data){
+						    	html= html+'<option value="'+data.orgCode+'">'+data.orgName+'</option>'
+						    }                        						
+	                        $('#review_list').append(html); 
+		                        
+						},
+						error: function(){
+							sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+						}
+					});	    
+						                 
 					},
 					error: function(){
 						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
 					}
-				});
+				});	
+	
+        		
+        		
 				
-			//查询审核部门	
-			var form2 = $('#baseMsgForm');
-            var error2 = $('.alert-danger', form2);
-            var success2 = $('.alert-success', form2);
+        	}
+        	
 
-            form2.validate({
-                errorElement: 'span', //default input error message container
-                errorClass: 'help-block help-block-error', // default input error message class
-                focusInvalid: false, // do not focus the last invalid input
-                ignore: "",  // validate all fields including form hidden input
-                rules: {
-                    preplanSn: {
-                        required: true
-                    },
-                    preplanName: {
-                        required: true
-                    },
-                    domain: {
-                        required: true
-                    },
-                    preplanDesc: {
-                        required: true,
-                        maxlength:500
-                    },
-                    reviewOrg: {
-                        required: true
-                    }
-                },
-
-                invalidHandler: function (event, validator) { //display error alert on form submit              
-                    success2.hide();
-                    error2.show();
-                    App.scrollTo(error2, -200);
-                },
-
-                errorPlacement: function (error, element) { // render error placement for each input type
-                    var icon = $(element).parent('.input-icon').children('i');
-                    icon.removeClass('fa-check').addClass("fa-warning");  
-                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
-                },
-
-                highlight: function (element) { // hightlight error inputs
-                    $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
-                },
-
-                unhighlight: function (element) { // revert the change done by hightlight
-                    
-                },
-
-                success: function (label, element) {
-                    var icon = $(element).parent('.input-icon').children('i');
-                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                    icon.removeClass("fa-warning").addClass("fa-check");
-                },
-
-                submitHandler: function (form) {
-                var ppName=$('#preplanName').val()
-                var ppDesc=$('#preplanDesc').val()
-                var ppUid=$('#preplanSn').val()
-                var ppType=$('#domain_list').val();
-                var ppDept=$('#review_list').val();
-                var ppSn=$('#planSn').val();
-                  $.ajax({  
-	                    type: 'post',  
-	                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
-	                    data:{
-	                    	ppName : ppName,
-							ppDesc : ppDesc,
-							ppType : ppType,
-							ppDept : ppDept,
-							ppUid  : ppUid,
-							ppSn   : ppSn
-                        },
-	                    success:function(data){
-	                     	if(data=="\"error\""){
-                             	swal('提交出错', '未知错误，请确定您已经登录!', 'error');	   
-                            }else{
-                            	var oooorder="0001";
-                            	getPageMsg(oooorder,data.replace(/\"/g,""))  
-                            }
-                        }   
-	                }); 
-	                return false; // 阻止表单自动提交事件
-                }
-            });
-				
-	        })
-        
+        	
         </script>
         
     </body>
