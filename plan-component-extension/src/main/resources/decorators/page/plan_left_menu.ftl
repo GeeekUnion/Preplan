@@ -26,7 +26,7 @@
                             </a>                            
                         </li>  
                         <li class="nav-item" id="navPlanEditLi">
-                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_index.action" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" class="nav-link nav-toggle">
                                 <i class=" icon-wrench"></i>
                                 <span class="title">预案编制</span>
                                 <span class="selected"></span>
