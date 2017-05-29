@@ -117,35 +117,41 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             cndsOrg.and(setOrg);
             EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
             JSONArray array = new JSONArray();
-            for(Preplan p : pList) {
-                JSONObject jo = new JSONObject();
-                jo.put("id",p.getId());
-                jo.put("preplanUid",p.getPreplanUID());
-                jo.put("preplanName",p.getPreplanName());  
-                jo.put("responDept",org.getOrgName()); 
-                jo.put("preplanSn",p.getPreplanSn()); 
-                jo.put("status",p.getPreplanStatus()); 
-                if(p.getPreplanTime() != null) {
-                    jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
-                }
-                else {
-                    jo.put("preplanTime",""); 
-                }
-                jo.put("preplanUID",p.getPreplanUID());
-                jo.put("preplanDesc",p.getPreplanDesc());
-                
-                //获得预案类型
-                if(p.getDomain() != null) {
-                    Set<Domain> d=p.getDomain();
-                    Iterator<Domain> dModel = d.iterator();
-                    while(dModel.hasNext()){
-                        Domain dmSingle =dModel.next();
-                        jo.put("preplanType",dmSingle.getDomainName());
+
+            if(pList.size()==0) {
+                str="{\"recordsTotal\":"+0+",\"data\":[]}";
+            }else {
+                for(Preplan p : pList) {
+                    JSONObject jo = new JSONObject();
+                    jo.put("id",p.getId());
+                    jo.put("preplanUid",p.getPreplanUID());
+                    jo.put("preplanName",p.getPreplanName());  
+                    jo.put("responDept",org.getOrgName()); 
+                    jo.put("preplanSn",p.getPreplanSn()); 
+                    jo.put("status",p.getPreplanStatus()); 
+                    if(p.getPreplanTime() != null) {
+                        jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
                     }
-                } 
-                array.add(jo);
+                    else {
+                        jo.put("preplanTime",""); 
+                    }
+                    jo.put("preplanUID",p.getPreplanUID());
+                    jo.put("preplanDesc",p.getPreplanDesc());
+                    
+                    //获得预案类型
+                    if(p.getDomain() != null) {
+                        Set<Domain> d=p.getDomain();
+                        Iterator<Domain> dModel = d.iterator();
+                        while(dModel.hasNext()){
+                            Domain dmSingle =dModel.next();
+                            jo.put("preplanType",dmSingle.getDomainName());
+                        }
+                    } 
+                    array.add(jo);
+                }
+                str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
             }
-            str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
+            
             System.out.println(str);    
         }else {
             str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
