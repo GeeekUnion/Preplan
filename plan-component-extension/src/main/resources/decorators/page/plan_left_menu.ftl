@@ -26,7 +26,7 @@
                             </a>                            
                         </li>  
                         <li class="nav-item" id="navPlanEditLi">
-                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_index.action" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" class="nav-link nav-toggle">
                                 <i class=" icon-wrench"></i>
                                 <span class="title">预案编制</span>
                                 <span class="selected"></span>
@@ -63,9 +63,9 @@
                             </a>
                         </li>
                         <li class="nav-item " id="navPlanSrcLi">
-                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
+                            <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="fa fa-cogs"></i>
-                                <span class="title">地图</span>
+                                <span class="title">基础数据</span>
                             </a>
                         </li>                                                        
                     </ul>
