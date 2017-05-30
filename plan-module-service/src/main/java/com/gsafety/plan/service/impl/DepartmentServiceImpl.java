@@ -19,17 +19,29 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
     @Resource(name="baseDAO")
     protected IBaseDAO baseDAO;
     /**
-     *根据org id查询 org 
+     *根据org id查询查询上级 
      */
     @Override
-    public String getOrg(EmsOrg orgSet) {      
-        String sql="select ORG_CODE,ORG_NAME,ORG_AREA_CODE from fw_t_ems_org where ORG_CODE="+"\'"+orgSet.getOrgCode()+"\'";
-        Object[] obj= (Object[]) baseDAO.getUniqueBySql(sql);
+    public String getOrg(EmsOrg orgSet) {   
+    	String sql="select ORG_CODE,ORG_NAME,ORG_AREA_CODE from fw_t_ems_org where ORG_CODE="+"\'"+orgSet.getOrgCode()+"\'";
+        Object[] obj= (Object[]) baseDAO.getUniqueBySql(sql);//获得原Org
         JSONObject jo = new JSONObject();
-        jo.put("orgCode",obj[0]);
-        jo.put("orgName",obj[1]);
-        jo.put("orgAreaCode",obj[2]);
-        String str=jo.toString();
+        String oldOrgAreaCode=(String) obj[2];
+        if("01".equals(oldOrgAreaCode)){
+        	jo.put("orgCode",obj[0]);
+            jo.put("orgName",obj[1]);
+            jo.put("orgAreaCode",oldOrgAreaCode);           
+        }else{
+        	int lastIndex=oldOrgAreaCode.length()-2;
+        	String newSql="select ORG_CODE,ORG_NAME,ORG_AREA_CODE from fw_t_ems_org where ORG_AREA_CODE="+"\'"+oldOrgAreaCode.substring(0,lastIndex)+"\'";
+        	Object[] newObj= (Object[]) baseDAO.getUniqueBySql(newSql);//获得新Org
+        	jo.put("orgCode",newObj[0]);
+            jo.put("orgName",newObj[1]);
+            jo.put("orgAreaCode",newObj[2]);  
+        }
+        
+        
+        String str=jo.toString(); 
         return str;
     }
 
