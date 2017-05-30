@@ -63,9 +63,9 @@
                             </a>
                         </li>
                         <li class="nav-item " id="navPlanSrcLi">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                              <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
                                 <i class="fa fa-cogs"></i>
-                                <span class="title">基础数据</span>
+                                <span class="title">地图</span>
                             </a>
                         </li>                                                        
                     </ul>
