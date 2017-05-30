@@ -469,6 +469,7 @@
          */
         function isIE(){
             return ("ActiveXObject" in window);
+             getLocationHtml5();
         }
         /**
          * 判断是否为谷歌浏览器
@@ -478,6 +479,7 @@
             if(uaMatch!=null){
                 window.browser['name'] = 'chrome';
                 window.browser['version'] = uaMatch[1];
+                getLocationGoogle();
             }
         }
         /**
@@ -543,7 +545,7 @@
             $.extend({
                 isIE:function(){
                     return (window.browser.name == 'ie');
-                    getLocationHtml5();
+                   
                 }
             });
         }
@@ -551,7 +553,7 @@
             $.extend({
                 isChrome:function(){
                     return (window.browser.name == 'chrome');
-                    getLocationGoogle();
+                    
                 }
             });
         }
