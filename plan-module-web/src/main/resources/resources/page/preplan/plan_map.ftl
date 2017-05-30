@@ -15,7 +15,8 @@
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
         <meta content="" name="author" />
-       	<#include "/decorators/plan_public_sources.ftl">       
+       	<#include "/decorators/plan_public_sources.ftl">      
+       
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/global/plugins/datatables/datatables.min.css"/>
 		<link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css"/>
@@ -24,7 +25,7 @@
         
     <!-- END HEAD -->
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white" >
         <#include "/decorators/plan_head.ftl">    
         <!-- BEGIN HEADER & CONTENT DIVIDER -->
         <div class="clearfix"> </div>
@@ -115,50 +116,77 @@
        	<!--计算经纬度的api-->
         <script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils.js"></script>
         <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR&services=&t=20170517145936"></script>
-        <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+        
     </body>
 <script type="text/javascript">
 		var points = new Array();
 		var markers = new Array();
 	    var s;//经度
 	    var w;//纬度
+	    var longitude, latitude;  
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
-	
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
- var longitude, latitude;    
-    navigator.geolocation.getCurrentPosition(function (position) {    
-        //alert("1");  
-        longitude = position.coords.longitude;    
-        latitude = position.coords.latitude;    
-    });    
-    setTimeout(function () {    
-        var gpsPoint = new BMap.Point(longitude, latitude);    
-        BMap.Convertor.translate(gpsPoint, 0, function (point) {    
-            var geoc = new BMap.Geocoder();    
-            geoc.getLocation(point, function (rs) {    
-                          
-                map.addControl(new BMap.NavigationControl());   
-                map.addControl(new BMap.ScaleControl());   
-                map.addControl(new BMap.OverviewMapControl());   
-                map.centerAndZoom(point, 18);   
-                map.addOverlay(new BMap.Marker(point)) ;  
-                  
-                //alert("2");  
-                var addComp = rs.addressComponents;    
-                alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);    
-                alert('您的位置：'+rs.point.lng+','+rs.point.lat);  
-            });    
-        });    
-    }, 1000);   
-    
+	var point = new BMap.Point(116.331398,39.897445);
+	map.centerAndZoom(point,12);
+
+  
+
+    //html5定位方法
+    function getLocationHtml5(){
+    var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			var mk = new BMap.Marker(r.point);
+			map.addOverlay(mk);
+			map.panTo(r.point);
+			//alert('您的位置：'+r.point.lng+','+r.point.lat);
+		}
+		else {
+			alert('failed'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true})
+	}
+	//chrome定位方法
+	function getLocationGoogle(){
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r){
+			if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				var mk = new BMap.Marker(r.point);
+				map.addOverlay(mk);
+				map.panTo(r.point);
+				alert('您的位置：'+r.point.lng+','+r.point.lat);
+				
+		setTimeout(function(){
+	    var convertor = new BMap.Convertor();
+	    var pointArr = [];
+	    pointArr.push(r.point);
+	        convertor.translate(pointArr, 3, 5, translateCallback)
+	    }, 1000);
+	    
+			}
+			else {
+				alert('failed'+this.getStatus());
+			}        
+		},{enableHighAccuracy: true})
+	    
+	
+	translateCallback = function (data){
+	      if(data.status === 0) {
+	        var marker = new BMap.Marker(data.points[0]);
+	        map.addOverlay(marker);
+	      
+	        map.setCenter(data.points[0]);
+	      }
+	    }
+	}
+	
+	   
+		 
 		//单击maker事件
 		function showInfo(marker,point){  
 		 console.log(point);
-		 
-		
-	     
-	   }  
+          }
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
@@ -233,12 +261,12 @@
         setMapEvent();//设置地图事件
         addMapControl();//向地图添加控件
     }
-    
+	
     //创建地图函数：
     function createMap(){
         
         
-
+       
     	map.addEventListener("rightclick",function(e){
     	    s = e.point.lng;//经度
         	w = e.point.lat;//维度
@@ -427,5 +455,132 @@
 			        }
 				});
 			} );
+			
+			//浏览器判断
+		
+(function($, window, document,undefined){
+    if(!window.browser){
+         
+        var userAgent = navigator.userAgent.toLowerCase(),uaMatch;
+        window.browser = {}
+         
+        /**
+         * 判断是否为ie
+         */
+        function isIE(){
+            return ("ActiveXObject" in window);
+        }
+        /**
+         * 判断是否为谷歌浏览器
+         */
+        if(!uaMatch){
+            uaMatch = userAgent.match(/chrome\/([\d.]+)/);
+            if(uaMatch!=null){
+                window.browser['name'] = 'chrome';
+                window.browser['version'] = uaMatch[1];
+            }
+        }
+        /**
+         * 判断是否为火狐浏览器
+         */
+        if(!uaMatch){
+            uaMatch = userAgent.match(/firefox\/([\d.]+)/);
+            if(uaMatch!=null){
+                window.browser['name'] = 'firefox';
+                window.browser['version'] = uaMatch[1];
+            }
+        }
+        /**
+         * 判断是否为opera浏览器
+         */
+        if(!uaMatch){
+            uaMatch = userAgent.match(/opera.([\d.]+)/);
+            if(uaMatch!=null){
+                window.browser['name'] = 'opera';
+                window.browser['version'] = uaMatch[1];
+            }
+        }
+        /**
+         * 判断是否为Safari浏览器
+         */
+        if(!uaMatch){
+            uaMatch = userAgent.match(/safari\/([\d.]+)/);
+            if(uaMatch!=null){
+                window.browser['name'] = 'safari';
+                window.browser['version'] = uaMatch[1];
+            }
+        }
+        /**
+         * 最后判断是否为IE
+         */
+        if(!uaMatch){
+            if(userAgent.match(/msie ([\d.]+)/)!=null){
+                uaMatch = userAgent.match(/msie ([\d.]+)/);
+                window.browser['name'] = 'ie';
+                window.browser['version'] = uaMatch[1];
+            }else{
+                /**
+                 * IE10
+                 */
+                if(isIE() && !!document.attachEvent && (function(){"use strict";return !this;}())){
+                    window.browser['name'] = 'ie';
+                    window.browser['version'] = '10';
+                }
+                /**
+                 * IE11
+                 */
+                if(isIE() && !document.attachEvent){
+                    window.browser['name'] = 'ie';
+                    window.browser['version'] = '11';
+                }
+            }
+        }
+ 
+        /**
+         * 注册判断方法
+         */
+        if(!$.isIE){
+            $.extend({
+                isIE:function(){
+                    return (window.browser.name == 'ie');
+                    getLocationHtml5();
+                }
+            });
+        }
+        if(!$.isChrome){
+            $.extend({
+                isChrome:function(){
+                    return (window.browser.name == 'chrome');
+                    getLocationGoogle();
+                }
+            });
+        }
+        if(!$.isFirefox){
+            $.extend({
+                isFirefox:function(){
+                    return (window.browser.name == 'firefox');
+                }
+            });
+        }
+        if(!$.isOpera){
+            $.extend({
+                isOpera:function(){
+                    return (window.browser.name == 'opera');
+                }
+            });
+        }
+        if(!$.isSafari){
+            $.extend({
+                isSafari:function(){
+                    return (window.browser.name == 'safari');
+                }
+            });
+        }
+    }
+})(jQuery, window, document);
+
+console.log(window.browser);
+console.log($.isIE());
+console.log($.isChrome());
 </script>
 </html>
