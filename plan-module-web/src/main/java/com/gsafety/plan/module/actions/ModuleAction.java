@@ -32,7 +32,9 @@ public class ModuleAction extends ListAction<Module> {
 	private JSONArray jsonArray = new JSONArray();
 	private int page;
 	private int rows;
-
+	
+	private String code;//标识符
+	
     private String title;//标题
     private String content;//内容
     private String order;//顺序
@@ -265,6 +267,14 @@ public class ModuleAction extends ListAction<Module> {
     public void setOrder(String order) {
         this.order = order;
     }
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 	
 	
 	

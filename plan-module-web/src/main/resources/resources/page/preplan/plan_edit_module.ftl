@@ -101,7 +101,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
                                                 	<button type="button" class="btn blue" onclick="saveModule(${moduleOrder})">保存</button>
-                                                    <button type="button" class="btn green" onclick="submitModule(${moduleOrderNext})">下一步</button>
+                                                    <button id="submitModuleOver" type="button" class="btn green" onclick="submitModule(${moduleOrderNext})">下一步</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -164,6 +164,12 @@
 						$('#supTitle').html(data.supTitle)
 						$('#supTitleDesc').html(data.supTitleDesc)
 						$('#subTitle').html(data.moduleTitle)
+						//是否显示已完成
+						if(moduleOrder=="0032"){
+							$('#submitModuleOver').text("完成编制");
+						}else{
+							
+						}
 						
 					},
 					error: function(){

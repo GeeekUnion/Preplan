@@ -80,11 +80,12 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String ppDept;//预案部门
     private String ppUid;//自定义预案编号
     
-
+    private String preplanStatus;//预案状态
 
     private String misnName;//任务名字
     private String misnDept;//任务部门
     private String misnOrder;//序号
+    
 
 
     private int page;
@@ -177,7 +178,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         }   
         ppModel.setPreplanName(ppName);            
         ppModel.setPreplanDesc(ppDesc);
-        ppModel.setResponDept(ppDept);            
+        ppModel.setReviewOrg(ppDept);//审核部门
+        ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
         ppModel.setPreplanUID(ppUid);
         try{                  
             //放入预案分类SN(domain_sn)
@@ -229,12 +231,27 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                jo.put("preplanDesc",p.getPreplanDesc());
                jo.put("preplanName",p.getPreplanName());
                jo.put("preplanUID",p.getPreplanUID());
-               jo.put("preplanDomain",preplanDomainId);               
+               jo.put("preplanDomain",preplanDomainId); 
+               jo.put("preplanReviewOrg",p.getReviewOrg());  
                myJsonArray.add(jo);
            }
         }
         return "myJsonArray"; 
         
+    }
+    /**
+     * TODO(根据预案sn设置预案状态)
+     * 
+     * */
+    public String updatePreplanStatus(){
+    	if(null!=ppSn){
+    		Preplan p=preplanService.getByPpSn(ppSn);
+    		p.setPreplanStatus(preplanStatus);
+    		preplanService.update(p);
+    		jsonObject="ok";
+    		return "jsonObject";
+    	}    	
+    	return "jsonObject";
     }
     
     //保存预案和相关任务
@@ -798,9 +815,19 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public void setMyJsonArray(JSONArray myJsonArray) {
         this.myJsonArray = myJsonArray;
     }
+    
+
+    public String getPreplanStatus() {
+		return preplanStatus;
+	}
 
 
-    @Override
+	public void setPreplanStatus(String preplanStatus) {
+		this.preplanStatus = preplanStatus;
+	}
+
+
+	@Override
     public void setSession(Map<String, Object> session) {
         this.session=session;
     }
