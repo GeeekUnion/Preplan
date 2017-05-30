@@ -34,12 +34,26 @@ public class PageMsgAction extends ListAction<PageMsg>{
     private boolean requireCheck;//编写要求有无
     private boolean exampleCheck;//示例有无
     private boolean srcCheck;//资源有无
+    private String code;//...
     
-    
-    
+    /**
+     * 获得树的jsonArray
+     * */
     public String getTree() {
         jsonArray=pageMsgService.getTree();
-        return "JSONArray";
+        return "jsonArray";
+    }
+    
+    
+    /**
+     * 获得树的jsonArray
+     * */
+    public String getPageMsgByOrder() {
+        if(null!=order) {
+            jsonObject=pageMsgService.getPageMsgByOrder(order);
+        }
+        
+        return "jsonObject";
     }
     
     
@@ -51,9 +65,16 @@ public class PageMsgAction extends ListAction<PageMsg>{
     
     
     
-    
-    
-    
+    public String getCode() {
+        return code;
+    }
+
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+
     public JSONObject getJsonObject() {
         return jsonObject;
     }

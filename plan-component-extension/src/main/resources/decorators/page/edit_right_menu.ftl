@@ -9,48 +9,99 @@
         <div class="theme-option">
 	        <div class="portlet light bordered">
 	            <div class="portlet-title">
-	                <div class="caption">
-	                    <i class="icon-social-dribbble font-blue-sharp"></i>
-	                    <span class="caption-subject font-blue-sharp bold uppercase">Default Tree</span>
-	                </div>
-	                <div class="actions">
-	                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-	                        <i class="icon-cloud-upload"></i>
-	                    </a>
-	                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-	                        <i class="icon-wrench"></i>
-	                    </a>
-	                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-	                        <i class="icon-trash"></i>
-	                    </a>
-	                </div>
 	            </div>
 	            <div class="portlet-body">
-	                <div id="tree_1" class="tree-demo">
-	                    <ul>
-	                        <li> Root node 1
-	                            <ul>
-	                                <li data-jstree='{ "selected" : true }'>
-	                                    <a href="javascript:;"> Initially selected </a>
-	                                </li>
-	                                <li data-jstree='{ "icon" : "fa fa-briefcase icon-state-success " }'> custom icon URL </li>
-	                                <li data-jstree='{ "opened" : true }'> initially open
-	                                    <ul>
-	                                        <li data-jstree='{ "disabled" : true }'> Disabled Node </li>
-	                                        <li data-jstree='{ "type" : "file" }'> Another node </li>
-	                                    </ul>
-	                                </li>
-	                                <li data-jstree='{ "icon" : "fa fa-warning icon-state-danger" }'> Custom icon class (bootstrap) </li>
-	                            </ul>
-	                        </li>
-	                        <li data-jstree='{ "type" : "file" }'>
-	                            <a href="http://www.jstree.com"> Clickanle link node </a>
-	                        </li>
-	                    </ul>
+	                <div id="pageTree" class="tree-demo">
+						
 	                </div>
 	            </div>
 	        </div>  
         </div>
     </div>
 </div>
-<!-- END THEME PANEL -->                          
+ <input id="planSn" type="hidden" value="${planSn}"> 
+ <input id="moduleOrder" type="hidden" value="${moduleOrder}">
+ <input id="moduleOrderNext" type="hidden" value="${moduleOrderNext}">
+<!-- END THEME PANEL -->  
+
+  <script>
+  	  //获得树
+	  $(function () {
+	        $.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/plan/preplan/preplan_pageMsg_getTree.action",
+				dataType : "json",
+				data : {
+	
+				},
+				success : function(data) {
+					$('#pageTree').jstree({ 'core' : {
+					    'data' : data
+						} });
+				},
+				error: function(){
+					sweetAlert("加载失败", "未知错误，请重试!", "error");									
+				}
+			});
+			
+	  });
+	  
+	  //获得模块内容
+	  $(function () {
+			var planSn=$('#planSn').val();
+			var moduleOrder=$('#moduleOrder').val().replace(/'/g,"");
+			if(planSn=="" || moduleOrder=="null" || moduleOrder==""){
+				
+			}else{
+				getModuleContent(planSn,moduleOrder);
+			}	
+			
+	  });
+	  function getModuleContent(planSn,moduleOrder){
+	  	$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/plan/preplan/preplan_module_getModuleByPpsnOrder.action",
+				dataType : "json",
+				data : {
+					preplanSn:planSn,
+					order:moduleOrder
+				},
+				success : function(data) {
+					var xhedit=$('#xheditor').xheditor();
+					xhedit.setSource(data.moduleContent);
+				},
+				error: function(){
+					sweetAlert("加载失败", "未知错误，请重试!", "error");									
+				}
+			});		
+	  }
+	  
+	  
+	  //网页跳转中转
+	  function changePage(orderId){
+	  	var planSn=$('#planSn').val();
+	  	if(orderId=="01"){	  		
+	       	if(null === planSn || planSn=="") {
+	       		location.href ="/plan/preplan/plan_edit_base_msg.action"; 			
+			}        			        			
+			else{
+				location.href ="/plan/preplan/plan_edit_base_msg.action"+"?ppSn="+planSn; 			
+			}
+	  		
+	  	}else{
+	  		if(orderId.length>3){
+	  			getPageMsg(orderId,planSn);		
+	  		}	
+	  	}
+
+	  }
+	  //网页跳转
+	  function getPageMsg(orderId,planSn){
+	  	if(null === planSn || planSn=="") {
+	       		location.href ="/plan/preplan/plan_edit_module.action"+"?code="+orderId; 					
+		}        			        			
+		else{
+			location.href ="/plan/preplan/plan_edit_module.action"+"?ppSn="+planSn+"&code="+orderId; 		
+		}		
+	  }
+  </script>                        

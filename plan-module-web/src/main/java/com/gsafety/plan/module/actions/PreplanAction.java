@@ -40,6 +40,7 @@ import com.gsafety.plan.service.DomainService;
 import com.gsafety.plan.service.IPersonService;
 import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.ModuleService;
+import com.gsafety.plan.service.PageMsgService;
 import com.gsafety.plan.service.PersonService;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
@@ -66,6 +67,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     @Resource
     private ModuleService moduleService;
     
+    @Resource
+    private PageMsgService pageMsgService;
+    
     private String code;//传id
     private String ppSn;//值
   
@@ -76,17 +80,19 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String ppDept;//预案部门
     private String ppUid;//自定义预案编号
     
-
+    private String preplanStatus;//预案状态
 
     private String misnName;//任务名字
     private String misnDept;//任务部门
     private String misnOrder;//序号
+    
 
 
     private int page;
     private int rows;
     
     private String jsonObject;//返回判断
+    private JSONArray myJsonArray = new JSONArray();
     
     //用于封装会话session
     protected Map<String, Object> session;  
@@ -103,8 +109,18 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     
     public String editSkip() {
-        
-        ActionContext.getContext().put("planSn",ppSn);//预案责任单位
+        ActionContext.getContext().put("moduleOrder","\'"+code+"\'");//第一布
+        String moduleOrderNext=""; 
+        if(null!=code) {
+            int codeNext=Integer.parseInt(code)+1;
+            if(codeNext>9) {
+                moduleOrderNext="\'00"+codeNext+"\'";  
+              }else {
+                moduleOrderNext="\'000"+codeNext+"\'"; 
+              }
+        }                       
+        ActionContext.getContext().put("moduleOrderNext",moduleOrderNext);//下一步
+        ActionContext.getContext().put("planSn",ppSn);//预案Sn
         return "url";   
     }
     
@@ -149,7 +165,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     //保存预案
     public String saveOnlyPreplan() {
         Preplan ppModel=new Preplan();
-        if(ppSn == null) {
+        if(ppSn == null || ppSn.length()<=0) {
             //获得当前预案时间
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             //获得当前预案UUID（preplan_sn）
@@ -162,7 +178,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         }   
         ppModel.setPreplanName(ppName);            
         ppModel.setPreplanDesc(ppDesc);
-        ppModel.setResponDept(ppDept);            
+        ppModel.setReviewOrg(ppDept);//审核部门
+        ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
         ppModel.setPreplanUID(ppUid);
         try{                  
             //放入预案分类SN(domain_sn)
@@ -175,7 +192,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                 set.add(dmModel);
                 ppModel.setDomain(set);
                 jsonObject = ppModel.getPreplanSn();
-                if(ppSn == null) {
+                if(ppSn == null || ppSn.length()<=0) {
                     ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);
                     
@@ -195,6 +212,46 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             e.printStackTrace(); 
         }
         return "jsonObject";
+    }
+    
+    /**
+     * TODO(根据预案sn查询预案)
+     * 
+     * */
+    public String getUniqueByPreplanSn() {
+        if(null != ppSn && ppSn.length()>0) {            
+           Preplan p= preplanService.getByPpSn(ppSn);
+           if(null!=p) {
+               JSONObject jo=new JSONObject();   
+               Set<Domain> set=p.getDomain();
+               int preplanDomainId=0;
+               for (Domain d : set) {  
+                   preplanDomainId=d.getId();
+               }  
+               jo.put("preplanDesc",p.getPreplanDesc());
+               jo.put("preplanName",p.getPreplanName());
+               jo.put("preplanUID",p.getPreplanUID());
+               jo.put("preplanDomain",preplanDomainId); 
+               jo.put("preplanReviewOrg",p.getReviewOrg());  
+               myJsonArray.add(jo);
+           }
+        }
+        return "myJsonArray"; 
+        
+    }
+    /**
+     * TODO(根据预案sn设置预案状态)
+     * 
+     * */
+    public String updatePreplanStatus(){
+    	if(null!=ppSn){
+    		Preplan p=preplanService.getByPpSn(ppSn);
+    		p.setPreplanStatus(preplanStatus);
+    		preplanService.update(p);
+    		jsonObject="ok";
+    		return "jsonObject";
+    	}    	
+    	return "jsonObject";
     }
     
     //保存预案和相关任务
@@ -750,7 +807,27 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         this.misnOrder = misnOrder;
     }
 
-    @Override
+    public JSONArray getMyJsonArray() {
+        return myJsonArray;
+    }
+
+
+    public void setMyJsonArray(JSONArray myJsonArray) {
+        this.myJsonArray = myJsonArray;
+    }
+    
+
+    public String getPreplanStatus() {
+		return preplanStatus;
+	}
+
+
+	public void setPreplanStatus(String preplanStatus) {
+		this.preplanStatus = preplanStatus;
+	}
+
+
+	@Override
     public void setSession(Map<String, Object> session) {
         this.session=session;
     }

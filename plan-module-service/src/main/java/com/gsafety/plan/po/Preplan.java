@@ -34,7 +34,9 @@ public class Preplan implements Serializable {
 	private String preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表	
-
+	
+	private String reviewOrg;//审核部门
+	
 	private Event eventSn;
 	
 	private User username;
@@ -87,8 +89,15 @@ public class Preplan implements Serializable {
 	}
 	public void setResponDept(String responDept) {
 		this.responDept = responDept;
+	}		
+	@Column(name="review_org_code")
+    public String getReviewOrg() {
+		return reviewOrg;
 	}
-    @Column(name="respon_person")
+	public void setReviewOrg(String reviewOrg) {
+		this.reviewOrg = reviewOrg;
+	}
+	@Column(name="respon_person")
 	public String getResponPerson() {
 		return responPerson;
 	}

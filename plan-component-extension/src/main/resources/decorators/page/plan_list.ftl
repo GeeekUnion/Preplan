@@ -1,19 +1,38 @@
-<div class="portlet-body" id="">
-	<table id="planListTable" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>预案编号</th>
-                <th>预案名称 </th>
-                <th>类别 </th>
-                <th>负责部门</th>
-                <th>状态 </th>
-                <th>日期 </th>                
-                <th>操作</th>
-            </tr>
-        </thead>
+<!-- BEGIN EXAMPLE TABLE PORTLET-->
+<div class="portlet box green">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-globe"></i>预案列表 </div>
+        <div class="actions">
+            <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_base_msg.action" class="btn dark btn-outline sbold uppercase">
+                <i class="fa fa-plus"></i> 新增预案 </a>
+            <a href="javascript:;" class="btn dark btn-outline sbold uppercase">
+                <i class="fa fa-print"></i> 打印 </a>
 
-    </table>
+        </div>
+    </div>
+    
+    <div class="portlet-body" id="">
+		<table id="planListTable" class="display" cellspacing="0" width="100%">
+	        <thead>
+	            <tr>
+	                <th>预案编号</th>
+	                <th>预案名称 </th>
+	                <th>类别 </th>
+	                <th>负责部门</th>
+	                <th>状态 </th>
+	                <th>日期 </th>                
+	                <th>操作</th>
+	            </tr>
+	        </thead>
+	
+	    </table>
+	</div>
+		  
+    
 </div>
+<!-- END EXAMPLE TABLE PORTLET-->  
+
        	<script>         
 			$(document).ready(function() {
 				loadPlan()
@@ -30,6 +49,7 @@
 				  	"deferRender": true,
 				  	"searching": true,
 				  	"processing": true,
+				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
 	                    { "data": "preplanUid", align:"center" },
 	                    { "data": "preplanName" },
@@ -43,7 +63,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
+				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan(\''+row.preplanSn+'\')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
@@ -68,21 +88,42 @@
 			        }
 				});
 			}
+			
+			//编辑预案
+			function alterPlan(planSn){
+				location.href ="/plan/preplan/plan_edit_base_msg.action"+"?ppSn="+planSn.replace(/'/g,""); 		
+			}
+			
+			//删除预案
 			function deletePlan(id){
-				//删除该预案
-				$.ajax({
-					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_deletePreplan.action",
-					dataType : "json",
-					data : {
-							code : id
-					},
-					success : function() {
- 						loadPlan()				
-					},
-					error: function(){
-														
-					}
-				});	
+				swal({    
+				    title: "确认删除该预案？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_deletePreplan.action",
+							dataType : "json",
+							data : {
+									code : id
+							},
+							success : function() {
+		 						loadPlan();
+		 						swal.close();				
+							},
+							error: function(){
+								swal.close();									
+							}
+						});	   
+				    }
+				);
+				
 			}
         </script>

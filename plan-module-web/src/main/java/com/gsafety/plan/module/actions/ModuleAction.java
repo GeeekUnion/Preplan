@@ -32,7 +32,9 @@ public class ModuleAction extends ListAction<Module> {
 	private JSONArray jsonArray = new JSONArray();
 	private int page;
 	private int rows;
-
+	
+	private String code;//标识符
+	
     private String title;//标题
     private String content;//内容
     private String order;//顺序
@@ -90,6 +92,26 @@ public class ModuleAction extends ListAction<Module> {
 	        
 	    }	    
 	    return "jsonObject"; 
+	}
+	
+	
+	 /*@name 根据preplanSn,order获得模块信息
+     *@param  模块属性
+     *@returns 
+     * */
+	public String getModuleByPpsnOrder(){
+	   
+	    Module md=moduleService.getUniqueByPpsnOrder(preplanSn,order);
+	    if(null != md) {
+	        jsonObject.put("moduleSn", md.getModuleSn());
+	        jsonObject.put("moduleContent", md.getContent());
+	    }else {
+	        jsonObject.put("moduleSn","");
+            jsonObject.put("moduleContent","");
+	    }
+	    
+	    
+	    return "jsonObject";
 	}
 	
 	/*@name 删除模块 
@@ -245,6 +267,14 @@ public class ModuleAction extends ListAction<Module> {
     public void setOrder(String order) {
         this.order = order;
     }
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 	
 	
 	
