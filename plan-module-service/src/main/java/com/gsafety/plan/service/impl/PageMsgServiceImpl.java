@@ -1,6 +1,8 @@
 package com.gsafety.plan.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
+import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.PageMsg;
 import com.gsafety.plan.service.PageMsgService;
@@ -22,6 +25,7 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
     @Override
     public JSONArray getTree() {
         Cnds cnds=Cnds.me(PageMsg.class);   
+        cnds.asc("order");
         List<PageMsg> pmMsgList=baseDAO.getListByCnds(cnds);
         JSONArray jsonArray=new JSONArray();
         for(PageMsg pm:pmMsgList) {
@@ -69,5 +73,61 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
 
         return jo;
     }
+    
+    /**
+     * 获得pageMsg所有标题的列表（子标题在父标题下）
+     * @return jsonArray
+     * */    
+	@Override
+	public JSONArray getOrderPageMsg() {
+		JSONArray jsonArray=new JSONArray();
+		Cnds cnds=Cnds.me(PageMsg.class);  
+        cnds.and(ConditionBuilder.eq("supTitleCheck",true));
+        List<PageMsg> pmMsgList=baseDAO.getListByCnds(cnds);
+
+        for(PageMsg pm:pmMsgList){
+        	JSONObject jo=new JSONObject();
+        	JSONArray sonJsonArray=getSonMsg(pm);//获得子标题
+        	jo.put("id", pm.getId());
+        	jo.put("order", pm.getOrder());
+        	jo.put("title", pm.getTitle());
+        	jo.put("titleDesc",pm.getTitleDesc());  
+        	jo.put("son",sonJsonArray); 
+        	jsonArray.add(jo);
+        	
+        }
+		return jsonArray;
+	}
+	
+    /**
+     * 获得pageMsg子标题的列表
+     * @return jsonArray
+     * */
+	@Override
+	public JSONArray getSonMsg(PageMsg pm) {
+		JSONArray jsonArray=new JSONArray();
+        Cnds cnds=Cnds.me(PageMsg.class);  
+        cnds.and(ConditionBuilder.eq("supId",pm.getId()));
+        List<PageMsg> pmMsgList=baseDAO.getListByCnds(cnds);
+        for(PageMsg pMsg:pmMsgList){
+        	JSONObject jo=new JSONObject();
+        	jo.put("id", pMsg.getId());
+        	jo.put("order", pMsg.getOrder());
+        	jo.put("title", pMsg.getTitle());
+        	jo.put("titleDesc",pMsg.getTitleDesc());  
+        	jsonArray.add(jo);
+        }
+		return jsonArray;
+	}
+	
+    /**
+     * 获得pageMsg父标题的列表
+     * @return jsonArray
+     * */
+	@Override
+	public JSONArray getParentMsg() {
+		JSONArray jsonArray=new JSONArray();
+		return null;
+	}
 
 }

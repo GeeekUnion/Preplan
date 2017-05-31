@@ -20,7 +20,7 @@ public class PageMsg {
     private int id;//唯一标识
     private String title;//标题
     private String titleDesc;//标题
-    private boolean isSupTitle;//是否父标题
+    private boolean supTitleCheck;//是否父标题
     private int supId;//父ID
     private String order;//显示顺序
     private String requireContent;//要求内容
@@ -100,17 +100,17 @@ public class PageMsg {
         this.titleDesc = titleDesc;
     }
     @Column(name="is_sup_title")
-    public boolean isSupTitle() {
-        return isSupTitle;
-    }
-    public void setSupTitle(boolean isSupTitle) {
-        this.isSupTitle = isSupTitle;
-    }
+	public boolean isSupTitleCheck() {
+		return supTitleCheck;
+	}
+	public void setSupTitleCheck(boolean supTitleCheck) {
+		this.supTitleCheck = supTitleCheck;
+	}
     @Column(name="sup_id")
     public int getSupId() {
         return supId;
     }
-    public void setSupId(int supId) {
+	public void setSupId(int supId) {
         this.supId = supId;
     }
 
