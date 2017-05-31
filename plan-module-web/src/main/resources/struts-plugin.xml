@@ -105,6 +105,9 @@
 			<result>preplan/plan_edit_do.ftl</result>				
 		</action>
 		<action name="plan_edit_*" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
+			<result>preplan/plan_edit_{1}.ftl</result>				
+		</action>
+		<action name="plan_edit_module" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
 			<result name="url">preplan/plan_edit_module.ftl</result>				
 		</action>
 		<!-- Mission拦截和结果配置 -->

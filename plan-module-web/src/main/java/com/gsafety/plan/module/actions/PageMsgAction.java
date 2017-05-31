@@ -56,7 +56,13 @@ public class PageMsgAction extends ListAction<PageMsg>{
         return "jsonObject";
     }
     
-    
+    /**
+     * 获得树的jsonArray
+     * */
+    public String getOrderPageMsg() {
+    	jsonArray=pageMsgService.getOrderPageMsg();        
+        return "jsonArray";
+    }
     
     
     
