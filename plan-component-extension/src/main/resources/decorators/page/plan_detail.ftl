@@ -1,7 +1,7 @@
 
 <input id="detailPlanSn" type="hidden" value="${planSn}"> 
  <!-- BEGIN THEME PANEL -->
-<div class="theme-panel hidden-xs hidden-sm">
+<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
     <div class="toggler"> </div>
     <div class="toggler-close"> </div>
     <div class="theme-options">
@@ -75,9 +75,9 @@
 	  		var htmlMsg='';
 	  		var oldDataObject= oldData[i];
 	  		var oldDataObjectSonL=oldDataObject.son.length;
-  			htmlMsg=htmlMsg+'<div class="portlet box green">'
+  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObject.order+'">'
 					+	    '<div class="portlet-title">'
-					+	        '<div class="caption" id="planDetailTitle'+oldDataObject.order+'">'
+					+	        '<div class="caption" >'
 					+	        +oldDataObject.order+'. '+oldDataObject.title+'</div>'
 					+	        '<div class="tools">'
 					+	            '<a href="javascript:;" class="collapse"> </a>'
@@ -87,7 +87,7 @@
 					
 					if(oldDataObjectSonL>0){
 						for(var j=0;j<oldDataObjectSonL;j++){
-							htmlMsg=htmlMsg+'<div class="portlet">'
+							htmlMsg=htmlMsg+'<div class="portlet" id="planDetailHead'+oldDataObject.son[j].order+'">'
 								+			    '<div class="portlet-title">'
 								+			        '<div class="caption" id="planSonDetailTitle'+oldDataObject.son[j].order+'"><h4>'
 								+			            oldDataObject.son[j].title+'</h4></div>'
@@ -148,7 +148,7 @@
 	  
 	  //锚点
 	  function changePage(order){	
-	  	var divId="#planDetailTitle"+order;		
-		//document.getElementById(divId).scrollIntoView(true);	
+	  	var divId="planDetailHead"+order;		
+		document.getElementById(divId).scrollIntoView();	
 	  }
    </script> 

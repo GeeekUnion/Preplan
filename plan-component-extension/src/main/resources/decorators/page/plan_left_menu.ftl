@@ -33,7 +33,7 @@
                             </a>
                         </li>   
                         <li class="nav-item  " id="navPlanReviewLi">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" class="nav-link nav-toggle">
                                 <i class=" fa fa-calendar-check-o"></i>
                                 <span class="title">预案审核</span>
                             </a>
@@ -89,6 +89,12 @@
             			return true;	
             		}else if(url.indexOf("plan_edit")>0){
             			$('#navPlanEditLi').addClass('start active open');
+            			return true;
+            		}else if(url.indexOf("plan_review")>0){
+            			$('#navPlanReviewLi').addClass('start active open');
+            			return true;
+            		}else if(url.indexOf("plan_map")>0){
+            			$('#navPlanSrcLi').addClass('start active open');
             			return true;
             		}else{
 						return false;
