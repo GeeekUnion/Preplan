@@ -14,4 +14,6 @@ public interface PreplanService extends IBaseService{
 
     String getPageListByUser(int page, int rows, Person p);
 
+	String queryPreplanReviewListByUser(Person p);
+
 }

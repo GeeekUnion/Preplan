@@ -118,9 +118,65 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
             JSONArray array = new JSONArray();
 
-            if(pList.size()==0) {
-                str="{\"recordsTotal\":"+0+",\"data\":[]}";
-            }else {
+
+            for(Preplan p : pList) {
+                JSONObject jo = new JSONObject();
+                jo.put("id",p.getId());
+                jo.put("preplanUid",p.getPreplanUID());
+                jo.put("preplanName",p.getPreplanName());  
+                jo.put("responDept",org.getOrgName()); 
+                jo.put("preplanSn",p.getPreplanSn()); 
+                jo.put("status",p.getPreplanStatus()); 
+                if(p.getPreplanTime() != null) {
+                    jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
+                }
+                else {
+                    jo.put("preplanTime",""); 
+                }
+                jo.put("preplanUID",p.getPreplanUID());
+                jo.put("preplanDesc",p.getPreplanDesc());
+                
+                //获得预案类型
+                if(p.getDomain() != null) {
+                    Set<Domain> d=p.getDomain();
+                    Iterator<Domain> dModel = d.iterator();
+                    while(dModel.hasNext()){
+                        Domain dmSingle =dModel.next();
+                        jo.put("preplanType",dmSingle.getDomainName());
+                    }
+                } 
+                array.add(jo);
+            }
+            str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
+          
+            
+            
+        }else {
+            str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
+        }
+        System.out.println(str);    
+        return str;
+        
+    }
+    
+    /**
+     *TODO(根据登录的用户查询预案审核列表)
+     *@param Person(emsUser)
+     **/
+	@Override
+	public String queryPreplanReviewListByUser(Person ps) {
+		 Map<String, Object> hashMap = new HashMap<String, Object>();
+	        hashMap.put("reviewOrg",ps.getOrgCode());	      
+	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg";
+	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
+	        String str="";
+	        if(pList.size()>0) {
+	            Cnds cndsOrg = Cnds.me(EmsOrg.class);
+	            WhereSet setOrg = ConditionBuilder.whereSet(ConditionBuilder.eq("orgCode", ps.getOrgCode()));
+	            cndsOrg.and(setOrg);
+	            EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
+	            JSONArray array = new JSONArray();
+
                 for(Preplan p : pList) {
                     JSONObject jo = new JSONObject();
                     jo.put("id",p.getId());
@@ -149,16 +205,15 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
                     } 
                     array.add(jo);
                 }
-                str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}";
-            }
-            
-            System.out.println(str);    
-        }else {
-            str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
-        }
-        
-        return str;
-        
-    }
+                str="{\"recordsTotal\":"+pList.size()+",\"data\":"+array.toString()+"}";
+
+	            
+	              
+	        }else {
+	            str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
+	        }
+	        System.out.println(str); 
+	        return str;
+	}
 
 }
