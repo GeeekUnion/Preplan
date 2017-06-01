@@ -1,4 +1,5 @@
 
+<input id="detailPlanSn" type="hidden" value="${planSn}"> 
  <!-- BEGIN THEME PANEL -->
 <div class="theme-panel hidden-xs hidden-sm">
     <div class="toggler"> </div>
@@ -57,6 +58,7 @@
 	
 				},
 				success : function(data) {
+					swal({title: '', text:'加载中，请稍后...<i class="fa fa-spinner fa-spin fa-fw"></i>',showConfirmButton: false, html: true   });
 					getPageLayout(data)	
 				},
 				error: function(){
@@ -87,13 +89,13 @@
 						for(var j=0;j<oldDataObjectSonL;j++){
 							htmlMsg=htmlMsg+'<div class="portlet">'
 								+			    '<div class="portlet-title">'
-								+			        '<div class="caption" id="planDetailTitle'+oldDataObject.son[j].order+'"><h4>'
+								+			        '<div class="caption" id="planSonDetailTitle'+oldDataObject.son[j].order+'"><h4>'
 								+			            oldDataObject.son[j].title+'</h4></div>'
 								+			        '<div class="tools">'
 								+			            '<a href="javascript:;" class="collapse"> </a>'
 								+			        '</div>'
 								+			    '</div>'
-								+			    '<div class="portlet-body" id="planDetailContent'+oldDataObject.son[j].order+'">'		
+								+			    '<div class="portlet-body" id="planSonDetailContent'+oldDataObject.son[j].order+'">'		
 								+			    '</div>'
 								+			'</div>'
 						}
@@ -107,7 +109,41 @@
 					$('#planDetailPageMsg').append(htmlMsg);  		
 	  	}
 	  	
-	  	//getPageLayoutContent();
+	  	getPageLayoutContent();
+	  }
+	  
+	  function getPageLayoutContent(){
+	  	var planSn=$('#detailPlanSn').val();
+  		//获得布局内容
+		$.ajax({
+			type : "POST",
+			url : "${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action",
+			dataType : "json",
+			data : {
+				preplanSn:planSn
+			},
+			success : function(data) {
+				setPageLayoutContent(data);	
+			},
+			error: function(){
+				sweetAlert("加载失败", "未知错误，请重试!", "error");									
+			}
+		});
+	  	
+	  }
+	  
+	  function setPageLayoutContent(oldData){
+
+	  	var oldDataLength=oldData.rows.length;
+	  	
+	  	for(var i=0;i<oldDataLength;i++){
+	  		var htmlMsg='';
+	  		var oldDataObject= oldData.rows[i];
+	  		htmlMsg=htmlMsg+oldDataObject.content;
+			var contentId='#planSonDetailContent'+oldDataObject.order;
+			$(contentId).append(htmlMsg);  		
+	  	}
+	  	swal.close();
 	  }
 	  
 	  //锚点

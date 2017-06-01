@@ -63,12 +63,18 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan(\''+row.preplanSn+'\')">'
+				            return '<button class="btn  green" onclick="alterPlan(\''+row.preplanSn+'\')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +      '</button>'
+	                                      +      ' '
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+	                                      +  			'<i class="fa fa-search">查看详情</i>'
+	                                      +      '</button>'
+	                                      +      ' '
+	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</a>'
+	                                      +      '</button>'
+
 				        }
 			        } ],
 			        "oLanguage": {
@@ -125,5 +131,26 @@
 				    }
 				);
 				
+			}
+			
+			function getPlanDetail(ppSn){
+				//去掉单引号  取得要提交的参数
+				var planSn=ppSn.replace(/'/g,"");
+				var url='${pageContext.request.contextPath}/plan/preplan/plan_edit_detail.action';
+				// 创建Form  
+			    var form = $('<form></form>');  
+			    // 设置属性  
+			    form.attr('action', url);  
+			    form.attr('method', 'post');
+			    form.attr('target', '_blank'); //空白打开  
+			    // 创建Input  
+    			var set_input = $('<input type="text" name="ppSn" />');
+    			set_input.attr('value', planSn); 
+    			// 附加到Form  
+    			form.append(set_input);  
+    			// 提交表单  
+			    form.submit();  
+			    //return false自动刷新
+			    return false;         
 			}
         </script>
