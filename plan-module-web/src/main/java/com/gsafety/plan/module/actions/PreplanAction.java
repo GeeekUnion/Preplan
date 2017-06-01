@@ -345,7 +345,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     }
     
     /**
-     *根据登录的用户查询预案列表
+     *TODO(根据登录的用户查询预案编辑列表)
+     *@param orgCode
      **/
     public String queryPreplanList() throws IOException {
         String str="";
@@ -401,6 +402,26 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         out().flush();
         out().close();
         return "jsonArray";
+    }
+    
+    /**
+     * TODO(根据登录的用户查询预案审核列表)
+     * @param orgCode
+     * @throws IOException 
+     **/
+    public String queryPreplanReviewList() throws IOException{
+    	 String str="";
+         String orgCode=session.get("preplanOrgCode").toString();
+         if(null != orgCode || orgCode.length()>0) {
+             Person p=new Person();
+             p.setOrgCode(orgCode);
+             str=preplanService.queryPreplanReviewListByUser(p);
+         }    
+	     //输出资源到页面
+	     out().print(str);
+	     out().flush();
+	     out().close();
+    	return "jsonArray";
     }
     
     //查看预案详情
