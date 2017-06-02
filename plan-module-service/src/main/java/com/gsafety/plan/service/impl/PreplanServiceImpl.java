@@ -216,4 +216,29 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	        return str;
 	}
 
+	@Override
+	public JSONObject queryReviewsMsg(String orgCode) {
+		Cnds cnds=Cnds.me(Preplan.class);
+		WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("reviewOrg", orgCode));
+		set.and(ConditionBuilder.eq("preplanStatus", "待审核"));
+		cnds.and(set);
+		List<Preplan> pList=baseDAO.getListByCnds(cnds);
+		JSONObject myJo=new JSONObject();
+		JSONArray jsonArray=new JSONArray();
+		if(pList.size()>0){
+			for(Preplan p :pList){
+				JSONObject jo=new JSONObject();
+				jo.put("preplanSn", p.getPreplanSn());
+				jo.put("preplanName", p.getPreplanName());
+				jsonArray.add(jo);
+			}
+			myJo.put("size",pList.size());
+			myJo.put("preplanList", jsonArray);
+		}else{
+			myJo.put("size", 0);
+		}
+		
+		return myJo;
+	}
+
 }
