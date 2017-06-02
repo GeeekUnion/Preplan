@@ -135,7 +135,7 @@
 	    var w;//纬度
 	    var longitude, latitude;  
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
-	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/icons/map/inventory.png", new BMap.Size(20,20));
+	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/inventory.png", new BMap.Size(20,20));
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
 	var point = new BMap.Point(116.331398,39.897445);
 	map.centerAndZoom(point,12);
@@ -151,7 +151,7 @@
 			map.addOverlay(mk);
 			map.panTo(r.point);
 			//alert('您的位置：'+r.point.lng+','+r.point.lat);
-			console.log(r.point.lng+"MMMMM"+r.point.lat);
+			//console.log(r.point.lng+"MMMMM"+r.point.lat);
 		var circleLocation = new BMap.Circle(r.point,10000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
     	map.addOverlay(circleLocation);
 			initResource();
@@ -274,13 +274,16 @@
  			},
  			success:function(res){    
  		     var data=eval('('+res+')');
- 		     console.log(data);
-        for (var i = 0; i < data.length; i += 1) {
-		var pointInventory = new BMap.Point(data[i].longitude, data[i].latitude);
-        var markerInventory = new BMap.Marker(pointInventory);
-	    map.addOverlay(markerInventory);
+ 		    console.log(data);
+      for (var i = 0; i < data.length; i += 1) {
+		var point = new BMap.Point(data[i].longitude, data[i].latitude);
+       var marker = new BMap.Marker(point,
+		{icon:inventoryIcon});
+	    map.addOverlay(marker);
 
-	}      
+	}  
+      
+      
         }         
  		});	//ajax end
     }
@@ -440,7 +443,7 @@
 	$(document).ready(function() {
 				$('#planListTable').dataTable( {
 					"ajax": {
-					    "url": "",
+					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
 					    "data": function ( d ) {
 
