@@ -48,10 +48,11 @@
 					},
 				  	"deferRender": true,
 				  	"searching": true,
+				  	"autoWidth": false,
 				  	"processing": true,
 				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
-	                    { "data": "preplanUid", align:"center" },
+	                    { "data": "preplanUid",},
 	                    { "data": "preplanName" },
 	                    { "data": "preplanType" },
 	                    { "data": "responDept" },
@@ -62,9 +63,18 @@
 	                "columnDefs": [ {
 			            "targets": -1,//最后一列
 			            "data": null,
+			            "width":"450px",
 			            render: function(data, type, row, meta) {
 				            return '<button class="btn  green" onclick="alterPlan(\''+row.preplanSn+'\')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
+	                                      +          	'<i class="fa fa-edit">全案 </i>'
+	                                      +      '</button>'
+	                                      +      ' '
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+	                                      +  			'<i class="fa fa-edit">简案</i>'
+	                                      +      '</button>'
+	                                      +      ' '
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+	                                      +  			'<i class="fa fa-edit">流程图</i>'
 	                                      +      '</button>'
 	                                      +      ' '
 	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
