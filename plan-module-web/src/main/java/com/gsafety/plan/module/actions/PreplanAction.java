@@ -93,6 +93,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     private String jsonObject;//返回判断
     private JSONArray myJsonArray = new JSONArray();
+    private JSONObject myJsonObject = new JSONObject();
     
     //用于封装会话session
     protected Map<String, Object> session;  
@@ -254,6 +255,20 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     	return "jsonObject";
     }
     
+    
+    /**
+     * TODO(根据用户部门查询预案审核提示)
+     * @return JSONObject[size,preplanList]
+     * */
+    public String queryReviewsMsg(){
+    	String orgCode=session.get("preplanOrgCode").toString();
+        if(null != orgCode && orgCode.length()>0) {
+        	myJsonObject=  preplanService.queryReviewsMsg(orgCode);
+        	return "myJsonObject";
+        }
+    	return "myJsonObject";
+    }
+    
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
      
@@ -351,7 +366,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public String queryPreplanList() throws IOException {
         String str="";
         String orgCode=session.get("preplanOrgCode").toString();
-        if(null != orgCode || orgCode.length()>0) {
+        if(null != orgCode && orgCode.length()>0) {
             Person p=new Person();
             p.setOrgCode(orgCode);
             str=preplanService.getPageListByUser(page,rows,p);
@@ -412,7 +427,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public String queryPreplanReviewList() throws IOException{
     	 String str="";
          String orgCode=session.get("preplanOrgCode").toString();
-         if(null != orgCode || orgCode.length()>0) {
+         if(null != orgCode && orgCode.length()>0) {
              Person p=new Person();
              p.setOrgCode(orgCode);
              str=preplanService.queryPreplanReviewListByUser(p);
@@ -845,6 +860,17 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setPreplanStatus(String preplanStatus) {
 		this.preplanStatus = preplanStatus;
+	}
+	
+	
+
+	public JSONObject getMyJsonObject() {
+		return myJsonObject;
+	}
+
+
+	public void setMyJsonObject(JSONObject myJsonObject) {
+		this.myJsonObject = myJsonObject;
 	}
 
 
