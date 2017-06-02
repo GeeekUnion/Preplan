@@ -68,14 +68,14 @@ public class Event implements Serializable{
 	public void setEventOccurPlace(String eventOccurPlace) {
 		this.eventOccurPlace = eventOccurPlace;
 	}
-	@Column(name="event_longitude",nullable=false)
+	@Column(name="event_longitude",nullable=false,precision = 12,scale = 7)
 	public Double getLongitude() {
 		return longitude;
 	}
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	@Column(name="event_latitude",nullable=false)
+	@Column(name="event_latitude",nullable=false,precision = 12,scale = 7)
 	public Double getLatitude() {
 		return latitude;
 	}

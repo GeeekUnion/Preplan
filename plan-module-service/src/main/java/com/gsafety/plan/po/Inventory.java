@@ -20,8 +20,8 @@ public class Inventory implements Serializable{
 	private int id;
 	private String inventoryName;
 	private String inventorySn;      
-	private Double inventoryLongitude;   //经度
-    private Double inventoryLatitude;    //纬度
+	private Double longitude;   //经度
+    private Double latitude;    //纬度
     private String inventoryPrincipal;   //负责人
 	private String inventoryPrincipalPhone;  //负责人电话
 	
@@ -45,7 +45,7 @@ public class Inventory implements Serializable{
 		this.inventoryName = inventoryName;
 	}
 
-	@Column(name="inventory_sn")
+	@Column(name="inventory_sn",unique=true)
 	public String getInventorySn() {
 		return inventorySn;
 	}
@@ -53,26 +53,25 @@ public class Inventory implements Serializable{
 	public void setInventorySn(String inventorySn) {
 		this.inventorySn = inventorySn;
 	}
-    
-	@Column(name="inventory_longitude")
-	public Double getInventoryLongitude() {
-		return inventoryLongitude;
-	}
-
-	public void setInventoryLongitude(Double inventoryLongitude) {
-		this.inventoryLongitude = inventoryLongitude;
-	}
-	@Column(name="inventory_latitude")
-	public Double getInventoryLatitude() {
-		return inventoryLatitude;
-	}
-
-	public void setInventoryLatitude(Double inventoryLatitude) {
-		this.inventoryLatitude = inventoryLatitude;
-	}
 	@Column(name="inventory_pri")
 	public String getInventoryPrincipal() {
 		return inventoryPrincipal;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+	@Column(name="inventory_longitude",precision = 12,scale = 7)
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+	@Column(name="inventory_latitude",precision = 12,scale = 7)
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
 	}
 
 	public void setInventoryPrincipal(String inventoryPrincipal) {

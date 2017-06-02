@@ -43,8 +43,8 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 		    jo.put("id", p.getId());
 		    jo.put("inventoryName", p.getInventoryName());
 		    jo.put("inventorySn", p.getInventorySn());
-		    jo.put("inventoryLatitude", p.getInventoryLatitude());
-		    jo.put("inventoryLongitude", p.getInventoryLongitude());
+		    jo.put("latitude", p.getLatitude());
+		    jo.put("longitude", p.getLongitude());
 		    jo.put("inventoryPrincipal", p.getInventoryPrincipal());
 		    jo.put("inventoryPrincipalPhone", p.getInventoryPrincipalPhone());
 				array.add(jo);
@@ -63,15 +63,38 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 			    jo.put("id", p.getId());
 			    jo.put("inventoryName", p.getInventoryName());
 			    jo.put("inventorySn", p.getInventorySn());
-			    jo.put("inventoryLatitude", p.getInventoryLatitude());
-			    jo.put("inventoryLongitude", p.getInventoryLongitude());
+			    jo.put("latitude", p.getLatitude());
+			    jo.put("longitude", p.getLongitude());
 			    jo.put("inventoryPrincipal", p.getInventoryPrincipal());
 			    jo.put("inventoryPrincipalPhone", p.getInventoryPrincipalPhone());
 					array.add(jo);
 		 }
 	        return array;
-		
-	
+
 }
+    //获取地图上的使用者附近的资源等
+	@Override
+	public JSONArray getMapVicinity() {
+		 String sql="select * from pre_inventory where sqrt(( ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos(((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos (((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)  *  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)))<10";
+		 
+          System.out.println(sql);
+		 List<Inventory> sList= baseDAO.getListBySql(sql,Inventory.class);
+		
+		 
+		 JSONArray array = new JSONArray();
+		 for(Inventory p:sList){
+			 JSONObject jo = new JSONObject();
+			    jo.put("id", p.getId());
+			    jo.put("inventoryName", p.getInventoryName());
+			    jo.put("inventorySn", p.getInventorySn());
+			    jo.put("latitude", p.getLatitude());
+			    jo.put("longitude", p.getLongitude());
+			    jo.put("inventoryPrincipal", p.getInventoryPrincipal());
+			    jo.put("inventoryPrincipalPhone", p.getInventoryPrincipalPhone());
+					array.add(jo);
+		 }
+		
+		 return array;
+	}
 
 }
