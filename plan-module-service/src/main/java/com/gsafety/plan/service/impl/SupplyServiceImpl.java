@@ -49,8 +49,8 @@ public class SupplyServiceImpl extends BaseServiceImpl implements SupplyService{
 			 jo.put("idIn",s.getInventorySnM().getId() );
 			 jo.put("inventoryName",s.getInventorySnM().getInventoryName() );
 			 jo.put("code", s.getInventorySnM().getInventorySn());
-			 jo.put("inventoryLatitude", s.getInventorySnM().getInventoryLatitude());
-			 jo.put("inventoryLongitude", s.getInventorySnM().getInventoryLongitude());
+			 jo.put("inventoryLatitude", s.getInventorySnM().getLatitude());
+			 jo.put("inventoryLongitude", s.getInventorySnM().getLongitude());
 			 jo.put("inventoryPrincipal", s.getInventorySnM().getInventoryPrincipal());
 			 jo.put("inventoryPrincipalPhone", s.getInventorySnM().getInventoryPrincipalPhone());
 			 array.add(jo);	 
