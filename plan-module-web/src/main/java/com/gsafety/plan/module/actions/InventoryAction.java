@@ -24,8 +24,8 @@ public class InventoryAction extends ListAction<Inventory> {
 	 private int id;
 	 private String inventoryName;
 	 private String inventorySn;      
-	 private Double inventoryLongitude;   //经度
-	 private Double inventoryLatitude;    //纬度
+	 private Double longitude;   //经度
+	 private Double latitude;    //纬度
      private String inventoryPrincipal;   //负责人	
      private String inventoryPrincipalPhone;  //负责人电话
 	 
@@ -51,7 +51,13 @@ public class InventoryAction extends ListAction<Inventory> {
     	
     }
 
+    //查询符合经纬度的东西
+    public String queryVicinity() throws IOException{
+        jsonArray=inventoryService.getMapVicinity();
+ 		return "jsonArray";
 
+    }
+    
    //查询所有Inventory
  	public String queryByPage() throws IOException{
  		
@@ -62,14 +68,15 @@ public class InventoryAction extends ListAction<Inventory> {
  		out().close();
  		return "jsonArray";
  	}
- 	//新增资源
+ 	
+ 	//新增Inventory
     public String save(){
 		jsonObject.put("status", "ok");
 		Inventory i =new Inventory();
 		try{
 			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-		    i.setInventoryLatitude(inventoryLatitude);
-		    i.setInventoryLongitude(inventoryLongitude);
+		    i.setLatitude(latitude);
+		    i.setLongitude(longitude);
 		    i.setInventoryName(inventoryName);
 		    i.setInventoryPrincipal(inventoryPrincipal);
 		    i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
@@ -98,8 +105,8 @@ public class InventoryAction extends ListAction<Inventory> {
 		try{
 			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 			Inventory i = inventoryService.get(Inventory.class,id);
-			i.setInventoryLatitude(inventoryLatitude);
-			i.setInventoryLongitude(inventoryLongitude);
+			i.setLatitude(latitude);
+			i.setLongitude(longitude);
 			i.setInventoryName(inventoryName);
 			i.setInventoryPrincipal(inventoryPrincipal);
 			i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
@@ -211,20 +218,22 @@ public class InventoryAction extends ListAction<Inventory> {
 
 
 
-		public Double getInventoryLongitude() {
-			return inventoryLongitude;
+		
+
+		public Double getLongitude() {
+			return longitude;
 		}
 
-		public void setInventoryLongitude(Double inventoryLongitude) {
-			this.inventoryLongitude = inventoryLongitude;
+		public void setLongitude(Double longitude) {
+			this.longitude = longitude;
 		}
 
-		public Double getInventoryLatitude() {
-			return inventoryLatitude;
+		public Double getLatitude() {
+			return latitude;
 		}
 
-		public void setInventoryLatitude(Double inventoryLatitude) {
-			this.inventoryLatitude = inventoryLatitude;
+		public void setLatitude(Double latitude) {
+			this.latitude = latitude;
 		}
 
 		public String getInventoryPrincipal() {
