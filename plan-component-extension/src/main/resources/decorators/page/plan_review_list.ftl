@@ -89,9 +89,14 @@
 			
 			
 			function getPlanDetail(ppSn){
+				var urlFFF =window.location.pathname;
+				var urlMsg='review';
+				if(urlFFF.indexOf("plan_edit")>0){
+					urlMsg='edit';	
+				}
 				//去掉单引号  取得要提交的参数
 				var planSn=ppSn.replace(/'/g,"");
-				var url='${pageContext.request.contextPath}/plan/preplan/plan_edit_detail.action';
+				var url='${pageContext.request.contextPath}/plan/preplan/plan_'+urlMsg+'_detail.action';
 				// 创建Form  
 			    var form = $('<form></form>');  
 			    // 设置属性  

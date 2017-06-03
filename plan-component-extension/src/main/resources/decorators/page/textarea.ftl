@@ -70,7 +70,7 @@
         		swal({title: "编制设置中，请勿关闭页面...", type: "info", showConfirmButton: false  });        		        		
 				$.ajax({
 					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus().action",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
 					dataType : "json",
 					data : {
 						ppSn:planSn,

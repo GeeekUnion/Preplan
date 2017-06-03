@@ -83,7 +83,7 @@
             	
             	function addActive(){
             		var url =window.location.pathname;
-            		console.log(url);
+            		//console.log(url);
             		if(url.indexOf("plan_index")>0){
             			$('#navPlanIndexLi').addClass('start active open');
             			return true;	
