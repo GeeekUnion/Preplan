@@ -134,8 +134,14 @@
 	    var s;//经度
 	    var w;//纬度
 	    var longitude, latitude;  
+	    var type= "";   //判断传过来的点类型
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/inventory.png", new BMap.Size(20,20));
+	var protectionObjectIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/防护目标.png", new BMap.Size(20,20));
+	var emergencyResponseTeamIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/应急队伍.png", new BMap.Size(20,20));
+	var hazardIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/危险源.png", new BMap.Size(20,20));
+	
+	
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
 	var point = new BMap.Point(116.331398,39.897445);
 	map.centerAndZoom(point,12);
@@ -152,7 +158,7 @@
 			map.panTo(r.point);
 			//alert('您的位置：'+r.point.lng+','+r.point.lat);
 			//console.log(r.point.lng+"MMMMM"+r.point.lat);
-		var circleLocation = new BMap.Circle(r.point,10000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
+		var circleLocation = new BMap.Circle(r.point,10000,{fillColor:"white", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.9});
     	map.addOverlay(circleLocation);
 			initResource();
 		}
@@ -267,6 +273,13 @@
     	} 
     //初始化所有资源，目标点
     function initResource(){
+    opts = {  
+                    width : 200,     // 信息窗口宽度  
+                    height: 80,     // 信息窗口高度  
+                    title : "站点信息" , // 信息窗口标题  
+                    enableMessage:true//设置允许信息窗发送短息  
+        };  
+        
          $.ajax({
  			url:'preplan_inventory_queryVicinity.action',
  			type:'POST',
@@ -276,10 +289,30 @@
  		     var data=eval('('+res+')');
  		    console.log(data);
       for (var i = 0; i < data.length; i += 1) {
-		var point = new BMap.Point(data[i].longitude, data[i].latitude);
-       var marker = new BMap.Marker(point,
-		{icon:inventoryIcon});
-	    map.addOverlay(marker);
+		
+		type=data[i].type
+		console.log(type);
+		//根据type类型，执行不同方法
+		switch(type){
+		case "inventory":
+		inventoryType(type,data,i,opts);
+		break;
+		
+		case "hazard":
+	    hazardType(type,data,i,opts);
+		break;
+		
+		case "emergencyResponseTeam":
+		emergencyResponseTeamType(type,data,i,opts);
+		break;
+		
+		case "protectionObject":
+		protectionObjectType(type,data,i,opts);
+		break;
+		
+		
+		}
+      
 
 	}  
       
@@ -287,6 +320,62 @@
         }         
  		});	//ajax end
     }
+    //初始化各种点的图标，点击出现栏目功能
+    function inventoryType(type,data,i,opts){
+    var point = new BMap.Point(data[i].longitude, data[i].latitude);
+    var marker = new BMap.Marker(point,{icon:inventoryIcon});	
+		 var content = "站点名称:  " + data[i].name +"<br /> "  
+                            + "经度:     " + data[i].longitude  +"<br /> "  
+                            + "纬度: " +  data[i].latitude  +"<br /> ";  
+        addClickHandler(content,marker); 
+	    map.addOverlay(marker);
+   
+    }
+    function hazardType(type,data,i,opts){
+    var point = new BMap.Point(data[i].longitude, data[i].latitude);
+    	var marker = new BMap.Marker(point,{icon:hazardIcon});	
+		  var content = "站点名称:  " + data[i].name +"<br /> "  
+                            + "经度:     " + data[i].longitude  +"<br /> "  
+                            + "纬度: " +  data[i].latitude  +"<br /> ";  
+        addClickHandler(content,marker); 
+	    map.addOverlay(marker);
+    	
+    }
+    function protectionObjectType(type,data,i,opts){
+    var point = new BMap.Point(data[i].longitude, data[i].latitude);
+    var marker = new BMap.Marker(point,{icon:protectionObjectIcon});
+    
+		  var content = "站点名称:  " + data[i].name +"<br /> "  
+                            + "经度:     " + data[i].longitude  +"<br /> "  
+                            + "纬度: " +  data[i].latitude  +"<br /> ";  
+        addClickHandler(content,marker); 
+	    map.addOverlay(marker);	
+    
+    }
+    function emergencyResponseTeamType(type,data,i,opts){
+    var point = new BMap.Point(data[i].longitude, data[i].latitude);
+    var marker = new BMap.Marker(point,{icon:emergencyResponseTeamIcon});
+	 var content = "站点名称:  " + data[i].name +"<br /> "  
+                            + "经度:     " + data[i].longitude  +"<br /> "  
+                            + "纬度: " +  data[i].latitude  +"<br /> ";  
+        addClickHandler(content,marker); 
+	    map.addOverlay(marker);
+    }
+    
+    
+    //++  
+    function addClickHandler(content,marker){  
+        marker.addEventListener("click",function(e){  
+        openInfo(" "+content,e)});  
+    }  
+    //++  
+    function openInfo(content,e){  
+        var p = e.target;  
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);  
+        var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象   
+        map.openInfoWindow(infoWindow,point);                //开启信息窗口  
+    }  
+    
     	
     //创建和初始化地图函数：
     function initMap(){
@@ -614,8 +703,8 @@
     }
 })(jQuery, window, document);
 
-console.log(window.browser);
+/*console.log(window.browser);
 console.log($.isIE());
-console.log($.isChrome());
+console.log($.isChrome());*/
 </script>
 </html>
