@@ -44,7 +44,7 @@
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action">预案编制</a>
+                                <a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action">预案审核</a>
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
@@ -54,11 +54,27 @@
                     </div>
                     <!-- END PAGE BAR -->    
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> 预案详情
+                    <h3 class="page-title"> 预案审核
                     </h3>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
-					<#include "/decorators/plan_detail.ftl">                   
+					<#include "/decorators/plan_detail.ftl">   
+					<div class="portlet light bordered">
+						<div class="portlet-title">
+							<div class="caption" >
+								审核意见
+							</div>
+						</div>
+			            <div class="portlet-body">
+							<textarea name="editor1" class="xheditor" style="width:100%;min-height: 250px;" id="xheditor"></textarea>    	                        
+				            <hr/>
+				            <center>
+		                        <a role="button" href="javascript:;" onclick="submitOpinion(0)" class="btn blue"><i class="fa fa-check"></i>通过</a>                                            
+	                            <a role="button" href="javascript:;" onclick="submitOpinion(1)" class="btn red"><i class="fa fa-times"></i>不通过</a>        	
+		                    </center>
+			            </div>
+			        </div>  
+					
                 </div>
                 <!-- END CONTENT BODY -->
             </div>
@@ -80,8 +96,77 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
-       	
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
+        <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script>              
+        <!-- END PAGE LEVEL SCRIPTS -->
+       	<script type="text/javascript">
+       		function submitOpinion(pd){
+       			var xhedit=$('#xheditor').xheditor();
+       			var opContent=xhedit.getSource();
+       			var msg="";
+       			if(pd==0){
+       				msg="通过";
+       			}else{
+       				msg="未通过";
+       			}
+       			if(null===opContent || opContent===""){
+       				swal({    
+	       					title: "内容为空！",    
+	       					text: "确定提交？",    
+	       					type: "warning",   
+	       					showCancelButton: true,    
+	       					confirmButtonColor: "#DD6B55",   
+	       					confirmButtonText: "确定",    
+	       					cancelButtonText: "取消",   
+	       					closeOnConfirm: false,    
+	       					closeOnCancel: false	 
+       					}, 
+       					function(isConfirm){    
+   							if (isConfirm) {      
+   								swal.close();//确认	
+   								overReview(msg,opContent)
+   							} else {      
+   								swal.close();		  
+   							}  
+       					});
+       			}else{
+       				overReview(msg,opContent)
+       			}
 
+       		}
+       	
+			//意见提交完成
+        	function overReview(msg,opContent){   
+        		var planSn=$('#detailPlanSn').val();  		    		        		
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_review_saveOrUpdateReview.action",
+					dataType : "json",
+					data : {
+						preplanSn:planSn,
+						preplanStatus:msg,
+						opinion:opContent
+					},
+					success : function(data) {
+						console.log(data.status)
+		                swal({       
+							title:"",
+							text: '完成编制,2秒后跳转回预案审核...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+							showConfirmButton: false,
+							html: true   
+							} 
+			    		); 
+			    		setTimeout(function(){
+	                       location.href ="/plan/preplan/plan_review_do.action"; 
+	                    },2000)       
+					},
+					error: function(){
+						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+					}
+				});	
+        	}
+        	</script>
     </body>
 
 </html>

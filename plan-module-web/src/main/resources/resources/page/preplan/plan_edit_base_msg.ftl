@@ -155,7 +155,7 @@
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
-                                                	<button id="sava_base_msg_btn" type="submit" class="btn green">保存</button>                                            
+                                                	<button id="sava_base_msg_btn" type="submit" class="btn blue">保存</button>                                            
                                                     <button type="submit" class="btn green">下一步</button>
                                                     <input type="hidden" id="sava_base_msg_ipt" value="0"/>
                                                 </div>
