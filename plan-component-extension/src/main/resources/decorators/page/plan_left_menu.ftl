@@ -45,13 +45,13 @@
                             </a>
                         </li>    
                         <li class="nav-item " id="navPlanReviseLi"> 
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_revise_do.action" class="nav-link nav-toggle">
                                 <i class="fa fa-edit"></i>
                                 <span class="title">预案修订</span>
                             </a>
                         </li> 
                         <li class="nav-item  " id="navPlanListLi">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_list_do.action" class="nav-link nav-toggle">
                                 <i class="fa fa-list"></i>
                                 <span class="title">预案列表</span>
                             </a>
@@ -95,6 +95,12 @@
             			return true;
             		}else if(url.indexOf("plan_map")>0){
             			$('#navPlanSrcLi').addClass('start active open');
+            			return true;
+            		}else if(url.indexOf("plan_list")>0){
+            			$('#navPlanListLi').addClass('start active open');
+            			return true;
+            		}else if(url.indexOf("plan_revise")>0){
+            			$('#navPlanReviseLi').addClass('start active open');
             			return true;
             		}else{
 						return false;
