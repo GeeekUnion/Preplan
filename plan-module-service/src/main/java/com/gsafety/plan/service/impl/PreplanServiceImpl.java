@@ -68,7 +68,6 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 
     @Override
     public void updateById(Preplan ppModel,String pd) {
-        // TODO Auto-generated method stub
         
         if(pd==null) {
             Map<String, Object> hashMap = new HashMap<String, Object>();
@@ -94,7 +93,6 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 
     @Override
     public Preplan getByPpSn(String ppSn) {
-        // TODO Auto-generated method stub
         Cnds cnds1 = Cnds.me(Preplan.class);
         WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("preplanSn", ppSn));
         cnds1.and(set);      
@@ -152,7 +150,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             
             
         }else {
-            str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
+            str="{\"recordsTotal\":"+0+",\"data\":[]}";
         }
         System.out.println(str);    
         return str;
@@ -166,8 +164,9 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	@Override
 	public String queryPreplanReviewListByUser(Person ps) {
 		 Map<String, Object> hashMap = new HashMap<String, Object>();
-	        hashMap.put("reviewOrg",ps.getOrgCode());	      
-	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg";
+	        hashMap.put("reviewOrg",ps.getOrgCode());	 
+	        hashMap.put("preplanStatus","待审核");
+	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus";
 	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
 	        String str="";
 	        if(pList.size()>0) {
@@ -210,7 +209,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	            
 	              
 	        }else {
-	            str="{\"recordsTotal\":"+0+",\"data\":"+null+"}";
+	            str="{\"recordsTotal\":"+0+",\"data\":[]}";
 	        }
 	        System.out.println(str); 
 	        return str;
