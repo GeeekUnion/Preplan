@@ -69,16 +69,16 @@
 	                                      +          	'<i class="fa fa-edit">全案 </i>'
 	                                      +      '</button>'
 	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+	                                      +  	 '<button  class="btn green"onclick="getPlanDetail(\''+row.preplanSn+'\',\'simple_plan\')">'
 	                                      +  			'<i class="fa fa-edit">简案</i>'
 	                                      +      '</button>'
 	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+	                                      +  	 '<button  class="btn green"onclick="getPlanDetail(\''+row.preplanSn+'\',\'flow_chart\')">'
 	                                      +  			'<i class="fa fa-edit">流程图</i>'
 	                                      +      '</button>'
 	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
-	                                      +  			'<i class="fa fa-search">查看详情</i>'
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
+	                                      +  			'<i class="fa fa-search">详情</i>'
 	                                      +      '</button>'
 	                                      +      ' '
 	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
@@ -143,10 +143,11 @@
 				
 			}
 			
-			function getPlanDetail(ppSn){
+			function getPlanDetail(ppSn,urlMsg){
 				//去掉单引号  取得要提交的参数
 				var planSn=ppSn.replace(/'/g,"");
-				var url='${pageContext.request.contextPath}/plan/preplan/plan_edit_detail.action';
+				urlMsg=urlMsg.replace(/'/g,"");
+				var url='${pageContext.request.contextPath}/plan/preplan/plan_edit_'+urlMsg+'.action';
 				// 创建Form  
 			    var form = $('<form></form>');  
 			    // 设置属性  
