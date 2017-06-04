@@ -98,7 +98,13 @@
 				
 			},
 			error:function(data){
-				sweetAlert("加载失败", "未知错误，请重试!", "error");					
+				swal({
+					title: "请先登录!",
+					text: '未知错误，请确定您已经登录!<a href="${pageContext.request.contextPath}/plan" style="color:#F8BB86">请点击此处登录</a>',
+					type: "error",
+					html:true,
+					confirmButtonText: "确认"  
+				});				
 		    }
 		})	
 	})
@@ -114,7 +120,13 @@
 				if(data=="ok"){
 		        	location.href ="/plan/preplan/plan_login.action";   
 		        }else{
-					sweetAlert("加载失败", "未知错误，请重试!", "error");					
+					swal({
+						title: "请先登录!",
+						text: '未知错误，请确定您已经登录!<a href="${pageContext.request.contextPath}/plan" style="color:#F8BB86">请点击此处登录</a>',
+						type: "error",
+						html:true,
+						confirmButtonText: "确认"  
+					});				
 		        }
 			}
 		})
