@@ -1,35 +1,58 @@
 
 <input id="detailPlanSn" type="hidden" value="${planSn}"> 
  <!-- BEGIN THEME PANEL -->
-<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
-    <div class="toggler"> </div>
-    <div class="toggler-close"> </div>
-    <div class="theme-options">
-        <div class="theme-option theme-colors clearfix">
-            <span> 编制目录 </span>
-        </div>
-        <div class="theme-option">
-	        <div class="portlet light bordered">
-	            <div class="portlet-body">
-	                <div id="pageTree" class="tree-demo">
-						
-	                </div>
-	            </div>
-	        </div>  
-        </div>
-    </div>
-</div>
+
 
 <!-- BEGIN UNORDERED LISTS PORTLET-->
-<div id="planDetailPageMsg"></div>
+<div class="tabbable-line nav-justified">
+    <ul class="nav nav-tabs nav-justified">
+        <li class="active">
+            <a href="#planDetailPageMsg" data-toggle="tab"> 全案详情 </a>
+        </li>
+        <li>
+            <a href="#simplePlanDetailPageMsg" data-toggle="tab"> 简案详情 </a>
+        </li>
+        <li>
+            <a href="#flowChartDetailPageMsg" data-toggle="tab"> 流程图详情 </a>
+        </li>
+    </ul>                                        
+	<div class="tab-content">
+		<div class="tab-pane active" id="planDetailPageMsg">
+			<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
+			    <div class="toggler"> </div>
+			    <div class="toggler-close"> </div>
+			    <div class="theme-options">
+			        <div class="theme-option theme-colors clearfix">
+			            <span> 编制目录 </span>
+			        </div>
+			        <div class="theme-option">
+				        <div class="portlet light bordered">
+				            <div class="portlet-body">
+				                <div id="pageTree" class="tree-demo">
+									
+				                </div>
+				            </div>
+				        </div>  
+			        </div>
+			    </div>
+			</div>
+		</div>
+       	<div class="tab-pane" id="simplePlanDetailPageMsg">
+        </div>
+        <div class="tab-pane" id="flowChartDetailPageMsg">
+            <p> Howdy, I'm in Section 3. </p>
+        </div>
+	</div>
+</div>
 <!-- END UNORDERED LISTS PORTLET-->
  
- 
-
+ 	
+	
 
 	<script>
 	
 	  $(function () {
+	  		swal({title: '', text:'加载中，请稍后...<i class="fa fa-spinner fa-spin fa-fw"></i>',showConfirmButton: false, html: true   });
 	  		//获得树
 	        $.ajax({
 				type : "POST",
@@ -47,7 +70,7 @@
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
 				}
 			});
-			//获得布局
+			//获得全案布局
 			$.ajax({
 				type : "POST",
 				url : "${pageContext.request.contextPath}/plan/preplan/preplan_pageMsg_getOrderPageMsg.action",
@@ -55,28 +78,30 @@
 				data : {
 	
 				},
-				success : function(data) {
-					swal({title: '', text:'加载中，请稍后...<i class="fa fa-spinner fa-spin fa-fw"></i>',showConfirmButton: false, html: true   });
-					getPageLayout(data)	
+				success : function(data) {					
+					getPageLayout(data,1)	
 				},
 				error: function(){
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
 				}
 			});
-			
+									
 	  });
-	  
-	  function getPageLayout(oldData){	  	  	  
+	 //****************全案Begin**************************************************
+	  //全案    pd=1全案，pd=2简案
+	  function getPageLayout(oldData,pd){	  	  	  
 	  	var oldDataLength=oldData.length;
 	  	
 	  	for(var i=0;i<oldDataLength;i++){
 	  		var htmlMsg='';
 	  		var oldDataObject= oldData[i];
 	  		var oldDataObjectSonL=oldDataObject.son.length;
-  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObject.order+'">'
+	  		var oldDataObjectOrder=oldDataObject.order;
+	  		var showOrder=oldDataObjectOrder.charAt(oldDataObjectOrder.length - 1);
+  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObjectOrder+'">'
 					+	    '<div class="portlet-title">'
 					+	        '<div class="caption" >'
-					+	        +oldDataObject.order+'. '+oldDataObject.title+'</div>'
+					+	        +showOrder+'. '+oldDataObject.title+'</div>'
 					+	        '<div class="tools">'
 					+	            '<a href="javascript:;" class="collapse"> </a>'
 					+	        '</div>'
@@ -103,14 +128,20 @@
 					
 					
 				htmlMsg=htmlMsg+'</div>'
-					+	'</div>';  		
-					$('#planDetailPageMsg').append(htmlMsg);  		
+					+	'</div>';  	
+				if(pd==1){
+					$('#planDetailPageMsg').append(htmlMsg);  	
+				}else if(pd==2){
+					$('#simplePlanDetailPageMsg').append(htmlMsg);  	
+				}else{
+				}		
+					
 	  	}
+	  	getPageLayoutContent(pd)
 	  	
-	  	getPageLayoutContent();
 	  }
-	  
-	  function getPageLayoutContent(){
+	  //全案/简单预案 pd控制
+	  function getPageLayoutContent(pd){
 	  	var planSn=$('#detailPlanSn').val();
   		//获得布局内容
 		$.ajax({
@@ -118,10 +149,17 @@
 			url : "${pageContext.request.contextPath}/plan/preplan/preplan_module_queryModuleByPpsn.action",
 			dataType : "json",
 			data : {
-				preplanSn:planSn
+				preplanSn:planSn,
+				type:pd
 			},
 			success : function(data) {
-				setPageLayoutContent(data);	
+				if(pd==1){//全案
+					setPageLayoutContent(data);
+				}else if(pd==2){//简案
+					setSimplePageLayoutContent(data)
+				}else{
+				
+				}					
 			},
 			error: function(){
 				sweetAlert("加载失败", "未知错误，请重试!", "error");									
@@ -129,7 +167,7 @@
 		});
 	  	
 	  }
-	  
+	  //全案
 	  function setPageLayoutContent(oldData){
 
 	  	var oldDataLength=oldData.rows.length;
@@ -141,8 +179,40 @@
 			var contentId='#planSonDetailContent'+oldDataObject.order;
 			$(contentId).append(htmlMsg);  		
 	  	}
+	  	//全案结束获得简案布局
+		$.ajax({
+			type : "POST",
+			url : "${pageContext.request.contextPath}/plan/preplan/preplan_pageMsg_getOrderPageMsg.action",
+			dataType : "json",
+			data : {
+				type:2
+			},
+			success : function(data) {	
+				getPageLayout(data,2)		
+			},
+			error: function(){
+				sweetAlert("加载失败", "未知错误，请重试!", "error");									
+			}
+		});
 	  	swal.close();
 	  }
+	  //****************全案End**************************************************
+	  
+	  //****************简单预案Begin**************************************************
+	  function setSimplePageLayoutContent(oldData){
+
+	  	var oldDataLength=oldData.rows.length;
+	  	
+	  	for(var i=0;i<oldDataLength;i++){
+	  		var htmlMsg='';
+	  		var oldDataObject= oldData.rows[i];
+	  		htmlMsg=htmlMsg+oldDataObject.content;
+			var contentId='#planDetailContent'+oldDataObject.order;
+			$(contentId).append(htmlMsg);  		
+	  	}
+	  
+	  }
+	  //****************简单预案End**************************************************
 	  
 	  //锚点
 	  function changePage(order){	

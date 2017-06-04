@@ -157,6 +157,12 @@
 			    // 创建Input  
     			var set_input = $('<input type="text" name="ppSn" />');
     			set_input.attr('value', planSn); 
+    			if(urlMsg=="simple_plan"){
+    				// 创建Input2  
+	    			var set_input2 = $('<input type="text" name="code" />');
+	    			set_input2.attr('value','1001'); 
+	    			form.append(set_input2);     			
+	    		}
     			// 附加到Form  
     			form.append(set_input);  
     			// 提交表单  
