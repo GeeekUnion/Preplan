@@ -101,7 +101,18 @@
        	<script type="text/javascript">
        	
        		$(function(){
-       			$('#xheditor').xheditor({tools:'Img',skin:'vista'});	
+       			$('#xheditor').xheditor({
+       				tools:'Img',
+       				skin:'vista',
+       				html5Upload : false, //此属性必须为false 否则无法上传图片 
+       				onUpload : uploadImg,   
+       				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
+       				upImgExt:"jpg,jpeg,gif,png"
+       			});	
+       			function uploadImg(data) {  
+		            //...回调函数  
+		        } 
+       			
        		})
        	
        		function submitOpinion(pd){

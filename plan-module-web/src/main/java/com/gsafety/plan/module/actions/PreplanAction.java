@@ -231,13 +231,19 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                JSONObject jo=new JSONObject();   
                Set<Domain> set=p.getDomain();
                int preplanDomainId=0;
+               String  preplanDomainName="";
                for (Domain d : set) {  
                    preplanDomainId=d.getId();
-               }  
+                   preplanDomainName=d.getDomainName();
+                   
+               } 
                jo.put("preplanDesc",p.getPreplanDesc());
                jo.put("preplanName",p.getPreplanName());
+               jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
                jo.put("preplanUID",p.getPreplanUID());
                jo.put("preplanDomain",preplanDomainId); 
+               jo.put("preplanDomainName",preplanDomainName); 
+               jo.put("preplanOrgId", p.getResponDept());
                jo.put("preplanReviewOrg",p.getReviewOrg());  
                myJsonArray.add(jo);
            }

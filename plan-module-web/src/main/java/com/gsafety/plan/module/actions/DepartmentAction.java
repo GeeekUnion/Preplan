@@ -27,6 +27,7 @@ public class DepartmentAction extends ListAction<Department>implements SessionAw
   //注入service
     @Resource
     private DepartmentService departmentService;
+    private String orgCode;
     
     //用于封装会话session
     protected Map<String, Object> session;  
@@ -75,9 +76,40 @@ public class DepartmentAction extends ListAction<Department>implements SessionAw
         return "jsonObject";
     }
     
+    /**
+     * TODO(根据id查询部门)
+     * @throws IOException 
+     * */
+    public String getUniqueOrg() throws IOException{
+    	
+    	if(null!=orgCode && orgCode.length()>0){
+    		JSONObject jo=new JSONObject();
+        	EmsOrg e=departmentService.get(EmsOrg.class,orgCode);
+        	jo.put("orgName", e.getOrgName());
+            out().print(jo.toString());
+            out().flush();
+            out().close();
+    	}
+
+    	return "jsonObject";
+    }
+    
+    
     @Override
     public void setSession(Map<String, Object> session) {
         this.session=session;
     }
+
+	public String getOrgCode() {
+		return orgCode;
+	}
+
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+
+
+    
+    
     
 }
