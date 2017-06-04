@@ -1,50 +1,74 @@
 
 <input id="detailPlanSn" type="hidden" value="${planSn}"> 
  <!-- BEGIN THEME PANEL -->
-
-
-<!-- BEGIN UNORDERED LISTS PORTLET-->
-<div class="tabbable-line nav-justified">
-    <ul class="nav nav-tabs nav-justified">
-        <li class="active">
-            <a href="#planDetailPageMsg" data-toggle="tab"> 全案详情 </a>
-        </li>
-        <li>
-            <a href="#simplePlanDetailPageMsg" data-toggle="tab"> 简案详情 </a>
-        </li>
-        <li>
-            <a href="#flowChartDetailPageMsg" data-toggle="tab"> 流程图详情 </a>
-        </li>
-    </ul>                                        
-	<div class="tab-content">
-		<div class="tab-pane active" id="planDetailPageMsg">
-			<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
-			    <div class="toggler"> </div>
-			    <div class="toggler-close"> </div>
-			    <div class="theme-options">
-			        <div class="theme-option theme-colors clearfix">
-			            <span> 编制目录 </span>
-			        </div>
-			        <div class="theme-option">
-				        <div class="portlet light bordered">
-				            <div class="portlet-body">
-				                <div id="pageTree" class="tree-demo">
-									
-				                </div>
-				            </div>
-				        </div>  
-			        </div>
-			    </div>
+<div class="portlet light bordered" id="blockui_sample_1_portlet_body">
+	<div class="portlet-title">
+		<div class="row">
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>预案名字：</strong><span id="preplanNameSpan"></span></p>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>预案编号：</strong><span id="preplanUIDSpan"></span></p>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>预案分类：</strong><span id="preplanDomainNameSpan"></span></p>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>编制时间：</strong><span id="preplanTimeSpan"></span></p>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>编制部门：</strong><span id="preplanOrgSpan"></span></p>
+			</div>
+			<div class="col-xs-12">
+				<p><strong>预案描述：</strong><span id="preplanDescSpan"></span></p>
+			</div>
+		</div>	
+	</div>
+	<div class="portlet-body">
+		<div class="tabbable-line nav-justified">
+		    <ul class="nav nav-tabs nav-justified">
+		        <li class="active">
+		            <a href="#planDetailPageMsg" data-toggle="tab"> 全案详情 </a>
+		        </li>
+		        <li>
+		            <a href="#simplePlanDetailPageMsg" data-toggle="tab"> 简案详情 </a>
+		        </li>
+		        <li>
+		            <a href="#flowChartDetailPageMsg" data-toggle="tab"> 流程图详情 </a>
+		        </li>
+		    </ul>                                        
+			<div class="tab-content">
+				<div class="tab-pane active" id="planDetailPageMsg">
+					<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
+					    <div class="toggler"> </div>
+					    <div class="toggler-close"> </div>
+					    <div class="theme-options">
+					        <div class="theme-option theme-colors clearfix">
+					            <span> 编制目录 </span>
+					        </div>
+					        <div class="theme-option">
+						        <div class="portlet light bordered">
+						            <div class="portlet-body">
+						                <div id="pageTree" class="tree-demo">
+											
+						                </div>
+						            </div>
+						        </div>  
+					        </div>
+					    </div>
+					</div>
+				</div>
+		       	<div class="tab-pane" id="simplePlanDetailPageMsg">
+		        </div>
+		        <div class="tab-pane" id="flowChartDetailPageMsg">
+		            <p> Howdy, I'm in Section 3. </p>
+		        </div>
 			</div>
 		</div>
-       	<div class="tab-pane" id="simplePlanDetailPageMsg">
-        </div>
-        <div class="tab-pane" id="flowChartDetailPageMsg">
-            <p> Howdy, I'm in Section 3. </p>
-        </div>
-	</div>
+	</div> 
 </div>
-<!-- END UNORDERED LISTS PORTLET-->
+
+
  
  	
 	
@@ -65,6 +89,28 @@
 					$('#pageTree').jstree({ 'core' : {
 					    'data' : data
 						} });	
+				},
+				error: function(){
+					sweetAlert("加载失败", "未知错误，请重试!", "error");									
+				}
+			});
+			//获得预案基本信息
+			$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_getUniqueByPreplanSn.action",
+				dataType : "json",
+				data : {
+					ppSn:$('#detailPlanSn').val()
+				},
+				success : function(data) {	
+					var obj=data[0];
+					$('#preplanNameSpan').append(obj.preplanName);	
+					$('#preplanUIDSpan').append(obj.preplanUID);		
+					$('#preplanDomainNameSpan').append(obj.preplanDomainName);
+					$('#preplanDescSpan').append(obj.preplanDesc);
+					$('#preplanTimeSpan').append(obj.preplanTime);									
+					getOrg(obj.preplanOrgId)
+					
 				},
 				error: function(){
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
@@ -194,7 +240,7 @@
 				sweetAlert("加载失败", "未知错误，请重试!", "error");									
 			}
 		});
-	  	swal.close();
+	  	
 	  }
 	  //****************全案End**************************************************
 	  
@@ -210,6 +256,7 @@
 			var contentId='#planDetailContent'+oldDataObject.order;
 			$(contentId).append(htmlMsg);  		
 	  	}
+	  	swal.close();
 	  
 	  }
 	  //****************简单预案End**************************************************
@@ -219,4 +266,23 @@
 	  	var divId="planDetailHead"+order;		
 		document.getElementById(divId).scrollIntoView();	
 	  }
+	  
+	  function getOrg(orgCode){
+	  		$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/plan/preplan/preplan_department_getUniqueOrg.action",
+				dataType : "json",
+				data : {
+					orgCode:orgCode
+				},
+				success : function(data) {									
+					$('#preplanOrgSpan').append(data.orgName)
+					
+				},
+				error: function(){
+					sweetAlert("加载失败", "未知错误，请重试!", "error");									
+				}
+			});
+	  }
+	  
    </script> 

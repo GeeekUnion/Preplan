@@ -60,7 +60,13 @@
 						}													
 					},
 					error: function(){
-							swal({    title: "提交出错!",    text: "未知错误，请确定您已经登录!",   type: "error",    confirmButtonText: "确认"  });				
+							swal({
+								title: "请先登录!",
+								text: '未知错误，请确定您已经登录!<a href="${pageContext.request.contextPath}/plan" style="color:#F8BB86">请点击此处登录</a>',
+								type: "error",
+								html:true,
+								confirmButtonText: "确认"  
+							});	
 					}
 				});
         	}
