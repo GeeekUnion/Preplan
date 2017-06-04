@@ -30,7 +30,7 @@ public class InventoryAction extends ListAction<Inventory> {
      private String inventoryPrincipalPhone;  //负责人电话
 	 
   
-     
+     private String  clickType;
 	 private int page;
 	 private int rows;
 	 private JSONArray jsonArray = new JSONArray();
@@ -61,7 +61,7 @@ public class InventoryAction extends ListAction<Inventory> {
    //查询所有Inventory
  	public String queryByPage() throws IOException{
  		
- 		String str=inventoryService.getPage(page, rows);
+ 		String str=inventoryService.getPage(page, rows,clickType);
  		
  		out().print(str);
  		out().flush();
@@ -284,5 +284,14 @@ public class InventoryAction extends ListAction<Inventory> {
 
 		public void setJsonObject(JSONObject jsonObject) {
 			this.jsonObject = jsonObject;
+		}
+
+		public String getClickType() {
+			return clickType;
+		}
+
+		public void setClickType(String clickType) {
+			this.clickType = clickType;
 		} 
+		
 }

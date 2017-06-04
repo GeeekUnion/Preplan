@@ -98,7 +98,7 @@
 				
 			},
 			error:function(data){
-				$.messager.alert('提示','未知错误，请重试！','error');	
+				sweetAlert("加载失败", "未知错误，请重试!", "error");					
 		    }
 		})	
 	})
@@ -114,7 +114,7 @@
 				if(data=="ok"){
 		        	location.href ="/plan/preplan/plan_login.action";   
 		        }else{
-					$.messager.alert('提示','未知错误，请重试！','error');	
+					sweetAlert("加载失败", "未知错误，请重试!", "error");					
 		        }
 			}
 		})
