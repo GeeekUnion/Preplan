@@ -16,4 +16,6 @@ public interface ModuleService extends IBaseService{
 
     Module getUniqueByPpsnOrder(String preplanSn, String order);
 
+	JSONObject queryListByPpsnType(String preplanSn, String pType);
+
 }

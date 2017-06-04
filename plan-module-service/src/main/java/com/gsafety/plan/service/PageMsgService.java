@@ -7,11 +7,11 @@ import com.gsafety.cloudframework.common.base.service.IBaseService;
 import com.gsafety.plan.po.PageMsg;
 
 public interface PageMsgService extends IBaseService{
-    JSONArray getTree();
+    JSONArray getTree(String pmType);
 
     JSONObject getPageMsgByOrder(String order);
 
-	JSONArray getOrderPageMsg();
+	JSONArray getOrderPageMsg(String pmType);
 	
 	JSONArray getSonMsg(PageMsg pm);
 	JSONArray getParentMsg();

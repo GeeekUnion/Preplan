@@ -25,6 +25,7 @@ public class Module {
     private String order;//显示顺序
     private Preplan preplanSnM;//与预案对应
     private boolean moduleCheck;
+    private String type;//全案模块（1）还是简单预案模块（2）
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,7 +74,14 @@ public class Module {
     public void setOrder(String order) {
         this.order = order;
     }
-    @Column(name="module_check") 
+    @Column(name="type",length=2) 
+    public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	@Column(name="module_check") 
     public boolean isModuleCheck() {
         return moduleCheck;
     }

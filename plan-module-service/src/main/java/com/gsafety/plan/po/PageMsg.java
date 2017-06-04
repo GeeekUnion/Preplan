@@ -28,6 +28,7 @@ public class PageMsg {
     private boolean requireCheck;//编写要求有无
     private boolean exampleCheck;//示例有无
     private boolean srcCheck;//资源有无
+    private String type;//全案 1、简案2
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
@@ -37,7 +38,7 @@ public class PageMsg {
         this.id = id;
     }
     
-    @Column(name="show_order")
+    @Column(name="show_order",unique=true)
     public String getOrder() {
         return order;
     }   
@@ -113,9 +114,16 @@ public class PageMsg {
 	public void setSupId(int supId) {
         this.supId = supId;
     }
+	@Column(name="type",length=2)
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 
     
-
+	
 
     
 }

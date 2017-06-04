@@ -23,8 +23,9 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
      * @return jsonArray
      * */
     @Override
-    public JSONArray getTree() {
-        Cnds cnds=Cnds.me(PageMsg.class);   
+    public JSONArray getTree(String pmType) {
+        Cnds cnds=Cnds.me(PageMsg.class); 
+        cnds.and(ConditionBuilder.eq("type",pmType));//1全案，2简案
         cnds.asc("order");
         List<PageMsg> pmMsgList=baseDAO.getListByCnds(cnds);
         JSONArray jsonArray=new JSONArray();
@@ -52,7 +53,7 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
 
     /**
      * 根据order获得pageMsg
-     * @return 页面必要信息
+     * @return 页面必要信息：子标题→父标题
      * */
     @Override
     public JSONObject getPageMsgByOrder(String order) {
@@ -60,7 +61,7 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
         Cnds cnds=Cnds.me(PageMsg.class); 
         cnds.and(ConditionBuilder.eq("order",order));
         PageMsg pm=baseDAO.getUniqueByCnds(cnds);
-        if(null!=pm) {
+        if(null!=pm && pm.isSupTitleCheck()==false) {//不为空且为子标题
             Cnds cnds2=Cnds.me(PageMsg.class);
             cnds2.and(ConditionBuilder.eq("id",pm.getSupId()));
             PageMsg supPm=baseDAO.getUniqueByCnds(cnds2); 
@@ -79,10 +80,12 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
      * @return jsonArray
      * */    
 	@Override
-	public JSONArray getOrderPageMsg() {
+	public JSONArray getOrderPageMsg(String pmType) {
 		JSONArray jsonArray=new JSONArray();
 		Cnds cnds=Cnds.me(PageMsg.class);  
-        cnds.and(ConditionBuilder.eq("supTitleCheck",true));
+        WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("type", pmType));
+        set.and(ConditionBuilder.eq("supTitleCheck",true));
+        cnds.and(set);
         List<PageMsg> pmMsgList=baseDAO.getListByCnds(cnds);
 
         for(PageMsg pm:pmMsgList){
