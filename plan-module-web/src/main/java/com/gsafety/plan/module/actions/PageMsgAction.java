@@ -35,21 +35,26 @@ public class PageMsgAction extends ListAction<PageMsg>{
     private boolean exampleCheck;//示例有无
     private boolean srcCheck;//资源有无
     private String code;//...
+    private String type;//全案 1、简案2
     
     /**
      * 获得树的jsonArray
      * */
     public String getTree() {
-        jsonArray=pageMsgService.getTree();
+    	String pmType="1";
+    	if(null!=type && type.length()>0){
+    		pmType=type;
+    	}
+        jsonArray=pageMsgService.getTree(pmType);
         return "jsonArray";
     }
     
     
     /**
-     * 获得树的jsonArray
+     * 根据order获得页面信息
      * */
     public String getPageMsgByOrder() {
-        if(null!=order) {
+        if(null!=order && order.length()>0) {
             jsonObject=pageMsgService.getPageMsgByOrder(order);
         }
         
@@ -57,10 +62,14 @@ public class PageMsgAction extends ListAction<PageMsg>{
     }
     
     /**
-     * 获得树的jsonArray
+     * 获得pageMsg所有标题的列表（子标题在父标题下）
      * */
     public String getOrderPageMsg() {
-    	jsonArray=pageMsgService.getOrderPageMsg();        
+    	String pmType="1";//默认1
+    	if(null!=type && type.length()>0){
+    		pmType=type;
+    	}
+    	jsonArray=pageMsgService.getOrderPageMsg(pmType);        
         return "jsonArray";
     }
     
@@ -159,5 +168,16 @@ public class PageMsgAction extends ListAction<PageMsg>{
     public void setSrcCheck(boolean srcCheck) {
         this.srcCheck = srcCheck;
     }
+
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
+	}
+    
 
 }

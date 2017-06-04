@@ -39,6 +39,7 @@ public class ModuleAction extends ListAction<Module> {
     private String content;//内容
     private String order;//顺序
     private  int id;//唯一标识
+    private String type;//全案模块（1）还是简单预案模块（2）
 	//预案的
 	private String preplanSn;                       
 
@@ -46,8 +47,12 @@ public class ModuleAction extends ListAction<Module> {
 	 *@param  preplanSn
 	 *@return pagerList(模块带分页)
 	 * */
-	public String queryModuleByPpsn() {	    
-	    jsonObject = moduleService.queryModulePagerByPpsn(page,rows,preplanSn);
+	public String queryModuleByPpsn() {
+		String pType="1";//默认为1全案；
+	    if(type!=null && type.length()>0){
+	    	pType=type;
+	    }
+	    jsonObject = moduleService.queryListByPpsnType(preplanSn,pType);
 	    return "jsonObject";
 	}
 	
@@ -56,7 +61,11 @@ public class ModuleAction extends ListAction<Module> {
      *@returns 
      * */
 	public String saveOrUpdateModule() {
-	    System.out.println("id："+id+"，"+"order："+order+"，内容："+content);
+		
+	    String pType="1";//默认为1全案；
+	    if(type!=null && type.length()>0){
+	    	pType=type;
+	    }
 	    JSONObject jo = new JSONObject();
 	    if(preplanSn.isEmpty()) {	        
 	        jo.put("status","error");
@@ -77,6 +86,7 @@ public class ModuleAction extends ListAction<Module> {
                     md.setContent(content);
                     md.setModuleSn(uuidModule);
                     md.setPreplanSnM(pl);
+                    md.setType(pType);
                     md.setModuleCheck(true);
                     moduleService.save(md);
                 }
@@ -95,7 +105,7 @@ public class ModuleAction extends ListAction<Module> {
 	}
 	
 	
-	 /*@name 根据preplanSn,order获得模块信息
+	/*@name 根据preplanSn,order获得模块信息
      *@param  模块属性
      *@returns 
      * */
@@ -274,6 +284,14 @@ public class ModuleAction extends ListAction<Module> {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

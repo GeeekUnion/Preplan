@@ -80,7 +80,9 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
-       	
+       	<!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
 
     </body>
 

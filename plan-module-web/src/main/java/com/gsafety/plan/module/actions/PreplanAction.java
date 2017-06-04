@@ -114,8 +114,13 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         String moduleOrderNext=""; 
         if(null!=code) {
             int codeNext=Integer.parseInt(code)+1;
-            if(codeNext>9) {
-                moduleOrderNext="\'00"+codeNext+"\'";  
+              if(codeNext>9) {
+            	  if(codeNext>1000){//简单预案
+            		  moduleOrderNext= "\'"+codeNext+"\'";
+            	  }else{//全案
+            		  moduleOrderNext="\'00"+codeNext+"\'";    
+            	  }
+                
               }else {
                 moduleOrderNext="\'000"+codeNext+"\'"; 
               }
