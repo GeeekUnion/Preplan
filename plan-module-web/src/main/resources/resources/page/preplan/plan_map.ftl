@@ -59,37 +59,22 @@
 				<!--MAP container-->
 				<div style="width: 697px; height: 550px; border: #ccc solid 1px;"
 					id="dituContent"></div>
-
-				<div class="portlet box green">
-					<div class="portlet-title">
-						<div class="caption">
-							<i class="fa fa-globe"></i>防控信息
-						</div>
-						<div class="actions">
-							<a href="${pageContext.request.contextPath}/plan/preplan/"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
-					</div>
-
-					<div class="portlet-body" id="">
-						<table id="planListTable" class="display" cellspacing="0"
-							width="100%">
-							<thead>
-								<tr>
-									<th>预案编号</th>
-									<th>预案名称</th>
-									<th>负责人</th>
-									<th>负责人联系方式</th>
-									<th>操作</th>
-								</tr>
-							</thead>
-
-						</table>
-					</div>
-
-				</div>
+					
+            <div class="container searchResultFilter">   
+             <div class="row ">
+            <div class="col-xs-12 filterArea">                 
+                 <!-- 选择查看类型 -->
+                 <label class="fl filterAreaLable">查看类型：</label>
+                 <ul class="list-inline fl" id="type-list">
+                     <li class="list-group-item"  id="inventory" value="inventory">资源</li>
+                     <li class="list-group-item" id="hazard"  value="hazard">危险源</li>
+                     <li class="list-group-item"  id="emergencyResponseTeam" value="emergencyResponseTeam">应急队伍</li>
+                     <li class="list-group-item"  id="protectionObject" value="protectionObject">防护目标</li>
+                 </ul>
+            </div>        
+         </div> 
+          </div>
+				<#include "/decorators/plan_map_content.ftl">
 
 
 
@@ -135,6 +120,18 @@
 	    var w;//纬度
 	    var longitude, latitude;  
 	    var type= "";   //判断传过来的点类型
+	    //用来决定table内容的
+	    var highLight={	
+			'background-color':'#0099FF',
+			'color':'white'
+		}
+		//默认亮度
+		var faultLight={
+			'color':'#000',
+		    'background-color':'#FFF'
+		}
+	    var clickType="inventory";
+	    
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/inventory.png", new BMap.Size(20,20));
 	var protectionObjectIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/防护目标.png", new BMap.Size(20,20));
@@ -145,7 +142,7 @@
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
 	var point = new BMap.Point(116.331398,39.897445);
 	map.centerAndZoom(point,12);
-
+     getLocationHtml5()
   
 
     //html5定位方法
@@ -528,183 +525,40 @@
 	})
 	
 	})
-	//显示列表
-	$(document).ready(function() {
-				$('#planListTable').dataTable( {
-					"ajax": {
-					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
-					    "type": "POST",
-					    "data": function ( d ) {
-
-					    }
-					},
-				  	"deferRender": true,
-				  	"searching": true,
-				  	"processing": true,
-			        "columns": [
-	                    { "data": "inventorySn", align:"center" },
-	                    { "data": "inventoryName" },
-	                    { "data": "inventoryPrincipal" },
-	                    { "data": "inventoryPrincipalPhone" },
-	                    { "formatNumber": "preplanTime" }
-	                ],
-	                "columnDefs": [ {
-			            "targets": -1,//最后一列
-			            "data": null,
-			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
-	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</a>'
-				        }
-			        } ],
-			        "oLanguage": {
-			            "sLengthMenu": "每页显示 _MENU_ 条",
-			            "sZeroRecords": "没有找到符合条件的数据",
-			            "sInfo": "当前第 _START_ - _END_ 条　共计 _TOTAL_ 条",
-			            "sInfoEmpty": "没有记录",
-			            "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
-			            "sSearch": "搜索",
-			            "sProcessing": "数据加载中...",
-			            "oPaginate": {
-			                "sFirst": "首页",
-			                "sPrevious": "上一页",
-			                "sNext": "下一页",
-			                "sLast": "尾页"
-			            }
-			        }
-				});
-			} );
+	
+	
+	//把搜索类型按钮   绑定点击事件
+		$("#type-list li").click(function(){
+		$("#type-list li").css(faultLight);
+		var $this=$(this);
+		clickType=$this["0"].attributes["1"].value
 			
-			//浏览器判断
+			
+		switch(clickType){
+		case "inventory":
+		$this.css(highLight);
+	   
+		break;
 		
-(function($, window, document,undefined){
-    if(!window.browser){
-         
-        var userAgent = navigator.userAgent.toLowerCase(),uaMatch;
-        window.browser = {}
-         
-        /**
-         * 判断是否为ie
-         */
-        function isIE(){
-            return ("ActiveXObject" in window);
-             getLocationHtml5();
-        }
-        /**
-         * 判断是否为谷歌浏览器
-         */
-        if(!uaMatch){
-            uaMatch = userAgent.match(/chrome\/([\d.]+)/);
-            if(uaMatch!=null){
-                window.browser['name'] = 'chrome';
-                window.browser['version'] = uaMatch[1];
-                getLocationHtml5();          //本应该是google
-            }
-        }
-        /**
-         * 判断是否为火狐浏览器
-         */
-        if(!uaMatch){
-            uaMatch = userAgent.match(/firefox\/([\d.]+)/);
-            if(uaMatch!=null){
-                window.browser['name'] = 'firefox';
-                window.browser['version'] = uaMatch[1];
-            }
-        }
-        /**
-         * 判断是否为opera浏览器
-         */
-        if(!uaMatch){
-            uaMatch = userAgent.match(/opera.([\d.]+)/);
-            if(uaMatch!=null){
-                window.browser['name'] = 'opera';
-                window.browser['version'] = uaMatch[1];
-            }
-        }
-        /**
-         * 判断是否为Safari浏览器
-         */
-        if(!uaMatch){
-            uaMatch = userAgent.match(/safari\/([\d.]+)/);
-            if(uaMatch!=null){
-                window.browser['name'] = 'safari';
-                window.browser['version'] = uaMatch[1];
-            }
-        }
-        /**
-         * 最后判断是否为IE
-         */
-        if(!uaMatch){
-            if(userAgent.match(/msie ([\d.]+)/)!=null){
-                uaMatch = userAgent.match(/msie ([\d.]+)/);
-                window.browser['name'] = 'ie';
-                window.browser['version'] = uaMatch[1];
-            }else{
-                /**
-                 * IE10
-                 */
-                if(isIE() && !!document.attachEvent && (function(){"use strict";return !this;}())){
-                    window.browser['name'] = 'ie';
-                    window.browser['version'] = '10';
-                }
-                /**
-                 * IE11
-                 */
-                if(isIE() && !document.attachEvent){
-                    window.browser['name'] = 'ie';
-                    window.browser['version'] = '11';
-                }
-            }
-        }
- 
-        /**
-         * 注册判断方法
-         */
-        if(!$.isIE){
-            $.extend({
-                isIE:function(){
-                    return (window.browser.name == 'ie');
-                   
-                }
-            });
-        }
-        if(!$.isChrome){
-            $.extend({
-                isChrome:function(){
-                    return (window.browser.name == 'chrome');
-                    
-                }
-            });
-        }
-        if(!$.isFirefox){
-            $.extend({
-                isFirefox:function(){
-                    return (window.browser.name == 'firefox');
-                }
-            });
-        }
-        if(!$.isOpera){
-            $.extend({
-                isOpera:function(){
-                    return (window.browser.name == 'opera');
-                }
-            });
-        }
-        if(!$.isSafari){
-            $.extend({
-                isSafari:function(){
-                    return (window.browser.name == 'safari');
-                }
-            });
-        }
-    }
-})(jQuery, window, document);
+		case "hazard":
+	    $this.css(highLight);
+	    hazardClick(clickType)
+		break;
+		
+		case "emergencyResponseTeam":
+		$this.css(highLight);
+		break;
+		
+		case "protectionObject":
+		$this.css(highLight);
+		break;
+		
+		
+			}
+		});		
 
-/*console.log(window.browser);
-console.log($.isIE());
-console.log($.isChrome());*/
+
+
+
 </script>
 </html>
