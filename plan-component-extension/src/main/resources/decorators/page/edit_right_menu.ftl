@@ -8,8 +8,6 @@
         </div>
         <div class="theme-option">
 	        <div class="portlet light bordered">
-	            <div class="portlet-title">
-	            </div>
 	            <div class="portlet-body">
 	                <div id="pageTree" class="tree-demo">
 						

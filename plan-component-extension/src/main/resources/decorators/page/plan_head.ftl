@@ -82,7 +82,7 @@
 				if(msgSize>0){
 					for(var i=0;i<msgSize;i++){
 						html=html+'<li>'
-			                     +       '<a href="javascript:;">'
+			                     +       '<a href="javascript:;" onclick="getPlanDetailByHead(\''+msgList[i].preplanSn+'\')">'
 			                     +           '<span class="details">'
 			                     +               '<span class="label label-sm label-icon label-info">'
 			                     +                   '<i class="fa fa-bell-o"></i>'
@@ -130,6 +130,29 @@
 		        }
 			}
 		})
+	}
+	
+	
+	function getPlanDetailByHead(ppSn){
+		var urlMsg='review';
+		//去掉单引号  取得要提交的参数
+		var planSn=ppSn.replace(/'/g,"");
+		var url='${pageContext.request.contextPath}/plan/preplan/plan_'+urlMsg+'_detail.action';
+		// 创建Form  
+	    var form = $('<form></form>');  
+	    // 设置属性  
+	    form.attr('action', url);  
+	    form.attr('method', 'post');
+	    form.attr('target', '_blank'); //空白打开  
+	    // 创建Input  
+		var set_input = $('<input type="text" name="ppSn" />');
+		set_input.attr('value', planSn); 
+		// 附加到Form  
+		form.append(set_input);  
+		// 提交表单  
+	    form.submit();  
+	    //return false自动刷新
+	    return false;         
 	}
 	
 </script>    

@@ -44,35 +44,7 @@
 			
 	  });
 	  
-	  //获得模块内容
-	  $(function () {
-			var planSn=$('#planSn').val();
-			var moduleOrder=$('#moduleOrder').val().replace(/'/g,"");
-			if(planSn=="" || moduleOrder=="null" || moduleOrder==""){
-				
-			}else{
-				getModuleContent(planSn,moduleOrder);
-			}	
-			
-	  });
-	  function getModuleContent(planSn,moduleOrder){
-	  	$.ajax({
-				type : "POST",
-				url : "${pageContext.request.contextPath}/plan/preplan/preplan_module_getModuleByPpsnOrder.action",
-				dataType : "json",
-				data : {
-					preplanSn:planSn,
-					order:moduleOrder
-				},
-				success : function(data) {
-					var xhedit=$('#xheditor').xheditor();
-					xhedit.setSource(data.moduleContent);
-				},
-				error: function(){
-					sweetAlert("加载失败", "未知错误，请重试!", "error");									
-				}
-			});		
-	  }
+	  
 	  
 	  
 	  //网页跳转中转
