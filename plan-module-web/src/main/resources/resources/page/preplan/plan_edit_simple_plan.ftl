@@ -68,8 +68,8 @@
                                     </div>
                                     <div class="actions">
                                         <div class="btn-group">                                         
-                                            <a class="btn green btn-outline btn-circle btn-sm" href="#editRequire"> 
-                                                <i class="fa fa-info font-green"></i>&nbsp;编写要求及示例 
+ 											<a class="btn green btn-outline btn-circle btn-sm" href="#editRequireP"> 
+                                                <i class="fa fa-info font-green"></i>&nbsp;编写说明及示例 
                                             </a>
                                             <#include "/decorators/edit_right_menu_simple.ftl"> 
                                         </div>
@@ -99,12 +99,12 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="note note-info">
-                                <h3 id="editRequire">编写要求</h3>
-                                <p>应列出编制突发事故灾难类事件应急预案主要依据的法律、法规、规章和其他规范性文件，以及上一级和本级人民政府及其部门的相关应急预案。</p>
+                                <h3 >说明及要求</h3>
+                                <p id="editRequireP"></P>
+                                <hr>
                                 <h3>示例</h3>
-                                <p>示例1：XX市的突发事件总体应急预案：</p>
-                                <p>依据《XX省突发事件总体应急预案》、《“十二五”期间XX市突发事件应急体系建设规划》等相关法律、法规和有关规定，编制本预案。</p>
-                                
+                                <p id="editExampleP"></p>
+                                <hr>                               
                             </div>
                         </div>
                     </div>
@@ -153,9 +153,16 @@
 							
 						}
 						
+						if(data.isRequireCheck==true){
+							$('#editRequireP').html(data.requireContent)
+						}
+						if(data.isExampleCheck==true){
+							$('#editExampleP').html(data.exampleContent)							
+						}
+						
 					},
 					error: function(){
-							swal('提交出错', '未知错误，请确定您已经登录!', 'error');	 					
+							swal('加载出错', '未知错误，请确定您已经登录!', 'error');	 					
 					}
 				});
         	})	
@@ -226,6 +233,39 @@
 					}
 				});
         	}
+        	
+        	
+        	//获得模块内容
+			  $(function () {
+					var planSn=$('#planSn').val();
+					var moduleOrder=$('#moduleOrder').val().replace(/'/g,"");
+					if(planSn=="" || moduleOrder=="null" || moduleOrder==""){
+					}else{
+						getModuleContent(planSn,moduleOrder);
+					}	
+					
+			  });
+			  function getModuleContent(planSn,moduleOrder){
+			  	$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_module_getModuleByPpsnOrder.action",
+						dataType : "json",
+						data : {
+							preplanSn:planSn,
+							order:moduleOrder
+						},
+						success : function(data) {
+							var xhedit=$('#xheditor').xheditor();
+							xhedit.setSource(data.moduleContent)
+							
+						},
+						error: function(){
+							sweetAlert("加载失败", "未知错误，请重试!", "error");									
+						}
+					});		
+			  }
+
+        	
         	
         	//编制完成
         	function overPlan(planSn){     		        		

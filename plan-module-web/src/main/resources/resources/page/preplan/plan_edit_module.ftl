@@ -89,8 +89,8 @@
                                     <div class="actions">
                                         <div class="btn-group">
                                             
-                                            <a class="btn green btn-outline btn-circle btn-sm" href="#editRequire"> 
-                                                <i class="fa fa-info font-green"></i>&nbsp;编写要求及示例 
+                                            <a class="btn green btn-outline btn-circle btn-sm" href="#editRequireP"> 
+                                                <i class="fa fa-info font-green"></i>&nbsp;编写说明及示例 
                                             </a>
                                         </div>
                                     </div>
@@ -119,12 +119,12 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="note note-info">
-                                <h3 id="editRequire">编写要求</h3>
-                                <p>应列出编制突发事故灾难类事件应急预案主要依据的法律、法规、规章和其他规范性文件，以及上一级和本级人民政府及其部门的相关应急预案。</p>
+                                <h3 >说明及要求</h3>
+                                <p id="editRequireP"></P>
+                                <hr>
                                 <h3>示例</h3>
-                                <p>示例1：XX市的突发事件总体应急预案：</p>
-                                <p>依据《XX省突发事件总体应急预案》、《“十二五”期间XX市突发事件应急体系建设规划》等相关法律、法规和有关规定，编制本预案。</p>
-                                
+                                <p id="editExampleP"></p>
+                                <hr>
                             </div>
                         </div>
                     </div>
@@ -164,10 +164,19 @@
 							order:moduleOrder
 					},
 					success : function(data) {	
+
 						$('#supOrder').html(data.supOrder)
 						$('#supTitle').html(data.supTitle)
 						$('#supTitleDesc').html(data.supTitleDesc)
 						$('#subTitle').html(data.moduleTitle)
+
+						if(data.isRequireCheck==true){
+							$('#editRequireP').html(data.requireContent)
+						}
+						if(data.isExampleCheck==true){
+							$('#editExampleP').html(data.exampleContent)							
+						}
+
 						//是否显示已完成
 						if(moduleOrder=="0032"){
 							$('#submitModuleOver').text("完成编制");
