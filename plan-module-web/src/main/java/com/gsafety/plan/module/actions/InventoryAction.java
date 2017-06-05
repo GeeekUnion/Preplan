@@ -60,14 +60,35 @@ public class InventoryAction extends ListAction<Inventory> {
     
    //查询所有Inventory
  	public String queryByPage() throws IOException{
- 		
- 		String str=inventoryService.getPage(page, rows,clickType);
- 		
+ 		String str="";
+ 		//根据关键词，决定查询类型
+ 		if(clickType==null||clickType==""){
+ 			str=inventoryService.getPage(page, rows,clickType);
+ 		}else if(clickType.equalsIgnoreCase("inventory")){
+ 			str=inventoryService.getPage(page, rows,clickType);
+ 		}else if(clickType.equalsIgnoreCase("hazard")){
+ 			 str=inventoryService.getPageHazard(page, rows,clickType);
+ 		}else if(clickType.equalsIgnoreCase("emergencyResponseTeam")){
+ 			 str=inventoryService.getPageEmergencyResponseTeam(page, rows,clickType);
+ 		}else if(clickType.equalsIgnoreCase("protectionObject")){
+ 			 str=inventoryService.getPageProtectionObject(page, rows,clickType);
+ 		}
+
  		out().print(str);
  		out().flush();
  		out().close();
  		return "jsonArray";
  	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
  	
  	//新增Inventory
     public String save(){

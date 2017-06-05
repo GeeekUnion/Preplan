@@ -60,20 +60,7 @@
 				<div style="width: 697px; height: 550px; border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
-            <div class="container searchResultFilter">   
-             <div class="row ">
-            <div class="col-xs-12 filterArea">                 
-                 <!-- 选择查看类型 -->
-                 <label class="fl filterAreaLable">查看类型：</label>
-                 <ul class="list-inline fl" id="type-list">
-                     <li class="list-group-item"  id="inventory" value="inventory">资源</li>
-                     <li class="list-group-item" id="hazard"  value="hazard">危险源</li>
-                     <li class="list-group-item"  id="emergencyResponseTeam" value="emergencyResponseTeam">应急队伍</li>
-                     <li class="list-group-item"  id="protectionObject" value="protectionObject">防护目标</li>
-                 </ul>
-            </div>        
-         </div> 
-          </div>
+           
 				<#include "/decorators/plan_map_content.ftl">
 
 
@@ -130,6 +117,14 @@
 			'color':'#000',
 		    'background-color':'#FFF'
 		}
+		//默认不显示
+		var defaultDisplay={
+		   'display':'none'
+		}
+		var blockDisplay={
+		   'display':'block'
+		}
+		
 	    var clickType="inventory";
 	    
 	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
@@ -527,35 +522,7 @@
 	})
 	
 	
-	//把搜索类型按钮   绑定点击事件
-		$("#type-list li").click(function(){
-		$("#type-list li").css(faultLight);
-		var $this=$(this);
-		clickType=$this["0"].attributes["1"].value
-			
-			
-		switch(clickType){
-		case "inventory":
-		$this.css(highLight);
-	   
-		break;
-		
-		case "hazard":
-	    $this.css(highLight);
-	    hazardClick(clickType)
-		break;
-		
-		case "emergencyResponseTeam":
-		$this.css(highLight);
-		break;
-		
-		case "protectionObject":
-		$this.css(highLight);
-		break;
-		
-		
-			}
-		});		
+	
 
 
 
