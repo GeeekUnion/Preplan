@@ -71,7 +71,11 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
         }
         jo.put("moduleOrder",pm.getOrder());
         jo.put("moduleTitle",pm.getTitle());//子标题
-
+        jo.put("isRequireCheck", pm.isRequireCheck());//需求
+        jo.put("requireContent", pm.getRequireContent());
+        jo.put("isExampleCheck", pm.isExampleCheck());//例子
+        jo.put("exampleContent", pm.getExampleContent());
+        
         return jo;
     }
     
