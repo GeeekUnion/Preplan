@@ -63,9 +63,8 @@
 	                "columnDefs": [ {
 			            "targets": -1,//最后一列
 			            "data": null,
-			            "width":"450px",
 			            render: function(data, type, row, meta) {
-				            return '<button class="btn  green" onclick="alterPlan(\''+row.preplanSn+'\')">'
+			            var showHtml='<button class="btn  green" onclick="alterPlan(\''+row.preplanSn+'\')">'
 	                                      +          	'<i class="fa fa-edit">全案 </i>'
 	                                      +      '</button>'
 	                                      +      ' '
@@ -84,9 +83,19 @@
 	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</button>'
+			            	if(row.status=="待完成"){
+			            		showHtml=showHtml+' '
+	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\')">'
+	                                      +  			'<i class="fa fa-check">提交审核</i>'
+	                                      +      '</button>'
+			            	}else{
+			            	
+			            	}
+			            
+				            return showHtml;
 
 				        }
-			        } ],
+			        } ],			        
 			        "oLanguage": {
 			            "sLengthMenu": "每页显示 _MENU_ 条",
 			            "sZeroRecords": "没有找到符合条件的数据",
@@ -170,4 +179,38 @@
 			    //return false自动刷新
 			    return false;         
 			}
+			
+			
+			//提交审核
+        	function overPlan(planSn){   			        		
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
+					dataType : "json",
+					data : {
+						ppSn:planSn.replace(/'/g,""),
+						preplanStatus:"待审核"
+					},
+					success : function(data) {
+						loadPlan();
+	      				swal({
+							title: "提交成功!",
+							text: '请等待审核！',
+							type: "success",
+							confirmButtonText: "确认"  
+						});	
+					},
+					error: function(){
+						loadPlan();
+						 swal({
+							title: "提交失败!",
+							text: '未知错误，请登录重试!',
+							type: "error",
+							confirmButtonText: "确认"  
+						});							
+					}
+				});	
+        	}
+			
+			
         </script>

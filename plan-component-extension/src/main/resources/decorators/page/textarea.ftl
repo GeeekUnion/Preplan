@@ -73,30 +73,15 @@
         	
         	//编制完成
         	function overPlan(planSn){     		
-        		swal({title: "编制设置中，请勿关闭页面...", type: "info", showConfirmButton: false  });        		        		
-				$.ajax({
-					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
-					dataType : "json",
-					data : {
-						ppSn:planSn,
-						preplanStatus:"待审核"
-					},
-					success : function(data) {
-		                swal({       
-							title:"",
-							text: '完成编制,2秒后跳转回首页...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action" style="color:#F8BB86">请点击此处跳转</a>',          
-							showConfirmButton: false,
-							html: true   
-							} 
-			    		); 
-			    		setTimeout(function(){
-	                       location.href ="/plan/preplan/plan_index.action"; 
-	                    },2000)       
-					},
-					error: function(){
-						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
-					}
-				});	
+				swal({       
+					title:"",
+					text: '完成编制,2秒后跳转回编制列表...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+					showConfirmButton: false,
+					html: true   
+					} 
+	    		); 
+	    		setTimeout(function(){
+                   location.href ="/plan/preplan/plan_edit_do.action"; 
+                },2000) 
         	}
   </script>
