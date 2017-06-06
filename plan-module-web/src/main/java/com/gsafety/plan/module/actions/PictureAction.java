@@ -41,13 +41,7 @@ public class PictureAction extends ListAction<Picture>{
         HttpServletRequest request = (HttpServletRequest) ac.get(ServletActionContext.HTTP_REQUEST);  
 
         response.setContentType("text/html;charset=utf-8");  
-
-//        PrintWriter out = null;  
-//        try {  
-//            out = response.getWriter();  
-//        } catch (IOException e1) {  
-//            e1.printStackTrace();  
-//        }  
+ 
         /*这里的路径设置，在我的电脑上传路径是：D:\apache-tomcat-7063\wtpwebapps\plan\WEB-INF\img。
         */
         String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/img");  
@@ -64,8 +58,6 @@ public class PictureAction extends ListAction<Picture>{
             e.printStackTrace();  
         }  
         String fileName = request.getContextPath() + "/img/" + filedataFileName;  
-
-        //msg = "{\"err\":\"" + err + "\",\"msg\":\"" + fileName + "\"}";  
         jsonObject.put("err", err);
         jsonObject.put("msg", fileName);        
          //返回msg信息  

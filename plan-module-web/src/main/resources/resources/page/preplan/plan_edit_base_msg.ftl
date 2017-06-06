@@ -279,6 +279,7 @@
 	                            		url=url+"?ppSn="+data.replace(/\"/g,"");
 	                            		history.replaceState(null, "", url);     
 	                            		$('#sava_base_msg_ipt').val(0); 
+	                            		$('#planSn').val(data.replace(/\"/g,""));//保存ppSn
 	                            		swal({title: "保存成功!",type: "success",confirmButtonText: "确认"});                    			   	
 	                            	}
 	                            	
