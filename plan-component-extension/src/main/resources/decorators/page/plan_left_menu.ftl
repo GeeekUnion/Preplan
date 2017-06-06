@@ -39,7 +39,7 @@
                             </a>
                         </li>      
                         <li class="nav-item  " id="navPlanExecuteLi">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_execute .action" class="nav-link nav-toggle">
                                 <i class="fa fa-play "></i>
                                 <span class="title">预案执行</span>
                             </a>
@@ -57,7 +57,7 @@
                             </a>
                         </li>  
                         <li class="nav-item " id="navPlanShowLi">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_drill.action" class="nav-link nav-toggle">
                                 <i class="fa fa-circle-o-notch"></i>
                                 <span class="title">预案演练</span>
                             </a>
