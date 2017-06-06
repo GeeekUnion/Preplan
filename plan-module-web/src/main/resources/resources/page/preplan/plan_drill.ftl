@@ -47,12 +47,12 @@
 						<li><a
 							href="${pageContext.request.contextPath}/plan/preplan/planIndex.action">主页</a>
 							<i class="fa fa-circle"></i></li>
-						<li><span>地图</span></li>
+						<li><span>演练</span></li>
 					</ul>
 				</div>
 				<!-- END PAGE BAR -->
 				<!-- BEGIN PAGE TITLE-->
-				<h3 class="page-title">地图</h3>
+				<h3 class="page-title">预案演练</h3>
 				<!-- END PAGE TITLE-->
 				<!-- END PAGE HEADER-->
 				<!--BEGIN MAP CONTENT-->
