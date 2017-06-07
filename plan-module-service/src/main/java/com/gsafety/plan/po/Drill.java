@@ -4,7 +4,15 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
+import javax.annotation.Generated;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,7 +26,55 @@ public class Drill implements Serializable{
 	private int drillNumOfParticipants;
 	//单位怎么弄
 	private String drillContent;
-	private Set<Preplan> preplanName;
+	private Preplan preplan;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	@Column(name="drill_sn")
+	public String getDrillSn() {
+		return drillSn;
+	}
+	public void setDrillSn(String drillSn) {
+		this.drillSn = drillSn;
+	}
+	@Column(name="drill_time")
+	public Timestamp getDrillTime() {
+		return drillTime;
+	}
+	public void setDrillTime(Timestamp drillTime) {
+		this.drillTime = drillTime;
+	}
+	@Column(name="drill_numOfParticipants")
+	public int getDrillNumOfParticipants() {
+		return drillNumOfParticipants;
+	}
+	public void setDrillNumOfParticipants(int drillNumOfParticipants) {
+		this.drillNumOfParticipants = drillNumOfParticipants;
+	}
+	@Column(name="drill_content")
+	public String getDrillContent() {
+		return drillContent;
+	}
+	public void setDrillContent(String drillContent) {
+		this.drillContent = drillContent;
+	}
+	@OneToOne(cascade = {CascadeType.ALL})    
+	@JoinColumn(name = "preplan_sn", unique = true,referencedColumnName="preplan_sn")    
+	public Preplan getPreplan() {
+		return preplan;
+	}
+	public void setPreplan(Preplan preplan) {
+		this.preplan = preplan;
+	}
+	
+	
+	
+	
 	
 	
 	
