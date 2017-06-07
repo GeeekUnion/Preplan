@@ -27,6 +27,7 @@ public class Drill implements Serializable{
 	//单位怎么弄
 	private String drillContent;
 	private Preplan preplan;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
@@ -35,7 +36,7 @@ public class Drill implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Column(name="drill_sn")
+	@Column(name="drill_sn",unique=true,nullable=false)
 	public String getDrillSn() {
 		return drillSn;
 	}
