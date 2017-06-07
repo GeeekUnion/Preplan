@@ -40,6 +40,13 @@
 			<groupId>com.gsafety.cloudframework</groupId>
 			<artifactId>cloud-login-service</artifactId>
 			<version>1.2.0-RELEASE</version>
-		</dependency>
+		</dependency>				
+		<!-- iText核心jar包-->
+	    <dependency>
+	        <groupId>com.itextpdf</groupId>
+	        <artifactId>itext7-core</artifactId>
+	        <version>7.0.2</version>
+	        <type>pom</type>
+	    </dependency>
 	</dependencies>
 </project>
