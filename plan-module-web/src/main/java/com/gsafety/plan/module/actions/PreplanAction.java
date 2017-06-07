@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +30,7 @@ import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
 import com.gsafety.cloudframework.common.base.conditions.where.WhereSet;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
+import com.gsafety.plan.module.util.PDFUtil;
 import com.gsafety.plan.po.Domain;
 import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Module;
@@ -46,6 +49,7 @@ import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
 import com.gsafety.plan.service.ResourceRecordService;
 import com.gsafety.plan.service.SupplyService;
+import com.itextpdf.layout.Document;
 import com.opensymphony.xwork2.ActionContext;
 
 @Namespace("/preplan")
@@ -280,6 +284,81 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     	return "myJsonObject";
     }
     
+    
+    
+    public String uploadPlanPdf() throws Exception{
+    	long old = System.currentTimeMillis();
+    	PDFUtil pdfUtil=new PDFUtil();
+    	Document doc= pdfUtil.createPdfDoc();
+    	try {
+    		 if(null != ppSn && ppSn.length()>0) {            
+ 	            Preplan p= preplanService.getByPpSn(ppSn);
+ 	            p.getPreplanName(); 	             	            
+ 	            pdfUtil.addTitle(doc, p.getPreplanName());//放置标题
+ 	            JSONArray jay=pageMsgService.getOrderPageMsg("1");
+ 	            for (int i = 0; i < jay.size(); i++) {
+ 	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+ 	            	pdfUtil.addHeading1(doc,jo.getString("order")+jo.getString("title"));//一级标题
+ 	            	JSONArray sonJay=jo.getJSONArray("son");
+ 	                for (int j = 0; j < sonJay.size(); j++) {
+ 	                	JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+ 	                	pdfUtil.addHeading2(doc,sonJo.getString("title"));//二级标题
+ 	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
+ 	                	if(md!=null){
+ 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
+ 	                		String regexp = "<p.*?/p>";
+ 	                		String regexh = "<h.*?/h*>";
+ 	                		String regexbr = "<br.*?>";
+ 	                		String pg=md.getContent().replaceAll(regexstr,"");
+ 	                		pg=pg.replaceAll(regexh,"");
+ 	                		pg=pg.replaceAll(regexbr,"");
+ 	                		Pattern pattern = Pattern.compile("<p>([^</p>]*)");//匹配<>开头，</p>结尾的文档 
+ 	                	    Matcher m = pattern.matcher(pg);//开始编译 
+ 	                		while (m.find()) {  
+ 	                           System.out.println(m.groupCount());  
+ 	                           System.out.println(m.group());                    
+ 	                		}      
+ 	                		pdfUtil.addParagraph(doc,pg);
+ 	                	}
+ 	                	
+ 	    			}
+ 				}
+ 	            doc.close();
+ 	           
+ 	        }   
+		} catch (Exception e) {
+			 e.printStackTrace();
+			 doc.close();
+		}	              
+        long now = System.currentTimeMillis();
+        System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:");
+    	return "myJsonObject";
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
      
@@ -382,47 +461,6 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             p.setOrgCode(orgCode);
             str=preplanService.getPageListByUser(page,rows,p);
         }        
-//        if(null != ppDept && ppDept.length()>0) {
-//
-//        	//封装预案列表        
-//            str =preplanService.getPageList(page,rows);     
-//            //如下
-//            JSONArray array = new JSONArray();
-//            int total=0;//记录数
-//            Domain d=domainService.get(Domain.class,Integer.parseInt(code));
-//                    if(d.getPreplan() != null) {
-//                        Set<Preplan> preplanSet =d.getPreplan();
-//                        Iterator<Preplan> ppModel = preplanSet.iterator();
-//                        //遍历所有符合条件的预案
-//                        while(ppModel.hasNext()){
-//                            Preplan p=ppModel.next();
-//                            JSONObject jo = new JSONObject();                            
-//                            jo.put("id",p.getId());
-//                            jo.put("preplanUid",p.getPreplanUID());
-//                            jo.put("preplanName",p.getPreplanName());  
-//                            jo.put("responDept",p.getResponDept()); 
-//                            jo.put("preplanSn",p.getPreplanSn());                                                    
-//                            jo.put("preplanType",d.getDomainName());
-//                            if(p.getPreplanTime() != null) {
-//                                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
-//                            }
-//                            else {
-//                                jo.put("preplanTime",""); 
-//                            }
-//                            jo.put("preplanUID",p.getPreplanUID());
-//                            jo.put("preplanDesc",p.getPreplanDesc());
-//                            total+=1;
-//                            array.add(jo);    
-//                        }
-//                        
-//                    }
-//            str="{\"total\":"+total+",\"rows\":"+array.toString()+"}";   
-//
-//        }
-//        else {
-//                            
-//            
-//        }
         //输出资源到页面
         out().print(str);
         out().flush();

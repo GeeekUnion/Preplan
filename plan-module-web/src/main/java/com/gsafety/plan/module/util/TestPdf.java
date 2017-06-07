@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import aspose.pdf.Heading;
+import aspose.pdf.Pdf;
+
 import com.aspose.pdf.Document;
 import com.aspose.pdf.License;
 import com.aspose.pdf.SaveFormat;
@@ -12,7 +15,7 @@ import com.aspose.pdf.SaveFormat;
 /**
  * 
  * 由于ASPOSE比较吃内存，操作大一点的文件就会堆溢出，所以请先设置好java虚拟机参数：-Xms1024m -Xmx1024m(参考值)<br>
- * 如有疑问，请在CSDN下载界面留言,或者联系QQ569925980<br>
+ * 
  * 
  * @author Spark
  *
@@ -20,8 +23,9 @@ import com.aspose.pdf.SaveFormat;
 public class TestPdf {
 
     private static InputStream license;
-    private static InputStream fileInput;
+    //private static InputStream fileInput;
     private static File outputFile;
+    private static Pdf fileInput = new Pdf();
 
     /**
      * 获取license
@@ -31,10 +35,12 @@ public class TestPdf {
     public static boolean getLicense() {
         boolean result = false;
         try {
+        	
+
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             license = new FileInputStream(loader.getResource("license.xml").getPath());// 凭证文件
-            fileInput = new FileInputStream(loader.getResource("test.pdf").getPath());// 待处理的文件
-            outputFile = new File("D:\\test.docx");// 输出路径
+            //fileInput = new FileInputStream(loader.getResource("test.pdf").getPath());// 待处理的文件
+            outputFile = new File("G:\\test.docx");// 输出路径
 
             License aposeLic = new License();
             aposeLic.setLicense(license);
@@ -59,7 +65,7 @@ public class TestPdf {
             long old = System.currentTimeMillis();
             Document pdfDocument = new Document(fileInput);
             OutputStream fileOutput = new FileOutputStream(outputFile);
-
+            
             pdfDocument.save(fileOutput, SaveFormat.DocX);
 
             long now = System.currentTimeMillis();
