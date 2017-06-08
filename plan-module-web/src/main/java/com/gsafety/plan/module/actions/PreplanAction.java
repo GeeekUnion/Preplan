@@ -316,16 +316,34 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	                		String pg=md.getContent().replaceAll(regexstr,"");
  	                		pg=pg.replaceAll(regexh,"");
  	                		pg=pg.replaceAll(regexbr,"");
- 	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);
- 	                		Element body = docParse.body();
- 	                		List<Node> myNodes=body.childNodes();
- 	                		for(Node n:myNodes) {
- 	                		   String nodeName=n.nodeName();//node的名字
- 	                		   String content =body.select(nodeName).first().text();//获取第一个node名字下的内容
- 	                		   System.out.println(nodeName+"："+content); 
- 	                		   pdfUtil.addParagraph(doc,content);
- 	                		    		   	                		    
+ 	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
+ 	                		Element body = docParse.body();//放入body片段 
+ 	                		System.out.println(body.ownText());
+ 	                		Elements allTag=body.children();//获得儿子标签列表 
+ 	                		//如果存在标签，就获标签得内容，不然则直接显示内容
+ 	                		if(allTag.size()>0){
+ 	                			for(Element e: allTag){
+ 	 	 	                		String nodeName=e.nodeName();
+ 	 	 	                		 pdfUtil.addParagraph(doc,e.text()); 	 	 	                			
+ 	 	 	                		}
+ 	                		}else{
+ 	                			 pdfUtil.addParagraph(doc,body.text());
  	                		}
+ 	 	                		
+
+
+// 	                		List<Node> myNodes=body.childNodes();
+// 	                		for(Node n:myNodes) {
+// 	                		   
+// 	                		   String nodeName=n.nodeName();//node的名字 	      
+// 	                		   if(nodeName=="h1"||nodeName=="h2"||nodeName=="h3"||nodeName=="h4"||nodeName=="h5"||nodeName=="h6"||nodeName=="p"){
+// 	                			  String content =body.select(nodeName).first().text();//获取第一个node名字下的内容
+// 	 	                		  System.out.println(nodeName+"："+content); 
+// 	 	                		  pdfUtil.addParagraph(doc,content);
+// 	                		   }
+// 	                		   
+// 	                		            		    
+// 	                		}
  	                		
  	                		
  	                	}
