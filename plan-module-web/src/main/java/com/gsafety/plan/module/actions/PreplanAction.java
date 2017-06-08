@@ -25,6 +25,10 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.interceptor.SessionAware;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
 
 import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.conditions.ConditionBuilder;
@@ -312,13 +316,18 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	                		String pg=md.getContent().replaceAll(regexstr,"");
  	                		pg=pg.replaceAll(regexh,"");
  	                		pg=pg.replaceAll(regexbr,"");
- 	                		Pattern pattern = Pattern.compile("<p>([^</p>]*)");//匹配<>开头，</p>结尾的文档 
- 	                	    Matcher m = pattern.matcher(pg);//开始编译 
- 	                		while (m.find()) {  
- 	                           System.out.println(m.groupCount());  
- 	                           System.out.println(m.group());                    
- 	                		}      
- 	                		pdfUtil.addParagraph(doc,pg);
+ 	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);
+ 	                		Element body = docParse.body();
+ 	                		List<Node> myNodes=body.childNodes();
+ 	                		for(Node n:myNodes) {
+ 	                		   String nodeName=n.nodeName();//node的名字
+ 	                		   String content =body.select(nodeName).first().text();//获取第一个node名字下的内容
+ 	                		   System.out.println(nodeName+"："+content); 
+ 	                		   pdfUtil.addParagraph(doc,content);
+ 	                		    		   	                		    
+ 	                		}
+ 	                		
+ 	                		
  	                	}
  	                	
  	    			}
