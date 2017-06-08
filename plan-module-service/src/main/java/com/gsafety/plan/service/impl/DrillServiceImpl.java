@@ -36,7 +36,7 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 		String str="";
 		JSONArray array = new JSONArray();
 		   
-		    
+		    String hql="";
 		    PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Event.class);
 			@SuppressWarnings("unchecked")
 			List<Drill> List=(List<Drill>) pResult.getList();
