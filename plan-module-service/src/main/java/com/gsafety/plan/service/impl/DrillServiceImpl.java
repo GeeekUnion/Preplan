@@ -35,7 +35,8 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 	public String queryDrill(String orgCode,int pageNumber,int pageSize) {
 		String str="";
 		JSONArray array = new JSONArray();
-		    String hql="";
+		   
+		    
 		    PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Event.class);
 			@SuppressWarnings("unchecked")
 			List<Drill> List=(List<Drill>) pResult.getList();
@@ -44,15 +45,24 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			//没那么简单
 			jo.put("id", d.getId());
 			jo.put("drillSn", d.getDrillSn());
-			jo.put("drillTime", d.getDrillTime());
+			jo.put("drillTime", d.getDrillTime().toString());
 			jo.put("drillContent", d.getDrillContent());
 			jo.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
-			jo.put("drillPreplanName", d.getPreplan());
-			
+			jo.put("drillPreplanName", d.getPreplan().getPreplanName());
 					array.add(jo);
 			}	
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
         System.out.println(str);    
         return str;
 	}
+
+	@Override
+	public JSONObject queryAreaCodeByOrgCode(String orgCode) {
+		 String sql="select ORG_AREA_CODE from fw_t_ems_org where ORG_CODE="+"\'"+orgCode+"\'";
+		 String areaCode=  (String) baseDAO.getUniqueBySql(sql);
+	     JSONObject jo = new JSONObject();
+		 jo.put("areaCode",areaCode);	
+		 return jo;
+	}
+	
 }
