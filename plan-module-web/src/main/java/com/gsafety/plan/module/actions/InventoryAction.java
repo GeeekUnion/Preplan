@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.Namespace;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -17,7 +18,7 @@ import com.gsafety.plan.po.Inventory;
 import com.gsafety.plan.po.Supply;
 import com.gsafety.plan.service.InventoryService;
 
-
+@Namespace("/preplan")
 public class InventoryAction extends ListAction<Inventory> {
 	 @Resource
 	 private  InventoryService inventoryService;
