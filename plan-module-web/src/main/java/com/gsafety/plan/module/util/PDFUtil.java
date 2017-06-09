@@ -73,9 +73,22 @@ public class PDFUtil {
     * */
    public  void addHeading2(Document doc,String pg) throws Exception{
 	   Paragraph paragraph = new Paragraph();  
-	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(14);
+	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(14).setFirstLineIndent(14);
 	   doc.add(paragraph);
    }
+   
+   /**
+    * 添加三级标题
+    * @param
+    * 
+    * */
+   public  void addHeading3(Document doc,String pg) throws Exception{
+	   Paragraph paragraph = new Paragraph();  
+	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(12);
+	   doc.add(paragraph);
+   }
+   
+   
    
    /**
     * 添加段落
@@ -83,7 +96,7 @@ public class PDFUtil {
     * */
    public void addParagraph(Document doc,String pg) throws Exception{
 	   Paragraph paragraph = new Paragraph();  
-	   paragraph.add(pg).setFont(sysFont);
+	   paragraph.add(pg).setFont(sysFont).setFirstLineIndent(20);//中文字体，首行缩进
 	   doc.add(paragraph);
    }
    

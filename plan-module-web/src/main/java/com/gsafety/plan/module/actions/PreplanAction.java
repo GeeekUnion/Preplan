@@ -309,53 +309,48 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	                	pdfUtil.addHeading2(doc,sonJo.getString("title"));//二级标题
  	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
  	                	if(md!=null){
- 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
- 	                		String regexp = "<p.*?/p>";
- 	                		String regexh = "<h.*?/h*>";
- 	                		String regexbr = "<br.*?>";
- 	                		String pg=md.getContent().replaceAll(regexstr,"");
- 	                		pg=pg.replaceAll(regexh,"");
- 	                		pg=pg.replaceAll(regexbr,"");
+// 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
+// 	                		String regexp = "<p.*?/p>";
+// 	                		String regexh = "<h.*?/h*>";
+// 	                		String regexbr = "<br.*?>"; .replaceAll(regexstr,"");
+ 	                		//String regEx = "style=\".*\">";
+ 	                		String pg=md.getContent();
+// 	                		pg=pg.replaceAll(regexh,"");
+// 	                		pg=pg.replaceAll(regexbr,"");
  	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
  	                		Element body = docParse.body();//放入body片段 
- 	                		System.out.println(body.ownText());
+ 	                	
+ 	                		//System.out.println(body.ownText());
  	                		Elements allTag=body.children();//获得儿子标签列表 
  	                		//如果存在标签，就获标签得内容，不然则直接显示内容
+ 	                		System.out.println(allTag.size());
  	                		if(allTag.size()>0){
  	                			for(Element e: allTag){
- 	 	 	                		String nodeName=e.nodeName();
- 	 	 	                		 pdfUtil.addParagraph(doc,e.text()); 	 	 	                			
- 	 	 	                		}
+ 	                				if(e.text().length()>0){//不为空
+ 	                					pdfUtil.addParagraph(doc,e.text()); 
+ 	                				}
+ 	 	 	                	}
  	                		}else{
+ 	                			 System.out.println(body.text());
  	                			 pdfUtil.addParagraph(doc,body.text());
  	                		}
  	 	                		
 
 
-// 	                		List<Node> myNodes=body.childNodes();
-// 	                		for(Node n:myNodes) {
-// 	                		   
-// 	                		   String nodeName=n.nodeName();//node的名字 	      
-// 	                		   if(nodeName=="h1"||nodeName=="h2"||nodeName=="h3"||nodeName=="h4"||nodeName=="h5"||nodeName=="h6"||nodeName=="p"){
-// 	                			  String content =body.select(nodeName).first().text();//获取第一个node名字下的内容
-// 	 	                		  System.out.println(nodeName+"："+content); 
-// 	 	                		  pdfUtil.addParagraph(doc,content);
-// 	                		   }
-// 	                		   
-// 	                		            		    
-// 	                		}
+
  	                		
  	                		
  	                	}
  	                	
  	    			}
  				}
- 	            doc.close();
  	           
  	        }   
 		} catch (Exception e) {
 			 e.printStackTrace();
-			 doc.close();
+			 
+		}finally{
+			doc.close();
 		}	              
         long now = System.currentTimeMillis();
         System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:");

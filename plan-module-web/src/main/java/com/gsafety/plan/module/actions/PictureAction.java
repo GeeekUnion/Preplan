@@ -3,6 +3,7 @@ package com.gsafety.plan.module.actions;
 import java.io.File;
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +17,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Picture;
+import com.gsafety.plan.po.Preplan;
+import com.gsafety.plan.service.PictureServise;
 
 
 
@@ -24,6 +27,10 @@ public class PictureAction extends ListAction<Picture>{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Resource
+	private PictureServise pictureService;
+	
 	private int id;
     private String imgUrl;//图片链接
 
@@ -33,7 +40,12 @@ public class PictureAction extends ListAction<Picture>{
     private String filedataFileName; //文件名 
     private JSONObject jsonObject = new JSONObject();
     private JSONArray jsonArray = new JSONArray();
+    
+    private String preplanSn;//预案sn
 
+    /**
+     * 上传图片
+     * */
     public String uploadImg(){
           //获取response、request对象  
         ActionContext ac = ActionContext.getContext();  
@@ -44,7 +56,7 @@ public class PictureAction extends ListAction<Picture>{
  
         /*这里的路径设置，在我的电脑上传路径是：D:\apache-tomcat-7063\wtpwebapps\plan\WEB-INF\img。
         */
-        String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/WEB-INF/img");  
+        String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/img");  
         System.out.println(saveRealFilePath );//这里是上传的路径
         File fileDir = new File(saveRealFilePath);  
         if (!fileDir.exists()) { //如果不存在 则创建   
@@ -57,11 +69,26 @@ public class PictureAction extends ListAction<Picture>{
             err = "错误"+e.getMessage();  
             e.printStackTrace();  
         }  
-        String fileName = request.getContextPath() + "/img/" + filedataFileName;  
+        String fileName = saveRealFilePath +"\\"+filedataFileName;  
         jsonObject.put("err", err);
         jsonObject.put("msg", fileName);        
          //返回msg信息  
         return "jsonObject"; 
+    }
+    
+    /**
+     * 保存图片路径到数据库
+     * */
+    public void savePirture(){
+    	if(imgUrl!=null && preplanSn!=null){
+    		Preplan p=new Preplan();
+    		p.setPreplanSn(preplanSn);
+    		Picture pic=new Picture();
+    		pic.setImgUrl(imgUrl);
+    		pic.setPreplanSn(p);
+    		pictureService.save(pic);
+    	}
+    	
     }
 
 	public int getId() {
@@ -128,7 +155,15 @@ public class PictureAction extends ListAction<Picture>{
 		this.jsonArray = jsonArray;
 	}
 
+	public String getPreplanSn() {
+		return preplanSn;
+	}
 
+	public void setPreplanSn(String preplanSn) {
+		this.preplanSn = preplanSn;
+	}
+
+	
 
 	
 
