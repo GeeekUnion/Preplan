@@ -39,12 +39,11 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      public String queryDrillPage() throws IOException{
     	 String str="";
     	 String orgCode=session.get("preplanOrgCode").toString();
-    	 JSONObject jo=drillService.queryAreaCodeByOrgCode(orgCode);
-    	 String areaCode=(String) jo.get("areaCode");
-    	 System.out.println(areaCode);
+    	 String areaOrgCode=drillService.queryAreaCodeByOrgCode(orgCode);
+    	 System.out.println(areaOrgCode);
     	 
-    	 if(null != areaCode && areaCode.length()>0) {
-    		str=drillService.queryDrill(areaCode,page, rows); 
+    	 if(null != areaOrgCode && areaOrgCode.length()>0) {
+    		str=drillService.queryDrill(areaOrgCode,page, rows); 
     		out().print(str);
       		out().flush();
       		out().close();
