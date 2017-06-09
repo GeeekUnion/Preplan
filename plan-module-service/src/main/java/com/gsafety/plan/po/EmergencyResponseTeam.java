@@ -18,7 +18,7 @@ public class EmergencyResponseTeam implements Serializable {
 	private String EmergencyResponseTeamSn;
 	private Double longitude; // 经度
 	private Double latitude; // 纬度
-	
+	private String iType;                     //用来在地图中区别于其他点的标记
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
@@ -59,6 +59,14 @@ public class EmergencyResponseTeam implements Serializable {
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+	@Column(name="emergencyResponseTeam_iType")
+	public String getiType() {
+		return iType;
+	}
+
+	public void setiType(String iType) {
+		this.iType = iType;
 	}
 
 }

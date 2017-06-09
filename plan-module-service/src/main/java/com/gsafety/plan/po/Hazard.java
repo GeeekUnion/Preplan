@@ -20,7 +20,7 @@ public class Hazard implements Serializable{
 	private String hazardDescription;
 	private Double longitude;   //经度
     private Double latitude;    //纬度
-    
+    private String iType;                     //用来在地图中区别于其他点的标记
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public int getId() {
@@ -63,6 +63,13 @@ public class Hazard implements Serializable{
 	}
 	public void setLatitude(Double latitude) {
 		latitude = latitude;
+	}
+	@Column(name="hazard_iType")
+	public String getiType() {
+		return iType;
+	}
+	public void setiType(String iType) {
+		this.iType = iType;
 	}
 
     

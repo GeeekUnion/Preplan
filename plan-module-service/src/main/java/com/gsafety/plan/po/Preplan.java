@@ -35,6 +35,7 @@ public class Preplan implements Serializable {
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表	
 	
+	
 	private String reviewOrg;//审核部门
 	
 	private Event eventSn;

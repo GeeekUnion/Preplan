@@ -7,5 +7,5 @@ import com.gsafety.cloudframework.common.base.service.IBaseService;
 
 public interface DrillService extends IBaseService{
 	public String queryDrill(String orgCode,int pageNumber,int pageSize);
-	public JSONObject queryAreaCodeByOrgCode(String orgCode);
+	public String queryAreaCodeByOrgCode(String orgCode);
 }

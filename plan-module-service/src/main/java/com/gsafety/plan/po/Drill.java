@@ -24,6 +24,7 @@ public class Drill implements Serializable{
 	private String drillSn;
 	private Timestamp drillTime;
 	private int drillNumOfParticipants;
+	private String areaOrgCode;               //预案的地图编号，方便对应地区查询
 	//单位怎么弄
 	private String drillContent;
 	private Preplan preplan;
@@ -71,6 +72,13 @@ public class Drill implements Serializable{
 	}
 	public void setPreplan(Preplan preplan) {
 		this.preplan = preplan;
+	}
+	@Column(name="drill_areaOrgCode")
+	public String getAreaOrgCode() {
+		return areaOrgCode;
+	}
+	public void setAreaOrgCode(String areaOrgCode) {
+		this.areaOrgCode = areaOrgCode;
 	}
 	
 	

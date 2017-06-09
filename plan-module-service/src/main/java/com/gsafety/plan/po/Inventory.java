@@ -24,6 +24,7 @@ public class Inventory implements Serializable{
     private Double latitude;    //纬度
     private String inventoryPrincipal;   //负责人
 	private String inventoryPrincipalPhone;  //负责人电话
+	private String iType;                     //用来在地图中区别于其他点的标记
 	
 	private Set<Supply>supply=new HashSet<Supply>();
 	
@@ -94,6 +95,16 @@ public class Inventory implements Serializable{
 	public void setSupply(Set<Supply> supply) {
 		this.supply = supply;
 	}
+	@Column(name="inventory_iType")
+	public String getiType() {
+		return iType;
+	}
+
+	public void setiType(String iType) {
+		this.iType = iType;
+	}
+    
+	
 	
 	
  }
