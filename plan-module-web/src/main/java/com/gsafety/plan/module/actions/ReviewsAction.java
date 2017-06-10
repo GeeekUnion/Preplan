@@ -60,7 +60,21 @@ public class ReviewsAction extends ListAction<Reviews>{
 		 return "jsonObject";
 	 } 
 	 
-	 
+     /**
+      * TODO(根据预案Sn查看review)
+      * @param planSn
+      * @return jsonArray review的属性jsonArray
+      * */
+	 public String getReviewByPlanSn(){
+		 jsonObject.put("reviewOpinion","");//防止为空
+		 if(preplanSn!=null){
+			 Reviews r= reviewsService.getUniqueByPreplanSn(preplanSn);
+			 if(r!=null){
+				 jsonObject.put("reviewOpinion", r.getOpinion());
+			 }
+		 }
+		 return "jsonObject";
+	 }
 	 
 	public int getId() {
 		return id;

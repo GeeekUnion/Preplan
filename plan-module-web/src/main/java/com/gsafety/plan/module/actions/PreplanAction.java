@@ -94,6 +94,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String misnDept;//任务部门
     private String misnOrder;//序号
     
+    private String preplanSpecialist;//预案专家组
+    
+    
 
 
     private int page;
@@ -195,6 +198,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         ppModel.setReviewOrg(ppDept);//审核部门
         ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
         ppModel.setPreplanUID(ppUid);
+        ppModel.setPreplanSpecialist(preplanSpecialist);
         try{                  
             //放入预案分类SN(domain_sn)
             Domain dmModel =new Domain();
@@ -253,6 +257,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                jo.put("preplanDomainName",preplanDomainName); 
                jo.put("preplanOrgId", p.getResponDept());
                jo.put("preplanReviewOrg",p.getReviewOrg());  
+               jo.put("preplanSpecialist", p.getPreplanSpecialist());
                myJsonArray.add(jo);
            }
         }
@@ -942,6 +947,16 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setMyJsonObject(JSONObject myJsonObject) {
 		this.myJsonObject = myJsonObject;
+	}
+
+	
+	public String getPreplanSpecialist() {
+		return preplanSpecialist;
+	}
+
+
+	public void setPreplanSpecialist(String preplanSpecialist) {
+		this.preplanSpecialist = preplanSpecialist;
 	}
 
 

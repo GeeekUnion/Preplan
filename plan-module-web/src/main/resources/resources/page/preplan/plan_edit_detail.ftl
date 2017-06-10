@@ -51,6 +51,14 @@
                                 <span>预案详情</span>
                             </li>
                         </ul>
+                        
+                       <div class="page-toolbar">
+                            <div class="btn-group pull-right">
+                                <a role="button" class="btn red btn-sm btn-outline " data-toggle="modal" href="#largeReview"> 
+                                	查看意见
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <!-- END PAGE BAR -->    
                     <!-- BEGIN PAGE TITLE-->
@@ -65,6 +73,26 @@
             <!-- END CONTENT -->
         </div>
         <!-- END CONTAINER -->
+        
+        <!-- .modal -->
+        <div class="modal fade bs-modal-lg" id="largeReview" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">审核意见</h4>
+                    </div>
+                    <div class="modal-body" id="reviewContent"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn red btn-outline" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        
 		<#include "/decorators/plan_footer.ftl"> 
         <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
@@ -83,7 +111,27 @@
        	<!-- BEGIN PAGE LEVEL PLUGINS -->
         <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
-
+		<script type="text/javascript"> 
+			$(function(){
+				var preplanSn=$('#detailPlanSn').val();
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_review_getReviewByPlanSn.action",
+					dataType : "json",
+					data : {
+						preplanSn:preplanSn
+					},
+					success : function(data) {									
+						$('#reviewContent').html(data.reviewOpinion)	
+						
+					},
+					error: function(){
+							
+					}
+				});
+				 
+			})
+		</script>
     </body>
 
 </html>
