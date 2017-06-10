@@ -96,7 +96,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     private String preplanSpecialist;//预案专家组
     
-    
+    private String pageMsgType;//决定是
 
 
     private int page;
@@ -304,7 +304,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	            Preplan p= preplanService.getByPpSn(ppSn);
  	            p.getPreplanName(); 	             	            
  	            pdfUtil.addTitle(doc, p.getPreplanName());//放置标题
- 	            JSONArray jay=pageMsgService.getOrderPageMsg("1");
+ 	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
  	            for (int i = 0; i < jay.size(); i++) {
  	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
  	            	pdfUtil.addHeading1(doc,jo.getString("order")+jo.getString("title"));//一级标题
@@ -957,6 +957,17 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setPreplanSpecialist(String preplanSpecialist) {
 		this.preplanSpecialist = preplanSpecialist;
+	}
+
+	
+	
+	public String getPageMsgType() {
+		return pageMsgType;
+	}
+
+
+	public void setPageMsgType(String pageMsgType) {
+		this.pageMsgType = pageMsgType;
 	}
 
 

@@ -51,20 +51,33 @@
                                 <span>预案详情</span>
                             </li>
                         </ul>
-                        
-                       <div class="page-toolbar">
-                            <div class="btn-group pull-right">
-                                <a role="button" class="btn red btn-sm btn-outline " data-toggle="modal" href="#largeReview"> 
-                                	查看意见
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <!-- END PAGE BAR -->    
                     <!-- BEGIN PAGE TITLE-->
                     <h3 class="page-title"> 预案详情
                     </h3>
                     <!-- END PAGE TITLE-->
+                    <div class="portlet light bordered" style="margin-bottom:0px">
+                        <div class="portlet-title" style="margin-bottom:0px;border-bottom:0px solid #ffffff">
+                            <div class="caption">
+                                <span class="caption-subject font-dark bold uppercase">预案基本信息</span>                               
+                            </div>
+                           <div class="actions">
+                                <a role="button" class="btn blue-hoki btn-outline sbold uppercase "  href="javascript:;" onclick="printPlanOne(1)"> 
+                                	打印全案
+                                </a>                          		
+                           		
+                           		<a role="button" class="btn green-haze btn-outline sbold uppercase"  href="javascript:;" onclick="printPlanTwo(2)"> 
+                                	打印简案
+                                </a>
+                           		
+                                <a role="button" class="btn red btn-sm btn-outline " data-toggle="modal" href="#largeReview"> 
+                                	查看意见
+                                </a>
+                            </div>
+                        </div>
+                        
+                    </div>                    
                     <!-- END PAGE HEADER-->
 					<#include "/decorators/plan_detail.ftl">                   
                 </div>
@@ -131,6 +144,45 @@
 				});
 				 
 			})
+		
+		//打印全案	
+		function printPlanOne(pageMsgType){
+			printPlan(pageMsgType)
+		}	
+		
+		//打印简案
+		function printPlanTwo(pageMsgType){
+			printPlan(pageMsgType)
+		}
+			
+		//打印预案		
+		function printPlan(pageMsgType){
+			swal({title: '', text:'打印中，请稍后...<i class="fa fa-spinner fa-spin fa-fw"></i>',showConfirmButton: false, html: true   });
+			var preplanSn=$('#detailPlanSn').val();
+	  		$.ajax({
+				type : "POST",
+				url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_uploadPlanPdf.action",
+				dataType : "json",
+				data : {
+					ppSn:preplanSn,
+					pageMsgType:pageMsgType
+				},
+				success : function(data) {									
+					swal({title: "打印成功!",type: "success",confirmButtonText: "确认"});   	
+					
+				},
+				error: function(){
+					swal({
+						title: "打印失败!",
+						text: '未知错误，请重试',
+						type: "error",
+						confirmButtonText: "确认"  
+					});							
+				}
+			});
+	  }
+			
+			
 		</script>
     </body>
 
