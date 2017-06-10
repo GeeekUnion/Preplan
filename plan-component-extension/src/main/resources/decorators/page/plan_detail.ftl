@@ -64,7 +64,7 @@
 		       	<div class="tab-pane" id="simplePlanDetailPageMsg">
 		        </div>
 		        <div class="tab-pane" id="flowChartDetailPageMsg">
-		            <p> Howdy, I'm in Section 3. </p>
+		            
 		        </div>
 			</div>
 		</div>
@@ -135,6 +135,9 @@
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
 				}
 			});
+			
+			//获取流程图
+			setflowChartLayoutContent($('#detailPlanSn').val());
 									
 	  });
 	 //****************全案Begin**************************************************
@@ -268,6 +271,35 @@
 	  
 	  }
 	  //****************简单预案End**************************************************
+	  
+	  
+	  //****************流程图Begin**************************************************
+	  function setflowChartLayoutContent(planSn){
+				$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_picture_getPicByPlanSn.action",
+						dataType : "json",
+						data : {
+							preplanSn:planSn,
+						
+						},
+						success : function(data) {
+
+							if(data.length>0){
+								var htmlMsg= '<img src="'+data[0].imgUrl+'" class="img-responsive">';
+								$('#flowChartDetailPageMsg').html(htmlMsg);  
+							}
+							
+							    
+						},
+						error: function(){
+							
+						}
+						
+					});	
+			 		
+	  }
+	  //****************流程图End**************************************************
 	  
 	  //锚点
 	  function changePage(order){	
