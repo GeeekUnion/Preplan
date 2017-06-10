@@ -2,6 +2,7 @@ package com.gsafety.plan.po;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,9 @@ public class Picture implements Serializable{
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
-	@OneToOne(targetEntity=Preplan.class,mappedBy="picture")
+	
+	@OneToOne(targetEntity=Preplan.class,cascade=CascadeType.MERGE)
+	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn",unique=true)
 	public Preplan getPreplanSn() {
 		return preplanSn;
 	}

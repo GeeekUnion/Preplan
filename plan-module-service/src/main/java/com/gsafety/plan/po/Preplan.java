@@ -173,14 +173,6 @@ public class Preplan implements Serializable {
 	public void setEventSn(Event eventSn) {
 		this.eventSn = eventSn;
 	}
-	@OneToOne(targetEntity=Picture.class,cascade=CascadeType.MERGE)
-	@JoinColumn(name="pic_id",referencedColumnName="id",unique=true)
-	public Picture getPicture() {
-		return picture;
-	}
-	public void setPicture(Picture picture) {
-		this.picture = picture;
-	}
 	@Column(name="preplan_specialist",length=1000)
 	public String getPreplanSpecialist() {
 		return preplanSpecialist;
