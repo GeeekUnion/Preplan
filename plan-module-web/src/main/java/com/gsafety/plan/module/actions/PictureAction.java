@@ -79,18 +79,47 @@ public class PictureAction extends ListAction<Picture>{
     /**
      * 保存图片路径到数据库
      * */
-    public void savePirture(){
+    public String savePirture(){
+    	jsonObject.put("status", "error");
     	if(imgUrl!=null && preplanSn!=null){
     		Preplan p=new Preplan();
     		p.setPreplanSn(preplanSn);
-    		Picture pic=new Picture();
-    		pic.setImgUrl(imgUrl);
-    		pic.setPreplanSn(p);
-    		pictureService.save(pic);
-    	}
+    		Picture oldPic=pictureService.getPicByPlanSn(p);    
+    		//如果新增
+    		if(null!=oldPic){
+    			oldPic.setImgUrl(imgUrl);  
+    			pictureService.update(oldPic);    			
+    		}else{
+    			Picture pic=new Picture();
+        		pic.setImgUrl(imgUrl);
+        		pic.setPreplanSn(p);
+        		pictureService.save(pic);
+    		}
+    		
+    		jsonObject.put("status", "ok");
+    	}    	
+    	return "jsonObject";
     	
     }
 
+    /**
+     * 保存图片路径到数据库
+     * */
+    public String getPicByPlanSn(){
+    	if( preplanSn!=null){
+    		Preplan p=new Preplan();
+    		p.setPreplanSn(preplanSn);
+    		Picture pic=pictureService.getPicByPlanSn(p); 
+    		if(null != pic){
+    			jsonObject.put("imgUrl", pic.getImgUrl());
+        		jsonArray.add(jsonObject);
+    		}
+    		
+    	}    	
+    	return "jsonArray";
+    	
+    }
+    
 	public int getId() {
 		return id;
 	}
