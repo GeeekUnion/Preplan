@@ -33,8 +33,8 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
             JSONObject jo=new JSONObject();
             jo.put("id", pm.getId());
             jo.put("order", pm.getOrder());
-            jo.put("text", pm.getTitle());//title
-            jo.put("textDesc", pm.getTitleDesc());//titleDesc
+            jo.put("text", pm.getTitleNum()+" "+pm.getTitle());//title
+            jo.put("textDesc",pm.getTitleDesc());//titleDesc
             
             
             int parentId=pm.getSupId();
@@ -67,10 +67,12 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
             PageMsg supPm=baseDAO.getUniqueByCnds(cnds2); 
             jo.put("supOrder",supPm.getOrder());//父顺序
             jo.put("supTitle",supPm.getTitle());//父标题
+            jo.put("supModuleTitleNum",supPm.getTitleNum());//父标题号
             jo.put("supTitleDesc", supPm.getTitleDesc());//父标题描述
         }
         jo.put("moduleOrder",pm.getOrder());
         jo.put("moduleTitle",pm.getTitle());//子标题
+        jo.put("moduleTitleNum", pm.getTitleNum());//子标题号
         jo.put("isRequireCheck", pm.isRequireCheck());//需求
         jo.put("requireContent", pm.getRequireContent());
         jo.put("isExampleCheck", pm.isExampleCheck());//例子
@@ -99,6 +101,7 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
         	jo.put("order", pm.getOrder());
         	jo.put("title", pm.getTitle());
         	jo.put("titleDesc",pm.getTitleDesc());  
+        	jo.put("titleNum", pm.getTitleNum());//标题号
         	jo.put("son",sonJsonArray); 
         	jsonArray.add(jo);
         	
@@ -122,6 +125,7 @@ public class PageMsgServiceImpl extends BaseServiceImpl implements PageMsgServic
         	jo.put("order", pMsg.getOrder());
         	jo.put("title", pMsg.getTitle());
         	jo.put("titleDesc",pMsg.getTitleDesc());  
+        	jo.put("titleNum", pMsg.getTitleNum());//标题号
         	jsonArray.add(jo);
         }
 		return jsonArray;

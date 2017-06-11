@@ -19,7 +19,8 @@ import org.hibernate.annotations.Type;
 public class PageMsg {
     private int id;//唯一标识
     private String title;//标题
-    private String titleDesc;//标题
+    private String titleNum;//标题号
+    private String titleDesc;//标题描述
     private boolean supTitleCheck;//是否父标题
     private int supId;//父ID
     private String order;//显示顺序
@@ -121,6 +122,13 @@ public class PageMsg {
 	public void setType(String type) {
 		this.type = type;
 	}
+	@Column(name="title_num",length=5)
+    public String getTitleNum() {
+        return titleNum;
+    }
+    public void setTitleNum(String titleNum) {
+        this.titleNum = titleNum;
+    }
 
     
 	

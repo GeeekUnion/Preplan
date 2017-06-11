@@ -36,7 +36,7 @@ public class Picture implements Serializable{
 		this.imgUrl = imgUrl;
 	}
 	
-	@OneToOne(targetEntity=Preplan.class,cascade=CascadeType.MERGE)
+	@OneToOne(targetEntity=Preplan.class,cascade=CascadeType.ALL)
 	@JoinColumn(name="preplan_sn",referencedColumnName="preplan_sn",unique=true)
 	public Preplan getPreplanSn() {
 		return preplanSn;
