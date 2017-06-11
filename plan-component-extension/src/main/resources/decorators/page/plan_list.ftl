@@ -6,9 +6,6 @@
         <div class="actions">
             <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_base_msg.action" class="btn dark btn-outline sbold uppercase">
                 <i class="fa fa-plus"></i> 新增预案 </a>
-            <a href="javascript:;" class="btn dark btn-outline sbold uppercase">
-                <i class="fa fa-print"></i> 打印 </a>
-
         </div>
     </div>
     

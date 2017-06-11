@@ -150,7 +150,7 @@
 	  		var oldDataObject= oldData[i];
 	  		var oldDataObjectSonL=oldDataObject.son.length;
 	  		var oldDataObjectOrder=oldDataObject.order;
-	  		var showOrder=oldDataObjectOrder.charAt(oldDataObjectOrder.length - 1);
+	  		var showOrder=oldDataObject.titleNum;
 	  		if(oldDataObjectOrder!=="01"){
 	  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObjectOrder+'">'
 					+	    '<div class="portlet-title">'
@@ -162,17 +162,18 @@
 					+	    '</div>'
 					+	    '<div class="portlet-body" id="planDetailContent'+oldDataObject.order+'">';
 					
-					if(oldDataObjectSonL>0){
+					if(oldDataObjectSonL>0){						
 						for(var j=0;j<oldDataObjectSonL;j++){
-							htmlMsg=htmlMsg+'<div class="portlet" id="planDetailHead'+oldDataObject.son[j].order+'">'
+							var oldDataObjectSon=oldDataObject.son[j];
+							htmlMsg=htmlMsg+'<div class="portlet" id="planDetailHead'+oldDataObjectSon.order+'">'
 								+			    '<div class="portlet-title">'
-								+			        '<div class="caption" id="planSonDetailTitle'+oldDataObject.son[j].order+'"><h4>'
-								+			            oldDataObject.son[j].title+'</h4></div>'
+								+			        '<div class="caption" id="planSonDetailTitle'+oldDataObjectSon.order+'"><h4>'
+								+			            +oldDataObjectSon.titleNum+'. '+oldDataObjectSon.title+'</h4></div>'
 								+			        '<div class="tools">'
 								+			            '<a href="javascript:;" class="collapse"> </a>'
 								+			        '</div>'
 								+			    '</div>'
-								+			    '<div class="portlet-body" id="planSonDetailContent'+oldDataObject.son[j].order+'">'		
+								+			    '<div class="portlet-body" id="planSonDetailContent'+oldDataObjectSon.order+'">'		
 								+			    '</div>'
 								+			'</div>'
 						}
