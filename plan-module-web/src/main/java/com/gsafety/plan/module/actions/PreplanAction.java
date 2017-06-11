@@ -39,6 +39,7 @@ import com.gsafety.plan.po.Domain;
 import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Module;
 import com.gsafety.plan.po.Person;
+import com.gsafety.plan.po.Picture;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.Privilege;
 import com.gsafety.plan.po.ResourceRecord;
@@ -49,6 +50,7 @@ import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.ModuleService;
 import com.gsafety.plan.service.PageMsgService;
 import com.gsafety.plan.service.PersonService;
+import com.gsafety.plan.service.PictureServise;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
 import com.gsafety.plan.service.ResourceRecordService;
@@ -77,6 +79,10 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     @Resource
     private PageMsgService pageMsgService;
+    
+    
+    @Resource
+    private PictureServise pictureService;
     
     private String code;//传id
     private String ppSn;//值
@@ -307,11 +313,11 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
  	            for (int i = 0; i < jay.size(); i++) {
  	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
- 	            	pdfUtil.addHeading1(doc,jo.getString("order")+jo.getString("title"));//一级标题
+ 	            	pdfUtil.addHeading1(doc,jo.getString("titleNum")+" "+jo.getString("title"));//一级标题
  	            	JSONArray sonJay=jo.getJSONArray("son");
  	                for (int j = 0; j < sonJay.size(); j++) {
  	                	JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
- 	                	pdfUtil.addHeading2(doc,sonJo.getString("title"));//二级标题
+ 	                	pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
  	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
  	                	if(md!=null){
 // 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
@@ -617,27 +623,11 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         System.out.println(code);
         Preplan ppModel=preplanService.get(Preplan.class,Integer.parseInt(code));
         if(ppModel.getPreplanSn() != null) {
-            //根据预案Sn查询任务列表
-            List<Mission> misnList= missionService.getListByPpsn(ppModel); 
-            if(misnList.size()>0) {
-                try{
-                    for(Mission m:misnList)
-                    {
-                        System.out.println(m);  
-                                                                  
-                        List<ResourceRecord> srcList =rrService.getListByPpsn(m);
-                        for(ResourceRecord rr:srcList) {
-                            System.out.println(rr);
-                            rrService.delete(rr); 
-                            
-                        } 
-                        missionService.delete(m);
-                    }
-                    
-                }catch(Exception e) {
-                    
-                }
+            //根据预案Sn查询任务流程图
+            Picture pic=pictureService.getPicByPlanSn(ppModel);
+            if(null!=pic) {
                 
+                pictureService.delete(pic);   
   
             }
             if(ppModel.getDomain() != null) {

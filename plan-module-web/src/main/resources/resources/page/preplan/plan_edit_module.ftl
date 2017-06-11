@@ -165,10 +165,10 @@
 					},
 					success : function(data) {	
 
-						$('#supOrder').html(data.supOrder)
-						$('#supTitle').html(data.supTitle)
-						$('#supTitleDesc').html(data.supTitleDesc)
-						$('#subTitle').html(data.moduleTitle)
+						$('#supOrder').html(data.supModuleTitleNum);
+						$('#supTitle').html(data.supTitle);
+						$('#supTitleDesc').html(data.supTitleDesc);
+						$('#subTitle').html(data.moduleTitleNum+' '+data.moduleTitle)
 
 						if(data.isRequireCheck==true){
 							$('#editRequireP').html(data.requireContent)

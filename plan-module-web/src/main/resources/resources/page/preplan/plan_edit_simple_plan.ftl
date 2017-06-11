@@ -147,7 +147,7 @@
 						var showOrder=data.moduleOrder;						
 						$('#subTitle').html(showOrder.charAt(showOrder.length - 1)+'. '+data.moduleTitle)
 						//是否显示已完成
-						if(moduleOrder=="1003"){
+						if(moduleOrder=="1004"){
 							$('#submitModuleOver').text("完成编制");
 						}else{
 							
@@ -219,7 +219,7 @@
                         		swal({title: "保存成功!",type: "success",confirmButtonText: "确认"});
 							}else{
 								//判断是否为末尾
-								if(order=="1004"){
+								if(order=="1005"){
 									//触发完成编制事件
 									overPlan(planSn);			
 								}else{
@@ -271,12 +271,12 @@
         	function overPlan(planSn){     		        		
            	 	swal({       
 					title:"",
-					text: '完成编制,2秒后跳转回首页...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action" style="color:#F8BB86">请点击此处跳转</a>',          
+					text: '完成编制,2秒后跳转回编制列表...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
 					showConfirmButton: false,
 					html: true   
 				}); 
 	    		setTimeout(function(){
-                   location.href ="/plan/preplan/plan_index.action"; 
+                   location.href ="/plan/preplan/plan_edit_do.action"; 
                 },2000)       
 
         	}	  

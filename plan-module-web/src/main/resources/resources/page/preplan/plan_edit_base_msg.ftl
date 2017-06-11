@@ -44,13 +44,17 @@
                                 <i class="fa fa-circle"></i>
                             </li>
                             <li>
-                                <span>预案编制</span>
+                            	<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action">预案编制</a>
+                                <i class="fa fa-circle"></i>
+                            </li>
+                            <li>
+                                <span>预案基本信息填写</span>
                             </li>
                         </ul>
                     </div>
                     <!-- END PAGE BAR -->    
                     <!-- BEGIN PAGE TITLE-->
-                    <h3 class="page-title"> 预案编制
+                    <h3 class="page-title"> 预案基本信息填写
                     </h3>
                     <!-- END PAGE TITLE-->
                     <!-- END PAGE HEADER-->
@@ -62,8 +66,8 @@
                                     <div class="mt-element-step">
                                         <div class="row step-thin">
                                             <div class="col-md-4 col-sm-6 col-xs-12 bg-grey mt-step-col active">
-                                                <div class="mt-step-number bg-white font-grey">1</div>
-                                                <div class="mt-step-title uppercase font-grey-cascade">预案基本信息填写</div>
+                                            	<div class="mt-step-number bg-white font-grey">#</div>
+                                                <div class="mt-step-title uppercase font-grey-cascade">预案基本信息</div>
                                                 <div class="mt-step-content font-grey-cascade">（这里填写预案的基本信息）</div>
                                             </div>
                                             <div class="col-md-8 col-sm-6 col-xs-12">
@@ -167,7 +171,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-9">
                                                 	<button id="sava_base_msg_btn" type="submit" class="btn blue">保存</button>                                            
-                                                    <button type="submit" class="btn green">下一步</button>
+                                                    <button type="submit" class="btn green">保存并编制全案</button>
                                                     <input type="hidden" id="sava_base_msg_ipt" value="0"/>
                                                 </div>
                                             </div>

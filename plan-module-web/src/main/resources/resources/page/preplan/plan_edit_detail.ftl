@@ -64,15 +64,15 @@
                             </div>
                            <div class="actions">
                                 <a role="button" class="btn blue-hoki btn-outline sbold uppercase "  href="javascript:;" onclick="printPlanOne(1)"> 
-                                	打印全案
+                                	<i class="fa fa-print"></i>打印全案
                                 </a>                          		
                            		
                            		<a role="button" class="btn green-haze btn-outline sbold uppercase"  href="javascript:;" onclick="printPlanTwo(2)"> 
-                                	打印简案
+                                	<i class="fa fa-print"></i>打印简案
                                 </a>
                            		
                                 <a role="button" class="btn red btn-sm btn-outline " data-toggle="modal" href="#largeReview"> 
-                                	查看意见
+                                	<i class="fa fa-sticky-note-o"></i>查看意见
                                 </a>
                             </div>
                         </div>
