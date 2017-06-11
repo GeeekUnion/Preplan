@@ -68,7 +68,7 @@
 							<textarea name="editor1" style="width:100%;min-height: 400px;" id="xheditor"></textarea>    	                        
 				            <hr/>
 				            <center>
-		                        <a role="button" href="javascript:;" onclick="submitOpinion(0)" class="btn blue"><i class="fa fa-check"></i> 确认上传 </a>                                                  	
+		                        <a role="button" href="javascript:;" onclick="submitPicture()" class="btn blue"><i class="fa fa-check"></i> 确认上传 </a>                                                  	
 		                    </center>
 			            </div>
 			        </div>  
@@ -78,6 +78,9 @@
             </div>
             <!-- END CONTENT -->
         </div>
+        <input id="imgUrlInput" type="hidden" value="">
+        <input id="planSn" type="hidden" value="${planSn}"> 
+        
         <!-- END CONTAINER -->
 		<#include "/decorators/plan_footer.ftl"> 
         <!--[if lt IE 9]>
@@ -108,45 +111,60 @@
        				onUpload : uploadImg,   
        				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
        				upImgExt:"jpg,jpeg,gif,png"
-       			});	
-       			function uploadImg(data) {  
-		            //...回调函数  
-		        } 
+       			});	       			
        			
        		})
        	
-       		function submitOpinion(pd){
-       			var xhedit=$('#xheditor').xheditor();
-       			var opContent=xhedit.getSource();
-       			var msg="";
-       			if(pd==0){
-       				msg="通过";
-       			}else{
-       				msg="未通过";
-       			}
-       			if(null===opContent || opContent===""){
-       				swal({    
-	       					title: "内容为空！",    
-	       					text: "确定提交？",    
-	       					type: "warning",   
-	       					showCancelButton: true,    
-	       					confirmButtonColor: "#DD6B55",   
-	       					confirmButtonText: "确定",    
-	       					cancelButtonText: "取消",   
-	       					closeOnConfirm: false,    
-	       					closeOnCancel: false	 
-       					}, 
-       					function(isConfirm){    
-   							if (isConfirm) {      
-   								swal.close();//确认	
-   								overReview(msg,opContent)
-   							} else {      
-   								swal.close();		  
-   							}  
-       					});
-       			}else{
-       				overReview(msg,opContent)
-       			}
+   		    function uploadImg(msg) { 
+   		    	var imgUrl= msg.toString();//获得路径
+   		    	$('#imgUrlInput').val(imgUrl);
+	        } 
+       		
+       		//保存图片
+       		function submitPicture(){
+       			var imgUrl=$('#imgUrlInput').val();	
+       			var planSn=$('#planSn').val();
+				if(typeof(imgUrl)!="undefined" || imgUrl.length>0){
+						$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_picture_savePirture.action",
+						dataType : "json",
+						data : {
+							preplanSn:planSn,
+							imgUrl:imgUrl
+						
+						},
+						success : function(data) {
+			                swal({       
+								title:"",
+								text: '上传成功,2秒后跳转回预案列表...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+								showConfirmButton: false,
+								html: true   
+								} 
+				    		); 
+				    		setTimeout(function(){
+		                       location.href ="/plan/preplan/plan_edit_do.action"; 
+		                    },2000)       
+						},
+						error: function(){
+							swal({
+								title: "上传失败!",
+								text: '未知错误，请刷新页面重试',
+								type: "error",
+								confirmButtonText: "确认"  
+							});								
+						}
+						
+					});	
+				}else{
+					swal({
+						title: "上传失败!",
+						text: '未知错误，请刷新页面重试',
+						type: "error",
+						confirmButtonText: "确认"  
+					});
+				}
+       			
 
        		}
        	
@@ -167,7 +185,7 @@
 						console.log(data.status)
 		                swal({       
 							title:"",
-							text: '完成编制,2秒后跳转回预案审核...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+							text: '完成编制,2秒后跳转回预案列表...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
 							showConfirmButton: false,
 							html: true   
 							} 

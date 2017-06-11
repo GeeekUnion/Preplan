@@ -150,7 +150,18 @@
                                                         </select>
                                                     </div>    
                                                 </div>
-                                            </div>                                               
+                                            </div> 
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">专家组
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <textarea class="form-control"  rows="4" name="preplanSpecialist" id="preplanSpecialist"></textarea>
+                                                        <span class="help-block"> 专家组填写，可以为空。</span>
+                                                    </div>    
+                                                </div>
+                                            </div>                                              
                                         </div>
                                         <div class="form-actions">
                                             <div class="row">
@@ -207,7 +218,8 @@
 	                        required: true
 	                    },
 	                    preplanName: {
-	                        required: true
+	                        required: true,
+	                        minlength:5
 	                    },
 	                    domain: {
 	                        required: true
@@ -255,16 +267,19 @@
 	                var ppType=$('#domain_list').val();
 	                var ppDept=$('#review_list').val();
 	                var ppSn=$('#planSn').val();
+	                var preplanSpecialist=$('#preplanSpecialist').val();
 	                  $.ajax({  
 		                    type: 'post',  
 		                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
 		                    data:{
+		                    	preplanSpecialist:preplanSpecialist,
 		                    	ppName : ppName,
 								ppDesc : ppDesc,
 								ppType : ppType,
 								ppDept : ppDept,
 								ppUid  : ppUid,
 								ppSn   : ppSn
+								
 	                        },
 		                    success:function(data){
 		                     	if(data=="\"error\""){
@@ -315,6 +330,7 @@
 							$('#preplanSn').val(data[0].preplanUID);//预案编号	
 							$('#preplanName').val(data[0].preplanName);//预案名字
 							$('#preplanDesc').val(data[0].preplanDesc);//预案描述
+							$('#preplanSpecialist').val(data[0].preplanSpecialist);
 							preplanDomainId=data[0].preplanDomain;
 							preplanReviewOrg=data[0].preplanReviewOrg;
 						} 
@@ -343,7 +359,7 @@
 								//$("#planListBody").fadeIn('show');
 							},
 							error: function(){
-								sweetAlert("加载失败", "未知错误，请重试!", "error");									
+													
 							}
 						});
 						//查询审核部门
@@ -368,13 +384,13 @@
 			                        
 							},
 							error: function(){
-								sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+																	
 							}
 						});	    
 						                 
 					},
 					error: function(){
-						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+													
 					}
 				});	
 	

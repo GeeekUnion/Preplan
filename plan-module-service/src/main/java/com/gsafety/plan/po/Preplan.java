@@ -33,7 +33,8 @@ public class Preplan implements Serializable {
 	private Timestamp preplanTime;            //预案启动时间
 	private String preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
-	private String responPerson;              //负责人，暂无对应表	
+	private String responPerson;              //负责人，暂无对应表		
+	private String preplanSpecialist;    //专家组
 	
 	
 	private String reviewOrg;//审核部门
@@ -150,7 +151,7 @@ public class Preplan implements Serializable {
     public void setModule(Set<Module> module) {
         this.module = module;
     }	
-	@Column(name="preplan_desc")
+	@Column(name="preplan_desc",length=1000)
 	public String getPreplanDesc() {
 		return preplanDesc;
 	}
@@ -172,13 +173,12 @@ public class Preplan implements Serializable {
 	public void setEventSn(Event eventSn) {
 		this.eventSn = eventSn;
 	}
-	@OneToOne(targetEntity=Picture.class,cascade=CascadeType.MERGE)
-	@JoinColumn(name="pic_id",referencedColumnName="id",unique=true)
-	public Picture getPicture() {
-		return picture;
+	@Column(name="preplan_specialist",length=1000)
+	public String getPreplanSpecialist() {
+		return preplanSpecialist;
 	}
-	public void setPicture(Picture picture) {
-		this.picture = picture;
+	public void setPreplanSpecialist(String preplanSpecialist) {
+		this.preplanSpecialist = preplanSpecialist;
 	}
 	
 	

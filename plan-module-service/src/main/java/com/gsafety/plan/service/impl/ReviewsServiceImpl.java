@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+
 import org.hibernate.LobHelper;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.gsafety.cloudframework.common.base.conditions.Cnds;
 import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.SqlParams;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
+import com.gsafety.plan.po.Mission;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.Reviews;
 import com.gsafety.plan.service.ReviewsService;
@@ -27,6 +30,8 @@ public class ReviewsServiceImpl extends BaseServiceImpl implements ReviewsServic
         String hql=" from Reviews r where r.preplanSn=:preplanSn";
 		return baseDAO.getUniqueByHql(hql, hashMap, Reviews.class);
 	}
+
+
 
 	
 }

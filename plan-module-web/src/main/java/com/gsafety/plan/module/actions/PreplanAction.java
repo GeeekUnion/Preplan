@@ -94,6 +94,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String misnDept;//任务部门
     private String misnOrder;//序号
     
+    private String preplanSpecialist;//预案专家组
+    
+    private String pageMsgType;//决定是
 
 
     private int page;
@@ -195,6 +198,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         ppModel.setReviewOrg(ppDept);//审核部门
         ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
         ppModel.setPreplanUID(ppUid);
+        ppModel.setPreplanSpecialist(preplanSpecialist);
         try{                  
             //放入预案分类SN(domain_sn)
             Domain dmModel =new Domain();
@@ -253,6 +257,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                jo.put("preplanDomainName",preplanDomainName); 
                jo.put("preplanOrgId", p.getResponDept());
                jo.put("preplanReviewOrg",p.getReviewOrg());  
+               jo.put("preplanSpecialist", p.getPreplanSpecialist());
                myJsonArray.add(jo);
            }
         }
@@ -299,7 +304,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
  	            Preplan p= preplanService.getByPpSn(ppSn);
  	            p.getPreplanName(); 	             	            
  	            pdfUtil.addTitle(doc, p.getPreplanName());//放置标题
- 	            JSONArray jay=pageMsgService.getOrderPageMsg("1");
+ 	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
  	            for (int i = 0; i < jay.size(); i++) {
  	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
  	            	pdfUtil.addHeading1(doc,jo.getString("order")+jo.getString("title"));//一级标题
@@ -942,6 +947,27 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setMyJsonObject(JSONObject myJsonObject) {
 		this.myJsonObject = myJsonObject;
+	}
+
+	
+	public String getPreplanSpecialist() {
+		return preplanSpecialist;
+	}
+
+
+	public void setPreplanSpecialist(String preplanSpecialist) {
+		this.preplanSpecialist = preplanSpecialist;
+	}
+
+	
+	
+	public String getPageMsgType() {
+		return pageMsgType;
+	}
+
+
+	public void setPageMsgType(String pageMsgType) {
+		this.pageMsgType = pageMsgType;
 	}
 
 

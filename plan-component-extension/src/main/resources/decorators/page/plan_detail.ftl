@@ -2,7 +2,7 @@
 <input id="detailPlanSn" type="hidden" value="${planSn}"> 
  <!-- BEGIN THEME PANEL -->
 <div class="portlet light bordered" id="blockui_sample_1_portlet_body">
-	<div class="portlet-title">
+	<div class="portlet-title" id="planDetailHead01">
 		<div class="row">
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<p><strong>预案名字：</strong><span id="preplanNameSpan"></span></p>
@@ -18,6 +18,9 @@
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<p><strong>编制部门：</strong><span id="preplanOrgSpan"></span></p>
+			</div>
+			<div class="col-xs-12">
+				<p><strong>专家组：</strong><span id="preplanSpecialistSpan"></span></p>
 			</div>
 			<div class="col-xs-12">
 				<p><strong>预案描述：</strong><span id="preplanDescSpan"></span></p>
@@ -39,12 +42,12 @@
 		    </ul>                                        
 			<div class="tab-content">
 				<div class="tab-pane active" id="planDetailPageMsg">
-					<div class="theme-panel hidden-xs hidden-sm" style="position:fixed">
-					    <div class="toggler"> </div>
-					    <div class="toggler-close"> </div>
-					    <div class="theme-options">
+					<div class="theme-panel hidden-xs hidden-sm">
+					    <div class="toggler" style="position:fixed;top:30%;right:15px"> </div>
+					    <div class="toggler-close" style="position:fixed;top:30%"> </div>
+					    <div class="theme-options" style="position:fixed;top:30%">
 					        <div class="theme-option theme-colors clearfix">
-					            <span> 编制目录 </span>
+					            <span> 目录 </span>
 					        </div>
 					        <div class="theme-option">
 						        <div class="portlet light bordered">
@@ -61,7 +64,7 @@
 		       	<div class="tab-pane" id="simplePlanDetailPageMsg">
 		        </div>
 		        <div class="tab-pane" id="flowChartDetailPageMsg">
-		            <p> Howdy, I'm in Section 3. </p>
+		            
 		        </div>
 			</div>
 		</div>
@@ -108,7 +111,8 @@
 					$('#preplanUIDSpan').append(obj.preplanUID);		
 					$('#preplanDomainNameSpan').append(obj.preplanDomainName);
 					$('#preplanDescSpan').append(obj.preplanDesc);
-					$('#preplanTimeSpan').append(obj.preplanTime);									
+					$('#preplanTimeSpan').append(obj.preplanTime);	
+					$('#preplanSpecialistSpan').append(obj.preplanSpecialist);													
 					getOrg(obj.preplanOrgId)
 					
 				},
@@ -131,6 +135,9 @@
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
 				}
 			});
+			
+			//获取流程图
+			setflowChartLayoutContent($('#detailPlanSn').val());
 									
 	  });
 	 //****************全案Begin**************************************************
@@ -144,7 +151,8 @@
 	  		var oldDataObjectSonL=oldDataObject.son.length;
 	  		var oldDataObjectOrder=oldDataObject.order;
 	  		var showOrder=oldDataObjectOrder.charAt(oldDataObjectOrder.length - 1);
-  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObjectOrder+'">'
+	  		if(oldDataObjectOrder!=="01"){
+	  			htmlMsg=htmlMsg+'<div class="portlet box green" id="planDetailHead'+oldDataObjectOrder+'">'
 					+	    '<div class="portlet-title">'
 					+	        '<div class="caption" >'
 					+	        +showOrder+'. '+oldDataObject.title+'</div>'
@@ -182,6 +190,9 @@
 				}else{
 				}		
 					
+	  		
+	  		}
+  			
 	  	}
 	  	getPageLayoutContent(pd)
 	  	
@@ -260,6 +271,35 @@
 	  
 	  }
 	  //****************简单预案End**************************************************
+	  
+	  
+	  //****************流程图Begin**************************************************
+	  function setflowChartLayoutContent(planSn){
+				$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_picture_getPicByPlanSn.action",
+						dataType : "json",
+						data : {
+							preplanSn:planSn,
+						
+						},
+						success : function(data) {
+
+							if(data.length>0){
+								var htmlMsg= '<img src="'+data[0].imgUrl+'" class="img-responsive">';
+								$('#flowChartDetailPageMsg').html(htmlMsg);  
+							}
+							
+							    
+						},
+						error: function(){
+							
+						}
+						
+					});	
+			 		
+	  }
+	  //****************流程图End**************************************************
 	  
 	  //锚点
 	  function changePage(order){	
