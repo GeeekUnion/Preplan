@@ -206,7 +206,7 @@
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
-    	$('#winAdd').window('open');
+    	console.log(s,w);
     	};
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));

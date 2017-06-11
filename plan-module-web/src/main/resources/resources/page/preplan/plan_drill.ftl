@@ -26,8 +26,6 @@
 <!-- END PAGE LEVEL PLUGINS -->
 	<script type="text/javascript">
 	$(document).ready(function() {
-	
-	
 				$('#drillTable').dataTable( {
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryDrillPage.action",
@@ -50,7 +48,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
+				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillSn+'\')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
@@ -75,7 +73,39 @@
 			        }
 				});
 			} );
+		//编辑演练内容	
+		function alterDrill(drillSn){
+		
+		console.log(drillSn);
+		$('#large').modal('show')
+		
+    //初始化xhEditor编辑器插件
+    $("#xhEditor").xheditor({
+     tools:'simple',
+     skin:'default',
+     upMultiple:true,
+     upImgUrl: '{editorRoot}/upload.jsp',
+     upImgExt: "jpg,jpeg,gif,bmp,png",
+     onUpload:insertUpload
+    });
+    //xbhEditor编辑器图片上传回调函数
+    function insertUpload(msg) {
+     var _msg = msg.toString();
+     var _picture_name = _msg.substring(_msg.lastIndexOf("/")+1);
+     var _picture_path = Substring(_msg);
+     var _str = "<input type='checkbox' name='_pictures' value='"+_picture_path+"' checked='checked' onclick='return false'/><label>"+_picture_name+"</label><br/>";
+     $("#xhEditor").append(_msg);
+     //$("#uploadList").append(_str);
+    }
+    //处理服务器返回到回调函数的字符串内容,格式是JSON的数据格式.
+    function Substring(s){
+     return s.substring(s.substring(0,s.lastIndexOf("/")).lastIndexOf("/"),s.length);
+    }
+  
+		}	
 </script>
+     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
+     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script> 
 </head>
 
 <!-- END HEAD -->
@@ -141,8 +171,29 @@
 
 				</div> 
 
-
-
+                  <!--Models-->
+                 <div class="modal fade bs-modal-lg" id="large" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">内容编辑</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <textarea id="xhEditor" class="xheditor {skin:'default'}">
+                         
+                                                    </textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn green">Save changes</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                              <!--End Models-->      
 
 				<!-- END MAP CONTENT-->
 			</div>

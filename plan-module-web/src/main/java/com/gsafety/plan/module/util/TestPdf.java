@@ -5,12 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import aspose.pdf.Heading;
-import aspose.pdf.Pdf;
 
-import com.aspose.pdf.Document;
-import com.aspose.pdf.License;
-import com.aspose.pdf.SaveFormat;
 
 /**
  * 
