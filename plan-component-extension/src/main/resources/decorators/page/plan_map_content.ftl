@@ -3,9 +3,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
-    //删除方法
-    	function deleteInventory(id){
-    	console.log(id);
+       //删除inventory,hazard等等的方法
+    	function deleteRe(iType){
+    	var iTypeChar =iType.substr(0,1);
+    	console.log(iTypeChar);
 				swal({    
 				    title: "确认删除该资源点？",     
 				    type: "warning",  
@@ -22,9 +23,28 @@
 							url : "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_deleteInventory.action",
 							dataType : "json",
 							data : {
-									"code" : id
+									"idType" : iType
 							},
 							success : function() {
+							
+							  switch(iTypeChar){
+							    case 'a':
+								         loadTable();
+								break;
+								case 'b':
+								         hazardClick("hazard");
+								 break;
+								 case 'c':
+								         emergencyResponseTeamClick("emergencyResponseTeam");
+								  break;
+								 case 'd': 
+								         protectionObjectClick("protectionObject")
+								default:
+								         loadTable();
+							  }
+		 						
+		 						
+		 						
 		 						
 		 						swal.close();				
 							},
@@ -36,13 +56,18 @@
 				);
 				
 			}
+    //修改Inventory
+    function alterInventory(id){
     
+    $('#large').modal('show')
+    }
     
     
     	//显示列表
 	$(document).ready(function() {
-	
-	
+	     loadTable();
+			} );
+        function loadTable(){
 				$('#inventoryTable').dataTable( {
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
@@ -54,8 +79,10 @@
 				  	"deferRender": true,
 				  	"searching": true,
 				  	"processing": true,
+				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
 			            {"data": "id"},
+			            {"data":"iType"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -66,10 +93,10 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
+				            return '<a href="javascript:;" class="btn blue" onclick="alterInventory(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteInventory(\''+row.id+'\')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -90,8 +117,7 @@
 			            }
 			        }
 				});
-			} );
-    
+				}
    
    
    
@@ -113,6 +139,7 @@
 				  	"destroy": true,
 			        "columns": [
 			            {"data": "id"},
+			            {"data":"iType"},
 	                    { "data": "sn",
 	                     "align":"center" 
 	                    },
@@ -128,7 +155,7 @@
 				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -169,6 +196,7 @@
 				  	"destroy": true,
 			        "columns": [
 			            {"data": "id"},
+			              {"data":"iType"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -182,7 +210,7 @@
 				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -222,6 +250,7 @@
 				  	"destroy": true,
 			        "columns": [
 			            {"data": "id"},
+			              {"data":"iType"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -235,7 +264,7 @@
 				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -346,6 +375,7 @@
 							<thead>
 								<tr> 
 								    <th>id</th>
+								    <th>类型</th>
 									<th>资源点编号</th>
 									<th>资源点名称</th>
 									<th>负责人</th>
@@ -379,6 +409,7 @@
 							<thead>
 								<tr>
 								<th>id</th>
+								 <th>类型</th>
 									<th>危险源编号</th>
 									<th>危险源名称</th>
 									<th>危险源经度</th>
@@ -412,6 +443,7 @@
 							<thead>
 								<tr>
 								<th>id</th>
+								 <th>类型</th>
 									<th>应急队伍编号</th>
 									<th>应急队伍名称</th>
 									<th>应急队伍经度</th>
@@ -445,6 +477,7 @@
 							<thead>
 								<tr>
 								<th>id</th>
+								<th>类型</th>
 									<th>防护目标编号</th>
 									<th>防护目标名称</th>
 									<th>防护目标经度</th>
@@ -461,8 +494,29 @@
                                         </div>
                                     </div>
                                 </div>
-
-  
-	
+   <!--Large -->
+  <div class="modal fade bs-modal-lg" id="large" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">编辑资源点</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                  
+                                                  
+                                                  
+                                                  
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn green">Save changes</button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+	                         <!--end Large-->
 </body>
 </html>
