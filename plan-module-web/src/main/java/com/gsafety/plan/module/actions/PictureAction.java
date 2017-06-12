@@ -2,6 +2,7 @@ package com.gsafety.plan.module.actions;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -54,22 +55,30 @@ public class PictureAction extends ListAction<Picture>{
 
         response.setContentType("text/html;charset=utf-8");  
  
-        /*这里的路径设置，在我的电脑上传路径是：D:\apache-tomcat-7063\wtpwebapps\plan\WEB-INF\img。
-        */
-        String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/img");  
-        System.out.println(saveRealFilePath );//这里是上传的路径
-        File fileDir = new File(saveRealFilePath);  
+        //这里的路径设置，在我的电脑上传路径是：D:\apache-tomcat-7063\wtpwebapps\plan\WEB-INF\img。      
+        String newSaveRealFilePath = ServletActionContext.getServletContext().getRealPath("/img");
+        
+        //String newSaveRealFilePath=saveRealFilePath.substring(0,saveRealFilePath.lastIndexOf("\\"))+"\\ROOT\\img";
+        System.out.println(newSaveRealFilePath);//这里是上传的路径
+        
+        File fileDir = new File(newSaveRealFilePath);  
         if (!fileDir.exists()) { //如果不存在 则创建   
             fileDir.mkdirs();  
         }  
-        File savefile = new File(saveRealFilePath , filedataFileName);  
+        
+        String newFileName= UUID.randomUUID().toString();//新文件名
+        newFileName=newFileName+"."+filedataFileName.substring(filedataFileName.lastIndexOf(".")+1);
+        System.out.println("文件名："+newFileName);//获得后缀名
+        
+        File savefile = new File(newSaveRealFilePath , newFileName); //存入root文件夹下
+        
         try {  
             FileUtils.copyFile(filedata, savefile);  
         } catch (IOException e) {  
             err = "错误"+e.getMessage();  
             e.printStackTrace();  
         }  
-        String fileName = saveRealFilePath +"\\"+filedataFileName;  
+        String fileName = "\\plan\\img\\"+newFileName;// /plan/img  (文件名)
         jsonObject.put("err", err);
         jsonObject.put("msg", fileName);        
          //返回msg信息  
