@@ -23,6 +23,7 @@ public class InventoryAction extends ListAction<Inventory> {
 	 @Resource
 	 private  InventoryService inventoryService;
 	 private int id;
+	 private String code; //用来转化成id的
 	 private String inventoryName;
 	 private String inventorySn;      
 	 private Double longitude;   //经度
@@ -110,9 +111,11 @@ public class InventoryAction extends ListAction<Inventory> {
 		return "jsonObject";
 	}
  	//删除选定Inventory
-    public String delete(){
+    public String deleteInventory(){
     	jsonObject.put("status", "ok");
 		try{
+		
+			int id=Integer.parseInt(code);
 			System.out.println(id);
 			Inventory i = inventoryService.get(Inventory.class,id);
 			inventoryService.delete(i);
@@ -314,6 +317,14 @@ public class InventoryAction extends ListAction<Inventory> {
 
 		public void setClickType(String clickType) {
 			this.clickType = clickType;
+		}
+
+		public String getCode() {
+			return code;
+		}
+
+		public void setCode(String code) {
+			this.code = code;
 		} 
 		
 }

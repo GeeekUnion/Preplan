@@ -150,8 +150,7 @@
 			map.panTo(r.point);
 			//alert('您的位置：'+r.point.lng+','+r.point.lat);
 			//console.log(r.point.lng+"MMMMM"+r.point.lat);
-		var circleLocation = new BMap.Circle(r.point,10000,{fillColor:"white", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.9});
-    	map.addOverlay(circleLocation);
+		
 			initResource();
 		}
 		else {
