@@ -73,18 +73,21 @@
 	                                      +  			'<i class="fa fa-edit">流程图</i>'
 	                                      +      '</button>'
 	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
-	                                      +  			'<i class="fa fa-search">详情</i>'
-	                                      +      '</button>'
-	                                      +      ' '
 	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</button>'
+	                                      +      '</button>'            
 			            	if(row.status=="待完成"){
 			            		showHtml=showHtml+' '
 	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\')">'
 	                                      +  			'<i class="fa fa-check">提交审核</i>'
 	                                      +      '</button>'
+			            	}else if(row.status=="通过"){
+			            		showHtml=showHtml+' '
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
+	                                      +  			'<i class="fa fa-search">详情</i>'
+	                                      +      '</button>'
+			            	}else if(row.status=="待审核"){
+			            		showHtml='';
 			            	}else{
 			            	
 			            	}
@@ -138,10 +141,22 @@
 							},
 							success : function() {
 		 						loadPlan();
-		 						swal.close();				
+		 						swal({
+									title: "删除成功!",
+									text: '',
+									type: "success",
+									timer: 2000, 
+									confirmButtonText: "确认"  
+								});				
 							},
-							error: function(){
-								swal.close();									
+							error: function(){							
+								swal({
+									title: "删除失败!",
+									text: '未知错误，请重试！',
+									type: "error",
+									timer: 2000, 
+									confirmButtonText: "确认"  
+								});									
 							}
 						});	   
 				    }

@@ -1,5 +1,11 @@
  <textarea name="editor1" class="xheditor" style="width:100%;min-height: 450px; " id="xheditor"></textarea>
   <script type="text/javascript">
+  			$(function(){
+  				$('#xheditor').xheditor({
+  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen',
+  					skin:'default'
+  				})
+  			})
   	        function saveModule(order){
         		submitModule(order)//此处order为此页面order
         	}  
@@ -50,7 +56,7 @@
                         		swal({title: "保存成功!",type: "success",confirmButtonText: "确认"});
 							}else{
 								//判断是否为末尾
-								if(order=="0033"){
+								if(order=="0039"){
 									//触发完成编制事件
 									overPlan(planSn);			
 								}else{
