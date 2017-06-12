@@ -3,6 +3,42 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
+    //删除方法
+    	function deleteInventory(id){
+    	console.log(id);
+				swal({    
+				    title: "确认删除该资源点？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_deleteInventory.action",
+							dataType : "json",
+							data : {
+									"code" : id
+							},
+							success : function() {
+		 						
+		 						swal.close();				
+							},
+							error: function(){
+								swal.close();									
+							}
+						});	   
+				    }
+				);
+				
+			}
+    
+    
+    
     	//显示列表
 	$(document).ready(function() {
 	
@@ -19,6 +55,7 @@
 				  	"searching": true,
 				  	"processing": true,
 			        "columns": [
+			            {"data": "id"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -32,7 +69,7 @@
 				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteInventory(\''+row.id+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -75,7 +112,10 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
-	                    { "data": "sn", align:"center" },
+			            {"data": "id"},
+	                    { "data": "sn",
+	                     "align":"center" 
+	                    },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
@@ -128,6 +168,7 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
+			            {"data": "id"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -180,6 +221,7 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
+			            {"data": "id"},
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -302,9 +344,10 @@
 						<table id="inventoryTable" class="display" cellspacing="0"
 							width="100%">
 							<thead>
-								<tr>
-									<th>预案编号</th>
-									<th>预案名称</th>
+								<tr> 
+								    <th>id</th>
+									<th>资源点编号</th>
+									<th>资源点名称</th>
 									<th>负责人</th>
 									<th>负责人联系方式</th>
 									<th>操作</th>
@@ -335,6 +378,7 @@
 							width="100%">
 							<thead>
 								<tr>
+								<th>id</th>
 									<th>危险源编号</th>
 									<th>危险源名称</th>
 									<th>危险源经度</th>
@@ -367,6 +411,7 @@
 							width="100%">
 							<thead>
 								<tr>
+								<th>id</th>
 									<th>应急队伍编号</th>
 									<th>应急队伍名称</th>
 									<th>应急队伍经度</th>
@@ -399,6 +444,7 @@
 							width="100%">
 							<thead>
 								<tr>
+								<th>id</th>
 									<th>防护目标编号</th>
 									<th>防护目标名称</th>
 									<th>防护目标经度</th>
