@@ -1,5 +1,6 @@
 package com.gsafety.plan.module.actions;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -54,6 +55,7 @@ import com.gsafety.plan.service.PictureServise;
 import com.gsafety.plan.service.PreplanService;
 import com.gsafety.plan.service.PrivilegeService;
 import com.gsafety.plan.service.ResourceRecordService;
+import com.gsafety.plan.service.ReviewsService;
 import com.gsafety.plan.service.SupplyService;
 import com.itextpdf.layout.Document;
 import com.opensymphony.xwork2.ActionContext;
@@ -83,6 +85,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     @Resource
     private PictureServise pictureService;
+    
+    @Resource
+    private ReviewsService reviewsService;
     
     private String code;//传id
     private String ppSn;//值
@@ -303,66 +308,81 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     public String uploadPlanPdf() throws Exception{
     	long old = System.currentTimeMillis();
-    	PDFUtil pdfUtil=new PDFUtil();
-    	Document doc= pdfUtil.createPdfDoc();
-    	try {
-    		 if(null != ppSn && ppSn.length()>0) {            
- 	            Preplan p= preplanService.getByPpSn(ppSn);
- 	            p.getPreplanName(); 	             	            
- 	            pdfUtil.addTitle(doc, p.getPreplanName());//放置标题
- 	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
- 	            for (int i = 0; i < jay.size(); i++) {
- 	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
- 	            	pdfUtil.addHeading1(doc,jo.getString("titleNum")+" "+jo.getString("title"));//一级标题
- 	            	JSONArray sonJay=jo.getJSONArray("son");
- 	                for (int j = 0; j < sonJay.size(); j++) {
- 	                	JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
- 	                	pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
- 	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
- 	                	if(md!=null){
-// 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
-// 	                		String regexp = "<p.*?/p>";
-// 	                		String regexh = "<h.*?/h*>";
-// 	                		String regexbr = "<br.*?>"; .replaceAll(regexstr,"");
- 	                		//String regEx = "style=\".*\">";
- 	                		String pg=md.getContent();
-// 	                		pg=pg.replaceAll(regexh,"");
-// 	                		pg=pg.replaceAll(regexbr,"");
- 	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
- 	                		Element body = docParse.body();//放入body片段 
- 	                	
- 	                		//System.out.println(body.ownText());
- 	                		Elements allTag=body.children();//获得儿子标签列表 
- 	                		//如果存在标签，就获标签得内容，不然则直接显示内容
- 	                		System.out.println(allTag.size());
- 	                		if(allTag.size()>0){
- 	                			for(Element e: allTag){
- 	                				if(e.text().length()>0){//不为空
- 	                					pdfUtil.addParagraph(doc,e.text()); 
- 	                				}
- 	 	 	                	}
- 	                		}else{
- 	                			 System.out.println(body.text());
- 	                			 pdfUtil.addParagraph(doc,body.text());
- 	                		}
- 	 	                		
-
-
-
- 	                		
- 	                		
- 	                	}
- 	                	
- 	    			}
- 				}
- 	           
- 	        }   
-		} catch (Exception e) {
-			 e.printStackTrace();
-			 
-		}finally{
-			doc.close();
-		}	              
+    	String docTitleDesc="";
+    	if(null != ppSn && ppSn.length()>0) { 
+            Preplan p= preplanService.getByPpSn(ppSn);
+            String docTitle=p.getPreplanName();//   
+            String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/doc");//上传路径 
+            if(pageMsgType.equals("1")) {
+                docTitleDesc="全案";  
+            }else {
+                docTitleDesc="简案";  
+            }
+            String fileName="/"+docTitle+docTitleDesc+".pdf";
+            File fileDir = new File(saveRealFilePath);  
+            if (!fileDir.exists()) { //如果不存在 则创建   
+                fileDir.mkdirs();  
+            }              
+            PDFUtil pdfUtil=new PDFUtil(saveRealFilePath+fileName);//传入路径+文件名
+            Document doc= pdfUtil.createPdfDoc();      
+       
+        	try {    		           	            	                         	            
+     	            pdfUtil.addTitle(doc,docTitle);//放置标题
+     	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
+     	            for (int i = 0; i < jay.size(); i++) {
+     	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+     	            	pdfUtil.addHeading1(doc,jo.getString("titleNum")+" "+jo.getString("title"));//一级标题
+     	            	JSONArray sonJay=jo.getJSONArray("son");
+     	                for (int j = 0; j < sonJay.size(); j++) {
+     	                	JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+     	                	pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
+     	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
+     	                	if(md!=null){
+    // 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
+    // 	                		String regexp = "<p.*?/p>";
+    // 	                		String regexh = "<h.*?/h*>";
+    // 	                		String regexbr = "<br.*?>"; .replaceAll(regexstr,"");
+     	                		//String regEx = "style=\".*\">";
+     	                		String pg=md.getContent();
+    // 	                		pg=pg.replaceAll(regexh,"");
+    // 	                		pg=pg.replaceAll(regexbr,"");
+     	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
+     	                		Element body = docParse.body();//放入body片段 
+     	                	
+     	                		//System.out.println(body.ownText());
+     	                		Elements allTag=body.children();//获得儿子标签列表 
+     	                		//如果存在标签，就获标签得内容，不然则直接显示内容
+     	                		System.out.println(allTag.size());
+     	                		if(allTag.size()>0){
+     	                			for(Element e: allTag){
+     	                				if(e.text().length()>0){//不为空
+     	                					pdfUtil.addParagraph(doc,e.text()); 
+     	                				}
+     	 	 	                	}
+     	                		}else{
+     	                			 System.out.println(body.text());
+     	                			 pdfUtil.addParagraph(doc,body.text());
+     	                		}
+     	 	                		
+    
+    
+    
+     	                		
+     	                		
+     	                	}
+     	                	
+     	    			}
+     				}
+     	        myJsonObject.put("status",saveRealFilePath);    
+     	          
+    		} catch (Exception e) {
+    		    myJsonObject.put("status","error");   
+    			 e.printStackTrace();
+    			 
+    		}finally{
+    			doc.close();
+    		}	
+    	}
         long now = System.currentTimeMillis();
         System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:");
     	return "myJsonObject";
@@ -623,21 +643,16 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         System.out.println(code);
         Preplan ppModel=preplanService.get(Preplan.class,Integer.parseInt(code));
         if(ppModel.getPreplanSn() != null) {
-            //根据预案Sn查询任务流程图
-            Picture pic=pictureService.getPicByPlanSn(ppModel);
-            if(null!=pic) {
-                
-                pictureService.delete(pic);   
-  
-            }
+            pictureService.deletePicByPlanSn(ppModel);
+            reviewsService.deleteReviewsByPreplanSn(ppModel.getPreplanSn());
             if(ppModel.getDomain() != null) {
                 ppModel.getDomain().remove(ppModel.getDomain());
                 preplanService.update(ppModel);
             }
-            
+            myJsonObject.put("status","ok");
             preplanService.delete(ppModel);    
         }
-        return "jsonObject";
+        return "myJsonObject";
     }
     
     public String getPreplanById() {

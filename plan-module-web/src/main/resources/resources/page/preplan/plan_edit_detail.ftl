@@ -167,17 +167,24 @@
 					ppSn:preplanSn,
 					pageMsgType:pageMsgType
 				},
-				success : function(data) {									
-					swal({title: "打印成功!",type: "success",confirmButtonText: "确认"});   	
+				success : function(data) {	
+					var msg=data.status;
+					if(msg=="error"){
+						swal({title: "打印失败!",text: '未知错误，请重试',type: "error",confirmButtonText: "确认" });			
+						
+					}else{
+						swal({
+							title: "打印成功!",
+							text:'路径为：'+msg,
+							type: "success",
+							confirmButtonText: "确认"
+						}); 
+					}								
+					  	
 					
 				},
 				error: function(){
-					swal({
-						title: "打印失败!",
-						text: '未知错误，请重试',
-						type: "error",
-						confirmButtonText: "确认"  
-					});							
+					swal({title: "打印失败!",text: '未知错误，请重试',type: "error",confirmButtonText: "确认" });							
 				}
 			});
 	  }

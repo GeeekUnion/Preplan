@@ -21,12 +21,13 @@ import com.itextpdf.layout.property.TextAlignment;
  */
 public class PDFUtil {
 	
-    public static final String DEST2 = "G:\\test4.pdf";//文件路径  
+    public static String DEST2 = "";//文件路径  
     public static PdfFont sysFont =null;
     
-    public PDFUtil(){
+    public PDFUtil(String url){
     	try {
 			sysFont = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);//中文设置 
+			DEST2=url;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

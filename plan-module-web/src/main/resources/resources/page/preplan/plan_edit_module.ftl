@@ -178,7 +178,7 @@
 						}
 
 						//是否显示已完成
-						if(moduleOrder=="0032"){
+						if(moduleOrder=="0038"){
 							$('#submitModuleOver').text("完成编制");
 						}else{
 							

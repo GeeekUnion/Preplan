@@ -27,7 +27,7 @@
 </script>
 </head>
 <body style="padding-top: 50px;">
-	<center style="font-family: '黑体'; color: black; font-size:32px;">预警管理系统登录</center>
+	<center style="font-family: '黑体'; color: black; font-size:32px;">预案管理系统登录</center>
 
 	<div class="container-fluid test">
 		<div class="col-md-4 col-md-offset-7 col-lg-4 col-lg-offset-7"
