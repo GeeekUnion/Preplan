@@ -57,7 +57,8 @@
 				<!-- END PAGE HEADER-->
 				<!--BEGIN MAP CONTENT-->
 				<!--MAP container-->
-				<div style="width: 697px; height: 550px; border: #ccc solid 1px;"
+				
+				<div style=" width:100%; height:500px;   border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
            
@@ -200,12 +201,12 @@
 		 
 		//单击maker事件
 		function showInfo(marker,point){  
-		 console.log(point);
+		 
           }
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
-    	console.log(s,w);
+    	
     	};
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));
@@ -282,7 +283,7 @@
       for (var i = 0; i < data.length; i += 1) {
 		
 		type=data[i].type
-		console.log(type);
+
 		//根据type类型，执行不同方法
 		switch(type){
 		case "inventory":

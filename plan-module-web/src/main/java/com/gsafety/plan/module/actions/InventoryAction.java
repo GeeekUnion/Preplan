@@ -14,14 +14,27 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
+import com.gsafety.plan.po.EmergencyResponseTeam;
+import com.gsafety.plan.po.Hazard;
 import com.gsafety.plan.po.Inventory;
+import com.gsafety.plan.po.ProtectionObject;
 import com.gsafety.plan.po.Supply;
+import com.gsafety.plan.service.EmergencyResponseTeamService;
+import com.gsafety.plan.service.HazardService;
 import com.gsafety.plan.service.InventoryService;
+import com.gsafety.plan.service.ProtectionObjectService;
 
 @Namespace("/preplan")
 public class InventoryAction extends ListAction<Inventory> {
 	 @Resource
 	 private  InventoryService inventoryService;
+	 @Resource
+	 private HazardService hazardService;
+	 @Resource
+	 private EmergencyResponseTeamService emergencyResponseTeamService;
+	 @Resource
+	 private ProtectionObjectService protectionObjectService;
+	 
 	 private int id;
 	 private String code; //用来转化成id的
 	 private String inventoryName;
@@ -30,8 +43,11 @@ public class InventoryAction extends ListAction<Inventory> {
 	 private Double latitude;    //纬度
      private String inventoryPrincipal;   //负责人	
      private String inventoryPrincipalPhone;  //负责人电话
-	 
+	 private String idType;              //判断各种资源点类型
   
+	
+	 
+	 
      private String  clickType;
 	 private int page;
 	 private int rows;
@@ -114,11 +130,30 @@ public class InventoryAction extends ListAction<Inventory> {
     public String deleteInventory(){
     	jsonObject.put("status", "ok");
 		try{
-		
-			int id=Integer.parseInt(code);
-			System.out.println(id);
-			Inventory i = inventoryService.get(Inventory.class,id);
-			inventoryService.delete(i);
+			System.out.println(idType);
+			if(idType==null||idType==""){
+				
+			}else{
+				char t =idType.charAt(0);
+				System.out.println(t);
+			if(t=='a'){
+				Inventory i = inventoryService.getByInventoryIType(idType);
+				inventoryService.delete(i);
+				System.out.println("成功删除");
+			}else if(t=='b'){
+				Hazard i = hazardService.getByHazardIType(idType);
+				hazardService.delete(i);
+			}else if(t=='c'){
+				EmergencyResponseTeam i = emergencyResponseTeamService.getByEmergencyResponseTeamIType(idType);
+				emergencyResponseTeamService.delete(i);
+			}else if(t=='d'){
+				ProtectionObject i = protectionObjectService.getByProtectionObjectIType(idType);
+				protectionObjectService.delete(i);
+			}	
+			}
+			
+			
+			
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
 		}
@@ -325,6 +360,15 @@ public class InventoryAction extends ListAction<Inventory> {
 
 		public void setCode(String code) {
 			this.code = code;
-		} 
+		}
+
+		public String getIdType() {
+			return idType;
+		}
+
+		public void setIdType(String idType) {
+			this.idType = idType;
+		}
+
 		
 }
