@@ -8,4 +8,5 @@ import com.gsafety.plan.po.Reviews;
 public interface ReviewsService extends IBaseService{
 
 	Reviews getUniqueByPreplanSn(String preplanSn);
+	void deleteReviewsByPreplanSn(String preplanSn);
 }

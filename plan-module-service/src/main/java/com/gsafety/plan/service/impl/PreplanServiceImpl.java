@@ -166,7 +166,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 		 Map<String, Object> hashMap = new HashMap<String, Object>();
 	        hashMap.put("reviewOrg",ps.getOrgCode());	 
 	        hashMap.put("preplanStatus","待审核");
-	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus";
+	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus ORDER BY p.preplanTime desc";
 	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
 	        String str="";
 	        if(pList.size()>0) {

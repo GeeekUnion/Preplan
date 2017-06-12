@@ -23,4 +23,13 @@ public class PictureServiceImpl extends BaseServiceImpl implements PictureServis
 		return pic;
 	}
 
+    @Override
+    public void deletePicByPlanSn(Preplan p) {
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("preplanSn", p);
+        String hql="delete from Picture p where p.preplanSn=:preplanSn";
+        baseDAO.deleteByHql(hql, hashMap);    
+        
+    }
+
 }

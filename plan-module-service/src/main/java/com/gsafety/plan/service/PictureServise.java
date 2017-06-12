@@ -7,5 +7,6 @@ import com.gsafety.plan.po.Preplan;
 public interface PictureServise extends IBaseService{
 
 	Picture getPicByPlanSn(Preplan p);
+	void deletePicByPlanSn(Preplan p);
 
 }

@@ -31,6 +31,17 @@ public class ReviewsServiceImpl extends BaseServiceImpl implements ReviewsServic
 		return baseDAO.getUniqueByHql(hql, hashMap, Reviews.class);
 	}
 
+    @Override
+    public void deleteReviewsByPreplanSn(String preplanSn) {
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        Preplan ppModel=new Preplan();
+        ppModel.setPreplanSn(preplanSn);
+        hashMap.put("preplanSn", ppModel);
+        String hql="delete from Reviews r where r.preplanSn=:preplanSn";
+        baseDAO.deleteByHql(hql, hashMap);
+        
+    }
+
 
 
 	
