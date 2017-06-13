@@ -2,8 +2,12 @@
   <script type="text/javascript">
   			$(function(){
   				$('#xheditor').xheditor({
-  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen',
-  					skin:'default'
+  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen,Img',
+  					skin:'default',
+  					html5Upload : false, //此属性必须为false 否则无法上传图片 
+       				//onUpload : uploadImg,   
+       				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
+       				upImgExt:"jpg,jpeg,gif,png"
   				})
   			})
   	        function saveModule(order){
