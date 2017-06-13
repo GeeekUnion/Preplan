@@ -57,9 +57,24 @@
 				
 			}
     //修改Inventory
-    function alterInventory(id){
+    function alterInventory(){
+  
     
-    $('#large').modal('show')
+    
+    $('#static').modal('show')
+    }
+    //提交修改
+    function commitAlter(){
+    
+    }
+    
+    //新建站点
+    function AddRe(s,w){
+     var longitude=s;
+     var latitude=w;
+    
+     
+     $('#staticA').modal('show')
     }
     
     
@@ -81,8 +96,12 @@
 				  	"processing": true,
 				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
-			            {"data": "id"},
-			            {"data":"iType"},
+			            {"data": "id",
+			              "visible":false
+			            },
+			            {"data":"iType",
+			            "visible":false
+			            },
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -93,7 +112,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterInventory(\''+row.id+'\')">'
+				            return '<a href="javascript:;" class="btn blue" onclick="alterInventory()">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
@@ -138,8 +157,12 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
-			            {"data": "id"},
-			            {"data":"iType"},
+			           {"data": "id",
+			              "visible":false
+			            },
+			            {"data":"iType",
+			            "visible":false
+			            },
 	                    { "data": "sn",
 	                     "align":"center" 
 	                    },
@@ -195,8 +218,12 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
-			            {"data": "id"},
-			              {"data":"iType"},
+			           {"data": "id",
+			              "visible":false
+			            },
+			            {"data":"iType",
+			            "visible":false
+			            },
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -249,8 +276,12 @@
 				  	"processing": true,
 				  	"destroy": true,
 			        "columns": [
-			            {"data": "id"},
-			              {"data":"iType"},
+			            {"data": "id",
+			              "visible":false
+			            },
+			            {"data":"iType",
+			            "visible":false
+			            },
 	                    { "data": "sn", align:"center" },
 	                    { "data": "name" },
 	                    { "data": "longitude" },
@@ -378,8 +409,8 @@
 								    <th>类型</th>
 									<th>资源点编号</th>
 									<th>资源点名称</th>
-									<th>负责人</th>
-									<th>负责人联系方式</th>
+									<th>经度</th>
+									<th>纬度</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -494,29 +525,182 @@
                                         </div>
                                     </div>
                                 </div>
-   <!--Large -->
-  <div class="modal fade bs-modal-lg" id="large" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
+   <!--Modals -->
+ <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+                                            <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">编辑资源点</h4>
+                                                        <h4 class="modal-title">Confirmation</h4>
                                                     </div>
-                                                    <div class="modal-body">
-                                                  
-                                                  
-                                                  
-                                                  
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn green">Save changes</button>
+                                           <div class="modal-body">
+                                                       <div class="row">
+	                            <div class="col-md-12">
+	                                <!-- BEGIN VALIDATION STATES-->
+	                                <div class="portlet light portlet-fit portlet-form bordered">
+	                                    <div class="portlet-title">
+	                                        <div class="caption">
+	                                            <i class="icon-settings font-red"></i>
+	                                            <span class="caption-subject font-red sbold uppercase">Basic Validation</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="portlet-body">
+	                                        <!-- BEGIN FORM-->
+	                                        <form action="#" id="form_sample_1" class="form-horizontal">
+	                                            <div class="form-body">
+                                                <div class="alert alert-danger display-hide">
+                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <div class="alert alert-success display-hide">
+                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                                                    
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点编号
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventorySn" type="text" data-required="1" class="form-control" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点名称
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventoryName" type="text" class="form-control" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点经度
+                                                        <span class="longitude"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="text" type="text" class="form-control" /> </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点纬度
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="latitude" type="text" class="form-control" /> </div>
+                                                </div>
+                                                
+                                                
+                                               
+                                             
+                                            <div class="form-actions">
+                                                <div class="row">
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button type="submit" class="btn green">Submit</button>
+                                                        <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
                                                     </div>
                                                 </div>
-                                                <!-- /.modal-content -->
                                             </div>
-                                            <!-- /.modal-dialog -->
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                                <!-- END VALIDATION STATES-->
+                            </div>
+                        </div>
+                                                       
+                                                       
+                                                       
+                                                       
+                                           </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="commitAlter">Continue Task</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-	                         <!--end Large-->
+	                         <!--end Modals-->
+	                         
+	                         <!--Modals 2 -->
+<div id="staticA" class="modal fade" tabindex="1" data-backdrop="static" data-keyboard="false">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">Confirmation</h4>
+                                                    </div>
+                                           <div class="modal-body">
+                                                       <div class="row">
+	                            <div class="col-md-12">
+	                                <!-- BEGIN VALIDATION STATES-->
+	                                <div class="portlet light portlet-fit portlet-form bordered">
+	                                    <div class="portlet-title">
+	                                        <div class="caption">
+	                                            <i class="icon-settings font-red"></i>
+	                                            <span class="caption-subject font-red sbold uppercase">Basic Validation</span>
+	                                        </div>
+	                                    </div>
+	                                    <div class="portlet-body">
+	                                        <!-- BEGIN FORM-->
+	                                        <form action="#" id="form_sample_1" class="form-horizontal">
+	                                            <div class="form-body">
+                                                <div class="alert alert-danger display-hide">
+                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <div class="alert alert-success display-hide">
+                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                                                    
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点编号
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventorySn" type="text" data-required="1" class="form-control" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点名称
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventoryName" type="text" class="form-control" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点经度
+                                                        <span class="longitude"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="text" type="text" class="form-control" /> </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点纬度
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="latitude" type="text" class="form-control" /> </div>
+                                                </div>
+                                                
+                                                
+                                               
+                                             
+                                            <div class="form-actions">
+                                                <div class="row">
+                                                    <div class="col-md-offset-3 col-md-9">
+                                                        <button type="submit" class="btn green">Submit</button>
+                                                        <button type="button" class="btn grey-salsa btn-outline">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                    </div>
+                                </div>
+                                <!-- END VALIDATION STATES-->
+                            </div>
+                        </div>
+                                                       
+                                                       
+                                                       
+                                                       
+                                           </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="commitAlter">Continue Task</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+	                         <!--end Modals 2--> 
 </body>
 </html>
