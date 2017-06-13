@@ -305,20 +305,23 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     }
     
     
-    
+    /**
+     * @param ppSn 预案sn
+     * @param pageMsgType 判断全案/简案
+     * */
     public String uploadPlanPdf() throws Exception{
     	long old = System.currentTimeMillis();
     	String docTitleDesc="";
     	if(null != ppSn && ppSn.length()>0) { 
             Preplan p= preplanService.getByPpSn(ppSn);
-            String docTitle=p.getPreplanName();//   
+            String docTitle=p.getPreplanName();   
             String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/doc");//上传路径 
             if(pageMsgType.equals("1")) {
                 docTitleDesc="全案";  
             }else {
                 docTitleDesc="简案";  
             }
-            String fileName="/"+docTitle+docTitleDesc+".pdf";
+            String fileName="/"+docTitle+docTitleDesc+".pdf";//预案名字
             File fileDir = new File(saveRealFilePath);  
             if (!fileDir.exists()) { //如果不存在 则创建   
                 fileDir.mkdirs();  
@@ -338,25 +341,24 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
      	                	pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
      	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
      	                	if(md!=null){
-    // 	                		String regexstr = "<(?!h|/h|br|p|/p).*?>";   
-    // 	                		String regexp = "<p.*?/p>";
-    // 	                		String regexh = "<h.*?/h*>";
-    // 	                		String regexbr = "<br.*?>"; .replaceAll(regexstr,"");
-     	                		//String regEx = "style=\".*\">";
      	                		String pg=md.getContent();
-    // 	                		pg=pg.replaceAll(regexh,"");
-    // 	                		pg=pg.replaceAll(regexbr,"");
      	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
      	                		Element body = docParse.body();//放入body片段 
      	                	
      	                		//System.out.println(body.ownText());
      	                		Elements allTag=body.children();//获得儿子标签列表 
-     	                		//如果存在标签，就获标签得内容，不然则直接显示内容
-     	                		System.out.println(allTag.size());
+     	                		//如果存在标签，就获标签得内容，不然则直接显示内容     	                		
      	                		if(allTag.size()>0){
      	                			for(Element e: allTag){
-     	                				if(e.text().length()>0){//不为空
-     	                					pdfUtil.addParagraph(doc,e.text()); 
+     	                				String eContent=e.text();
+     	                				if(eContent.length()>0){//不为空
+     	                					pdfUtil.addParagraph(doc,eContent); 
+     	                				}else if(e.nodeName()=="img"){//插入图片     	  
+     	                					String srcText=e.attr("src");
+     	                					System.out.println("这是img哦："+srcText.substring(srcText.lastIndexOf("\\")+1));
+     	                					pdfUtil.addImg(doc, srcText.substring(srcText.lastIndexOf("\\")+1));
+     	                				}else{
+     	                					
      	                				}
      	 	 	                	}
      	                		}else{

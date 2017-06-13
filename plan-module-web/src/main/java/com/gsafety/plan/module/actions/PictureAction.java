@@ -86,7 +86,7 @@ public class PictureAction extends ListAction<Picture>{
     }
     
     /**
-     * 保存图片路径到数据库
+     * TODO(保存流程图图片路径到数据库)
      * */
     public String savePirture(){
     	jsonObject.put("status", "error");
@@ -112,7 +112,7 @@ public class PictureAction extends ListAction<Picture>{
     }
 
     /**
-     * 保存图片路径到数据库
+     * TODO(根据预案sn获得流程图)
      * */
     public String getPicByPlanSn(){
     	if( preplanSn!=null){

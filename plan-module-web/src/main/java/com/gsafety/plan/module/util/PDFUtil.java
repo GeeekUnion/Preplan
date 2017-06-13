@@ -2,11 +2,18 @@ package com.gsafety.plan.module.util;
 
 import java.io.IOException;
 
+import org.apache.struts2.ServletActionContext;
+
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 
@@ -26,7 +33,8 @@ public class PDFUtil {
     
     public PDFUtil(String url){
     	try {
-			sysFont = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);//中文设置 
+			//sysFont = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);//中文设置 
+    		sysFont = PdfFontFactory.createFont("c://windows//fonts//simsun.ttc,1",PdfEncodings.IDENTITY_H, false);//中文设置,解决特殊字符错误
 			DEST2=url;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -38,7 +46,7 @@ public class PDFUtil {
 	* @return doc
 	* */
    public Document createPdfDoc() throws Exception{   
-	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));    
+	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));   
 	   Document doc = new Document(pdfDoc);//构建文档对象  
 	   return doc;
    }
@@ -101,4 +109,14 @@ public class PDFUtil {
 	   doc.add(paragraph);
    }
    
+   /**
+    * 添加图片
+    * @param
+    * */
+   public void addImg(Document doc,String url) throws Exception{
+	   String realUrl=ServletActionContext.getServletContext().getRealPath("/img")+"/"+url;
+	   ImageData imgData=ImageDataFactory.create(realUrl);
+	   Image pic=new Image(imgData);	  
+	   doc.add(pic);
+   }
 }
