@@ -50,6 +50,7 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			jo.put("drillContent", d.getDrillContent());
 			jo.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
 			jo.put("drillPreplanName", d.getPreplan().getPreplanName());
+			jo.put("orgName", d.getDrillDepartment());
 				array.add(jo);
 			}	
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
@@ -58,11 +59,15 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 	}
 
 	@Override
-	public String queryAreaCodeByOrgCode(String orgCode) {
-		 String sql="select ORG_AREA_CODE from fw_t_ems_org where ORG_CODE="+"\'"+orgCode+"\'";
-		 String areaOrgCode=  (String) baseDAO.getUniqueBySql(sql);
-	    
-		 return areaOrgCode;
+	public JSONObject queryAreaCodeByOrgCode(String orgCode) {
+		 String sql="select ORG_AREA_CODE,ORG_NAME from fw_t_ems_org where ORG_CODE="+"\'"+orgCode+"\'";
+		Object[] ob =(Object[]) baseDAO.getUniqueBySql(sql);
+		JSONObject jo = new JSONObject();
+		 jo.put("areaOrgCode", ob[0]);
+		 jo.put("orgName", ob[1]);
+		 return jo;
 	}
+
+	
 	
 }

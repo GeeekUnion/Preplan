@@ -2,6 +2,7 @@ package com.gsafety.plan.po;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.annotation.Generated;
@@ -22,12 +23,13 @@ public class Drill implements Serializable{
 	
 	private int id;
 	private String drillSn;
-	private Timestamp drillTime;
+	private LocalDate drillTime;
 	private int drillNumOfParticipants;
 	private String areaOrgCode;               //预案的地图编号，方便对应地区查询
 	//单位怎么弄
 	private String drillContent;
 	private Preplan preplan;
+	private String drillDepartment;                     //查询部门
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,12 +47,13 @@ public class Drill implements Serializable{
 		this.drillSn = drillSn;
 	}
 	@Column(name="drill_time")
-	public Timestamp getDrillTime() {
+	public LocalDate getDrillTime() {
 		return drillTime;
 	}
-	public void setDrillTime(Timestamp drillTime) {
+	public void setDrillTime(LocalDate drillTime) {
 		this.drillTime = drillTime;
 	}
+	
 	@Column(name="drill_numOfParticipants")
 	public int getDrillNumOfParticipants() {
 		return drillNumOfParticipants;
@@ -79,6 +82,13 @@ public class Drill implements Serializable{
 	}
 	public void setAreaOrgCode(String areaOrgCode) {
 		this.areaOrgCode = areaOrgCode;
+	}
+	@Column(name="drill_orgName")
+	public String getDrillDepartment() {
+		return drillDepartment;
+	}
+	public void setDrillDepartment(String drillDepartment) {
+		this.drillDepartment = drillDepartment;
 	}
 	
 	
