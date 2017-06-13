@@ -2,7 +2,9 @@ package com.gsafety.plan.module.actions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +18,7 @@ import net.sf.json.JSONObject;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Drill;
+import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.DrillService;
 @Namespace("/preplan")
 public class DrillAction extends ListAction<Drill> implements SessionAware{
@@ -27,6 +30,16 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      protected Map<String, Object> session;  
      private int page;
      private int rows;
+     private int id;
+     private String drillSn;
+  	 private LocalDate drillTime;
+ 	 private int drillNumOfParticipants;
+     private String areaOrgCode;               //预案的地图编号，方便对应地区查询
+     private String drillContent;
+ 	 private Preplan preplan;
+ 	 private String drillDepartment;                     //查询部门
+     
+    
      
      public PrintWriter out() throws IOException {
   		HttpServletResponse response = ServletActionContext.getResponse();
@@ -39,7 +52,10 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      public String queryDrillPage() throws IOException{
     	 String str="";
     	 String orgCode=session.get("preplanOrgCode").toString();
-    	 String areaOrgCode=drillService.queryAreaCodeByOrgCode(orgCode);
+    	 JSONObject jo=drillService.queryAreaCodeByOrgCode(orgCode);
+    	 String areaOrgCode =(String) jo.get("areaOrgCode");
+    	
+    	 
     	 System.out.println(areaOrgCode);
     	 
     	 if(null != areaOrgCode && areaOrgCode.length()>0) {
@@ -49,11 +65,33 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
       		out().close();
     		return "jsonArray";
     	 }
-    	 str=drillService.queryDrill(orgCode,page, rows); 
+    	 str=drillService.queryDrill(areaOrgCode,page, rows); 
 	    	out().print(str);
 	  		out().flush();
 	  		out().close();
 	    	return "jsonArray";
+     }
+     public String save(){
+    	 jsonObject.put("status", "ok");
+    	 Drill d=new Drill();
+    	 String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    	 String orgCode=session.get("preplanOrgCode").toString();
+    	 JSONObject jo=drillService.queryAreaCodeByOrgCode(orgCode);
+    	 String areaOrgCode =(String) jo.get("areaOrgCode");
+    	 String orgName =(String) jo.get("orgName");
+    	 try {
+    		d.setDrillSn(uuid); 
+    		d.setAreaOrgCode(areaOrgCode);
+    		d.setDrillDepartment(orgName);
+    		d.setDrillContent("");
+    		d.setDrillNumOfParticipants(drillNumOfParticipants);
+    		d.setDrillTime(LocalDate.now()); 
+    		d.setPreplan(preplan);
+    		drillService.save(d);
+		} catch (Exception e) {
+			jsonObject.put("status", "nook");
+		}
+    	  return "jsonObject";
      }
      
 	public JSONArray getJsonArray() {
@@ -92,5 +130,12 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	public void setDrillService(DrillService drillService) {
 		this.drillService = drillService;
 	}
+	public int getDrillNumOfParticipants() {
+		return drillNumOfParticipants;
+	}
+	public void setDrillNumOfParticipants(int drillNumOfParticipants) {
+		this.drillNumOfParticipants = drillNumOfParticipants;
+	}
+	
      
 }

@@ -22,8 +22,13 @@
 	href="${getTheme('default','')}assets/global/plugins/datatables/datatables.min.css" />
 <link rel="stylesheet" type="text/css"
 	href="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" />
-	
 <!-- END PAGE LEVEL PLUGINS -->
+<style type="text/css">
+#static{
+height:800px;
+midth:400px;
+}
+</style>
 	<script type="text/javascript">
 	$(document).ready(function() {
 				$('#drillTable').dataTable( {
@@ -38,7 +43,9 @@
 				  	"searching": true,
 				  	"processing": true,
 			        "columns": [
-	                    { "data": "drillSn", align:"center" },
+			           
+	                    { "data": "orgName", align:"center" },
+	                    { "data": "drillSn" },
 	                    { "data": "drillPreplanName" },
 	                    { "data": "drillNumOfParticipants" },
 	                    { "data": "drillContent" },
@@ -77,7 +84,7 @@
 		function alterDrill(drillSn){
 		
 		console.log(drillSn);
-		$('#large').modal('show')
+		$('#static').modal('show')
 		
     //初始化xhEditor编辑器插件
     $("#xhEditor").xheditor({
@@ -103,6 +110,16 @@
     }
   
 		}	
+		
+		
+	function addDrill(){
+	$('#static2').modal('show')
+	
+	}	
+		
+		
+		
+		
 </script>
      <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
      <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script> 
@@ -146,7 +163,7 @@
 							<i class="fa fa-globe"></i>应急队伍信息
 						</div>
 						<div class="actions">
-							<a href="${pageContext.request.contextPath}/plan/preplan/"
+							<a onClick="addDrill()"
 								class="btn btn-default btn-sm btn-circle"> <i
 								class="fa fa-plus"></i> 新增
 							</a>
@@ -158,6 +175,7 @@
 							width="100%">
 							<thead>
 								<tr>
+								    <th>预案演练部门</th>
 									<th>预案演练编号</th>
 									<th>预案名称</th>
 									<th>预案演练人数</th>
@@ -171,29 +189,73 @@
 
 				</div> 
 
-                  <!--Models-->
-                 <div class="modal fade bs-modal-lg" id="large" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
+                  <!--Modals-->
+               <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">内容编辑</h4>
+                                                        <h4 class="modal-title">Confirmation</h4>
                                                     </div>
                                                     <div class="modal-body">
+                                                    
                                                     <textarea id="xhEditor" class="xheditor {skin:'default'}">
-                         
                                                     </textarea>
+                                                    
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn green">Save changes</button>
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green">Continue Task</button>
                                                     </div>
                                                 </div>
-                                                <!-- /.modal-content -->
                                             </div>
-                                            <!-- /.modal-dialog -->
                                         </div>
-                              <!--End Models-->      
+                              <!--End Modals-->      
+    <!--Modals-->
+               <div id="static2" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">Confirmation</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <!-- BEGIN FORM-->
+                                        <form action="#" id="form_sample_1" class="form-horizontal">
+                                            <div class="form-body">
+                                                <h3 class="form-section">新增</h3>
+                                             <div class="alert alert-danger display-hide">
+                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <div class="alert alert-success display-hide">
+                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>   
+                                                    
+                                             
+                                             
+                                             <div class="form-group">
+                                                    <label class="control-label col-md-3">预案演练人数
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" name="name" data-required="1" class="form-control" /> </div>
+                                                </div>
+                                           
+                                             
+
+                                            </div>
+                                        </form>
+                                        <!-- END FORM-->
+                                                 
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green">Continue Task</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                              <!--End Modals-->    
+
 
 				<!-- END MAP CONTENT-->
 			</div>

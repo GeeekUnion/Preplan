@@ -87,6 +87,7 @@
 		src="${getTheme('default','')}assets/global/plugins/datatables/datatables.min.js"></script>
 	<script type="text/javascript"
 		src="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+	<script type="text/javascript" src="${getMC ("")}/js/jquery.validate.min.js"></script>
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -206,7 +207,7 @@
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
-    	
+    	AddRe(s,w);
     	};
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));

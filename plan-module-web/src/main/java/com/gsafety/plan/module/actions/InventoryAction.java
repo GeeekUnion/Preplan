@@ -114,12 +114,14 @@ public class InventoryAction extends ListAction<Inventory> {
 		Inventory i =new Inventory();
 		try{
 			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+			String iType='a'+ UUID.randomUUID().toString().substring(0, 6);
 		    i.setLatitude(latitude);
 		    i.setLongitude(longitude);
 		    i.setInventoryName(inventoryName);
 		    i.setInventoryPrincipal(inventoryPrincipal);
 		    i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
 		    i.setInventorySn(uuid);
+		    i.setiType(iType);
 			inventoryService.save(i);
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
