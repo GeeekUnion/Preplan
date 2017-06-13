@@ -1,6 +1,10 @@
 package com.gsafety.plan.po;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -26,6 +31,7 @@ public class Module {
     private Preplan preplanSnM;//与预案对应
     private boolean moduleCheck;
     private String type;//全案模块（1）还是简单预案模块（2）
+    private Set<Picture> pictures =new HashSet<Picture>();
     
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,4 +102,12 @@ public class Module {
     public void setPreplanSnM(Preplan preplanSnM) {
         this.preplanSnM = preplanSnM;
     }
+    @OneToMany(targetEntity=Picture.class,mappedBy="id",cascade=CascadeType.ALL)
+	public Set<Picture> getPictures() {
+		return pictures;
+	}
+	public void setPictures(Set<Picture> pictures) {
+		this.pictures = pictures;
+	}
+    
 }
