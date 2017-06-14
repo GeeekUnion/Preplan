@@ -85,8 +85,8 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     		d.setDrillDepartment(orgName);
     		d.setDrillContent("");
     		d.setDrillNumOfParticipants(drillNumOfParticipants);
-    		d.setDrillTime(LocalDate.now()); 
-    		d.setPreplan(preplan);
+    		//d.setDrillTime(LocalDate.now()); 
+    		//d.setPreplan(preplan);
     		drillService.save(d);
 		} catch (Exception e) {
 			jsonObject.put("status", "nook");

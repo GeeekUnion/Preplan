@@ -113,9 +113,25 @@ midth:400px;
 		
 		
 	function addDrill(){
-	$('#static2').modal('show')
+	$.ajax({
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanList.action',
+	dataType:"json",	  
+	success:function(data){    
+		    $("#contain").empty();
+		    var html="<option>选择</option>"
+		    for(var i=0;i<data.length;i++){
+		    	var co=data[i];
+		    	console.log(co);
+		       html=html+'<option >'+co['preplanName']+'</option>'    
+		    	$("#preplanSelect").append(html);
+				$("#preplanSelect").fadeIn(100);
+		    }
+		    $('#static2').modal('show')
+		}
+	})
+
 	
-	}	
+	}
 		
 		
 		
@@ -230,7 +246,17 @@ midth:400px;
                                                     <button class="close" data-close="alert"></button> Your form validation is successful! </div>   
                                                     
                                              
-                                             
+                                             <div class="form-group">
+                                                    <label class="control-label col-md-3">选择预案
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                         <select class="form-control" name="select">
+                                                         <div id="preplanSelect"> </div>
+                                                         </select>
+                                               </div>
+                                                </div>
+                                                
                                              <div class="form-group">
                                                     <label class="control-label col-md-3">预案演练人数
                                                         <span class="required"> * </span>
@@ -238,6 +264,7 @@ midth:400px;
                                                     <div class="col-md-4">
                                                         <input type="text" name="name" data-required="1" class="form-control" /> </div>
                                                 </div>
+                                               
                                            
                                              
 
