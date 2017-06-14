@@ -236,7 +236,6 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 		}else{
 			myJo.put("size", 0);
 		}
-		
 		return myJo;
 	}
 

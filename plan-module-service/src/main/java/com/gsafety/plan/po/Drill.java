@@ -23,7 +23,7 @@ public class Drill implements Serializable{
 	
 	private int id;
 	private String drillSn;
-	private LocalDate drillTime;
+	private Timestamp  drillTime;
 	private int drillNumOfParticipants;
 	private String areaOrgCode;               //预案的地图编号，方便对应地区查询
 	//单位怎么弄
@@ -46,13 +46,7 @@ public class Drill implements Serializable{
 	public void setDrillSn(String drillSn) {
 		this.drillSn = drillSn;
 	}
-	@Column(name="drill_time")
-	public LocalDate getDrillTime() {
-		return drillTime;
-	}
-	public void setDrillTime(LocalDate drillTime) {
-		this.drillTime = drillTime;
-	}
+	
 	
 	@Column(name="drill_numOfParticipants")
 	public int getDrillNumOfParticipants() {
@@ -89,6 +83,13 @@ public class Drill implements Serializable{
 	}
 	public void setDrillDepartment(String drillDepartment) {
 		this.drillDepartment = drillDepartment;
+	}
+	@Column(name="drill_time")
+	public Timestamp getDrillTime() {
+		return drillTime;
+	}
+	public void setDrillTime(Timestamp drillTime) {
+		this.drillTime = drillTime;
 	}
 	
 	

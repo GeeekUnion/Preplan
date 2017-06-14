@@ -38,8 +38,8 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 		   
 		    String hql="from Drill d where d.areaOrgCode like '"+areaOrgCode+"%'";
 		    System.out.println(hql);
-		    PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Event.class);
-			@SuppressWarnings("unchecked")
+		    PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Drill.class);
+			
 			List<Drill> List=(List<Drill>) pResult.getList();
 			for(Drill d:List){
 			JSONObject jo = new JSONObject();
