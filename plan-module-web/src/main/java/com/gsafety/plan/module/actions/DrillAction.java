@@ -2,7 +2,7 @@ package com.gsafety.plan.module.actions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      private int rows;
      private int id;
      private String drillSn;
-  	 private LocalDate drillTime;
+  	 private Timestamp drillTime;
  	 private int drillNumOfParticipants;
      private String areaOrgCode;               //预案的地图编号，方便对应地区查询
      private String drillContent;
@@ -93,6 +93,16 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 		}
     	  return "jsonObject";
      }
+     //获得当前部门可查预案
+     public JSONArray queryPreplanList(){
+    	 String orgCode=session.get("preplanOrgCode").toString();
+         if(null != orgCode && orgCode.length()>0) {
+           JSONArray jsonArray=drillService.queryPlan(orgCode);
+                     } 
+         return jsonArray;
+     }
+     
+     
      
 	public JSONArray getJsonArray() {
 		return jsonArray;
@@ -135,6 +145,48 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	}
 	public void setDrillNumOfParticipants(int drillNumOfParticipants) {
 		this.drillNumOfParticipants = drillNumOfParticipants;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDrillSn() {
+		return drillSn;
+	}
+	public void setDrillSn(String drillSn) {
+		this.drillSn = drillSn;
+	}
+	public Timestamp getDrillTime() {
+		return drillTime;
+	}
+	public void setDrillTime(Timestamp drillTime) {
+		this.drillTime = drillTime;
+	}
+	public String getAreaOrgCode() {
+		return areaOrgCode;
+	}
+	public void setAreaOrgCode(String areaOrgCode) {
+		this.areaOrgCode = areaOrgCode;
+	}
+	public String getDrillContent() {
+		return drillContent;
+	}
+	public void setDrillContent(String drillContent) {
+		this.drillContent = drillContent;
+	}
+	public Preplan getPreplan() {
+		return preplan;
+	}
+	public void setPreplan(Preplan preplan) {
+		this.preplan = preplan;
+	}
+	public String getDrillDepartment() {
+		return drillDepartment;
+	}
+	public void setDrillDepartment(String drillDepartment) {
+		this.drillDepartment = drillDepartment;
 	}
 	
      

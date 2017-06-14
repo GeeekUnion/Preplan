@@ -114,7 +114,7 @@ midth:400px;
 		
 	function addDrill(){
 	$.ajax({
-	url:'${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanList.action',
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
 	dataType:"json",	  
 	success:function(data){    
 		    $("#contain").empty();
