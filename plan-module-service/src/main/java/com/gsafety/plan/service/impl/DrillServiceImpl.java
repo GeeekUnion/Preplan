@@ -15,6 +15,7 @@ import com.gsafety.cloudframework.common.base.page.PageResult;
 import com.gsafety.cloudframework.common.base.service.impl.BaseServiceImpl;
 import com.gsafety.plan.po.Drill;
 import com.gsafety.plan.po.Event;
+import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.DrillService;
 import com.gsafety.plan.service.InventoryService;
 
@@ -67,7 +68,20 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 		 jo.put("orgName", ob[1]);
 		 return jo;
 	}
-
-	
+   //
+	@Override
+	public JSONArray queryPlan(String orgCode) {
+		 String hql="from Preplan p where p.responDept like '"+orgCode+"%'";
+		 System.out.println(hql);
+		ArrayList <Preplan> List= (ArrayList<Preplan>) baseDAO.getListBySql(hql, Preplan.class);
+		JSONArray array =new JSONArray();
+		for(Preplan d:List){
+			JSONObject jo = new JSONObject();
+			jo.put("preplanName", d.getPreplanName());
+			jo.put("preplanSn", d.getPreplanSn());
+				array.add(jo);
+		}	
+		 return array;
+	}
 	
 }
