@@ -2,47 +2,132 @@ package com.gsafety.plan.module.util;
 
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.kernel.events.Event;
+import com.itextpdf.kernel.events.IEventHandler;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.PdfArray;
+import com.itextpdf.kernel.pdf.PdfCatalog;
+import com.itextpdf.kernel.pdf.PdfDictionary;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfName;
+import com.itextpdf.kernel.pdf.PdfObject;
+import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
+import com.itextpdf.kernel.utils.PdfMerger;
+import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.property.AreaBreakType;
+import com.itextpdf.layout.property.TextAlignment;
 
 
-public class Testp {
 
-   //public static String url="G:\\test4.pdf";
+public class Testp{
 
+   public static String url="G:\\test4.pdf";
+   public static String urlOrig="G:\\test1.pdf";
+   
+   
+   static Map<String, Integer> catalogMap = new HashMap<String, Integer>();
    
    public static void main(String[] args) throws Exception {  
-       
+	  
 	   long old = System.currentTimeMillis();
 	   
-	   String DEST2 = "G:\\test4.pdf";//文件路径
-	   PdfFont sysFont = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H", false);//中文设置 
-	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));   
-	   Document doc = new Document(pdfDoc);//构建文档对象 	   
-	   Paragraph paragraph = new Paragraph("hello word 你好 世界"); //段落方法 
-	   paragraph.setFont(sysFont);//自定义中文
-	   doc.add(paragraph);//段落添加到文档中
-	   doc.close();//关闭文档流
+//	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(url)); 
+//	   Document doc = new Document(pdfDoc);//构建文档对象  
 	   
-//	   PDFUtil pdfUtil=new PDFUtil(url);//传入路径+文件名,使用工具类
-//       Document doc= pdfUtil.createPdfDoc();  
-//       pdfUtil.addTitle(doc, "我是标题");//添加标题
-//       pdfUtil.addHeading1(doc,"标题1");
-//       pdfUtil.addParagraph(doc,"内容11111111……");
-//       pdfUtil.addHeading1(doc,"标题2");
-//       pdfUtil.addHeading2(doc,"标题2.1");
-//       pdfUtil.addParagraph(doc,"内容2.1"); 
-//       pdfUtil.addHeading2(doc,"标题2.2");
-//       pdfUtil.addParagraph(doc,"内容2.2"); 
-//       doc.close();
+
+	   
+//	   PDFUtil pdfUtil=new PDFUtil(url);
+//	   Document doc=pdfUtil.createPdfDoc();
+//	   PdfDocument pdfDoc=doc.getPdfDocument();
+//	   TextFooterEventHandler eh= new TextFooterEventHandler(doc);
+//	   pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE,eh);
+//	   pdfUtil.addTitle(doc, "预案");
+//	   for(int i=0;i<15;i++){
+//		   pdfUtil.addHeading1(doc,i+" 标题");
+//		   if(i%2==0){
+//			   pdfUtil.addHeading2(doc,i+".1 小标题标题");
+//		   }
+//		   pdfUtil.addParagraph(doc, "内容QAQAQZAAAWQSXFDSFSD内容QAQAQZAAAWQSXFDSFSD内容QAQAQZAAAWQSXFDSFSD内容QAQAQZAAAWQSXFDSFSD内容QAQAQZAAAWQSXFDSFSD");
+//	   }
+//	   
+//	   pdfDoc.close();	   	   	   
+//	   doc.close();
+
+	   	PdfWriter writer=new PdfWriter(url);	   	
+	    PdfDocument pdf= new PdfDocument(writer);
+	    
+	    PdfDocument resource = new PdfDocument(new PdfReader(urlOrig));
+
+	    //PdfMerger merger = new PdfMerger(pdf,false,true);
+	    
+	    //merger.merge(resource, 1, resource.getNumberOfPages());
+	    List<Integer> pageList=new ArrayList<Integer>();
+	    for(int j=1;j<=resource.getNumberOfPages();j++){
+	    	System.out.println(j);
+	    	pageList.add(j);
+	    	pdf.addNewPage();
+	    	
+	    }
+	    //merger.merge(resource, pageList);	
+	    
+	    resource.copyPagesTo(pageList, pdf, 1);
+	    resource.close();
+	    pdf.close();
+	   
+//	   PDFUtil pdfUtil2=new PDFUtil(urlOrig);
+//	   Document doc2=pdfUtil2.createPdfDoc();
+//	   System.out.println(doc2.getPdfDocument().getCatalog().getPdfObject());
+//	   //PdfDocument pdfdoc=doc2.getPdfDocument();
+//	   for(Entry<String, Integer> entry:pdfUtil.getCatalogMap().entrySet()){
+//		   
+//		   String title=entry.getKey();
+//		   String page=entry.getValue()+"";	 
+//		   if(countInString(title, ".")==0){
+//			   pdfUtil2.addParagraph(doc2, title+"......."+page);
+//		   }else if(countInString(title, ".")==1){
+//			   pdfUtil2.addParagraph(doc2, title+"......."+page);
+//		   }else{
+//
+//		   }		   		   
+//	   }
+//	   doc2.close();
+	   
 	   long now = System.currentTimeMillis();
-       System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:" + DEST2);
+       System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:"+url);
 
    }  
-	
+   
+   public static int countInString(String str1, String str2) {
+		int total = 0;
+		for (String tmp = str1; tmp != null && tmp.length() >= str2.length();){
+		  if(tmp.indexOf(str2) == 0){
+		    total++;
+		    tmp = tmp.substring(str2.length());
+		  }else{
+		    tmp = tmp.substring(1);
+		  }
+		}
+		return total;
+	}
 	
 }
