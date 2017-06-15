@@ -276,28 +276,22 @@
 	  
 	  //****************流程图Begin**************************************************
 	  function setflowChartLayoutContent(planSn){
-				$.ajax({
-						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_picture_getPicByPlanSn.action",
-						dataType : "json",
-						data : {
-							preplanSn:planSn,
-						
-						},
-						success : function(data) {
-
-							if(data.length>0){
-								var htmlMsg= '<img src="'+data[0].imgUrl+'" class="img-responsive">';
-								$('#flowChartDetailPageMsg').html(htmlMsg);  
-							}
+			$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_flowChartContent_getFlowChartContentByPreplanSn.action",
+					dataType : "json",
+					data : {
+						preplanSn:planSn						
+					},
+					success : function(data) {
+						$('#flowChartDetailPageMsg').html(data.content);	      
+					},
+					error: function(){
 							
-							    
-						},
-						error: function(){
-							
-						}
-						
-					});	
+					}
+					
+			});	
+	
 			 		
 	  }
 	  //****************流程图End**************************************************
