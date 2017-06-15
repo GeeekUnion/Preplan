@@ -187,6 +187,7 @@
     			// 附加到Form  
     			form.append(set_input);  
     			// 提交表单  
+    			$(document.body).append(form);
 			    form.submit();  
 			    //return false自动刷新
 			    return false;         

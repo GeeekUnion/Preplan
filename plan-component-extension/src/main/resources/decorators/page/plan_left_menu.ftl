@@ -18,56 +18,71 @@
                             <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
                             <div class="sidebar-toggler"> </div>
                             <!-- END SIDEBAR TOGGLER BUTTON -->
-                        </li>                     
+                        </li>       
+                              
                         <li class="nav-item " id="navPlanIndexLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action" class="nav-link nav-toggle" >
                                 <i class="icon-home"></i>
                                 <span class="title">主页</span>                                
                             </a>                            
                         </li>  
+                        <#if hasPriv('preplan110-1')==true>        
                         <li class="nav-item" id="navPlanEditLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" class="nav-link nav-toggle">
                                 <i class=" icon-wrench"></i>
                                 <span class="title">预案编制</span>
                                 <span class="selected"></span>
                             </a>
-                        </li>   
+                        </li>  
+                        </#if>	 
+                        <#if hasPriv('preplan110-2')==true>  
                         <li class="nav-item  " id="navPlanReviewLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" class="nav-link nav-toggle">
                                 <i class=" fa fa-calendar-check-o"></i>
                                 <span class="title">预案审核</span>
                             </a>
-                        </li>      
+                        </li>  
+                        </#if>	 
+                        <#if hasPriv('preplan110-3')==true>     
                         <li class="nav-item  " id="navPlanExecuteLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_execute .action" class="nav-link nav-toggle">
                                 <i class="fa fa-play "></i>
                                 <span class="title">预案执行</span>
                             </a>
-                        </li>    
+                        </li>  
+                        </#if>	 
+                        <#if hasPriv('preplan110-4')==true>    
                         <li class="nav-item " id="navPlanReviseLi"> 
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_revise_do.action" class="nav-link nav-toggle">
                                 <i class="fa fa-edit"></i>
                                 <span class="title">预案修订</span>
                             </a>
                         </li> 
+                        </#if>	 
+                        <#if hasPriv('preplan110-5')==true>  
                         <li class="nav-item  " id="navPlanListLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_list_do.action" class="nav-link nav-toggle">
                                 <i class="fa fa-list"></i>
                                 <span class="title">预案列表</span>
                             </a>
                         </li>  
+                        </#if>	 
+                        <#if hasPriv('preplan110-6')==true>  
                         <li class="nav-item " id="navPlanShowLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_drill.action" class="nav-link nav-toggle">
                                 <i class="fa fa-circle-o-notch"></i>
                                 <span class="title">预案演练</span>
                             </a>
                         </li>
+                        </#if>	 
+                        <#if hasPriv('preplan110-7')==true>  
                         <li class="nav-item " id="navPlanSrcLi">
                               <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
                                 <i class="fa fa-cogs"></i>
                                 <span class="title">地图</span>
                             </a>
-                        </li>                                                        
+                        </li>   
+                        </#if>	                                                     
                     </ul>
                     <!-- END SIDEBAR MENU -->
                     <!-- END SIDEBAR MENU -->

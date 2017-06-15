@@ -60,7 +60,7 @@
                         		swal({title: "保存成功!",type: "success",confirmButtonText: "确认"});
 							}else{
 								//判断是否为末尾
-								if(order=="0039"){
+								if(order=="0040"){
 									//触发完成编制事件
 									overPlan(planSn);			
 								}else{

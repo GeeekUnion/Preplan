@@ -108,6 +108,7 @@
     			set_input.attr('value', planSn); 
     			// 附加到Form  
     			form.append(set_input);  
+    			$(document.body).append(form);
     			// 提交表单  
 			    form.submit();  
 			    //return false自动刷新

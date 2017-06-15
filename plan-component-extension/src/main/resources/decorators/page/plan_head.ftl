@@ -63,8 +63,8 @@
             <!-- END HEADER INNER -->
         </div>
         <!-- END HEADER -->   
-        
-	<script type="text/javascript">
+
+	<script type="text/javascript">	
 	
 	$(function(){
 		$.ajax({
@@ -100,7 +100,7 @@
 			error:function(data){
 				swal({
 					title: "请先登录!",
-					text: '未知错误，请确定您已经登录!<a href="${pageContext.request.contextPath}/plan" style="color:#F8BB86">请点击此处登录</a>',
+					text: '您还未登录!<a href="${pageContext.request.contextPath}/plan" style="color:#F8BB86">请点击此处登录</a>',
 					type: "error",
 					html:true,
 					confirmButtonText: "确认"  
@@ -149,10 +149,11 @@
 		set_input.attr('value', planSn); 
 		// 附加到Form  
 		form.append(set_input);  
+		$(document.body).append(form);
 		// 提交表单  
 	    form.submit();  
 	    //return false自动刷新
 	    return false;         
 	}
 	
-</script>    
+	</script>   
