@@ -47,7 +47,13 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			//没那么简单
 			jo.put("id", d.getId());
 			jo.put("drillSn", d.getDrillSn());
-			jo.put("drillTime", d.getDrillTime().toString());
+			if(null!=d.getDrillTime().toString()||d.getDrillTime().toString().length()>0){
+				jo.put("drillTime", d.getDrillTime().toString());
+			}else{
+				jo.put("drillTime", "");
+			}
+			
+			
 			jo.put("drillContent", d.getDrillContent());
 			jo.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
 			jo.put("drillPreplanName", d.getPreplan().getPreplanName());
@@ -73,7 +79,7 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 	public JSONArray queryPlan(String orgCode) {
 		 String hql="from Preplan p where p.responDept like '"+orgCode+"%'";
 		 System.out.println(hql);
-		ArrayList <Preplan> List= (ArrayList<Preplan>) baseDAO.getListBySql(hql, Preplan.class);
+		ArrayList <Preplan> List= (ArrayList<Preplan>) baseDAO.getListByHql(hql, Preplan.class);
 		JSONArray array =new JSONArray();
 		for(Preplan d:List){
 			JSONObject jo = new JSONObject();

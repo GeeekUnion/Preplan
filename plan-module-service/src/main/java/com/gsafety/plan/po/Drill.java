@@ -60,7 +60,7 @@ public class Drill implements Serializable{
 		this.drillContent = drillContent;
 	}
 	@OneToOne(cascade = {CascadeType.ALL})    
-	@JoinColumn(name = "preplan_sn", unique = true,referencedColumnName="preplan_sn")    
+	@JoinColumn(name = "preplan_sn", referencedColumnName="preplan_sn")    
 	public Preplan getPreplan() {
 		return preplan;
 	}
