@@ -71,6 +71,7 @@
 	                    { "data": "drillSn" },
 	                    { "data": "drillPreplanName" },
 	                    { "data": "drillNumOfParticipants" },
+	                    { "data": "drillTime" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -106,7 +107,9 @@
 		//查看并编辑演练内容	
 		function alterDrill(drillContent){
 		console.log(drillContent);
-		
+		var xhedit=$('#xheditor2').xheditor();
+        xhedit.setSource(drillContent);
+        
 		$('#static').modal('show')
 		}
   
@@ -141,7 +144,9 @@
 		//保存提交
 	function saveDrill(){
 	 preplanSn=$("#preplanSelect").val();
+	 
 	 var drillNumOfParticipants=$("#nums").val();
+	
 	 var xhedit=$('#xheditor').xheditor();
      var drillContent=xhedit.getSource();
      console.log(drillContent);
@@ -225,6 +230,7 @@
 									<th>预案演练编号</th>
 									<th>预案名称</th>
 									<th>预案演练人数</th>
+									<th>预案演练时间</th>
 									<th>预案演练内容</th>
 								</tr>
 							</thead>

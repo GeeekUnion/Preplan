@@ -61,19 +61,88 @@
 				<div style=" width:100%; height:500px;   border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
-           
+            
+                              
+                              
 				<#include "/decorators/plan_map_content.ftl">
 
 
 
 
 				<!-- END MAP CONTENT-->
+				
 			</div>
 			<!-- END CONTENT BODY -->
 		</div>
 		<!-- END CONTENT -->
 	</div>
 	<!-- END CONTAINER -->
+	<!--Modals-->
+               <div id="staticA" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">新增点</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    
+                                                    <!-- BEGIN FORM-->
+	                                        <form action="#" id="form_sample_1" class="form-horizontal">
+	                                            <div class="form-body">
+                                                <div class="alert alert-danger display-hide">
+                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <div class="alert alert-success display-hide">
+                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                                                    
+                                                   <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点经度
+                                                        <span class="longitude"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="longitude" name="text" type="text" class="form-control" value=""/> </div>
+                                                </div>
+                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点纬度
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id ="latitude" name="latitude" type="text" class="form-control" value="" /> </div>
+                                                </div>    
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">资源点名称
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventoryName" type="text" class="form-control" value=""/> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">负责人
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventoryPrincipal" type="text" class="form-control" value="" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">负责人联系方式
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input name="inventoryPrincipalPhone" type="text" class="form-control" value=""/> </div>
+                                                </div>
+               
+                                        </form>
+                                        <!-- END FORM-->
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="saveInventory()"> 提交</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                              <!--End Modals-->   
 	<#include "/decorators/plan_footer.ftl">
 	<!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
@@ -88,6 +157,7 @@
 	<script type="text/javascript"
 		src="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.validate.min.js"></script>
+	
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -468,29 +538,8 @@
     
     
     
-     $(function(){
-      //update的相关方法↓
-	//提交 
-	$('#submit2').click(function(){
-			$('#ffUpdate').form('submit', {    
-			  
-			    url:'preplan_inventory_update.action',           
-			    success:function(data){
-			    	var result = eval('(' + data + ')');
-			    	if(result.status=='ok'){
-			    		$.messager.alert("提示信息","修改成功！");
-						$("#ffUpdate").form("reset");
-						//关闭窗体
-						$("#winUpdate").window("close");
-						//刷新dg
-						$("#dg").datagrid("reload");
-				   	}else{
-				   		$.messager.alert("提示信息","修改失败！",'error');
-					}
-			    }    
-			});
-		
-	})
+   
+	
     	//Add的相关方法↓
  	      //重置
 	$("#reset").click(function(){
@@ -520,10 +569,41 @@
 		
 	})
 	
-	})
 	
 	
-	
+	 //新建站点
+    function AddRe(s,w){
+     $("#longitude").val(s);
+     $("#latitude").val(w);
+     console.log(s+'----'+w);
+     $('#staticA').modal('show');
+    }
+	//
+	function saveInventory(){
+	var longitude= $("#longitude").val();
+	var latitude=$("#latitude").val();
+	var inventoryName=$("#inventoryName").val();
+	var inventoryPrincipal=$("#inventoryPrincipal").val();
+	var inventoryPrincipalPhone=$("#inventoryPrincipalPhone").val();
+	$.ajax({    
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_inventory_save.action',
+	dataType:"json",
+	data:{
+	longitude:longitude,
+	latitude:latitude,
+	inventoryName:inventoryName,
+	inventoryPrincipal:inventoryPrincipal,
+	inventoryPrincipalPhone:inventoryPrincipalPhone
+	     },	  
+	success:function(data){    
+	if(data.status=="ok"){
+	swal("提交成功");
+	}else{
+	swal("提交失败");
+	}
+		                 }
+	   })
+	}
 
 
 

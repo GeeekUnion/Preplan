@@ -37,12 +37,13 @@ public class InventoryAction extends ListAction<Inventory> {
 	 
 	 private int id;
 	 private String code; //用来转化成id的
+	 private String inventoryPrincipal;   //负责人
+	 private String inventoryPrincipalPhone;  //负责人电话
 	 private String inventoryName;
 	 private String inventorySn;      
 	 private Double longitude;   //经度
 	 private Double latitude;    //纬度
-     private String inventoryPrincipal;   //负责人	
-     private String inventoryPrincipalPhone;  //负责人电话
+   
 	 private String idType;              //判断各种资源点类型
   
 	
@@ -248,16 +249,7 @@ public class InventoryAction extends ListAction<Inventory> {
 
 
 
-		public String getInventoryName() {
-			return inventoryName;
-		}
-
-
-
-
-		public void setInventoryName(String inventoryName) {
-			this.inventoryName = inventoryName;
-		}
+		
 
 
 
@@ -298,30 +290,7 @@ public class InventoryAction extends ListAction<Inventory> {
 			this.latitude = latitude;
 		}
 
-		public String getInventoryPrincipal() {
-			return inventoryPrincipal;
-		}
-
-
-
-
-		public void setInventoryPrincipal(String inventoryPrincipal) {
-			this.inventoryPrincipal = inventoryPrincipal;
-		}
-
-
-
-
-		public String getInventoryPrincipalPhone() {
-			return inventoryPrincipalPhone;
-		}
-
-
-
-
-		public void setInventoryPrincipalPhone(String inventoryPrincipalPhone) {
-			this.inventoryPrincipalPhone = inventoryPrincipalPhone;
-		}
+		
 
 
 
@@ -371,6 +340,32 @@ public class InventoryAction extends ListAction<Inventory> {
 		public void setIdType(String idType) {
 			this.idType = idType;
 		}
+
+		public String getInventoryPrincipal() {
+			return inventoryPrincipal;
+		}
+
+		public void setInventoryPrincipal(String inventoryPrincipal) {
+			this.inventoryPrincipal = inventoryPrincipal;
+		}
+
+		public String getInventoryPrincipalPhone() {
+			return inventoryPrincipalPhone;
+		}
+
+		public void setInventoryPrincipalPhone(String inventoryPrincipalPhone) {
+			this.inventoryPrincipalPhone = inventoryPrincipalPhone;
+		}
+
+		public String getInventoryName() {
+			return inventoryName;
+		}
+
+		public void setInventoryName(String inventoryName) {
+			this.inventoryName = inventoryName;
+		}
+		
+		
 
 		
 }

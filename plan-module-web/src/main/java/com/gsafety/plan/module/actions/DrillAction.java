@@ -3,6 +3,7 @@ package com.gsafety.plan.module.actions;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.UUID;
 
@@ -88,7 +89,8 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     		d.setDrillDepartment(orgName);
     		d.setDrillContent(drillContent);
     		d.setDrillNumOfParticipants(drillNumOfParticipants);
-    		//d.setDrillTime(LocalDate.now()); 
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    		d.setDrillTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis()))); 
     	    preplan=preplanService.getByPpSn(preplanSn);
     		d.setPreplan(preplan);
     		drillService.save(d);
