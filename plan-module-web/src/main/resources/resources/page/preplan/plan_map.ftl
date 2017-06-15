@@ -95,6 +95,20 @@
                                                 <div class="alert alert-success display-hide">
                                                     <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                                                     
+                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">选择站点类型
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-4">
+                                                         <select class="form-control" name="select" id="iType">
+                                                              <optionz id ="s">选择</option>
+                                                              <option id="inventory">资源点</option>
+                                                              <option id="hazard">危险源</option>
+                                                              <option id="emergencyResponseTeam">应急队伍</option>
+                                                              <option id="protectionObject">防护目标</option>
+                                                         </select>
+                                                    </div>
+                                              </div>
                                                    <div class="form-group">
                                                     <label class="control-label col-md-3">资源点经度
                                                         <span class="longitude"> * </span>
@@ -102,6 +116,7 @@
                                                     <div class="col-md-6">
                                                         <input id="longitude" name="text" type="text" class="form-control" value=""/> </div>
                                                 </div>
+                                                
                                                  <div class="form-group">
                                                     <label class="control-label col-md-3">资源点纬度
                                                         <span class="required"> * </span>
@@ -114,21 +129,21 @@
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input name="inventoryName" type="text" class="form-control" value=""/> </div>
+                                                        <input id="inventoryName" name="inventoryName" type="text" class="form-control" value=""/> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">负责人
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input name="inventoryPrincipal" type="text" class="form-control" value="" /> </div>
+                                                        <input id="inventoryPrincipal" name="inventoryPrincipal" type="text" class="form-control" value="" /> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">负责人联系方式
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input name="inventoryPrincipalPhone" type="text" class="form-control" value=""/> </div>
+                                                        <input id="inventoryPrincipalPhone" name="inventoryPrincipalPhone" type="text" class="form-control" value=""/> </div>
                                                 </div>
                
                                         </form>
@@ -573,18 +588,23 @@
 	
 	 //新建站点
     function AddRe(s,w){
+    $("#form_sample_1").empty();
      $("#longitude").val(s);
      $("#latitude").val(w);
      console.log(s+'----'+w);
      $('#staticA').modal('show');
     }
-	//
+	//保存方法
 	function saveInventory(){
+	 
 	var longitude= $("#longitude").val();
 	var latitude=$("#latitude").val();
 	var inventoryName=$("#inventoryName").val();
 	var inventoryPrincipal=$("#inventoryPrincipal").val();
 	var inventoryPrincipalPhone=$("#inventoryPrincipalPhone").val();
+	var iType=$("#iType").val();
+	
+	
 	$.ajax({    
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_inventory_save.action',
 	dataType:"json",
@@ -593,11 +613,13 @@
 	latitude:latitude,
 	inventoryName:inventoryName,
 	inventoryPrincipal:inventoryPrincipal,
-	inventoryPrincipalPhone:inventoryPrincipalPhone
+	inventoryPrincipalPhone:inventoryPrincipalPhone,
+	iType:iType
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){
 	swal("提交成功");
+    loadTable();
 	}else{
 	swal("提交失败");
 	}

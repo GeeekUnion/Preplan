@@ -14,11 +14,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
-import com.gsafety.plan.po.EmergencyResponseTeam;
-import com.gsafety.plan.po.Hazard;
-import com.gsafety.plan.po.Inventory;
-import com.gsafety.plan.po.ProtectionObject;
-import com.gsafety.plan.po.Supply;
+import com.gsafety.plan.po.*;
+
+
 import com.gsafety.plan.service.EmergencyResponseTeamService;
 import com.gsafety.plan.service.HazardService;
 import com.gsafety.plan.service.InventoryService;
@@ -44,6 +42,8 @@ public class InventoryAction extends ListAction<Inventory> {
 	 private Double longitude;   //经度
 	 private Double latitude;    //纬度
    
+	 private Double lo;   //传过来的event经度
+	 private Double la;    //传过来的event纬度
 	 private String idType;              //判断各种资源点类型
   
 	
@@ -77,14 +77,14 @@ public class InventoryAction extends ListAction<Inventory> {
 
     }
     
-   //查询所有Inventory
+   //查询所有10公里内的Inventory
  	public String queryByPage() throws IOException{
  		String str="";
  		//根据关键词，决定查询类型
  		if(clickType==null||clickType==""){
- 			str=inventoryService.getPage(page, rows,clickType);
+ 			str=inventoryService.getPage(page, rows,clickType,lo,la);
  		}else if(clickType.equalsIgnoreCase("inventory")){
- 			str=inventoryService.getPage(page, rows,clickType);
+ 			str=inventoryService.getPage(page, rows,clickType,lo,la);
  		}else if(clickType.equalsIgnoreCase("hazard")){
  			 str=inventoryService.getPageHazard(page, rows,clickType);
  		}else if(clickType.equalsIgnoreCase("emergencyResponseTeam")){
@@ -102,8 +102,17 @@ public class InventoryAction extends ListAction<Inventory> {
  	
  	
  	
- 	
- 	
+ 	//根据id获得对应inventory
+ 	public String queryInventoryById(){
+ 		Inventory i = inventoryService.get(Inventory.class, id);
+ 		jsonObject.put("inventoryName", i.getInventoryName()); 
+ 		jsonObject.put("inventorySn", i.getInventorySn());
+ 		jsonObject.put("longitude", i.getLongitude());
+ 		jsonObject.put("latitude", i.getLatitude());
+ 		jsonObject.put("inventoryPrincipal", i.getInventoryPrincipal());
+ 		jsonObject.put("inventoryPrincipalPhone", i.getInventoryPrincipalPhone());
+ 		return "jsonObject";
+ 	}
  	
  	
  	
@@ -166,14 +175,13 @@ public class InventoryAction extends ListAction<Inventory> {
     public String update(){
     	jsonObject.put("status", "ok");
 		try{
-			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 			Inventory i = inventoryService.get(Inventory.class,id);
 			i.setLatitude(latitude);
 			i.setLongitude(longitude);
 			i.setInventoryName(inventoryName);
 			i.setInventoryPrincipal(inventoryPrincipal);
 			i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
-		    i.setInventorySn(uuid);
+		    i.setInventorySn(inventorySn);
 			inventoryService.update(i);
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
@@ -363,6 +371,22 @@ public class InventoryAction extends ListAction<Inventory> {
 
 		public void setInventoryName(String inventoryName) {
 			this.inventoryName = inventoryName;
+		}
+
+		public Double getLo() {
+			return lo;
+		}
+
+		public void setLo(Double lo) {
+			this.lo = lo;
+		}
+
+		public Double getLa() {
+			return la;
+		}
+
+		public void setLa(Double la) {
+			this.la = la;
 		}
 		
 		

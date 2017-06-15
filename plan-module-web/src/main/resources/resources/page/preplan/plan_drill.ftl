@@ -66,7 +66,7 @@
 				  	"searching": true,
 				  	"processing": true,
 			        "columns": [
-			            { "data": "drillContent", "visible":false },
+			            { "data": "id", "visible":false },
 	                    { "data": "orgName", align:"center" },
 	                    { "data": "drillSn" },
 	                    { "data": "drillPreplanName" },
@@ -78,7 +78,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
+				            return '<a  class="btn blue" onclick="alterDrill(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-edit">查看 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
@@ -105,12 +105,23 @@
 			} );
 			
 		//查看并编辑演练内容	
-		function alterDrill(drillContent){
-		console.log(drillContent);
+		function alterDrill(id){
+		console.log(id);
 		var xhedit=$('#xheditor2').xheditor();
-        xhedit.setSource(drillContent);
-        
-		$('#static').modal('show')
+		$.ajax({
+		url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryDrillById.action',
+		dataType:"json",	  
+		method:"POST",
+		data:{
+	     id:id
+	     },	 
+		success:function(data){    
+			   console.log(data);
+			   xhedit.setSource(data.drillContent);
+			   $('#id').val(id);
+			}
+		})
+		$('#staticUpdate').modal('show')
 		}
   
   
@@ -122,18 +133,17 @@
 	$.ajax({
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
 	dataType:"json",	  
+	method:'POST',
 	success:function(data){    
 	        $("#preplanSelect").empty();
 		    var html="<option>"+"选择"+"</option>"
 		    for(var i=0;i<data.length;i++){
 		    	var co=data[i];
 		    	console.log(co);
-		    	
 		        html=html+'<option value="'+co['preplanSn']+'">'+co['preplanName']+'</option>'    
-		    	$("#preplanSelect").append(html);
-			
 		    }
-		    $('#static2').modal('show')
+		    $("#preplanSelect").append(html);
+		    $('#staticAdd').modal('show')
 		    
 		   
 		}
@@ -144,15 +154,14 @@
 		//保存提交
 	function saveDrill(){
 	 preplanSn=$("#preplanSelect").val();
-	 
 	 var drillNumOfParticipants=$("#nums").val();
-	
 	 var xhedit=$('#xheditor').xheditor();
      var drillContent=xhedit.getSource();
      console.log(drillContent);
       
 	$.ajax({    
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
+	method:'POST',
 	dataType:"json",
 	data:{
 	preplanSn:preplanSn,
@@ -169,7 +178,29 @@
 	   })
 	               }	
 		
-		
+		//更新内容
+	function updateDrill(){
+	 var id= $('#id').val();
+	 console.log();
+	 var xhedit=$('#xheditor2').xheditor();
+     var drillContent=xhedit.getSource();
+	$.ajax({    
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_update.action',
+	method:'POST',
+	dataType:"json",
+	data:{
+	id:id,
+	drillContent:drillContent
+	     },	  
+	success:function(data){    
+	if(data.status=="ok"){
+	swal("提交成功");
+	}else{
+	swal("提交失败");
+	}
+		                 }
+	     })
+	                     }	
 		
 </script>
      <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
@@ -241,29 +272,30 @@
 				</div> 
 
                   <!--Modals-->
-               <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+               <div id="staticUpdate" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">Confirmation</h4>
+                                                        <h4 class="modal-title">查看内容</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                     
                                                     <textarea id="xheditor2" class="xheditor {skin:'default'}">
+                                                  
                                                     </textarea>
-                                                    
+                                                    <input id="id" type="text" style="display:none" value="">
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green" onclick=""> 提交</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="updateDrill()"> 提交</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                               <!--End Modals-->      
     <!--Modals-->
-               <div id="static2" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+               <div id="staticAdd" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -300,7 +332,7 @@
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                        <input type="text" id="nums" name="drillNumOfParticipants" data-required="1" class="form-control"  value="drillNumOfParticipants"/> </div>
+                                                        <input type="text" id="nums" name="drillNumOfParticipants" data-required="1" class="form-control"  value=""/> </div>
                                                 </div>
                                                
                                            

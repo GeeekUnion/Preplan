@@ -75,6 +75,16 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	  		out().close();
 	    	return "jsonArray";
      }
+     public String queryDrillById(){
+    	 Drill d=drillService.get(Drill.class, id);
+    	 jsonObject.put("drillContent", d.getDrillContent());
+    	 
+    	 
+    	 return "jsonObject";
+     }
+     
+     
+     
      public String save(){
     	 jsonObject.put("status", "ok");
     	 Drill d=new Drill();
@@ -94,6 +104,17 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     	    preplan=preplanService.getByPpSn(preplanSn);
     		d.setPreplan(preplan);
     		drillService.save(d);
+		} catch (Exception e) {
+			jsonObject.put("status", "nook");
+		}
+    	  return "jsonObject";
+     } 
+     public String update(){
+    	 jsonObject.put("status", "ok");
+    	 Drill d=drillService.get(Drill.class, id);
+    	 try {
+    		d.setDrillContent(drillContent);
+    		drillService.update(d);
 		} catch (Exception e) {
 			jsonObject.put("status", "nook");
 		}
