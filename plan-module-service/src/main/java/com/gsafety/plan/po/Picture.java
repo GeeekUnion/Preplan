@@ -21,7 +21,7 @@ public class Picture implements Serializable{
 	private int id;
 	private String imgUrl;//图片链接
 	private Preplan preplanSn;//预案sn  
-	private Module moduleSn;//对应模块Sn
+	//private Module moduleSn;//对应模块Sn
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
@@ -46,14 +46,7 @@ public class Picture implements Serializable{
 	public void setPreplanSn(Preplan preplanSn) {
 		this.preplanSn = preplanSn;
 	}
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="module_sn",referencedColumnName="module_sn")
-	public Module getModuleSn() {
-		return moduleSn;
-	}
-	public void setModuleSn(Module moduleSn) {
-		this.moduleSn = moduleSn;
-	}
+
 	
 	
 	

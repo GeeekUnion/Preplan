@@ -46,7 +46,6 @@ public class Preplan implements Serializable {
 	private Set<Domain>domain=new HashSet<Domain>();
 	private Set<Mission>mission=new HashSet<Mission>();
 	private Set<Module> module =new HashSet<Module>();
-	private Picture picture;
 	
 
 
