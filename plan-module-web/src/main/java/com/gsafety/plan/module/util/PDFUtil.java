@@ -1,12 +1,17 @@
 package com.gsafety.plan.module.util;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.events.IEventHandler;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -30,6 +35,7 @@ public class PDFUtil {
 	
     public static String DEST2 = "";//文件路径  
     public static PdfFont sysFont =null;
+    private Map<String, Integer> catalogMap = new LinkedHashMap<String, Integer>();//<标题，页数>
     
     public PDFUtil(String url){
     	try {
@@ -46,8 +52,11 @@ public class PDFUtil {
 	* @return doc
 	* */
    public Document createPdfDoc() throws Exception{   
-	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));   
+	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));   	   
 	   Document doc = new Document(pdfDoc);//构建文档对象  
+//	   TextFooterEventHandler eh= new TextFooterEventHandler(doc);
+//	   pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE,eh);
+
 	   return doc;
    }
    
@@ -70,8 +79,9 @@ public class PDFUtil {
     * */
    public void addHeading1(Document doc,String pg) throws Exception{
 	   Paragraph paragraph = new Paragraph(); 
-	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(16);
+	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(16);	   
 	   doc.add(paragraph);
+	   catalogMap.put(pg, doc.getPdfDocument().getNumberOfPages());
    }
    
 
@@ -82,8 +92,9 @@ public class PDFUtil {
     * */
    public  void addHeading2(Document doc,String pg) throws Exception{
 	   Paragraph paragraph = new Paragraph();  
-	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(14).setFirstLineIndent(14);
+	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(14).setFirstLineIndent(14);	   
 	   doc.add(paragraph);
+	   catalogMap.put(pg, doc.getPdfDocument().getNumberOfPages());
    }
    
    /**
@@ -93,8 +104,9 @@ public class PDFUtil {
     * */
    public  void addHeading3(Document doc,String pg) throws Exception{
 	   Paragraph paragraph = new Paragraph();  
-	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(12);
+	   paragraph.add(pg).setFont(sysFont).setBold().setFontSize(12);  
 	   doc.add(paragraph);
+	   catalogMap.put(pg, doc.getPdfDocument().getNumberOfPages());
    }
    
    
@@ -119,4 +131,16 @@ public class PDFUtil {
 	   Image pic=new Image(imgData);	  
 	   doc.add(pic);
    }
+
+	public Map<String, Integer> getCatalogMap() {
+		return catalogMap;
+	}
+	
+	public void setCatalogMap(Map<String, Integer> catalogMap) {
+		this.catalogMap = catalogMap;
+	}
+
+
+   
+   
 }
