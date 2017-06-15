@@ -39,10 +39,15 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 	}
     //所有的map页面，地图加载产生的查询，都在这个方法下
 	@Override
-	public String getPage(int pageNumber, int pageSize,String clickType) {
+	public String getPage(int pageNumber, int pageSize,String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-			String sql=" select inventory_longitude as longitude,inventory_latitude as latitude,inventory_name as name,inventory_sn as sn ,id ,inventory_iType as iType from pre_inventory  where sqrt(( ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos(((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos (((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)  *  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)))<22";
+		System.out.println(lo);
+		System.out.println(la);
+			String sql=" select inventory_longitude as longitude,inventory_latitude as latitude,inventory_name as name,inventory_sn as sn ,id ,inventory_iType as iType,inventory_pri,inventory_priPhone from pre_inventory  where sqrt(( (("+lo
+					+"-pre_inventory.inventory_longitude)*PI()*12656*cos((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  (("+lo
+					+"-pre_inventory.inventory_longitude)*PI()*12656*cos ((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+					+"-pre_inventory.inventory_latitude)*PI()*12656/180)  *  (("+la+"-pre_inventory.inventory_latitude)*PI()*12656/180)))<22";
 		    ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			for(int i=0;i<List.size();i++){
@@ -53,6 +58,8 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				jo.put("sn", List.get(i)[3]);
 				jo.put("id", List.get(i)[4]);
 				jo.put("iType", List.get(i)[5]);
+				jo.put("inventoryPrincipal", List.get(i)[6]);
+				jo.put("inventoryPrincipalPhone", List.get(i)[7]);
 					array.add(jo);
 			}	
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 

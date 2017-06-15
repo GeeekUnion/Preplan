@@ -31,6 +31,7 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 	
 	//查询事件
 	public String queryEvent(int pageNumber,int pageSize){
+		String str="";
 		String hql="from Event e";
 		PageResult pResult = baseDAO.getPageByHql(hql,pageNumber,pageSize,Event.class);
 		@SuppressWarnings("unchecked")
@@ -48,10 +49,12 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 			}else{
 				jo.put("eventOccurTime", "");
 			}
+			jo.put("longitude", e.getLongitude());
+			jo.put("latitude", e.getLatitude());
 			jo.put("eventOccurPlace", e.getEventOccurPlace());
 			array.add(jo);
 		}
-		String str="{\"total\":"+pResult.getPager().getRecordCount()+",\"rows\":"+array.toString()+"}";
+		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
         return str;
 	}
 

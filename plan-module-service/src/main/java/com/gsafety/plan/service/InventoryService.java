@@ -10,7 +10,7 @@ import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.po.ProtectionObject;
 
 public interface InventoryService extends IBaseService{
-	String getPage(int pageNumber, int pageSize,String clickType);
+	String getPage(int pageNumber, int pageSize,String clickType,double lo,double la);
 	String getPageHazard(int pageNumber, int pageSize,String clickType);
 	String getPageEmergencyResponseTeam(int pageNumber, int pageSize,String clickType);
 	String getPageProtectionObject(int pageNumber, int pageSize,String clickType);
