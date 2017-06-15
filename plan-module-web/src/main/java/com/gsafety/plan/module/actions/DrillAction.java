@@ -20,10 +20,13 @@ import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Drill;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.DrillService;
+import com.gsafety.plan.service.PreplanService;
 @Namespace("/preplan")
 public class DrillAction extends ListAction<Drill> implements SessionAware{
 	 @Resource
 	 private DrillService drillService;
+	 @Resource
+	 private PreplanService preplanService;
 	 private JSONArray jsonArray = new JSONArray();
      private JSONObject jsonObject = new JSONObject();
    //用于封装会话session
@@ -39,7 +42,7 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
  	 private Preplan preplan;
  	 private String drillDepartment;                     //查询部门
      
-    
+     private String preplanSn;
      
      public PrintWriter out() throws IOException {
   		HttpServletResponse response = ServletActionContext.getResponse();
@@ -83,10 +86,11 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     		d.setDrillSn(uuid); 
     		d.setAreaOrgCode(areaOrgCode);
     		d.setDrillDepartment(orgName);
-    		d.setDrillContent("");
+    		d.setDrillContent(drillContent);
     		d.setDrillNumOfParticipants(drillNumOfParticipants);
     		//d.setDrillTime(LocalDate.now()); 
-    		//d.setPreplan(preplan);
+    	    preplan=preplanService.getByPpSn(preplanSn);
+    		d.setPreplan(preplan);
     		drillService.save(d);
 		} catch (Exception e) {
 			jsonObject.put("status", "nook");
@@ -94,12 +98,12 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     	  return "jsonObject";
      }
      //获得当前部门可查预案
-     public JSONArray queryPreplanList(){
+     public String queryPreplanList(){
     	 String orgCode=session.get("preplanOrgCode").toString();
          if(null != orgCode && orgCode.length()>0) {
-           JSONArray jsonArray=drillService.queryPlan(orgCode);
+            jsonArray=drillService.queryPlan(orgCode);
                      } 
-         return jsonArray;
+         return "jsonArray";
      }
      
      
@@ -187,6 +191,18 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	}
 	public void setDrillDepartment(String drillDepartment) {
 		this.drillDepartment = drillDepartment;
+	}
+	public PreplanService getPreplanService() {
+		return preplanService;
+	}
+	public void setPreplanService(PreplanService preplanService) {
+		this.preplanService = preplanService;
+	}
+	public String getPreplanSn() {
+		return preplanSn;
+	}
+	public void setPreplanSn(String preplanSn) {
+		this.preplanSn = preplanSn;
 	}
 	
      

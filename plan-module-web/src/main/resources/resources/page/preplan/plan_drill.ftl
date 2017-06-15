@@ -24,12 +24,35 @@
 	href="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" />
 <!-- END PAGE LEVEL PLUGINS -->
 <style type="text/css">
-#static{
-height:800px;
-midth:400px;
-}
+
 </style>
 	<script type="text/javascript">
+	//初始化preplanSn
+	var preplanSn="";
+	//编辑器
+	$(function(){
+  				$('#xheditor').xheditor({
+  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen,Img',
+  					skin:'default',
+  					html5Upload : false, //此属性必须为false 否则无法上传图片 
+       				//onUpload : uploadImg,   
+       				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
+       				upImgExt:"jpg,jpeg,gif,png"
+  				})
+  			})
+  	//编辑器2,单独的用来修改内容的
+	$(function(){
+  				$('#xheditor2').xheditor({
+  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen,Img',
+  					skin:'default',
+  					html5Upload : false, //此属性必须为false 否则无法上传图片 
+       				//onUpload : uploadImg,   
+       				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
+       				upImgExt:"jpg,jpeg,gif,png"
+  				})
+  			})		
+  	    
+        	
 	$(document).ready(function() {
 				$('#drillTable').dataTable( {
 					"ajax": {
@@ -43,20 +66,19 @@ midth:400px;
 				  	"searching": true,
 				  	"processing": true,
 			        "columns": [
-			           
+			            { "data": "drillContent", "visible":false },
 	                    { "data": "orgName", align:"center" },
 	                    { "data": "drillSn" },
 	                    { "data": "drillPreplanName" },
 	                    { "data": "drillNumOfParticipants" },
-	                    { "data": "drillContent" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillSn+'\')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
+				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
+	                                      +          	'<i class="fa fa-edit">查看 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
@@ -80,59 +102,67 @@ midth:400px;
 			        }
 				});
 			} );
-		//编辑演练内容	
-		function alterDrill(drillSn){
+			
+		//查看并编辑演练内容	
+		function alterDrill(drillContent){
+		console.log(drillContent);
 		
-		console.log(drillSn);
 		$('#static').modal('show')
-		
-    //初始化xhEditor编辑器插件
-    $("#xhEditor").xheditor({
-     tools:'simple',
-     skin:'default',
-     upMultiple:true,
-     upImgUrl: '{editorRoot}/upload.jsp',
-     upImgExt: "jpg,jpeg,gif,bmp,png",
-     onUpload:insertUpload
-    });
-    //xbhEditor编辑器图片上传回调函数
-    function insertUpload(msg) {
-     var _msg = msg.toString();
-     var _picture_name = _msg.substring(_msg.lastIndexOf("/")+1);
-     var _picture_path = Substring(_msg);
-     var _str = "<input type='checkbox' name='_pictures' value='"+_picture_path+"' checked='checked' onclick='return false'/><label>"+_picture_name+"</label><br/>";
-     $("#xhEditor").append(_msg);
-     //$("#uploadList").append(_str);
-    }
-    //处理服务器返回到回调函数的字符串内容,格式是JSON的数据格式.
-    function Substring(s){
-     return s.substring(s.substring(0,s.lastIndexOf("/")).lastIndexOf("/"),s.length);
-    }
+		}
   
-		}	
+  
+  
+  
 		
-		
+		//增加预案，生成表格
 	function addDrill(){
 	$.ajax({
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
 	dataType:"json",	  
 	success:function(data){    
-		    $("#contain").empty();
-		    var html="<option>选择</option>"
+	        $("#preplanSelect").empty();
+		    var html="<option>"+"选择"+"</option>"
 		    for(var i=0;i<data.length;i++){
 		    	var co=data[i];
 		    	console.log(co);
-		       html=html+'<option >'+co['preplanName']+'</option>'    
+		    	
+		        html=html+'<option value="'+co['preplanSn']+'">'+co['preplanName']+'</option>'    
 		    	$("#preplanSelect").append(html);
-				$("#preplanSelect").fadeIn(100);
+			
 		    }
 		    $('#static2').modal('show')
+		    
+		   
 		}
 	})
-
-	
+	               }
+	         
+	               
+		//保存提交
+	function saveDrill(){
+	 preplanSn=$("#preplanSelect").val();
+	 var drillNumOfParticipants=$("#nums").val();
+	 var xhedit=$('#xheditor').xheditor();
+     var drillContent=xhedit.getSource();
+     console.log(drillContent);
+      
+	$.ajax({    
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
+	dataType:"json",
+	data:{
+	preplanSn:preplanSn,
+	drillNumOfParticipants :drillNumOfParticipants,
+	drillContent:drillContent
+	     },	  
+	success:function(data){    
+	if(data.status=="ok"){
+	swal("提交成功");
+	}else{
+	swal("提交失败");
 	}
-		
+		                 }
+	   })
+	               }	
 		
 		
 		
@@ -190,13 +220,12 @@ midth:400px;
 						<table id="drillTable" class="display" cellspacing="0"
 							width="100%">
 							<thead>
-								<tr>
+								<tr><th>  </th>
 								    <th>预案演练部门</th>
 									<th>预案演练编号</th>
 									<th>预案名称</th>
 									<th>预案演练人数</th>
 									<th>预案演练内容</th>
-									<th>操作</th>
 								</tr>
 							</thead>
 
@@ -215,13 +244,13 @@ midth:400px;
                                                     </div>
                                                     <div class="modal-body">
                                                     
-                                                    <textarea id="xhEditor" class="xheditor {skin:'default'}">
+                                                    <textarea id="xheditor2" class="xheditor {skin:'default'}">
                                                     </textarea>
                                                     
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green">Continue Task</button>
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick=""> 提交</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -251,18 +280,21 @@ midth:400px;
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                         <select class="form-control" name="select">
-                                                         <div id="preplanSelect"> </div>
+                                                         <select class="form-control" name="select" id="preplanSelect">
+
                                                          </select>
-                                               </div>
-                                                </div>
+                                                    </div>
+                                              </div>
+                                               <textarea id="xheditor" class="xheditor {skin:'default'}">
+                                                  </textarea>  
+                                                
                                                 
                                              <div class="form-group">
                                                     <label class="control-label col-md-3">预案演练人数
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                        <input type="text" name="name" data-required="1" class="form-control" /> </div>
+                                                        <input type="text" id="nums" name="drillNumOfParticipants" data-required="1" class="form-control"  value="drillNumOfParticipants"/> </div>
                                                 </div>
                                                
                                            
@@ -275,8 +307,8 @@ midth:400px;
                                                     
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">Cancel</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green">Continue Task</button>
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="saveDrill()">提交</button>
                                                     </div>
                                                 </div>
                                             </div>
