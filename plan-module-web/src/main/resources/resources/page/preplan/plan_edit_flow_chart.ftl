@@ -122,16 +122,17 @@
        		
        		//保存图片
        		function submitPicture(){
-       			var imgUrl=$('#imgUrlInput').val();	
+       			var xheditor=$('#xheditor').xheditor()
+       			//var imgUrl=$('#imgUrlInput').val();	
        			var planSn=$('#planSn').val();
-				if(typeof(imgUrl)!="undefined" || imgUrl.length>0){
-						$.ajax({
+				if(typeof(planSn)!="undefined" || planSn.length>0){
+					$.ajax({
 						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_picture_savePirture.action",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_flowChartContent_saveFlowChartContent.action",
 						dataType : "json",
 						data : {
 							preplanSn:planSn,
-							imgUrl:imgUrl
+							content:xheditor.getSource()
 						
 						},
 						success : function(data) {
@@ -168,39 +169,28 @@
 
        		}
        	
-			//意见提交完成
-        	function overReview(msg,opContent){  
-        		/* 
-        		var planSn=$('#detailPlanSn').val();  		    		        		
-				$.ajax({
-					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_review_saveOrUpdateReview.action",
-					dataType : "json",
-					data : {
-						preplanSn:planSn,
-						preplanStatus:msg,
-						opinion:opContent
-					},
-					success : function(data) {
-						console.log(data.status)
-		                swal({       
-							title:"",
-							text: '完成编制,2秒后跳转回预案列表...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_edit_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
-							showConfirmButton: false,
-							html: true   
-							} 
-			    		); 
-			    		setTimeout(function(){
-	                       location.href ="/plan/preplan/plan_review_do.action"; 
-	                    },2000)       
-					},
-					error: function(){
-						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
-					}
-					
-				});	
-				*/
-        	}
+			$(function(){
+				var xheditor=$('#xheditor').xheditor()
+				var planSn=$('#planSn').val();
+				if(typeof(planSn)!="undefined" || planSn.length>0){
+					$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_flowChartContent_getFlowChartContentByPreplanSn.action",
+							dataType : "json",
+							data : {
+								preplanSn:planSn						
+							},
+							success : function(data) {
+								xheditor.setSource(data.content);	      
+							},
+							error: function(){
+							
+							}
+							
+					});	
+				}	
+			
+			})
         	</script>
     </body>
 
