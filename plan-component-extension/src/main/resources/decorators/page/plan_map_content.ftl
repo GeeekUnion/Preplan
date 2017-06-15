@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
+        
        //删除inventory,hazard等等的方法
     	function deleteRe(iType){
     	var iTypeChar =iType.substr(0,1);
@@ -57,15 +58,61 @@
 				
 			}
     //修改Inventory
-    function alterInventory(data){
-     console.log(data);
-    
-    
+    function alterInventory(id){
+ 
+    $.ajax({
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryInventoryById.action',
+	dataType:"json",	
+	data:{
+	id:id
+	},  
+	method:'POST',
+	success:function(data){    
+        console.log(data);
+         $("#longitude").val(data.longitude);
+          $("#latitude").val(data.latitude);
+           $("#inventorySn").val(data.inventorySn);
+            $("#inventoryName").val(data.inventoryName);
+             $("#inventoryPrincipal").val(data.inventoryPrincipal);
+              $("#inventoryPrincipalPhone").val(data.inventoryPrincipalPhone);
+              $("#id").val(id);
+		}
+	})
     $('#static').modal('show')
     }
-    //提交修改
-    function commitAlter(){
     
+    //提交修改Inventory!!!!!!!!!!!!!!
+    function commitAlter(){
+    console.log($("#id").val());
+    var id=$("#id").val();
+    var longitude= $("#longitude").val();
+	var latitude=$("#latitude").val();
+	var inventoryName=$("#inventoryName").val();
+	var inventorySn=$("#inventorySn").val();
+	var inventoryPrincipal=$("#inventoryPrincipal").val();
+	var inventoryPrincipalPhone=$("#inventoryPrincipalPhone").val();
+	$.ajax({    
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_inventory_update.action',
+	dataType:"json",
+	method:"post",
+	data:{
+	id:id,
+	longitude:longitude,
+	latitude:latitude,
+	inventoryName:inventoryName,
+	inventorySn:inventorySn,
+	inventoryPrincipal:inventoryPrincipal,
+	inventoryPrincipalPhone:inventoryPrincipalPhone
+	     },	  
+	success:function(data){    
+	if(data.status=="ok"){
+	swal("提交成功");
+    loadTable();
+	}else{
+	swal("提交失败");
+	}
+		                 }
+	   })
     }
     
    
@@ -80,8 +127,9 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
-					    "data": function ( d ) {
-
+					     "data": {
+				          lo:117.147683,
+				          la:34.220772
 					    }
 					},
 				  	"deferRender": true,
@@ -99,13 +147,15 @@
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
+	                    { "data": "inventoryPrincipal" },
+	                    { "data": "inventoryPrincipalPhone" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterInventory(\''+row.sn+'\')">'
+				            return '<a href="javascript:;" class="btn blue" onclick="alterInventory(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-edit">编制 </i>'
 	                                      +      '</a>'
 	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
@@ -279,6 +329,9 @@
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
+	                   
+	                    
+	                    
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -317,15 +370,10 @@
 <body>
 <div class="portlet light bordered">
                                     <div class="portlet-title">
-                                        <div class="caption">
-                                            <i class="icon-bubble font-green-sharp"></i>
-                                            <span class="caption-subject font-green-sharp bold uppercase">Default Pills</span>
-                                        </div>
+                                        
                                         <div class="actions">
                                             <div class="btn-group">
-                                                <a class="btn green-haze btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
-                                                    <i class="fa fa-angle-down"></i>
-                                                </a>
+                                               
                                                 <ul class="dropdown-menu pull-right">
                                                     <li>
                                                         <a href="javascript:;"> Option 1</a>
@@ -404,6 +452,8 @@
 									<th>资源点名称</th>
 									<th>经度</th>
 									<th>纬度</th>
+									<th>负责人</th>
+									<th>负责人联系方式</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -540,14 +590,14 @@
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input name="inventorySn" type="text" data-required="1" class="form-control" /> </div>
+                                                        <input id="inventorySn" name="inventorySn" type="text" data-required="1" class="form-control" /> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">资源点名称
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input name="inventoryName" type="text" class="form-control" /> </div>
+                                                        <input id="inventoryName" name="inventoryName" type="text" class="form-control" /> </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-md-3">资源点经度
@@ -563,8 +613,21 @@
                                                     <div class="col-md-6">
                                                         <input id ="latitude" name="latitude" type="text" class="form-control" /> </div>
                                                 </div>
-                                                
-                                                
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">负责人
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="inventoryPrincipal" name="inventoryPrincipal" type="text" class="form-control" value="" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">负责人联系方式
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="inventoryPrincipalPhone" name="inventoryPrincipalPhone" type="text" class="form-control" value=""/> </div>
+                                                </div>
+                                                <input id="id" type="text" style="display:none" value="">
                                       
                                         </form>
                                         <!-- END FORM-->
@@ -573,7 +636,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green" onclick=""> 提交</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="commitAlter()"> 提交</button>
                                                     </div>
                                                 </div>
                                             </div>
