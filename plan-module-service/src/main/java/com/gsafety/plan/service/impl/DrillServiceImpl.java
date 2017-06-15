@@ -52,8 +52,6 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			}else{
 				jo.put("drillTime", "");
 			}
-			
-			
 			jo.put("drillContent", d.getDrillContent());
 			jo.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
 			jo.put("drillPreplanName", d.getPreplan().getPreplanName());

@@ -58,26 +58,27 @@ public class Inventory implements Serializable{
 	public String getInventoryPrincipal() {
 		return inventoryPrincipal;
 	}
-
+	public void setInventoryPrincipal(String inventoryPrincipal) {
+		this.inventoryPrincipal = inventoryPrincipal;
+	}
+	@Column(name="inventory_longitude",precision = 12,scale = 7)
 	public Double getLongitude() {
 		return longitude;
 	}
-	@Column(name="inventory_longitude",precision = 12,scale = 7)
+	
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-
+	@Column(name="inventory_latitude",precision = 12,scale = 7)
 	public Double getLatitude() {
 		return latitude;
 	}
-	@Column(name="inventory_latitude",precision = 12,scale = 7)
+	
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public void setInventoryPrincipal(String inventoryPrincipal) {
-		this.inventoryPrincipal = inventoryPrincipal;
-	}
+	
 	@Column(name="inventory_priPhone")
 	public String getInventoryPrincipalPhone() {
 		return inventoryPrincipalPhone;
