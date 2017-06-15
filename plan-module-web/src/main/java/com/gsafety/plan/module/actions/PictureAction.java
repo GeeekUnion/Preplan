@@ -20,6 +20,7 @@ import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Picture;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.PictureServise;
+import com.gsafety.plan.service.PreplanService;
 
 
 
@@ -31,6 +32,9 @@ public class PictureAction extends ListAction<Picture>{
 	
 	@Resource
 	private PictureServise pictureService;
+	
+	@Resource
+    private PreplanService preplanService;   
 	
 	private int id;
     private String imgUrl;//图片链接
@@ -91,8 +95,8 @@ public class PictureAction extends ListAction<Picture>{
     public String savePirture(){
     	jsonObject.put("status", "error");
     	if(imgUrl!=null && preplanSn!=null){
-    		Preplan p=new Preplan();
-    		p.setPreplanSn(preplanSn);
+    	    
+    		Preplan p=preplanService.getByPpSn(preplanSn);
     		Picture oldPic=pictureService.getPicByPlanSn(p);    
     		//如果新增
     		if(null!=oldPic){

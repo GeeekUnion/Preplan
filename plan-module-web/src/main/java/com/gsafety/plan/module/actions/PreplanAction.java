@@ -334,46 +334,50 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
      	            JSONArray jay=pageMsgService.getOrderPageMsg(pageMsgType);
      	            for (int i = 0; i < jay.size(); i++) {
      	            	JSONObject jo = jay.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-     	            	pdfUtil.addHeading1(doc,jo.getString("titleNum")+" "+jo.getString("title"));//一级标题
-     	            	JSONArray sonJay=jo.getJSONArray("son");
-     	                for (int j = 0; j < sonJay.size(); j++) {
-     	                	JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-     	                	pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
-     	                	Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                	
-     	                	if(md!=null){
-     	                		String pg=md.getContent();
-     	                		org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
-     	                		Element body = docParse.body();//放入body片段 
-     	                	
-     	                		//System.out.println(body.ownText());
-     	                		Elements allTag=body.children();//获得儿子标签列表 
-     	                		//如果存在标签，就获标签得内容，不然则直接显示内容     	                		
-     	                		if(allTag.size()>0){
-     	                			for(Element e: allTag){
-     	                				String eContent=e.text();
-     	                				if(eContent.length()>0){//不为空
-     	                					pdfUtil.addParagraph(doc,eContent); 
-     	                				}else if(e.nodeName()=="img"){//插入图片     	  
-     	                					String srcText=e.attr("src");
-     	                					System.out.println("这是img哦："+srcText.substring(srcText.lastIndexOf("\\")+1));
-     	                					pdfUtil.addImg(doc, srcText.substring(srcText.lastIndexOf("\\")+1));
-     	                				}else{
-     	                					
-     	                				}
-     	 	 	                	}
-     	                		}else{
-     	                			 System.out.println(body.text());
-     	                			 pdfUtil.addParagraph(doc,body.text());
-     	                		}
-     	 	                		
-    
-    
-    
-     	                		
-     	                		
-     	                	}
-     	                	
-     	    			}
+     	            	if(jo.getString("titleNum").equals("#")) {
+     	            	    
+     	            	}
+     	            	else {
+                            pdfUtil.addHeading1(doc,jo.getString("titleNum")+" "+jo.getString("title"));//一级标题
+                            JSONArray sonJay=jo.getJSONArray("son");
+                            for (int j = 0; j < sonJay.size(); j++) {
+                                JSONObject sonJo = sonJay.getJSONObject(j); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                                pdfUtil.addHeading2(doc,sonJo.getString("titleNum")+" "+sonJo.getString("title"));//二级标题
+                                Module md=moduleService.getUniqueByPpsnOrder(ppSn,sonJo.getString("order"));                    
+                                if(md!=null){
+                                    String pg=md.getContent();
+                                    String reg = "<br[\\s\\S]*?>";
+                                    pg=pg.replaceAll(reg,"<p>");
+                                    org.jsoup.nodes.Document docParse= Jsoup.parseBodyFragment(pg);//格式化html
+                                    Element body = docParse.body();//放入body片段 
+                                    
+                                    //System.out.println(body.ownText());
+                                    Elements allTag=body.children();//获得儿子标签列表 
+                                    //如果存在标签，就获标签得内容，不然则直接显示内容                              
+                                    if(allTag.size()>0){
+                                        for(Element e: allTag){
+                                            String eContent=e.text();
+                                            if(eContent.length()>0){//不为空
+                                                pdfUtil.addParagraph(doc,eContent);                                                
+                                            }else if(e.nodeName()=="img"){//插入图片          
+                                                String srcText=e.attr("src");
+                                                pdfUtil.addImg(doc, srcText.substring(srcText.lastIndexOf("\\")+1));
+                                            }else if(e.nodeName()=="br"){
+                                                pdfUtil.addParagraph(doc," "); 
+                                            }else{
+                                                
+                                            }
+                                        }
+                                    }else{
+                                         System.out.println(body.text());
+                                         pdfUtil.addParagraph(doc,body.text());
+                                    }
+                                        
+                                }
+                                
+                            }
+     	            	}
+
      				}
      	        myJsonObject.put("status",saveRealFilePath);    
      	          
