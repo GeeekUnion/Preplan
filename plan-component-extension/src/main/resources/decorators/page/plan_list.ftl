@@ -78,15 +78,18 @@
 	                                      +      '</button>'            
 			            	if(row.status=="待完成"){
 			            		showHtml=showHtml+' '
-	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\')">'
+	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\',0)">'
 	                                      +  			'<i class="fa fa-check">提交审核</i>'
 	                                      +      '</button>'
 			            	}else if(row.status=="通过"){
-			            		showHtml=showHtml+' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
-	                                      +  			'<i class="fa fa-search">详情</i>'
+			            		showHtml='<button  class="btn green"onclick="overPlan(\''+row.preplanSn+'\',1)">'
+	                                      +  			'<i class="fa fa-check">申请编制</i>'
 	                                      +      '</button>'
-			            	}else if(row.status=="待审核"){
+	                                      +      ' '
+	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
+	                                      +  			'<i class="fa fa-search">查看详情</i>'
+	                                      +      '</button>'
+			            	}else if(row.status=="待审核" || row.status=="申请编制"){
 			            		showHtml='';
 			            	}else{
 			            	
@@ -193,16 +196,28 @@
 			    return false;         
 			}
 			
+			//改变预案状态
+			function overPlan(planSn,status){
+				var myStatus="";
+				if(status===1){
+					myStatus='申请编制';
+					
+				}else{
+					myStatus='待审核';
+				
+				}	
+				submitMyPlan(planSn,myStatus)	
+			}
 			
 			//提交审核
-        	function overPlan(planSn){   			        		
+        	function submitMyPlan(planSn,myStatus){   			        		
 				$.ajax({
 					type : "POST",
 					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
 					dataType : "json",
 					data : {
 						ppSn:planSn.replace(/'/g,""),
-						preplanStatus:"待审核"
+						preplanStatus:myStatus
 					},
 					success : function(data) {
 						loadPlan();

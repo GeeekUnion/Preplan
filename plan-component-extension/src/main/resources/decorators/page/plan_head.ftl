@@ -5,8 +5,8 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="${pageContext.request.contextPath}/plan/preplan/index.action">
-                        <img src="../static/module/plan-module/resources/theme/assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
+                    <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">
+                        <i class="icon-home fa-2x logo-default"></i>  </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
@@ -81,14 +81,29 @@
 				var html='';
 				if(msgSize>0){
 					for(var i=0;i<msgSize;i++){
-						html=html+'<li>'
+						var myStatus=msgList[i].preplanStatus;
+						if(myStatus=="申请编制"){
+							html=html+'<li>'
+			                     +       '<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action">'
+			                     +           '<span class="details">'
+			                     +               '<span class="label label-sm label-icon label-info">'
+			                     +                   '<i class="fa fa-bell-o"></i>'
+			                     +               '</span> 《'+ msgList[i].preplanName+ '》'+myStatus+'</span>'
+			                     +       '</a>'
+			                     +   '</li>';
+						}else if(myStatus=="待审核"){
+							html=html+'<li>'
 			                     +       '<a href="javascript:;" onclick="getPlanDetailByHead(\''+msgList[i].preplanSn+'\')">'
 			                     +           '<span class="details">'
 			                     +               '<span class="label label-sm label-icon label-info">'
 			                     +                   '<i class="fa fa-bell-o"></i>'
-			                     +               '</span> 《'+ msgList[i].preplanName+ '》待审核</span>'
+			                     +               '</span> 《'+ msgList[i].preplanName+ '》'+myStatus+'</span>'
 			                     +       '</a>'
-			                     +   '</li>';			
+			                     +   '</li>';	
+						}else{
+						
+						}
+								
 					}						
 				}else{
 					html=html+'<li><center class="bg-info">暂无消息</center></li>'

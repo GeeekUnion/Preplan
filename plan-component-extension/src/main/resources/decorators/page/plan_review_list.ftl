@@ -60,10 +60,20 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
-	                                      +  			'<i class="fa fa-search">审核</i>'
-	                                      +      '</button>'
-
+			            	var myHtml="";
+			            	 if(row.status=="待审核"){
+			            	 	myHtml=myHtml+'<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
+		                                      +  			'<i class="fa fa-search">审核</i>'
+		                                      +      '</button>'
+			            	 }else if(row.status=="申请编制"){
+			            	 	myHtml=myHtml+'<button  class="btn blue"onclick="checkPlanOk(\''+row.preplanSn+'\')">'
+		                                      +  			'<i class="fa fa-check">同意申请</i>'
+		                                      +      '</button>'		
+			            	 }else{
+			            	 
+			            	 }
+				             
+							return 	myHtml;
 
 				        }
 			        } ],
@@ -114,4 +124,50 @@
 			    //return false自动刷新
 			    return false;         
 			}
+			
+			//同意申请
+			function  checkPlanOk(planSn){
+				swal({    
+				    title: "确认同意该申请？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
+							dataType : "json",
+							data : {
+									ppSn:planSn.replace(/'/g,""),
+									preplanStatus:"待完成"
+							},
+							success : function() {
+		 						loadPlan();
+		 						swal({
+									title: "操作成功!",
+									text: '',
+									type: "success",
+									timer: 2000, 
+									confirmButtonText: "确认"  
+								});				
+							},
+							error: function(){							
+								swal({
+									title: "操作失败!",
+									text: '未知错误，请重试！',
+									type: "error",
+									timer: 2000, 
+									confirmButtonText: "确认"  
+								});									
+							}
+						});	   
+				    }
+				);
+			}
+			
         </script>
