@@ -67,11 +67,14 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
         return str;
 	}
 	@Override
-	public String getPageHazard(int pageNumber, int pageSize, String clickType) {
+	public String getPageHazard(int pageNumber, int pageSize, String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-			String sql="select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn ,id ,hazard_iType as iType from pre_hazard  where sqrt(( ((117.147683-hazard_longitude)*PI()*12656*cos(((34.220772+hazard_latitude)/2)*PI()/180)/180)  *  ((117.147683-hazard_longitude)*PI()*12656*cos (((34.220772+hazard_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-hazard_latitude)*PI()*12656/180)  *  ((34.220772-hazard_latitude)*PI()*12656/180)))<22";
-		    ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		String sql=" select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn ,id ,hazard_iType as iType from pre_hazard  where sqrt(( (("+lo
+				+"-hazard_longitude)*PI()*12656*cos((("+la+"+hazard_latitude)/2)*PI()/180)/180)  *  (("+lo
+				+"-hazard_longitude)*PI()*12656*cos ((("+la+"+hazard_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+				+"-hazard_latitude)*PI()*12656/180)  *  (("+la+"-hazard_latitude)*PI()*12656/180)))<22";		
+		ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
@@ -89,11 +92,14 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 	}
 	@Override
 	public String getPageEmergencyResponseTeam(int pageNumber, int pageSize,
-			String clickType) {
+			String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-			String sql="select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn, id ,emergencyResponseTeam_iType as iType from pre_emergencyresponseteam where sqrt(( ((117.147683-emergencyResponseTeam_longitude)*PI()*12656*cos(((34.220772+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  ((117.147683-emergencyResponseTeam_longitude)*PI()*12656*cos (((34.220772+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-emergencyResponseTeam_latitude)*PI()*12656/180)  *  ((34.220772-emergencyResponseTeam_latitude)*PI()*12656/180)))<22";
-		    ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		String sql=" select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn, id ,emergencyResponseTeam_iType as iType from pre_emergencyresponseteam  where sqrt(( (("+lo
+				+"-emergencyResponseTeam_longitude)*PI()*12656*cos((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  (("+lo
+				+"-emergencyResponseTeam_longitude)*PI()*12656*cos ((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+				+"-emergencyResponseTeam_latitude)*PI()*12656/180)  *  (("+la+"-emergencyResponseTeam_latitude)*PI()*12656/180)))<22";		   
+			ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
@@ -112,11 +118,14 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 
 	@Override
 	public String getPageProtectionObject(int pageNumber, int pageSize,
-			String clickType) {
+			String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-			String sql="select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn ,id ,protectionObject_iType as iType from pre_protectionobject where sqrt(( ((117.147683-protectionObject_longitude)*PI()*12656*cos(((34.220772+protectionObject_latitude)/2)*PI()/180)/180)  *  ((117.147683-protectionObject_longitude)*PI()*12656*cos (((34.220772+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-protectionObject_latitude)*PI()*12656/180)  *  ((34.220772-protectionObject_latitude)*PI()*12656/180)))<22";
-		    ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		String sql=" select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn ,id ,protectionObject_iType as iType from pre_protectionobject  where sqrt(( (("+lo
+				+"-protectionObject_longitude)*PI()*12656*cos((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  *  (("+lo
+				+"-protectionObject_longitude)*PI()*12656*cos ((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+				+"-protectionObject_latitude)*PI()*12656/180)  *  (("+la+"-protectionObject_latitude)*PI()*12656/180)))<22";
+		 ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
@@ -156,17 +165,27 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 }
     //获取地图上的使用者附近的资源等
 	@Override
-	public JSONArray getMapVicinity() {
+	public JSONArray getMapVicinity(double lo,double la) {
 		//填22，因为好像距离计算有问题
-		 String sql="select inventory_longitude as longitude,inventory_latitude as latitude,inventory_name as name,inventory_sn as sn ,inventory_iType as iType from pre_inventory  where sqrt(( ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos(((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  ((117.147683-pre_inventory.inventory_longitude)*PI()*12656*cos (((34.220772+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)  *  ((34.220772-pre_inventory.inventory_latitude)*PI()*12656/180)))<22"+
-				" UNION "+ 
-				"select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn,hazard_iType as iType from pre_hazard where sqrt(( ((117.147683-hazard_longitude)*PI()*12656*cos(((34.220772+hazard_latitude)/2)*PI()/180)/180)  *  ((117.147683-hazard_longitude)*PI()*12656*cos (((34.220772+hazard_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-hazard_latitude)*PI()*12656/180)  *  ((34.220772-hazard_latitude)*PI()*12656/180)))<22" +
-		        " UNION "+
-				"select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn,emergencyResponseTeam_iType as iType from pre_emergencyresponseteam where sqrt(( ((117.147683-emergencyResponseTeam_longitude)*PI()*12656*cos(((34.220772+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  ((117.147683-emergencyResponseTeam_longitude)*PI()*12656*cos (((34.220772+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-emergencyResponseTeam_latitude)*PI()*12656/180)  *  ((34.220772-emergencyResponseTeam_latitude)*PI()*12656/180)))<22" +
-		        " UNION "+
-				"select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn,protectionObject_iType as iType from pre_protectionobject where sqrt(( ((117.147683-protectionObject_longitude)*PI()*12656*cos(((34.220772+protectionObject_latitude)/2)*PI()/180)/180)  *  ((117.147683-protectionObject_longitude)*PI()*12656*cos (((34.220772+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  ((34.220772-protectionObject_latitude)*PI()*12656/180)  *  ((34.220772-protectionObject_latitude)*PI()*12656/180)))<22" ;
-
-
+		 String sql=" select inventory_longitude as longitude,inventory_latitude as latitude,inventory_name as name,inventory_sn as sn ,inventory_iType as iType from pre_inventory  where sqrt(( (("+lo
+					+"-pre_inventory.inventory_longitude)*PI()*12656*cos((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  (("+lo
+					+"-pre_inventory.inventory_longitude)*PI()*12656*cos ((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+					+"-pre_inventory.inventory_latitude)*PI()*12656/180)  *  (("+la+"-pre_inventory.inventory_latitude)*PI()*12656/180)))<22"
+					+" UNION "
+					+" select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn,hazard_iType as iType from pre_hazard  where sqrt(( (("+lo
+					+"-hazard_longitude)*PI()*12656*cos((("+la+"+hazard_latitude)/2)*PI()/180)/180)  *  (("+lo
+					+"-hazard_longitude)*PI()*12656*cos ((("+la+"+hazard_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+					+"-hazard_latitude)*PI()*12656/180)  *  (("+la+"-hazard_latitude)*PI()*12656/180)))<22"
+					+" UNION "
+					+" select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn,emergencyResponseTeam_iType as iType from pre_emergencyresponseteam  where sqrt(( (("+lo
+					+"-emergencyResponseTeam_longitude)*PI()*12656*cos((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  (("+lo
+					+"-emergencyResponseTeam_longitude)*PI()*12656*cos ((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+					+"-emergencyResponseTeam_latitude)*PI()*12656/180)  *  (("+la+"-emergencyResponseTeam_latitude)*PI()*12656/180)))<22"
+					+" UNION "
+					+" select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn,protectionObject_iType as iType from pre_protectionobject  where sqrt(( (("+lo
+					+"-protectionObject_longitude)*PI()*12656*cos((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  *  (("+lo
+					+"-protectionObject_longitude)*PI()*12656*cos ((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
+					+"-protectionObject_latitude)*PI()*12656/180)  *  (("+la+"-protectionObject_latitude)*PI()*12656/180)))<22";
 		 // String sql="select inventory_longitude,inventory_latitude,inventory_name,inventory_sn from pre_inventory";
         ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
         JSONArray array = new JSONArray();
