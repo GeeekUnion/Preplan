@@ -387,6 +387,7 @@
     	//右键单击Maker出现右键菜单事件
     	function RightClickMaker(marker,point){  	
     	var watchMarker = function(e,ee,marker){//右键查看附近
+    	map.clearOverlays();
     	//重新定位的各种操作
 	    lo=point.lng;
 	    la=point.lat;
