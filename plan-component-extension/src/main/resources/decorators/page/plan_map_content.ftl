@@ -120,16 +120,18 @@
     
     	//显示列表
 	$(document).ready(function() {
-	     loadTable();
+	    
 			} );
         function loadTable(){
+        var clickType="inventory";
 				$('#inventoryTable').dataTable( {
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
 					     "data": {
 				          lo:lo,
-				          la:la
+				          la:la,
+				          "clickType":clickType
 					    }
 					},
 				  	"deferRender": true,
@@ -370,6 +372,57 @@
 				});
 			} 		
 				
+	function eventClick(){
+		$('#eventTable').dataTable( {
+					"ajax": {
+					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_event_queryByPage.action",
+					    "type": "POST",
+					    "data": function ( d ) {
+
+					    }
+					},
+				  	"deferRender": true,
+				  	"searching": true,
+				  	"processing": true,
+				  	"destroy": true,//如果需要重新加载的时候请加上这个
+			        "columns": [
+			            { "data": "eventSn", "visible":false },
+	                    { "data": "eventName", align:"center" },
+	                    { "data": "eventOccurTime" },
+	                    { "data": "eventOccurPlace" },
+	                    { "data": "longitude" },
+	                    { "data": "latitude" },
+	                    { "formatNumber": "preplanTime" }
+	                ],
+	                "columnDefs": [ {
+			            "targets": -1,//最后一列
+			            "data": null,
+			            render: function(data, type, row, meta) {
+				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
+	                                      +          	'<i class="fa fa-edit">查看 </i>'
+	                                      +      '</a>'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  			'<i class="fa fa-times">删除</i>'
+	                                      +      '</a>'
+				        }
+			        } ],
+			        "oLanguage": {
+			            "sLengthMenu": "每页显示 _MENU_ 条",
+			            "sZeroRecords": "没有找到符合条件的数据",
+			            "sInfo": "当前第 _START_ - _END_ 条　共计 _TOTAL_ 条",
+			            "sInfoEmpty": "没有记录",
+			            "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
+			            "sSearch": "搜索",
+			            "sProcessing": "数据加载中...",
+			            "oPaginate": {
+			                "sFirst": "首页",
+			                "sPrevious": "上一页",
+			                "sNext": "下一页",
+			                "sLast": "尾页"
+			            }
+			        }
+				});
+	}			
     </script>
     </head>
 
@@ -412,24 +465,8 @@
                                             <li>
                                                 <a href="#tab_2_4" data-toggle="tab" onclick="protectionObjectClick('protectionObject')"> 防护目标</a>
                                             </li>
-                                            <li class="dropdown">
-                                                <a href="javascript:;" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown"> Dropdown
-                                                    <i class="fa fa-angle-down"></i>
-                                                </a>
-                                                <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                                                    <li>
-                                                        <a href="#tab_2_3" tabindex="-1" data-toggle="tab"> Option 1 </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#tab_2_4" tabindex="-1" data-toggle="tab"> Option 2 </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#tab_2_3" tabindex="-1" data-toggle="tab"> Option 3 </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#tab_2_4" tabindex="-1" data-toggle="tab"> Option 4 </a>
-                                                    </li>
-                                                </ul>
+                                           <li>
+                                                <a href="#tab_2_5" data-toggle="tab" onclick="eventClick()"> 事件</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -571,6 +608,39 @@
 
 				</div>  			
                                             </div>
+                     <div class="tab-pane fade" id="tab_2_5">
+                        <div class="portlet box green" id="eventDiv">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="fa fa-globe"></i>事件信息
+						</div>
+						<div class="actions">
+							<a onClick="addDrill()"
+								class="btn btn-default btn-sm btn-circle"> <i
+								class="fa fa-plus"></i> 新增
+							</a>
+						</div>
+					</div>
+
+					<div class="portlet-body" id="">
+						<table id="eventTable" class="display" cellspacing="0"
+							width="100%">
+							<thead>
+								<tr>
+								    <th>事件编号</th>
+									<th>事件名称</th>
+									<th>发生时间</th>
+									<th>经度</th>
+									<th>纬度</th>
+									<th>事发地点</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+
+						</table>
+					</div>
+				</div> 
+                                            </div>                        
                                         </div>
                                     </div>
                                 </div>
