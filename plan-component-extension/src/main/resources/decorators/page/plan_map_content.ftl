@@ -128,8 +128,8 @@
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
 					     "data": {
-				          lo:117.147683,
-				          la:34.220772
+				          lo:lo,
+				          la:la
 					    }
 					},
 				  	"deferRender": true,
@@ -191,9 +191,11 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
-					    "data": {
-                         "clickType":clickType
-					    }
+					    "data":{
+				          lo:lo,
+				          la:la,
+				          "clickType":clickType
+					             }
 					},
 				  	"deferRender": true,
 				  	"searching": true,
@@ -252,9 +254,11 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
-					    "data": {
-                         "clickType":clickType
-					    }
+					    "data":{
+				          lo:lo,
+				          la:la,
+				          "clickType":clickType
+					             }
 					},
 				  	"deferRender": true,
 				  	"searching": true,
@@ -310,9 +314,11 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_inventory_queryByPage.action",
 					    "type": "POST",
-					    "data": {
-                         "clickType":clickType
-					    }
+					    "data":{
+				          lo:lo,
+				          la:la,
+				          "clickType":clickType
+					             }
 					},
 				  	"deferRender": true,
 				  	"searching": true,
