@@ -78,7 +78,9 @@
 	</div>
 	<!-- END CONTAINER -->
 	<!--Modals-->
+	<div>
                <div id="staticA" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                             <div id="1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -156,8 +158,83 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            </div>
+                                        </div>
                                         </div>
                               <!--End Modals-->   
+                                   <!--Modals-->
+                                   <div>
+               <div id="staticEventAdd" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                         <div id="eventADdd">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">查看内容</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                       <!-- BEGIN FORM-->
+	                                        <form action="#" id="form_sample_eventAdd" class="form-horizontal">
+	                                            <div class="form-body">
+                                                <div class="alert alert-danger display-hide">
+                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
+                                                <div class="alert alert-success display-hide">
+                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>
+                                                    
+                                                
+                                                   <div class="form-group">
+                                                    <label class="control-label col-md-3">经度
+                                                        <span class="longitude"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="longitude" name="longitude" type="text" class="form-control" value=""/> </div>
+                                                </div>
+                                                
+                                                 <div class="form-group">
+                                                    <label class="control-label col-md-3">纬度
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id ="latitude" name="latitude" type="text" class="form-control" value="" /> </div>
+                                                </div>    
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">事件名称
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="eventName" name="eventName" type="text" class="form-control" value=""/> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">发生地点
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="eventOccurPlace" name="eventOccurPlace" type="text" class="form-control" value="" /> </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">上报人
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="personName" name="personName" type="text" class="form-control" value=""/> </div>
+                                                </div>
+               
+                                        </form>
+                                        <!-- END FORM-->
+                                                   
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="saveEvent()"> 提交</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                              <!--End Modals-->     
+             
+             
 	<#include "/decorators/plan_footer.ftl">
 	<!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
@@ -298,19 +375,27 @@
     	var createMarker = function(map){
     	AddRe(s,w);
     	};
+    	var EventMarker =function(map){
+    	addEventF(s,w);
+    	};
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));
+    	markerMenu.addItem(new BMap.MenuItem('生成事件',EventMarker.bind(map)));
     	map.addContextMenu(markerMenu);//给标记添加右键菜单
     	} 
     	
     	//右键单击Maker出现右键菜单事件
     	function RightClickMaker(marker,point){  	
     	var watchMarker = function(e,ee,marker){//右键查看附近
+    	//重新定位的各种操作
+	    lo=point.lng;
+	    la=point.lat;
+	    initResource();
+	    hazardClick("hazard");
+	    emergencyResponseTeamClick("emergencyResponseTeam");
+        protectionObjectClick("protectionObject");
     	
     	
-    	map.clearOverlays(); 
-    	var circle2 = new BMap.Circle(point,5000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
-    	map.addOverlay(circle2);
     	
      
     	}
@@ -335,6 +420,7 @@
     	} 
     //初始化所有资源，目标点
    function initResource(){
+    loadTable();
     opts = {  
                     width : 200,     // 信息窗口宽度  
                     height: 80,     // 信息窗口高度  
@@ -569,7 +655,7 @@
 	
 	
 	
-	 //新建站点
+	 //新建Inventory站点
     function AddRe(s,w){
     $("#form_sample_1").empty();
     
@@ -587,7 +673,17 @@
       console.log("23333333");
    });
 })
-	//保存方法
+ //新建Event事件
+    function addEventF(s,w){
+    
+     $("#staticEventAdd #longitude").val(s);
+     $("#staticEventAdd #latitude").val(w);
+     console.log(s+'----'+w);
+     $('#staticEventAdd').modal('show');
+    }
+  
+
+	//保存addInventory方法
 	function saveInventory(){
 	 
 	var longitude= $("#longitude").val();
@@ -619,7 +715,36 @@
 		                 }
 	   })
 	}
-
+//保存addEvent方法
+	function saveEvent(){
+	 
+	var longitude= $("#staticEventAdd #longitude").val();
+	var latitude=$("#staticEventAdd #latitude").val();
+	var personName=$("#staticEventAdd #personName").val();
+	var eventOccurPlace=$("#staticEventAdd #eventOccurPlace").val();
+	var eventName=$("#staticEventAdd #eventName").val();
+	
+	
+	$.ajax({    
+	url:'${pageContext.request.contextPath}/plan/preplan/preplan_event_save.action',
+	dataType:"json",
+	data:{
+	longitude:longitude,
+	latitude:latitude,
+	personName:personName,
+	eventOccurPlace:eventOccurPlace,
+	eventName:eventName
+	     },	  
+	success:function(data){    
+	if(data.status=="ok"){
+	swal("提交成功");
+    loadTable();
+	}else{
+	swal("提交失败");
+	}
+		                 }
+	   })
+	}
 
 
 

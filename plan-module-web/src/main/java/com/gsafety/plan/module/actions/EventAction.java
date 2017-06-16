@@ -35,7 +35,8 @@ public class EventAction extends ListAction<Event>{
 	private String eventOccurPlace;
 	private Double longitude;
 	private Double latitude;
-	
+	private String eventDescription;
+    private String personName;
 	
 	private String preplanSn;
 	private int page;
@@ -72,6 +73,9 @@ public class EventAction extends ListAction<Event>{
 		try{
 			event.setEventName(eventName);
 			event.setEventOccurPlace(eventOccurPlace);
+			event.setPersonName(personName);
+			event.setLongitude(longitude);
+			event.setLatitude(latitude);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			event.setEventOccurTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
 			String eventSn=new SimpleDateFormat("yyyyMMddHHmmssSSS") .format(System.currentTimeMillis() );
@@ -193,6 +197,26 @@ public class EventAction extends ListAction<Event>{
 
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+
+
+	public PreplanService getPreplanService() {
+		return preplanService;
+	}
+
+
+	public void setPreplanService(PreplanService preplanService) {
+		this.preplanService = preplanService;
+	}
+
+
+	public String getPersonName() {
+		return personName;
+	}
+
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
 	}
 	
 	
