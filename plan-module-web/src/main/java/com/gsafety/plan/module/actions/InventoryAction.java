@@ -72,7 +72,7 @@ public class InventoryAction extends ListAction<Inventory> {
 
     //查询符合经纬度的东西
     public String queryVicinity() throws IOException{
-        jsonArray=inventoryService.getMapVicinity();
+        jsonArray=inventoryService.getMapVicinity(lo,la);
  		return "jsonArray";
 
     }
@@ -86,11 +86,11 @@ public class InventoryAction extends ListAction<Inventory> {
  		}else if(clickType.equalsIgnoreCase("inventory")){
  			str=inventoryService.getPage(page, rows,clickType,lo,la);
  		}else if(clickType.equalsIgnoreCase("hazard")){
- 			 str=inventoryService.getPageHazard(page, rows,clickType);
+ 			 str=inventoryService.getPageHazard(page, rows,clickType,lo,la);
  		}else if(clickType.equalsIgnoreCase("emergencyResponseTeam")){
- 			 str=inventoryService.getPageEmergencyResponseTeam(page, rows,clickType);
+ 			 str=inventoryService.getPageEmergencyResponseTeam(page, rows,clickType,lo,la);
  		}else if(clickType.equalsIgnoreCase("protectionObject")){
- 			 str=inventoryService.getPageProtectionObject(page, rows,clickType);
+ 			 str=inventoryService.getPageProtectionObject(page, rows,clickType,lo,la);
  		}
 
  		out().print(str);

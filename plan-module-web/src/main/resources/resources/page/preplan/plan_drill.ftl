@@ -130,6 +130,9 @@
 		
 		//增加预案，生成表格
 	function addDrill(){
+	 document.getElementById("form_sample_1").reset()
+	
+	
 	$.ajax({
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
 	dataType:"json",	  

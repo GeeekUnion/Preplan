@@ -114,7 +114,7 @@
                                                         <span class="longitude"> * </span>
                                                     </label>
                                                     <div class="col-md-6">
-                                                        <input id="longitude" name="text" type="text" class="form-control" value=""/> </div>
+                                                        <input id="longitude" name="longitude" type="text" class="form-control" value=""/> </div>
                                                 </div>
                                                 
                                                  <div class="form-group">
@@ -188,6 +188,8 @@
 
 </body>
 <script type="text/javascript">
+        var lo=116.404844;
+        var la=39.916706;
 		var points = new Array();
 		var markers = new Array();
 	    var s;//经度
@@ -237,7 +239,9 @@
 			map.panTo(r.point);
 			//alert('您的位置：'+r.point.lng+','+r.point.lat);
 			//console.log(r.point.lng+"MMMMM"+r.point.lat);
-		
+		    //初始化的时候 
+		    lo=r.point.lng;
+		    la=r.point.lat;
 			initResource();
 		}
 		else {
@@ -308,27 +312,7 @@
     	var circle2 = new BMap.Circle(point,5000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
     	map.addOverlay(circle2);
     	
-    	 //ajax显示Maker(Inventory)
-         $.ajax({
- 			url:'preplan_inventory_queryAllInventory.action',
- 			type:'POST',
- 			data:{
- 			},
- 			success:function(res){    
- 		     var data=eval('('+res+')');
-        for (var i = 0; i < data.length; i += 1) {
-		var pointInventory = new BMap.Point(data[i].inventoryLongitude, data[i].inventoryLatitude);
-		//如果资源点在圈内，就让他生产marker并显示出来
-		if(BMapLib.GeoUtils.isPointInCircle(pointInventory,circle2)){
-        var markerInventory = new BMap.Marker(pointInventory);
-	    map.addOverlay(markerInventory);
-     }else{
-     console.log(" this is't in circle");
-     }		
-	}      
-        }         
- 		});	//ajax end
-
+     
     	}
     	var removeMarker = function(e,ee,marker){//右键删除站点
     	console.log(marker);
@@ -350,7 +334,7 @@
 		marker.addContextMenu(markerMenu);//给标记添加右键菜单
     	} 
     //初始化所有资源，目标点
-    function initResource(){
+   function initResource(){
     opts = {  
                     width : 200,     // 信息窗口宽度  
                     height: 80,     // 信息窗口高度  
@@ -362,14 +346,15 @@
  			url:'preplan_inventory_queryVicinity.action',
  			type:'POST',
  			data:{
+ 			lo:lo,
+			la:la
  			},
  			success:function(res){    
  		     var data=eval('('+res+')');
  		    console.log(data);
+ 		    if(null!=data||data.length>0){
       for (var i = 0; i < data.length; i += 1) {
-		
 		type=data[i].type
-
 		//根据type类型，执行不同方法
 		switch(type){
 		case "inventory":
@@ -387,13 +372,11 @@
 		case "protectionObject":
 		protectionObjectType(type,data,i,opts);
 		break;
-		
-		
 		}
-      
-
 	}  
-      
+      }else{
+          
+      }
       
         }         
  		});	//ajax end
@@ -589,11 +572,21 @@
 	 //新建站点
     function AddRe(s,w){
     $("#form_sample_1").empty();
+    
      $("#longitude").val(s);
      $("#latitude").val(w);
      console.log(s+'----'+w);
+     
      $('#staticA').modal('show');
     }
+    //
+    $(function () { $('#staticA').on('hidden.bs.modal', function () {
+     $("#inventoryName").val("");
+      $("#inventoryPrincipal").val("");
+       $("#inventoryPrincipalPhone").val("");
+      console.log("23333333");
+   });
+})
 	//保存方法
 	function saveInventory(){
 	 
