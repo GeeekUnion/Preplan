@@ -55,8 +55,9 @@ public class PDFUtil {
    public Document createPdfDoc() throws Exception{   
 	   PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST2));   	   
 	   Document doc = new Document(pdfDoc);//构建文档对象  
-//	   TextFooterEventHandler eh= new TextFooterEventHandler(doc);
-//	   pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE,eh);
+	   //设置页码
+	   TextFooterEventHandler eh= new TextFooterEventHandler(doc);
+	   pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE,eh);
 
 	   return doc;
    }

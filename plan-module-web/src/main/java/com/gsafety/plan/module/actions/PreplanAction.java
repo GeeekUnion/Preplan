@@ -46,6 +46,7 @@ import com.gsafety.plan.po.Privilege;
 import com.gsafety.plan.po.ResourceRecord;
 import com.gsafety.plan.po.Supply;
 import com.gsafety.plan.service.DomainService;
+import com.gsafety.plan.service.FlowChartContentService;
 import com.gsafety.plan.service.IPersonService;
 import com.gsafety.plan.service.MissionService;
 import com.gsafety.plan.service.ModuleService;
@@ -81,6 +82,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     @Resource
     private PageMsgService pageMsgService;
+    
+    @Resource 
+    private FlowChartContentService  flowChartContentService;
     
     
     @Resource
@@ -651,6 +655,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         if(ppModel.getPreplanSn() != null) {
             pictureService.deletePicByPlanSn(ppModel);
             reviewsService.deleteReviewsByPreplanSn(ppModel.getPreplanSn());
+            flowChartContentService.deleteFLContentByPlanSn(ppModel);;
             if(ppModel.getDomain() != null) {
                 ppModel.getDomain().remove(ppModel.getDomain());
                 preplanService.update(ppModel);

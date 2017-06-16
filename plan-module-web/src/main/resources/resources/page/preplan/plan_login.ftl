@@ -22,49 +22,50 @@
         
          </head>
     <body class=" login">
-        <!-- BEGIN LOGO -->
-        <div class="logo">
-            <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">
-                <img src="#" alt="" /> </a>
-        </div>
-        <!-- END LOGO -->
-        <!-- BEGIN LOGIN -->
-        <div class="content">
-            <!-- BEGIN LOGIN FORM -->
-            <form class="login-form">
-                <h3 class="form-title"><center>预警管理系统登录</center></h3>
-                <div id="error" style="display:none;color:#FF0000;margin:10px 0;">	
-				</div>
-                <div class="alert alert-danger display-hide">
-                    <button class="close" data-close="alert"></button>
-                    <span> 请输入用户名和密码！ </span>
-                </div>
-                <div class="form-group">
-                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                    <label class="control-label visible-ie8 visible-ie9">Username</label>
-                    <div class="input-icon">
-                        <i class="fa fa-user"></i>
-                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username" id="username"/> </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">Password</label>
-                    <div class="input-icon">
-                        <i class="fa fa-lock"></i>
-                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" id="password" /> </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" id="loginBtn" class="btn green pull-right"> 登录 </button>
-                </div>
-
-            </form>
-            <!-- END LOGIN FORM -->
-
-        </div>
-        <!-- END LOGIN -->
-        <!-- BEGIN COPYRIGHT -->
-        <div class="copyright"> 2016 &copy; CUMT </div>
-        <!-- END COPYRIGHT -->
-
+    	<div id="control-heigh">
+	        <!-- BEGIN LOGO -->
+	        <div class="logo" id="logo-area">
+	            <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">
+	              <i class="icon-home fa-2x"></i> </a>
+	        </div>
+	        <!-- END LOGO -->
+	        <!-- BEGIN LOGIN -->
+	        <div class="content" id="content-area">
+	            <!-- BEGIN LOGIN FORM -->
+	            <form class="login-form">
+	                <h3 class="form-title"><center>预警管理系统登录</center></h3>
+	                <div id="error" style="display:none;color:#FF0000;margin:10px 0;">	
+					</div>
+	                <div class="alert alert-danger display-hide">
+	                    <button class="close" data-close="alert"></button>
+	                    <span> 请输入用户名和密码！ </span>
+	                </div>
+	                <div class="form-group">
+	                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+	                    <label class="control-label visible-ie8 visible-ie9">Username</label>
+	                    <div class="input-icon">
+	                        <i class="fa fa-user"></i>
+	                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="用户名" name="username" id="username"/> </div>
+	                </div>
+	                <div class="form-group">
+	                    <label class="control-label visible-ie8 visible-ie9">Password</label>
+	                    <div class="input-icon">
+	                        <i class="fa fa-lock"></i>
+	                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" id="password" /> </div>
+	                </div>
+	                <div class="form-actions">
+	                    <button type="submit" id="loginBtn" class="btn green pull-right"> 登录 </button>
+	                </div>
+	
+	            </form>
+	            <!-- END LOGIN FORM -->
+	
+	        </div>
+	        <!-- END LOGIN -->
+	        <!-- BEGIN COPYRIGHT -->
+	        <div class="copyright" id="copur-area"> 2016 &copy; CUMT </div>
+	        <!-- END COPYRIGHT -->
+		<div>
         
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
@@ -78,7 +79,14 @@
         <!-- END PAGE LEVEL SCRIPTS -->
       
         <script>
-
+			$(function(){
+				var h=document.documentElement.clientHeight ;
+				var logoH=$("#logo-area").outerHeight(true); 
+				var contentH=$("#content-area").outerHeight(true); 
+				var copurH=$("#copur-area").outerHeight(true); 
+				var getM=(h-logoH-contentH-copurH)/2;
+				$('#control-heigh').css("margin-top",getM);				
+			})
         </script>
     </body>
          

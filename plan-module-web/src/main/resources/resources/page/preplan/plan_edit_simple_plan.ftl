@@ -79,7 +79,7 @@
                                     <!-- BEGIN FORM-->
                                     <form action="#" id="form_sample_3" class="form-horizontal">
                                         <div class="form-body">
-                                        	<textarea name="editor1" class="xheditor" style="width:100%;min-height: 450px; " id="xheditor"></textarea>                                           
+                                        	<textarea id="xheditor" name="editor1"  style="width:100%;min-height: 450px; " ></textarea>                                           
                                         </div>
                                         <div class="form-actions">
                                             <div class="row">
@@ -135,6 +135,14 @@
         <!-- END PAGE LEVEL SCRIPTS -->
         <script type="text/javascript">
         	$(function(){
+        		$('#xheditor').xheditor({
+  					tools:'Cut,Copy,Paste,Pastetext,Blocktag,Align,List,Outdent,Indent,Fullscreen,Img',
+  					skin:'default',
+  					html5Upload : false, //此属性必须为false 否则无法上传图片 
+       				//onUpload : uploadImg,   
+       				upImgUrl:"${pageContext.request.contextPath}/plan/preplan/preplan_picture_uploadImg.action",
+       				upImgExt:"jpg,jpeg,gif,png"
+  				})
         		var moduleOrder=$('#moduleOrder').val().replace(/'/g,"");
         		$.ajax({
 					type : "POST",
