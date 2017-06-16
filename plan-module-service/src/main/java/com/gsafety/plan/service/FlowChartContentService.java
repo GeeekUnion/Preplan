@@ -7,5 +7,5 @@ import com.gsafety.plan.po.Preplan;
 public interface FlowChartContentService extends IBaseService{
 
     FlowChartContent getUniqueByPreplanSn(Preplan p);
-
+    void deleteFLContentByPlanSn(Preplan p);
 }

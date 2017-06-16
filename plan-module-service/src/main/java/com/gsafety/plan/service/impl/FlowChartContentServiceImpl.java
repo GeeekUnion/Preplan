@@ -22,4 +22,13 @@ public class FlowChartContentServiceImpl extends BaseServiceImpl implements Flow
         return f;
     }
 
+    @Override
+    public void deleteFLContentByPlanSn(Preplan p) {
+        Map<String, Object> hashMap = new HashMap<String, Object>();
+        hashMap.put("preplanSn", p);
+        String hql="delete from FlowChartContent f where f.preplanSn=:preplanSn";
+        baseDAO.deleteByHql(hql, hashMap);    
+        
+    }
+
 }

@@ -165,8 +165,9 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	public String queryPreplanReviewListByUser(Person ps) {
 		 Map<String, Object> hashMap = new HashMap<String, Object>();
 	        hashMap.put("reviewOrg",ps.getOrgCode());	 
-	        hashMap.put("preplanStatus","待审核");
-	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus ORDER BY p.preplanTime desc";
+	        hashMap.put("preplanStatus1","待审核");
+	        hashMap.put("preplanStatus2","申请编制");
+	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 ORDER BY p.preplanTime desc";
 	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
 	        String str="";
 	        if(pList.size()>0) {
@@ -215,11 +216,16 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	        return str;
 	}
 
+    /**
+     *TODO(根据登录的用户查询消息)
+     *@param orgCode
+     **/
 	@Override
 	public JSONObject queryReviewsMsg(String orgCode) {
 		Cnds cnds=Cnds.me(Preplan.class);
 		WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("reviewOrg", orgCode));
 		set.and(ConditionBuilder.eq("preplanStatus", "待审核"));
+		set.or(ConditionBuilder.eq("preplanStatus", "申请编制"));
 		cnds.and(set);
 		List<Preplan> pList=baseDAO.getListByCnds(cnds);
 		JSONObject myJo=new JSONObject();
@@ -229,6 +235,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 				JSONObject jo=new JSONObject();
 				jo.put("preplanSn", p.getPreplanSn());
 				jo.put("preplanName", p.getPreplanName());
+				jo.put("preplanStatus", p.getPreplanStatus());
 				jsonArray.add(jo);
 			}
 			myJo.put("size",pList.size());
