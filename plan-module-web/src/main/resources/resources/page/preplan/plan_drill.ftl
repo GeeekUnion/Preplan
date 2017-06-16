@@ -275,8 +275,8 @@
 				</div> 
 
                   <!--Modals-->
-               <div id="staticUpdate" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
-                                            <div class="modal-dialog">
+               <div id="staticUpdate" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -298,13 +298,10 @@
                                         </div>
                               <!--End Modals-->      
     <!--Modals-->
-               <div id="staticAdd" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" >
-                                            <div class="modal-dialog">
+               <div id="staticAdd" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog modal-lg" >
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">Confirmation</h4>
-                                                    </div>
+                                                   
                                                     <div class="modal-body">
                                                       <!-- BEGIN FORM-->
                                         <form action="#" id="form_sample_1" class="form-horizontal">

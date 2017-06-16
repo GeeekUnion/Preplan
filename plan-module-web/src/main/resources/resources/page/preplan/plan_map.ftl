@@ -399,23 +399,12 @@
     	
      
     	}
-    	var removeMarker = function(e,ee,marker){//右键删除站点
-    	console.log(marker);
-    	}
-	    var updateMarker = function(e,ee,marker){//右键更新站点
-		if (confirm("要修改站点"+""+"的站名吗？")){
-		if(true){
-    	console.log(marker);
-		}
-		} 
-		};
+    	
 	
 		
  
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('查看附近资源',watchMarker.bind(marker)));
-		markerMenu.addItem(new BMap.MenuItem('删除站点',removeMarker.bind(marker)));
-		markerMenu.addItem(new BMap.MenuItem('修改站名',updateMarker.bind(marker)));
 		marker.addContextMenu(markerMenu);//给标记添加右键菜单
     	} 
     //初始化所有资源，目标点
