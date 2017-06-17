@@ -33,6 +33,8 @@ public class PreplanLogAction extends ListAction<PreplanLog>implements SessionAw
     private String preplanSn;//对应预案sn
     private Timestamp preplanLogTime;//编制历史
     private String orgCode;//编制人code
+    private String personName;//用户名
+    private String version;
     private JSONObject jsonObject = new JSONObject();
     private JSONArray jsonArray = new JSONArray();
     
@@ -45,10 +47,13 @@ public class PreplanLogAction extends ListAction<PreplanLog>implements SessionAw
         if(preplanSn!=null){
             Preplan p=new Preplan();
             p.setPreplanSn(preplanSn);
-            jsonArray=preplanLogService.queryListByPreplanSn(p);
+            jsonObject=preplanLogService.queryListByPreplanSn(p);
                        
+        }else{
+        	jsonObject.put("recordsTotal",0);
+        	jsonObject.put("data", "[]");
         }        
-        return "jsonArray";       
+        return "jsonObject";       
     } 
     
     /**
@@ -59,17 +64,18 @@ public class PreplanLogAction extends ListAction<PreplanLog>implements SessionAw
     public String  savePLLog() {        
         try {
             orgCode=session.get("preplanOrgCode").toString();
+            personName=session.get("preplanUsername").toString();
             if(preplanSn!=null){
                 Preplan p=new Preplan();
                 p.setPreplanSn(preplanSn);
                 PreplanLog pl=new PreplanLog();
                 //获得当前预案时间
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                System.out.println(sdf);
-                System.out.println(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
                 pl.setPreplanLogTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
-                pl.setOrgCode(orgCode);
+                pl.setOrgCode(orgCode);              
                 pl.setPreplanSn(p);
+                pl.setVersion(version);
+                pl.setPersonName(personName);
                 preplanLogService.save(pl);
                 jsonObject.put("status", "ok");
                            
@@ -124,7 +130,23 @@ public class PreplanLogAction extends ListAction<PreplanLog>implements SessionAw
     }
     public void setJsonArray(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
-    }  
+    }
+
+	public String getPersonName() {
+		return personName;
+	}
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}  
     
     
     

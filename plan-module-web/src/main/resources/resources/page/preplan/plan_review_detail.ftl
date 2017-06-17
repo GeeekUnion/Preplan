@@ -148,11 +148,10 @@
 						preplanStatus:msg,
 						opinion:opContent
 					},
-					success : function(data) {
-						console.log(data.status)
+					success : function(data) {			
 		                swal({       
 							title:"",
-							text: '完成编制,2秒后跳转回预案审核...如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+							text: '完成编制,2秒后跳转回预案审核页面<i class="fa fa-spinner fa-spin fa-fw"></i>如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
 							showConfirmButton: false,
 							html: true   
 							} 
@@ -162,10 +161,12 @@
 	                    },2000)       
 					},
 					error: function(){
-						sweetAlert("加载失败", "未知错误，请登录重试!", "error");									
+												
 					}
 				});	
         	}
+        	
+        	
         	</script>
     </body>
 

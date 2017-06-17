@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,7 +95,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private ReviewsService reviewsService;
     
     private String code;//传id
-    private String ppSn;//值
+    private String ppSn;//预案sn
   
 
     private String ppName;//预案名字
@@ -108,6 +109,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String misnName;//任务名字
     private String misnDept;//任务部门
     private String misnOrder;//序号
+    private String version;//版本号
     
     private String preplanSpecialist;//预案专家组
     
@@ -214,6 +216,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
         ppModel.setPreplanUID(ppUid);
         ppModel.setPreplanSpecialist(preplanSpecialist);
+        
+        
         try{                  
             //放入预案分类SN(domain_sn)
             Domain dmModel =new Domain();
@@ -226,6 +230,13 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                 ppModel.setDomain(set);
                 jsonObject = ppModel.getPreplanSn();
                 if(ppSn == null || ppSn.length()<=0) {
+                	Calendar startTime = Calendar.getInstance();
+                	int year = startTime.get(Calendar.YEAR);//获取年份
+            		String yearTow=String.valueOf(year).substring(2);
+            		String month=String.valueOf(startTime.get(Calendar.MONTH));//月份
+            		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
+                	version=yearTow+"."+month+"."+date+"."+"0";
+                	ppModel.setVersion(version);               	
                     ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);
                     
@@ -398,31 +409,111 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     	return "myJsonObject";
     }
     
+
     
     
     
+    public String queryPlanList(){
+    		preplanService.getPageList(page,rows);
+    	 return "plan_edit";
+    }
+    
+    /**
+     *TODO(根据登录的用户查询预案编辑列表)
+     *@param orgCode
+     **/
+    public String queryPreplanList() throws IOException {
+        String str="";
+        String orgCode=session.get("preplanOrgCode").toString();
+        if(null != orgCode && orgCode.length()>0) {
+            Person p=new Person();
+            p.setOrgCode(orgCode);
+            str=preplanService.getPageListByUser(page,rows,p);
+        }        
+        //输出资源到页面
+        out().print(str);
+        out().flush();
+        out().close();
+        return "jsonArray";
+    }
+    
+    /**
+     * TODO(根据登录的用户查询预案审核列表)
+     * @param orgCode
+     * @throws IOException 
+     **/
+    public String queryPreplanReviewList() throws IOException{
+    	 String str="";
+         String orgCode=session.get("preplanOrgCode").toString();
+         if(null != orgCode && orgCode.length()>0) {
+             Person p=new Person();
+             p.setOrgCode(orgCode);
+             str=preplanService.queryPreplanReviewListByUser(p);
+         }    
+	     //输出资源到页面
+	     out().print(str);
+	     out().flush();
+	     out().close();
+    	return "jsonArray";
+    }
+    
+   
+   
+    /**
+     * 删除预案
+     * 
+     * */
+    public String deletePreplan(){
+        Preplan ppModel=preplanService.get(Preplan.class,Integer.parseInt(code));
+        if(ppModel.getPreplanSn() != null) {
+            pictureService.deletePicByPlanSn(ppModel);
+            reviewsService.deleteReviewsByPreplanSn(ppModel.getPreplanSn());
+            flowChartContentService.deleteFLContentByPlanSn(ppModel);;
+            if(ppModel.getDomain() != null) {
+                ppModel.getDomain().remove(ppModel.getDomain());
+                preplanService.update(ppModel);
+            }
+            myJsonObject.put("status","ok");
+            preplanService.delete(ppModel);    
+        }
+        return "myJsonObject";
+    }
+    
+    
+    /**
+     * 修改预案版本号
+     * @param preplanSn
+     * */
+    public String  changeVersion(){
+    	if(null!=ppSn){
+    		Preplan p=preplanService.getByPpSn(ppSn);
+    		version=p.getVersion();
+    		Calendar startTime = Calendar.getInstance();
+    		int year = startTime.get(Calendar.YEAR);//获取年份
+    		String yearTow=String.valueOf(year).substring(2);
+    		String month=String.valueOf(startTime.get(Calendar.MONTH));//月份
+    		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
+    		if(null!=version && version.length()>0){
+    			int ssInde=version.lastIndexOf(".");   			
+    			int i=Integer.parseInt(version.substring(ssInde+1));//最后一个点后面的数字   			
+    			i++;
+    			version=yearTow+"."+month+"."+date+"."+i+"";
+    		}else{
+    			version=yearTow+"."+month+"."+date+"."+"1";
+    		}   
+    		p.setVersion(version);
+    		myJsonObject.put("preplanVersion", version);
+    		preplanService.update(p);
+    	}
+    	return "myJsonObject";   	
+    }
     
     
     
+    //------------------------new/old---------------------------
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //保存预案和相关任务
+  //保存预案和相关任务
     public String savePreplan() throws UnsupportedEncodingException {
      
         //获得当前预案时间
@@ -507,49 +598,32 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         
     }
     
-    public String queryPlanList(){
-    		preplanService.getPageList(page,rows);
-    	 return "plan_edit";
+    
+    public String getPreplanById() {
+        if(code != null) {
+            Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
+            if(p.getDomain() != null) {
+                Set<Domain> d=p.getDomain();
+                Iterator<Domain> dModel = d.iterator();
+                while(dModel.hasNext()){
+                    Domain ddddd=dModel.next();
+                    //System.out.println(((Domain)dModel.next()).getDomainName());
+                    ActionContext.getContext().put("pp_type",ddddd.getDomainName());//预案分类
+                }
+            }
+            
+            ActionContext.getContext().put("pp_id",p.getId());//预案id
+            ActionContext.getContext().put("pp_uid",p.getPreplanUID());//预案编号
+            ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
+            ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
+            ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
+            ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位 
+        }
+
+        return "main";
     }
     
-    /**
-     *TODO(根据登录的用户查询预案编辑列表)
-     *@param orgCode
-     **/
-    public String queryPreplanList() throws IOException {
-        String str="";
-        String orgCode=session.get("preplanOrgCode").toString();
-        if(null != orgCode && orgCode.length()>0) {
-            Person p=new Person();
-            p.setOrgCode(orgCode);
-            str=preplanService.getPageListByUser(page,rows,p);
-        }        
-        //输出资源到页面
-        out().print(str);
-        out().flush();
-        out().close();
-        return "jsonArray";
-    }
     
-    /**
-     * TODO(根据登录的用户查询预案审核列表)
-     * @param orgCode
-     * @throws IOException 
-     **/
-    public String queryPreplanReviewList() throws IOException{
-    	 String str="";
-         String orgCode=session.get("preplanOrgCode").toString();
-         if(null != orgCode && orgCode.length()>0) {
-             Person p=new Person();
-             p.setOrgCode(orgCode);
-             str=preplanService.queryPreplanReviewListByUser(p);
-         }    
-	     //输出资源到页面
-	     out().print(str);
-	     out().flush();
-	     out().close();
-    	return "jsonArray";
-    }
     
     //查看预案详情
     public String getDetail() {
@@ -646,48 +720,6 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
       out().flush();
       out().close();   
       return "jsonArray";
-    }
-   
-    //删除预案
-    public String deletePreplan(){
-        System.out.println(code);
-        Preplan ppModel=preplanService.get(Preplan.class,Integer.parseInt(code));
-        if(ppModel.getPreplanSn() != null) {
-            pictureService.deletePicByPlanSn(ppModel);
-            reviewsService.deleteReviewsByPreplanSn(ppModel.getPreplanSn());
-            flowChartContentService.deleteFLContentByPlanSn(ppModel);;
-            if(ppModel.getDomain() != null) {
-                ppModel.getDomain().remove(ppModel.getDomain());
-                preplanService.update(ppModel);
-            }
-            myJsonObject.put("status","ok");
-            preplanService.delete(ppModel);    
-        }
-        return "myJsonObject";
-    }
-    
-    public String getPreplanById() {
-        if(code != null) {
-            Preplan p=preplanService.get(Preplan.class,Integer.parseInt(code));
-            if(p.getDomain() != null) {
-                Set<Domain> d=p.getDomain();
-                Iterator<Domain> dModel = d.iterator();
-                while(dModel.hasNext()){
-                    Domain ddddd=dModel.next();
-                    //System.out.println(((Domain)dModel.next()).getDomainName());
-                    ActionContext.getContext().put("pp_type",ddddd.getDomainName());//预案分类
-                }
-            }
-            
-            ActionContext.getContext().put("pp_id",p.getId());//预案id
-            ActionContext.getContext().put("pp_uid",p.getPreplanUID());//预案编号
-            ActionContext.getContext().put("pp_sn",p.getPreplanSn());//预案preplan_sn
-            ActionContext.getContext().put("pp_name",p.getPreplanName());//预案名字
-            ActionContext.getContext().put("pp_desc",p.getPreplanDesc());//预案描述
-            ActionContext.getContext().put("pp_dept",p.getResponDept());//预案责任单位 
-        }
-
-        return "main";
     }
     
     //删除预案任务
@@ -984,6 +1016,17 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setPageMsgType(String pageMsgType) {
 		this.pageMsgType = pageMsgType;
+	}
+	
+	
+
+	public String getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 
