@@ -20,7 +20,7 @@ public class FlowChartContentServiceImpl extends BaseServiceImpl implements Flow
         String hql=" from FlowChartContent f where f.preplanSn=:preplanSn";
         FlowChartContent f=baseDAO.getUniqueByHql(hql, hashMap,FlowChartContent.class);
         return f;
-    }
+    } 
 
     @Override
     public void deleteFLContentByPlanSn(Preplan p) {

@@ -30,7 +30,7 @@ public class Preplan implements Serializable {
 	private String preplanUID;
 	private String preplanName;
 	private String preplanDesc;
-	private Timestamp preplanTime;            //预案启动时间
+	private Timestamp preplanTime;           //预案最后一次编制时间
 	private String preplanStatus;            //预案状态
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表		
@@ -46,6 +46,7 @@ public class Preplan implements Serializable {
 	private Set<Domain>domain=new HashSet<Domain>();
 	private Set<Mission>mission=new HashSet<Mission>();
 	private Set<Module> module =new HashSet<Module>();
+	private Set<PreplanLog> preplanLogs=new HashSet<PreplanLog>();
 	
 
 
@@ -179,6 +180,13 @@ public class Preplan implements Serializable {
 	public void setPreplanSpecialist(String preplanSpecialist) {
 		this.preplanSpecialist = preplanSpecialist;
 	}
+	@OneToMany(targetEntity=PreplanLog.class,mappedBy="preplanSn",cascade=CascadeType.ALL)
+    public Set<PreplanLog> getPreplanLogs() {
+        return preplanLogs;
+    }
+    public void setPreplanLogs(Set<PreplanLog> preplanLogs) {
+        this.preplanLogs = preplanLogs;
+    }
 	
 	
 	
