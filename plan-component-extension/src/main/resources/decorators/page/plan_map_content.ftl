@@ -260,6 +260,9 @@
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
+	                    { "data": "principal" },
+	                    { "data": "principalPhone" },
+	                    
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -321,6 +324,8 @@
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
+	                     { "data": "principal" },
+	                    { "data": "principalPhone" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -381,9 +386,8 @@
 	                    { "data": "name" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
-	                   
-	                    
-	                    
+	                    { "data": "principal" },
+	                    { "data": "principalPhone" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -444,10 +448,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
-	                                      +          	'<i class="fa fa-edit">编辑 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteEvent('+row.id+')">'
+				            return   '<a href="javascript:;" class="btn red"onclick="deleteEvent('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -577,6 +578,8 @@
 									<th>危险源名称</th>
 									<th>危险源经度</th>
 									<th>危险源人纬度</th>
+									<th>负责人</th>
+									<th>负责人联系方式</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -611,6 +614,8 @@
 									<th>应急队伍名称</th>
 									<th>应急队伍经度</th>
 									<th>应急队伍纬度</th>
+									<th>负责人</th>
+									<th>负责人联系方式</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -645,6 +650,8 @@
 									<th>防护目标名称</th>
 									<th>防护目标经度</th>
 									<th>防护目标纬度</th>
+									<th>负责人</th>
+									<th>负责人联系方式</th>
 									<th>操作</th>
 								</tr>
 							</thead>
