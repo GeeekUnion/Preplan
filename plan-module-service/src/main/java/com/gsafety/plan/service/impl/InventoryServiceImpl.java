@@ -199,8 +199,9 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 			jo.put("iType", List.get(i)[4]);
 		    //获取Sn里面的第一个char，以此来区分不同的资源点类型
 			   try {
-			   String iType=(String) List.get(i)[3];
+			   String iType=(String) List.get(i)[4];
 			    char fisrtChar=iType.charAt(0);
+			    System.out.println(fisrtChar);
 				switch(fisrtChar){
 				case 'a':
 					jo.put("type","inventory" );

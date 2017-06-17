@@ -30,6 +30,8 @@ public class Event implements Serializable{
 	private String eventOccurPlace;
 	private Double longitude;   //经度
     private Double latitude;    //纬度
+    private String eventDescription;
+    private String personName;
 	
 	
 	@Id
@@ -81,6 +83,20 @@ public class Event implements Serializable{
 	}
 	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
+	}
+	@Column(name="event_description")
+	public String getEventDescription() {
+		return eventDescription;
+	}
+	public void setEventDescription(String eventDescription) {
+		this.eventDescription = eventDescription;
+	}
+	@Column(name="event_personName")
+	public String getPersonName() {
+		return personName;
+	}
+	public void setPersonName(String personName) {
+		this.personName = personName;
 	}
 	
 

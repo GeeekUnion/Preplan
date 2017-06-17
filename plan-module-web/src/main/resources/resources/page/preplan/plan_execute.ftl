@@ -124,54 +124,7 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
-				$('#drillTable').dataTable( {
-					"ajax": {
-					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_event_queryByPage.action",
-					    "type": "POST",
-					    "data": function ( d ) {
-
-					    }
-					},
-				  	"deferRender": true,
-				  	"searching": true,
-				  	"processing": true,
-			        "columns": [
-			            { "data": "eventSn", "visible":false },
-	                    { "data": "eventName", align:"center" },
-	                    { "data": "eventOccurTime" },
-	                    { "data": "eventOccurPlace" },
-	                    { "data": "longitude" },
-	                    { "data": "latitude" },
-	                    { "formatNumber": "preplanTime" }
-	                ],
-	                "columnDefs": [ {
-			            "targets": -1,//最后一列
-			            "data": null,
-			            render: function(data, type, row, meta) {
-				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
-	                                      +          	'<i class="fa fa-edit">查看 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
-	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</a>'
-				        }
-			        } ],
-			        "oLanguage": {
-			            "sLengthMenu": "每页显示 _MENU_ 条",
-			            "sZeroRecords": "没有找到符合条件的数据",
-			            "sInfo": "当前第 _START_ - _END_ 条　共计 _TOTAL_ 条",
-			            "sInfoEmpty": "没有记录",
-			            "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
-			            "sSearch": "搜索",
-			            "sProcessing": "数据加载中...",
-			            "oPaginate": {
-			                "sFirst": "首页",
-			                "sPrevious": "上一页",
-			                "sNext": "下一页",
-			                "sLast": "尾页"
-			            }
-			        }
-				});
+			
 			} );
 			
 </script>
