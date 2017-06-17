@@ -512,6 +512,7 @@
     }
     
     
+    
     //++  
     function addClickHandler(content,marker){  
         marker.addEventListener("click",function(e){  
@@ -554,7 +555,12 @@
     
 
     
-    
+    opts = {  
+                    width : 200,     // 信息窗口宽度  
+                    height: 80,     // 信息窗口高度  
+                    title : "站点信息" , // 信息窗口标题  
+                    enableMessage:true//设置允许信息窗发送短息  
+        }; 
     //ajax显示Maker(EVENT)
          $.ajax({
  			url:'preplan_event_queryAll.action',
@@ -575,13 +581,12 @@
 		points.push(point);
 	    map.addOverlay(marker);
 		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
-		//给标注点添加点击事件。使用立即执行函数和闭包  
-        (function() {  
-            var thePoint = points[i];  
-            marker.addEventListener("click",function(){  
-                showInfo(this,thePoint);  
-            });  
-        })();  
+		
+		var content = "站点名称:  " + data[i].eventName +"<br /> "  
+                            + "经度:     " + data[i].longitude  +"<br /> "  
+                            + "纬度: " +  data[i].latitude  +"<br /> ";  
+        addClickHandler(content,marker); 
+	  
 		
 		
 	}       //循环结束
@@ -618,44 +623,7 @@
     
     
     initMap();//创建和初始化地图
-    
-    
-    
-    
-    
-    
-   
-	
-    	//Add的相关方法↓
- 	      //重置
-	$("#reset").click(function(){
-		$("#ffAdd").form("reset");
-	});
-	
-	
-	//提交 
-	$('#submit').click(function(){
-
-			$('#ffAdd').form('submit', {    
-			    url:'preplan_inventory_save.action',       
-			    success:function(data){
-			    	var result = eval('(' + data + ')');
-			    	if(result.status=='ok'){
-			    		$.messager.alert("提示信息","添加成功！");
-						$("#ffAdd").form("reset");
-						//关闭窗体
-						$("#winAdd").window("close");
-						//刷新dg
-						$("#dg").datagrid("reload");
-				   	}else{
-				   		$.messager.alert("提示信息","添加失败！",'error');
-					}
-			    }    
-			});
-		
-	})
-	
-	
+ 
 	
 	 //新建Inventory站点
     function AddRe(s,w,idType){
