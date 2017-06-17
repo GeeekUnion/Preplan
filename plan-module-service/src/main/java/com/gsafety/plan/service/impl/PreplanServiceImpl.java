@@ -49,6 +49,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             }
             jo.put("preplanUID",p.getPreplanUID());
             jo.put("preplanDesc",p.getPreplanDesc());
+            jo.put("preplanVersion", p.getVersion());
             
             //获得预案类型
             if(p.getDomain() != null) {
@@ -133,7 +134,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
                 }
                 jo.put("preplanUID",p.getPreplanUID());
                 jo.put("preplanDesc",p.getPreplanDesc());
-                
+                jo.put("preplanVersion", p.getVersion());
                 //获得预案类型
                 if(p.getDomain() != null) {
                     Set<Domain> d=p.getDomain();
@@ -193,6 +194,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
                     }
                     jo.put("preplanUID",p.getPreplanUID());
                     jo.put("preplanDesc",p.getPreplanDesc());
+                    jo.put("preplanVersion", p.getVersion());
                     
                     //获得预案类型
                     if(p.getDomain() != null) {

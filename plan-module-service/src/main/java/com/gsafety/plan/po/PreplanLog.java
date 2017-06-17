@@ -18,7 +18,9 @@ public class PreplanLog {
     private int id;
     private Preplan preplanSn;//对应预案sn
     private Timestamp preplanLogTime;//编制历史
+    private String personName;//用户名
     private String orgCode;//编制人code
+    private String version;//修改的版本
     
 
     @Id
@@ -54,6 +56,20 @@ public class PreplanLog {
     public void setOrgCode(String orgCode) {
         this.orgCode = orgCode;
     }
+    @Column(name="person_name",length=25)
+	public String getPersonName() {
+		return personName;
+	}
+	public void setPersonName(String personName) {
+		this.personName = personName;
+	}
+	@Column(name="preplan_version",length=25)
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
+	}
     
     
     

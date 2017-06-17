@@ -21,20 +21,25 @@ public class PreplanLogServiceImpl extends BaseServiceImpl implements PreplanLog
      * @return jsonArray
      * */
     @Override
-    public JSONArray queryListByPreplanSn(Preplan preplanSn) {
+    public JSONObject queryListByPreplanSn(Preplan preplanSn) {
         
         Map<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("preplanSn", preplanSn);
         String hql="from PreplanLog p where p.preplanSn=:preplanSn";
         List<PreplanLog>plList=baseDAO.getListByHql(hql, hashMap, PreplanLog.class);
         JSONArray  plJsArray=new JSONArray();
-        for(PreplanLog p: plList) {
-            JSONObject jo=new JSONObject();
-            jo.put("preplanLogTime", p.getPreplanLogTime());
+        for(PreplanLog p: plList) {        	
+            JSONObject jo=new JSONObject();            
+            jo.put("preplanLogTime", p.getPreplanLogTime().toString().split(" ")[0]);
             jo.put("orgCode", p.getOrgCode());
+            jo.put("personName", p.getPersonName());
+            jo.put("preplanVersion", p.getVersion());
             plJsArray.add(jo);
         }
-        return plJsArray;
+        JSONObject myJo=new JSONObject();
+        myJo.put("recordsTotal",plList.size());
+        myJo.put("data", plJsArray);
+        return myJo;
     }
 
 }

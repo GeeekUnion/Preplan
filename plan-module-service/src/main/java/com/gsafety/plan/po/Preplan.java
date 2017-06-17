@@ -35,7 +35,7 @@ public class Preplan implements Serializable {
 	private String responDept;                //负责部门，暂无对应表
 	private String responPerson;              //负责人，暂无对应表		
 	private String preplanSpecialist;    //专家组
-	
+	private String version;//版本号
 	
 	private String reviewOrg;//审核部门
 	
@@ -106,6 +106,13 @@ public class Preplan implements Serializable {
 	}
 	public void setResponPerson(String responPerson) {
 		this.responPerson = responPerson;
+	}
+	@Column(name="preplan_version",length=8)
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="username",referencedColumnName="username")

@@ -46,7 +46,7 @@ PersonService{
 		        try {   
 		            LoginActionHelper.sessionBeanHandler(null, eu, org, defaultMenu);
 		            pr.setPassword(DESCoder.decrypt(eu.getPassword(), AuthConstant.PASSWORD_KEY));
-		            pr.setLoginName(username);
+		            pr.setLoginName(eu.getName());
 		            pr.setOrgCode(org.getOrgCode());
 		        } catch (Exception e) {
 		            // TODO Auto-generated catch block
