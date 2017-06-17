@@ -269,6 +269,8 @@
 		src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils.js"></script>
 	<script type="text/javascript"
 		src="http://api.map.baidu.com/getscript?v=2.0&ak=Kpjp7jddqVUhWK5VkrfNt3YNezY89NtR&services=&t=20170517145936"></script>
+   <!--验证框-->
+   <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
 
 </body>
 <script type="text/javascript">
@@ -714,30 +716,38 @@
 	}
 //保存addEvent方法
 	function saveEvent(){
-	 
-	var longitude= $("#staticEventAdd #longitude").val();
+	var longitude=$("#staticEventAdd #longitude").val();
 	var latitude=$("#staticEventAdd #latitude").val();
-	var personName=$("#staticEventAdd #personName").val();
-	var eventOccurPlace=$("#staticEventAdd #eventOccurPlace").val();
-	var eventName=$("#staticEventAdd #eventName").val();
-	var eventDescription=$("#staticEventAdd #eventDescription").val();
-	
 	
 	$.ajax({    
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_event_save.action',
 	dataType:"json",
 	data:{
-	longitude:longitude,
-	latitude:latitude,
-	personName:personName,
-	eventOccurPlace:eventOccurPlace,
-	eventName:eventName,
-	eventDescription:eventDescription
+	longitude:$("#staticEventAdd #longitude").val(),
+	latitude:$("#staticEventAdd #latitude").val(),
+	personName:$("#staticEventAdd #personName").val(),
+	eventOccurPlace:$("#staticEventAdd #eventOccurPlace").val(),
+	eventName:$("#staticEventAdd #eventName").val(),
+	eventDescription:$("#staticEventAdd #eventDescription").val()
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){
 	swal("提交成功");
-    loadTable();
+    eventClick();
+   
+    //生成marker
+    var point = new BMap.Point(longitude, latitude);
+		var marker = new BMap.Marker(point,
+		{
+		icon:eventIcon,
+		enableMassClear:false     //防止被大规模清除
+		});
+		points.push(point);
+	    map.addOverlay(marker);
+		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
+     //提交后清空表值
+    $("#form_sample_eventAdd input").val("");
+    
 	}else{
 	swal("提交失败");
 	}
