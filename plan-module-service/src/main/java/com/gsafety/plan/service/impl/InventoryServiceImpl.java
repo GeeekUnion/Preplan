@@ -48,7 +48,7 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 					+"-pre_inventory.inventory_longitude)*PI()*12656*cos((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  *  (("+lo
 					+"-pre_inventory.inventory_longitude)*PI()*12656*cos ((("+la+"+pre_inventory.inventory_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 					+"-pre_inventory.inventory_latitude)*PI()*12656/180)  *  (("+la+"-pre_inventory.inventory_latitude)*PI()*12656/180)))<22";
-		    ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		    List<Object[]> List =(List<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
@@ -84,7 +84,7 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				+"-hazard_longitude)*PI()*12656*cos((("+la+"+hazard_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-hazard_longitude)*PI()*12656*cos ((("+la+"+hazard_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-hazard_latitude)*PI()*12656/180)  *  (("+la+"-hazard_latitude)*PI()*12656/180)))<22";		
-		ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		List<Object[]> List =(List<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			System.out.println(List.size());
 			if(null!=List||List.size()>0){
@@ -122,7 +122,7 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				+"-emergencyResponseTeam_longitude)*PI()*12656*cos((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-emergencyResponseTeam_longitude)*PI()*12656*cos ((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-emergencyResponseTeam_latitude)*PI()*12656/180)  *  (("+la+"-emergencyResponseTeam_latitude)*PI()*12656/180)))<22";		   
-			ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+			List<Object[]> List =(List<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			if(null!=List||List.size()>0){
 			for(int i=0;i<List.size();i++){
@@ -160,7 +160,7 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				+"-protectionObject_longitude)*PI()*12656*cos((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-protectionObject_longitude)*PI()*12656*cos ((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-protectionObject_latitude)*PI()*12656/180)  *  (("+la+"-protectionObject_latitude)*PI()*12656/180)))<22";
-		 ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
+		 List<Object[]> List =(List<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
 			if(null!=List||List.size()>0){
 			for(int i=0;i<List.size();i++){
@@ -248,7 +248,7 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 			   try {
 			   String iType=(String) List.get(i)[4];
 			    char fisrtChar=iType.charAt(0);
-			    System.out.println(fisrtChar);
+			   
 				switch(fisrtChar){
 				case 'a':
 					jo.put("type","inventory" );
