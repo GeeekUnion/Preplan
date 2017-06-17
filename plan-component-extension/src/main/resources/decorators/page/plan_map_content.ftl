@@ -269,10 +269,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
+				            return 	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -332,10 +329,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
+				            return 	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -394,10 +388,7 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return '<a href="javascript:;" class="btn blue" onclick="alterPlan('+row.id+')">'
-	                                      +          	'<i class="fa fa-edit">编制 </i>'
-	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
+				            return 	'<a href="javascript:;" class="btn red"onclick="deleteRe(\''+row.iType+'\')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
