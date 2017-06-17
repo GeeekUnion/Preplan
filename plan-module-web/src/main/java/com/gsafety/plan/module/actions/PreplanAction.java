@@ -286,7 +286,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public String updatePreplanStatus(){
     	if(null!=ppSn){
     		Preplan p=preplanService.getByPpSn(ppSn);
-    		p.setPreplanStatus(preplanStatus);
+    		p.setPreplanStatus(preplanStatus);    		
     		preplanService.update(p);
     		jsonObject="ok";
     		return "jsonObject";

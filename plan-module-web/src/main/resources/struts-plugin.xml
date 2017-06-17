@@ -287,7 +287,7 @@
 			</result>						
 		</action> 
 		
-		<!-- Picture拦截和结果配置 -->
+		<!-- FlowChartContent拦截和结果配置 -->
 		<action name="preplan_flowChartContent_*" class="com.gsafety.plan.module.actions.FlowChartContentAction" method="{1}">
 			<result name="jsonObject" type="json">
 				<!-- 为该Result指定参数 -->
@@ -307,6 +307,24 @@
 		
 		<!-- Picture拦截和结果配置 -->
 		<action name="preplan_picture_*" class="com.gsafety.plan.module.actions.PictureAction" method="{1}">
+			<result name="jsonObject" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonObject</param>
+			</result>			
+			<result name="jsonArray" type="json">
+				<!-- 为该Result指定参数 -->
+				<param name="noCache">true</param>
+				<param name="contentType">text/html</param>
+				<!-- 设置只序列Action的map属性 -->
+				<param name="root">jsonArray</param>
+			</result>						
+		</action>
+		
+		<!-- PreplanLog拦截和结果配置 -->
+		<action name="preplan_preplanLog_*" class="com.gsafety.plan.module.actions.PreplanLogAction" method="{1}">
 			<result name="jsonObject" type="json">
 				<!-- 为该Result指定参数 -->
 				<param name="noCache">true</param>
