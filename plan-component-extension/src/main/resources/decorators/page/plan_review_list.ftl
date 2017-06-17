@@ -18,6 +18,7 @@
 	                <th>类别 </th>
 	                <th>负责部门</th>
 	                <th>状态 </th>
+	                <th>版本号 </th>
 	                <th>日期 </th>                
 	                <th>操作</th>
 	            </tr>
@@ -53,6 +54,7 @@
 	                    { "data": "preplanType" },
 	                    { "data": "responDept" },
 	                    { "data": "status" },
+	                    { "data": "preplanVersion" },
 	                    { "data": "preplanTime" },
 	                    { "formatNumber": "preplanTime" }	                    
 	                ],

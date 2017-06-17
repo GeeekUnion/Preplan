@@ -18,6 +18,7 @@
 	                <th>类别 </th>
 	                <th>负责部门</th>
 	                <th>状态 </th>
+	                <th>版本号</th>
 	                <th>日期 </th>                
 	                <th>操作</th>
 	            </tr>
@@ -45,7 +46,7 @@
 					},
 				  	"deferRender": true,
 				  	"searching": true,
-				  	"autoWidth": false,
+				  	"autoWidth": true,
 				  	"processing": true,
 				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
@@ -54,6 +55,7 @@
 	                    { "data": "preplanType" },
 	                    { "data": "responDept" },
 	                    { "data": "status" },
+	                    { "data": "preplanVersion" },
 	                    { "data": "preplanTime" },
 	                    { "formatNumber": "preplanTime" }	                    
 	                ],
@@ -76,7 +78,7 @@
 	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</button>'            
-			            	if(row.status=="待完成"){
+			            	if(row.status=="待完成" || row.status=="未通过"){
 			            		showHtml=showHtml+' '
 	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\',0)">'
 	                                      +  			'<i class="fa fa-check">提交审核</i>'
@@ -88,6 +90,10 @@
 	                                      +      ' '
 	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
 	                                      +  			'<i class="fa fa-search">查看详情</i>'
+	                                      +      '</button>'
+	                                      +      ' '
+	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</button>'
 			            	}else if(row.status=="待审核" || row.status=="申请编制"){
 			            		showHtml='';
@@ -116,6 +122,9 @@
 			        }
 				});
 			}
+			
+			
+			
 			
 			//编辑预案
 			function alterPlan(planSn){
@@ -210,35 +219,103 @@
 			}
 			
 			//提交审核
-        	function submitMyPlan(planSn,myStatus){   			        		
-				$.ajax({
-					type : "POST",
-					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
-					dataType : "json",
-					data : {
-						ppSn:planSn.replace(/'/g,""),
-						preplanStatus:myStatus
-					},
-					success : function(data) {
-						loadPlan();
-	      				swal({
-							title: "提交成功!",
-							text: '请等待审核！',
-							type: "success",
-							confirmButtonText: "确认"  
-						});	
-					},
-					error: function(){
-						loadPlan();
-						 swal({
-							title: "提交失败!",
-							text: '未知错误，请登录重试!',
-							type: "error",
-							confirmButtonText: "确认"  
-						});							
-					}
-				});	
+        	function submitMyPlan(planSn,myStatus){  
+				swal({    
+				    title: "确认提交？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	var ppSn=planSn.replace(/'/g,"");
+				    	$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
+							dataType : "json",
+							data : {
+								ppSn:ppSn,
+								preplanStatus:myStatus
+							},
+							success : function(data) {								
+								if(myStatus=="待审核"){
+									changeVersion(ppSn);
+									
+								}else{
+									loadPlan();
+									successModal();
+								}
+			      				
+							},
+							error: function(){
+								loadPlan();
+								errorModal();
+							}
+						});		
+				    }
+				);
+				        	       	        	 			        		
+				
         	}
 			
-			
+			//修改版本号
+        	function changeVersion(ppSn){
+        		$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_changeVersion.action",
+						dataType : "json",
+						data : {
+							ppSn:ppSn
+						},
+						success : function(data) {
+							loadPlan();							
+							changeLog(ppSn,data.preplanVersion)	
+						},
+						error: function(){
+							loadPlan();
+							errorModal();
+						}
+					});	
+										
+        	}
+        	
+        	//填写修改记录
+        	function changeLog(ppSn,preplanVersion){
+        		$.ajax({
+						type : "POST",
+						url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplanLog_savePLLog.action",
+						dataType : "json",
+						data : {
+							preplanSn:ppSn,
+							version:preplanVersion
+						},
+						success : function(data) {						
+		      				successModal()
+						},
+						error: function(){
+							errorModal();
+						}
+					});						
+        	}
+        	
+        	//成功提示
+        	function successModal(){
+        		swal({
+						title: "提交成功!",
+						text: '请等待审核！',
+						type: "success",
+						confirmButtonText: "确认"  
+					});	
+        	}
+        	//错误提示
+        	function errorModal(){
+				swal({
+					title: "提交失败!",
+					text: '未知错误，请登录重试!',
+					type: "error",
+					confirmButtonText: "确认"  
+				});
+        	}
         </script>

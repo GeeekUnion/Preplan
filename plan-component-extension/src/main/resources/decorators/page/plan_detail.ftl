@@ -19,6 +19,15 @@
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<p><strong>编制部门：</strong><span id="preplanOrgSpan"></span></p>
 			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p>
+					<strong>
+						<a  data-toggle="modal" href="#largeLog">
+	                		<i class="fa fa-search"></i> 查看编制历史
+	                	</a>
+                	</strong>	
+                </p>
+			</div>
 			<div class="col-xs-12">
 				<p><strong>专家组：</strong><span id="preplanSpecialistSpan"></span></p>
 			</div>
@@ -72,9 +81,37 @@
 </div>
 
 
- 
- 	
-	
+         <!-- .modal -->
+        <div class="modal fade bs-modal-lg" id="largeLog" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">修改历史</h4>
+                    </div>
+                    <div class="modal-body">
+						
+						<table id="myLogListTable" class="display" cellspacing="0" width="100%">
+					        <thead>
+					            <tr>
+					                <th>预案版本号</th>
+					                <th>修改时间 </th>
+					                <th>修改人 </th>
+					            </tr>
+					        </thead>
+					
+					    </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn red btn-outline" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
 
 	<script>
 	
@@ -135,9 +172,11 @@
 					sweetAlert("加载失败", "未知错误，请重试!", "error");									
 				}
 			});
-			
+			var planSn=$('#detailPlanSn').val();
+			//查询修改历史
+			queryLog(planSn);
 			//获取流程图
-			setflowChartLayoutContent($('#detailPlanSn').val());
+			setflowChartLayoutContent(planSn);
 									
 	  });
 	 //****************全案Begin**************************************************
@@ -301,6 +340,48 @@
 	  	var divId="planDetailHead"+order;		
 		document.getElementById(divId).scrollIntoView();	
 	  }
+	 
+    //获取修改记录
+	function queryLog(planSn){		
+		 $('#myLogListTable').dataTable( {
+					"ajax": {
+					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_preplanLog_queryListByPreplanSn.action",
+					    "type": "POST",
+					    "data":{
+							"preplanSn":planSn
+					    }
+					},
+				  	"deferRender": true,
+				  	"searching": true,
+				  	"autoWidth": true,
+				  	"processing": true,
+				  	"destroy": true,//如果需要重新加载的时候请加上这个
+			        "columns": [
+	                    
+	                    { "data": "preplanVersion" },
+	                    { "data": "preplanLogTime"},
+	                    { "data": "personName"}                  
+	                ],			        
+			        "oLanguage": {
+			            "sLengthMenu": "每页显示 _MENU_ 条",
+			            "sZeroRecords": "没有找到符合条件的数据",
+			            "sInfo": "当前第 _START_ - _END_ 条　共计 _TOTAL_ 条",
+			            "sInfoEmpty": "没有记录",
+			            "sInfoFiltered": "(从 _MAX_ 条记录中过滤)",
+			            "sSearch": "搜索",
+			            "sProcessing": "数据加载中...",
+			            "oPaginate": {
+			                "sFirst": "首页",
+			                "sPrevious": "上一页",
+			                "sNext": "下一页",
+			                "sLast": "尾页"
+			            }
+			        }
+				});		
+	}
+	
+
+	
 	  
 	  function getOrg(orgCode){
 	  		$.ajax({
