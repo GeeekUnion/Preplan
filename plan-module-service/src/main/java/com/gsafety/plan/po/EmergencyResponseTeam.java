@@ -18,6 +18,8 @@ public class EmergencyResponseTeam implements Serializable {
 	private String EmergencyResponseTeamSn;
 	private Double longitude; // 经度
 	private Double latitude; // 纬度
+    private String principal;   //负责人
+	private String principalPhone;  //负责人电话
 	private String iType;                     //用来在地图中区别于其他点的标记
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,5 +70,18 @@ public class EmergencyResponseTeam implements Serializable {
 	public void setiType(String iType) {
 		this.iType = iType;
 	}
-
+	@Column(name="emergencyResponseTeam_principal")
+	public String getPrincipal() {
+		return principal;
+	}
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
+	@Column(name="emergencyResponseTeam_principalPhone")
+	public String getPrincipalPhone() {
+		return principalPhone;
+	}
+	public void setPrincipalPhone(String principalPhone) {
+		this.principalPhone = principalPhone;
+	}
 }

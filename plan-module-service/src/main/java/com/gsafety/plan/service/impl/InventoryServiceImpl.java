@@ -58,8 +58,18 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				jo.put("sn", List.get(i)[3]);
 				jo.put("id", List.get(i)[4]);
 				jo.put("iType", List.get(i)[5]);
-				jo.put("inventoryPrincipal", List.get(i)[6]);
-				jo.put("inventoryPrincipalPhone", List.get(i)[7]);
+				if(null!=(String)List.get(i)[6]||((String) List.get(i)[6]).length()>0){
+					jo.put("inventoryPrincipal", List.get(i)[6]);
+				}else{
+					jo.put("inventoryPrincipal", "");
+				}
+				if(null!=(String)List.get(i)[7]||((String) List.get(i)[7]).length()>0){
+					jo.put("inventoryPrincipalPhone", List.get(i)[7]);
+				}else{
+					jo.put("inventoryPrincipalPhone", "");
+				}
+				
+			
 					array.add(jo);
 			}	
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
@@ -70,12 +80,14 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 	public String getPageHazard(int pageNumber, int pageSize, String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-		String sql=" select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn ,id ,hazard_iType as iType from pre_hazard  where sqrt(( (("+lo
+		String sql=" select hazard_longitude as longitude,hazard_latitude as latitude,hazard_name as name,hazard_sn as sn ,id ,hazard_iType as iType,hazard_principal as principal,hazard_principalPhone as principalPhone from pre_hazard  where sqrt(( (("+lo
 				+"-hazard_longitude)*PI()*12656*cos((("+la+"+hazard_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-hazard_longitude)*PI()*12656*cos ((("+la+"+hazard_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-hazard_latitude)*PI()*12656/180)  *  (("+la+"-hazard_latitude)*PI()*12656/180)))<22";		
 		ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
+			System.out.println(List.size());
+			if(null!=List||List.size()>0){
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
 				jo.put("longitude", List.get(i)[0]);
@@ -84,8 +96,19 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				jo.put("sn", List.get(i)[3]);
 				jo.put("id", List.get(i)[4]);
 				jo.put("iType", List.get(i)[5]);
+				if(null!=(String)List.get(i)[6]||((String) List.get(i)[6]).length()>0){
+					jo.put("principal", List.get(i)[6]);
+				}else{
+					jo.put("principal", "");
+				}
+				if(null!=(String)List.get(i)[7]||((String) List.get(i)[7]).length()>0){
+					jo.put("principalPhone", List.get(i)[7]);
+				}else{
+					jo.put("principalPhone", "");
+				}
 					array.add(jo);
 			}	
+			}
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
         System.out.println(str);    
         return str;
@@ -95,12 +118,13 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 			String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-		String sql=" select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn, id ,emergencyResponseTeam_iType as iType from pre_emergencyresponseteam  where sqrt(( (("+lo
+		String sql=" select emergencyResponseTeam_longitude as longitude,emergencyResponseTeam_latitude as latitude,emergencyResponseTeam_name as name,emergencyResponseTeam_sn as sn, id ,emergencyResponseTeam_iType as iType,emergencyResponseTeam_principal as principal,emergencyResponseTeam_principalPhone   from pre_emergencyresponseteam  where sqrt(( (("+lo
 				+"-emergencyResponseTeam_longitude)*PI()*12656*cos((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-emergencyResponseTeam_longitude)*PI()*12656*cos ((("+la+"+emergencyResponseTeam_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-emergencyResponseTeam_latitude)*PI()*12656/180)  *  (("+la+"-emergencyResponseTeam_latitude)*PI()*12656/180)))<22";		   
 			ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
+			if(null!=List||List.size()>0){
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
 				jo.put("longitude", List.get(i)[0]);
@@ -109,8 +133,19 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				jo.put("sn", List.get(i)[3]);
 				jo.put("id", List.get(i)[4]);
 				jo.put("iType", List.get(i)[5]);
+				if(null!=(String)List.get(i)[6]||((String) List.get(i)[6]).length()>0){
+					jo.put("principal", List.get(i)[6]);
+				}else{
+					jo.put("principal", "");
+				}
+				if(null!=(String)List.get(i)[7]||((String) List.get(i)[7]).length()>0){
+					jo.put("principalPhone", List.get(i)[7]);
+				}else{
+					jo.put("principalPhone", "");
+				}
 					array.add(jo);
 			}	
+			}
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
         System.out.println(str);    
         return str;
@@ -121,12 +156,13 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 			String clickType,double lo,double la) {
 		String str="";
 		JSONArray array = new JSONArray();
-		String sql=" select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn ,id ,protectionObject_iType as iType from pre_protectionobject  where sqrt(( (("+lo
+		String sql=" select protectionObject_longitude as longitude,protectionObject_latitude as latitude,protectionObject_name as name,protectionObject_sn as sn ,id ,protectionObject_iType as iType,protectionObject_principal,protectionObject_principalPhone from pre_protectionobject  where sqrt(( (("+lo
 				+"-protectionObject_longitude)*PI()*12656*cos((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  *  (("+lo
 				+"-protectionObject_longitude)*PI()*12656*cos ((("+la+"+protectionObject_latitude)/2)*PI()/180)/180)  )  +  (  (("+la
 				+"-protectionObject_latitude)*PI()*12656/180)  *  (("+la+"-protectionObject_latitude)*PI()*12656/180)))<22";
 		 ArrayList<Object[]> List =(ArrayList<Object[]>) baseDAO.getListBySql(sql);
 			PageResult pResult = baseDAO.getPageBySql(sql, pageNumber, pageSize);
+			if(null!=List||List.size()>0){
 			for(int i=0;i<List.size();i++){
 				JSONObject jo = new JSONObject();
 				jo.put("longitude", List.get(i)[0]);
@@ -135,8 +171,19 @@ public class InventoryServiceImpl extends BaseServiceImpl implements InventorySe
 				jo.put("sn", List.get(i)[3]);
 				jo.put("id", List.get(i)[4]);
 				jo.put("iType", List.get(i)[5]);
+				if(null!=(String)List.get(i)[6]||((String) List.get(i)[6]).length()>0){
+					jo.put("principal", List.get(i)[6]);
+				}else{
+					jo.put("principal", "");
+				}
+				if(null!=(String)List.get(i)[7]||((String) List.get(i)[7]).length()>0){
+					jo.put("principalPhone", List.get(i)[7]);
+				}else{
+					jo.put("principalPhone", "");
+				}
 					array.add(jo);
 			}	
+			}
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
         System.out.println(str);    
         return str;

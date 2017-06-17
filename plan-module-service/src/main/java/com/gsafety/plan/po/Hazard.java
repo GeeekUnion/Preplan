@@ -17,9 +17,10 @@ public class Hazard implements Serializable{
 	private int id;
 	private String hazardSn;
 	private String hazardName;
-	private String hazardDescription;
 	private Double longitude;   //经度
     private Double latitude;    //纬度
+    private String principal;   //负责人
+   	private String principalPhone;  //负责人电话
     private String iType;                     //用来在地图中区别于其他点的标记
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -43,13 +44,7 @@ public class Hazard implements Serializable{
 	public void setHazardName(String hazardName) {
 		this.hazardName = hazardName;
 	}
-	@Column(name="hazard_description",nullable=false)
-	public String getHazardDescription() {
-		return hazardDescription;
-	}
-	public void setHazardDescription(String hazardDescription) {
-		this.hazardDescription = hazardDescription;
-	}
+	
 	@Column(name="hazard_longitude",nullable=false)
 	public Double getLongitude() {
 		return longitude;
@@ -70,6 +65,20 @@ public class Hazard implements Serializable{
 	}
 	public void setiType(String iType) {
 		this.iType = iType;
+	}
+	@Column(name="hazard_principal")
+	public String getPrincipal() {
+		return principal;
+	}
+	public void setPrincipal(String principal) {
+		this.principal = principal;
+	}
+	@Column(name="hazard_principalPhone")
+	public String getPrincipalPhone() {
+		return principalPhone;
+	}
+	public void setPrincipalPhone(String principalPhone) {
+		this.principalPhone = principalPhone;
 	}
 
     
