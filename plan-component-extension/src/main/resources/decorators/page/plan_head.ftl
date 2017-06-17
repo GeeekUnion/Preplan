@@ -5,8 +5,7 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">
-                        <i class="icon-home fa-2x logo-default"></i>  </a>
+                    <div  > 预案管理系统</div>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
