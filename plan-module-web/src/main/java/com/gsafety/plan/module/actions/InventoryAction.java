@@ -120,22 +120,72 @@ public class InventoryAction extends ListAction<Inventory> {
  	
  	//新增Inventory
     public String save(){
+    	System.out.println(idType);
 		jsonObject.put("status", "ok");
 		Inventory i =new Inventory();
-		try{
-			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-			String iType='a'+ UUID.randomUUID().toString().substring(0, 6);
-		    i.setLatitude(latitude);
-		    i.setLongitude(longitude);
-		    i.setInventoryName(inventoryName);
-		    i.setInventoryPrincipal(inventoryPrincipal);
-		    i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
-		    i.setInventorySn(uuid);
-		    i.setiType(iType);
-			inventoryService.save(i);
-		}catch(Exception e){
-			jsonObject.put("status", "nook");
+		Hazard h = new Hazard();
+		EmergencyResponseTeam em =new EmergencyResponseTeam();
+		ProtectionObject p= new ProtectionObject() ;
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		if(idType.equalsIgnoreCase("inventory")){
+			try{
+				
+				String iType='a'+ UUID.randomUUID().toString().substring(0, 6);
+			    i.setLatitude(latitude);
+			    i.setLongitude(longitude);
+			    i.setInventoryName(inventoryName);
+			    i.setInventoryPrincipal(inventoryPrincipal);
+			    i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
+			    i.setInventorySn(uuid);
+			    i.setiType(iType);
+				inventoryService.save(i);
+			}catch(Exception e){
+				jsonObject.put("status", "nook");
+			}
+		}else if(idType.equalsIgnoreCase("hazard")){
+			try {
+				String iType='b'+ UUID.randomUUID().toString().substring(0, 6);
+				h.setHazardName(inventoryName);
+				h.setHazardSn(uuid);
+				h.setiType(iType);
+				h.setLatitude(latitude);
+				h.setLongitude(longitude);
+				h.setPrincipal(inventoryPrincipal);
+				h.setPrincipalPhone(inventoryPrincipalPhone);
+				hazardService.save(h);
+			} catch (Exception e) {
+				jsonObject.put("status", "nook");
+			}
+		}else if(idType.equalsIgnoreCase("emergencyResponseTeam")){
+			try {
+				String iType='c'+ UUID.randomUUID().toString().substring(0, 6);
+				em.setLongitude(longitude);
+				em.setLatitude(latitude);
+				em.setEmergencyResponseTeamName(inventoryName);
+				em.setEmergencyResponseTeamSn(uuid);
+				em.setPrincipal(inventoryPrincipal);
+				em.setPrincipalPhone(inventoryPrincipalPhone);
+				em.setiType(iType);
+				emergencyResponseTeamService.save(em);
+			} catch (Exception e) {
+				jsonObject.put("status", "nook");
+			}
+		}else if(idType.equalsIgnoreCase("protectionObject")){
+          try {
+        	String iType='d'+ UUID.randomUUID().toString().substring(0, 6);
+			p.setiType(iType);
+			p.setLatitude(latitude);
+			p.setLongitude(longitude);
+			p.setPrincipal(inventoryPrincipal);
+			p.setPrincipalPhone(inventoryPrincipalPhone);
+			p.setProtectionObjectName(inventoryName);
+			p.setProtectionObjectSn(uuid);
+			protectionObjectService.save(p);
+			} catch (Exception e) {
+				jsonObject.put("status", "nook");
+			}
 		}
+		
 		return "jsonObject";
 	}
  	//删除选定Inventory

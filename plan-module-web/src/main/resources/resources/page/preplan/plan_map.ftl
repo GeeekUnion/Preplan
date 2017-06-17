@@ -90,27 +90,14 @@
                                                     <div class="modal-body">
                                                     
                                                     <!-- BEGIN FORM-->
-	                                        <form action="#" id="form_sample_1" class="form-horizontal">
+	                                        <form action="#" id="addRe" class="form-horizontal">
 	                                            <div class="form-body">
                                                 <div class="alert alert-danger display-hide">
                                                     <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
                                                 <div class="alert alert-success display-hide">
                                                     <button class="close" data-close="alert"></button> Your form validation is successful! </div>
                                                     
-                                                 <div class="form-group">
-                                                    <label class="control-label col-md-3">选择站点类型
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                         <select class="form-control" name="select" id="iType">
-                                                              <optionz id ="s">选择</option>
-                                                              <option id="inventory">资源点</option>
-                                                              <option id="hazard">危险源</option>
-                                                              <option id="emergencyResponseTeam">应急队伍</option>
-                                                              <option id="protectionObject">防护目标</option>
-                                                         </select>
-                                                    </div>
-                                              </div>
+                                               
                                                    <div class="form-group">
                                                     <label class="control-label col-md-3">资源点经度
                                                         <span class="longitude"> * </span>
@@ -147,7 +134,7 @@
                                                     <div class="col-md-6">
                                                         <input id="inventoryPrincipalPhone" name="inventoryPrincipalPhone" type="text" class="form-control" value=""/> </div>
                                                 </div>
-               
+                                             <input id="idType" type="text" style="display:none" value="">
                                         </form>
                                         <!-- END FORM-->
                                                     
@@ -382,13 +369,29 @@
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
     	var createMarker = function(map){
-    	AddRe(s,w);
+    	var idType="inventory";
+    	AddRe(s,w,idType);
+    	};
+    	var hazardMarker = function(map){
+    	var idType="hazard";
+    	AddRe(s,w,idType);
+    	};
+    	var emergencyResponseTeamMarker = function(map){
+    	var idType="emergencyResponseTeam";
+    	AddRe(s,w,idType);
+    	};
+    	var protectionObjectMarker = function(map){
+    	var idType="protectionObject";
+    	AddRe(s,w,idType);
     	};
     	var EventMarker =function(map){
     	addEventF(s,w);
     	};
     	var markerMenu=new BMap.ContextMenu();
-    	markerMenu.addItem(new BMap.MenuItem('新建站点',createMarker.bind(map)));
+    	markerMenu.addItem(new BMap.MenuItem('添加资源点',createMarker.bind(map)));
+    	markerMenu.addItem(new BMap.MenuItem('添加危险源',hazardMarker.bind(map)));
+    	markerMenu.addItem(new BMap.MenuItem('添加应急队伍',emergencyResponseTeamMarker.bind(map)));
+    	markerMenu.addItem(new BMap.MenuItem('添加防护目标',protectionObjectMarker.bind(map)));
     	markerMenu.addItem(new BMap.MenuItem('生成事件',EventMarker.bind(map)));
     	map.addContextMenu(markerMenu);//给标记添加右键菜单
     	} 
@@ -655,23 +658,17 @@
 	
 	
 	 //新建Inventory站点
-    function AddRe(s,w){
-    $("#form_sample_1").empty();
+    function AddRe(s,w,idType){
     
-     $("#longitude").val(s);
-     $("#latitude").val(w);
+     $("#addRe  #longitude").val(s);
+     $("#addRe  #latitude").val(w);
+     $("#addRe  #idType").val(idType);
      console.log(s+'----'+w);
      
      $('#staticA').modal('show');
     }
-    //
-    $(function () { $('#staticA').on('hidden.bs.modal', function () {
-     $("#inventoryName").val("");
-      $("#inventoryPrincipal").val("");
-       $("#inventoryPrincipalPhone").val("");
-      console.log("23333333");
-   });
-})
+    
+
  //新建Event事件
     function addEventF(s,w){
     
@@ -682,15 +679,15 @@
     }
   
 
-	//保存addInventory方法
+	//保存addRe方法
 	function saveInventory(){
 	 
-	var longitude= $("#longitude").val();
-	var latitude=$("#latitude").val();
-	var inventoryName=$("#inventoryName").val();
-	var inventoryPrincipal=$("#inventoryPrincipal").val();
-	var inventoryPrincipalPhone=$("#inventoryPrincipalPhone").val();
-	var iType=$("#iType").val();
+	var longitude= $("#addRe #longitude").val();
+	var latitude=$("#addRe  #latitude").val();
+	var inventoryName=$("#addRe  #inventoryName").val();
+	var inventoryPrincipal=$("#addRe  #inventoryPrincipal").val();
+	var inventoryPrincipalPhone=$("#addRe #inventoryPrincipalPhone").val();
+	var idType= $("#addRe #idType").val();
 	
 	
 	$.ajax({    
@@ -702,12 +699,61 @@
 	inventoryName:inventoryName,
 	inventoryPrincipal:inventoryPrincipal,
 	inventoryPrincipalPhone:inventoryPrincipalPhone,
-	iType:iType
+	idType:idType
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){
 	swal("提交成功");
-    loadTable();
+	
+	switch(idType){
+	case"inventory":
+	loadTable();
+	     var point = new BMap.Point(longitude, latitude);
+ 		 var marker = new BMap.Marker(point,{icon:inventoryIcon});	
+		 var content = "站点名称:  " + inventoryName +"<br /> "  
+                            + "经度:     " + longitude  +"<br /> "  
+                            + "纬度: " +  latitude  +"<br /> ";  
+         addClickHandler(content,marker); 
+	     map.addOverlay(marker);
+	 break;
+	 case"hazard":
+	 hazardClick("hazard");
+		 var point = new BMap.Point(longitude, latitude);
+ 		 var marker = new BMap.Marker(point,{icon:hazardIcon});	
+		 var content = "站点名称:  " + inventoryName +"<br /> "  
+                            + "经度:     " + longitude  +"<br /> "  
+                            + "纬度: " +  latitude  +"<br /> ";  
+         addClickHandler(content,marker); 
+	     map.addOverlay(marker);
+	 break;
+	 case "emergencyResponseTeam":
+	emergencyResponseTeamClick("emergencyResponseTeam");
+	      var point = new BMap.Point(longitude, latitude);
+ 		 var marker = new BMap.Marker(point,{icon:emergencyResponseTeamIcon});	
+		 var content = "站点名称:  " + inventoryName +"<br /> "  
+                            + "经度:     " + longitude  +"<br /> "  
+                            + "纬度: " +  latitude  +"<br /> ";  
+         addClickHandler(content,marker); 
+	     map.addOverlay(marker);
+	 break;
+	 case"protectionObject":
+	 protectionObjectClick("protectionObject");
+	      var point = new BMap.Point(longitude, latitude);
+ 		 var marker = new BMap.Marker(point,{icon:protectionObjectIcon});	
+		 var content = "站点名称:  " + inventoryName +"<br /> "  
+                            + "经度:     " + longitude  +"<br /> "  
+                            + "纬度: " +  latitude  +"<br /> ";  
+         addClickHandler(content,marker); 
+	     map.addOverlay(marker);
+	
+	
+    }
+    
+    
+    
+    
+    
+    
 	}else{
 	swal("提交失败");
 	}
