@@ -3,7 +3,51 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
-        
+        //删除事件event的方法
+    	function deleteEvent(id){
+				swal({    
+				    title: "确认删除该事件？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_event_delete.action",
+							dataType : "json",
+							data : {
+							id:id	
+							},
+							success : function(data) {
+                                  if(data.status=="ok"){
+                                swal({ 
+								  title: "删除成功", 
+								  timer: 2000
+								  });
+                                  eventClick();
+                                  }if(data.status=="nook"){
+                                   swal({ 
+									  title: "删除失败，有预案对应该事件，无法被删除", 
+									  text: "3秒后自动关闭。", 
+									  timer: 3000
+									});
+                                  }
+		 										
+							},
+							error: function(){
+							 
+																	
+							}
+						});	   
+				    }
+				);
+				
+			}
        //删除inventory,hazard等等的方法
     	function deleteRe(iType){
     	var iTypeChar =iType.substr(0,1);
@@ -386,12 +430,14 @@
 				  	"processing": true,
 				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
+			            { "data": "id", "visible":false },
 			            { "data": "eventSn", "visible":false },
 	                    { "data": "eventName", align:"center" },
 	                    { "data": "eventOccurTime" },
-	                    { "data": "eventOccurPlace" },
 	                    { "data": "longitude" },
 	                    { "data": "latitude" },
+	                    { "data": "eventOccurPlace" },
+	                    { "data": "eventDescription" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -399,9 +445,9 @@
 			            "data": null,
 			            render: function(data, type, row, meta) {
 				            return '<a  class="btn blue" onclick="alterDrill(\''+row.drillContent+'\')">'
-	                                      +          	'<i class="fa fa-edit">查看 </i>'
+	                                      +          	'<i class="fa fa-edit">编辑 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteEvent('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
@@ -627,12 +673,14 @@
 							width="100%">
 							<thead>
 								<tr>
+								    <th>id</th>
 								    <th>事件编号</th>
 									<th>事件名称</th>
 									<th>发生时间</th>
 									<th>经度</th>
 									<th>纬度</th>
 									<th>事发地点</th>
+									<th>事件说明</th>
 									<th>操作</th>
 								</tr>
 							</thead>

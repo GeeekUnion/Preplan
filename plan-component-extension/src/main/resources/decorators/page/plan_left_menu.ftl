@@ -45,7 +45,7 @@
                         </#if>	 
                         <#if hasPriv('preplan110-3')==true>     
                         <li class="nav-item  " id="navPlanExecuteLi">
-                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_execute .action" class="nav-link nav-toggle">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
                                 <i class="fa fa-play "></i>
                                 <span class="title">预案执行</span>
                             </a>
@@ -75,14 +75,7 @@
                             </a>
                         </li>
                         </#if>	 
-                        <#if hasPriv('preplan110-7')==true>  
-                        <li class="nav-item " id="navPlanSrcLi">
-                              <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
-                                <i class="fa fa-cogs"></i>
-                                <span class="title">地图</span>
-                            </a>
-                        </li>   
-                        </#if>	                                                     
+                                                                          
                     </ul>
                     <!-- END SIDEBAR MENU -->
                     <!-- END SIDEBAR MENU -->
