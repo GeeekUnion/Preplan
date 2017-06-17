@@ -164,8 +164,6 @@ public class InventoryAction extends ListAction<Inventory> {
 			}	
 			}
 			
-			
-			
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
 		}

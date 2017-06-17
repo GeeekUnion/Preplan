@@ -218,6 +218,13 @@
                                                     <div class="col-md-6">
                                                         <input id="personName" name="personName" type="text" class="form-control" value=""/> </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">事件说明
+                                                        <span class="required"> * </span>
+                                                    </label>
+                                                    <div class="col-md-6">
+                                                        <input id="eventDescription" name="eventDescription" type="textarea" class="form-control" value=""/> </div>
+                                                </div>
                
                                         </form>
                                         <!-- END FORM-->
@@ -713,6 +720,7 @@
 	var personName=$("#staticEventAdd #personName").val();
 	var eventOccurPlace=$("#staticEventAdd #eventOccurPlace").val();
 	var eventName=$("#staticEventAdd #eventName").val();
+	var eventDescription=$("#staticEventAdd #eventDescription").val();
 	
 	
 	$.ajax({    
@@ -723,7 +731,8 @@
 	latitude:latitude,
 	personName:personName,
 	eventOccurPlace:eventOccurPlace,
-	eventName:eventName
+	eventName:eventName,
+	eventDescription:eventDescription
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){

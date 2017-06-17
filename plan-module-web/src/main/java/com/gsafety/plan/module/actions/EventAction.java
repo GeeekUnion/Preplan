@@ -35,6 +35,8 @@ public class EventAction extends ListAction<Event>{
 	private String eventOccurPlace;
 	private Double longitude;
 	private Double latitude;
+	
+
 	private String eventDescription;
     private String personName;
 	
@@ -66,7 +68,7 @@ public class EventAction extends ListAction<Event>{
 		return "jsonArray";
 	}
      
-	//增加event，未完成
+	//增加event
 	public String save(){
 		jsonObject.put("status", "ok");
 		Event event = new Event();
@@ -80,6 +82,7 @@ public class EventAction extends ListAction<Event>{
 			event.setEventOccurTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis())));
 			String eventSn=new SimpleDateFormat("yyyyMMddHHmmssSSS") .format(System.currentTimeMillis() );
 			event.setEventSn(eventSn);
+			event.setEventDescription(eventDescription);
 			eventService.save(event);
 		}catch(Exception e){
 			jsonObject.put("status", "nook");
@@ -102,7 +105,18 @@ public class EventAction extends ListAction<Event>{
 		return "jsonObject";
 	}
 	
-	
+	public String delete(){
+		jsonObject.put("status", "ok");
+		
+		try {
+			Event e =eventService.get(Event.class, id);
+			eventService.delete(e);
+			System.out.println("成功删除该事件");
+		} catch (Exception e) {
+			jsonObject.put("status", "nook");
+		}
+		return "jsonObject";
+	}
 	
 	
 	
@@ -218,7 +232,15 @@ public class EventAction extends ListAction<Event>{
 	public void setPersonName(String personName) {
 		this.personName = personName;
 	}
-	
+	public String getEventDescription() {
+		return eventDescription;
+	}
+
+
+	public void setEventDescription(String eventDescription) {
+		this.eventDescription = eventDescription;
+	}
+
 	
 	
 	
