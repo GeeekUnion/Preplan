@@ -673,7 +673,7 @@
 	success:function(data){    
 	if(data.status=="ok"){
 	swal("提交成功");
-	
+	$("#addRe input").val("");
 	switch(idType){
 	case"inventory":
 	loadTable();
@@ -729,7 +729,7 @@
 		                 }
 	   })
 	}
-//保存addEvent方法
+//  保存Event方法
 	function saveEvent(){
 	var longitude=$("#staticEventAdd #longitude").val();
 	var latitude=$("#staticEventAdd #latitude").val();
@@ -748,9 +748,11 @@
 	success:function(data){    
 	if(data.status=="ok"){
 	swal("提交成功");
+	//表格显示
     eventClick();
    
-    //生成marker
+   
+    //右键功能
     var point = new BMap.Point(longitude, latitude);
 		var marker = new BMap.Marker(point,
 		{

@@ -26,6 +26,9 @@
 <style type="text/css">
 
 </style>
+    <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
+    
 	<script type="text/javascript">
 	//初始化preplanSn
 	var preplanSn="";
@@ -51,10 +54,18 @@
        				upImgExt:"jpg,jpeg,gif,png"
   				})
   			})		
-  	    
-        	
+  			
+  	    $.validator.setDefaults( {
+			submitHandler: function () {
+				alert( "submitted!" );
+			}
+		} );
+      
 	$(document).ready(function() {
-				$('#drillTable').dataTable( {
+				queryDrill();
+			} );
+	 function  queryDrill(){
+	$('#drillTable').dataTable( {
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryDrillPage.action",
 					    "type": "POST",
@@ -65,6 +76,7 @@
 				  	"deferRender": true,
 				  	"searching": true,
 				  	"processing": true,
+				  	"destroy": true,//如果需要重新加载的时候请加上这个
 			        "columns": [
 			            { "data": "id", "visible":false },
 	                    { "data": "orgName", align:"center" },
@@ -81,9 +93,7 @@
 				            return '<a  class="btn blue" onclick="alterDrill(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-edit">查看 </i>'
 	                                      +      '</a>'
-	                                      +  	'<a href="javascript:;" class="btn red"onclick="deletePlan('+row.id+')">'
-	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</a>'
+	                                     
 				        }
 			        } ],
 			        "oLanguage": {
@@ -102,7 +112,7 @@
 			            }
 			        }
 				});
-			} );
+	} 
 			
 		//查看并编辑演练内容	
 		function alterDrill(id){
@@ -157,7 +167,7 @@
 		//保存提交
 	function saveDrill(){
 	 preplanSn=$("#preplanSelect").val();
-	 var drillNumOfParticipants=$("#nums").val();
+	 var drillNumOfParticipants=$("#drillNumOfParticipants").val();
 	 var xhedit=$('#xheditor').xheditor();
      var drillContent=xhedit.getSource();
      console.log(drillContent);
@@ -173,6 +183,7 @@
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){
+	queryDrill();
 	swal("提交成功");
 	}else{
 	swal("提交失败");
@@ -318,7 +329,7 @@
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                         <select class="form-control" name="select" id="preplanSelect">
+                                                         <select class="form-control" name="preplanSelect" id="preplanSelect">
 
                                                          </select>
                                                     </div>
@@ -332,21 +343,22 @@
                                                         <span class="required"> * </span>
                                                     </label>
                                                     <div class="col-md-4">
-                                                        <input type="text" id="nums" name="drillNumOfParticipants" data-required="1" class="form-control"  value=""/> </div>
+                                                        <input type="text" id="drillNumOfParticipants" name="drillNumOfParticipants" data-required="1" class="form-control"  value=""/> </div>
                                                 </div>
                                                
                                            
                                              
 
                                             </div>
+                                             
                                         </form>
                                         <!-- END FORM-->
                                                  
                                                     
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="saveDrill()">提交</button>
+                                                       <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                       <button type="submit" data-dismiss="modal" class="btn green" onclick="saveDrill()">提交</button>
                                                     </div>
                                                 </div>
                                             </div>
