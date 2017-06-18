@@ -158,44 +158,6 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
         return "url";   
     }
     
-    //预案页面加载资源
-    public String queryAllSrc() {
-        //查询人力资源
-        Cnds cndsPerson = Cnds.me(Person.class);        
-        //查询物资资源
-        Cnds cndsSupply = Cnds.me(Supply.class);
-        try {
-            //封装人力资源
-            List<Person> personList = personService.getList(cndsPerson);
-            JSONArray array = new JSONArray();
-            for(Person p : personList) {
-                JSONObject jo = new JSONObject();
-                jo.put("group","人力");
-                jo.put("SrcName", p.getPersonJob());
-                array.add(jo);
-            }
-            //封装物资资源
-            List<Supply> supplyList = supplyService.getList(cndsSupply);
-            for(Supply s : supplyList) {
-                JSONObject jo = new JSONObject();
-                jo.put("group","物资");
-                jo.put("SrcName", s.getSupplyName());
-                array.add(jo);
-            }
-            
-            //输出资源到页面
-            String str = array.toString();
-            out().print(str);
-            out().flush();
-            out().close();           
-            
-        }
-        catch(Exception e){
-            System.out.println("error");
-        }
-       
-        return "jsonArray";
-    }
     //保存预案
     public String saveOnlyPreplan() {
         Preplan ppModel=new Preplan();
@@ -373,7 +335,12 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                                         for(Element e: allTag){
                                             String eContent=e.text();
                                             if(eContent.length()>0){//不为空
-                                                pdfUtil.addParagraph(doc,eContent);                                                
+                                            	 //判断是否存在表格
+                                            	 if("table".equals(e.nodeName())){
+                                            		 
+                                            	 }else{
+                                            		 pdfUtil.addParagraph(doc,eContent);   
+                                            	 }                                                                                             
                                             }else if(e.nodeName()=="img"){//插入图片          
                                                 String srcText=e.attr("src");
                                                 pdfUtil.addImg(doc, srcText.substring(srcText.lastIndexOf("\\")+1));
@@ -511,6 +478,47 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     
     
     //------------------------new/old---------------------------
+    
+   
+
+    //预案页面加载资源
+    public String queryAllSrc() {
+        //查询人力资源
+        Cnds cndsPerson = Cnds.me(Person.class);        
+        //查询物资资源
+        Cnds cndsSupply = Cnds.me(Supply.class);
+        try {
+            //封装人力资源
+            List<Person> personList = personService.getList(cndsPerson);
+            JSONArray array = new JSONArray();
+            for(Person p : personList) {
+                JSONObject jo = new JSONObject();
+                jo.put("group","人力");
+                jo.put("SrcName", p.getPersonJob());
+                array.add(jo);
+            }
+            //封装物资资源
+            List<Supply> supplyList = supplyService.getList(cndsSupply);
+            for(Supply s : supplyList) {
+                JSONObject jo = new JSONObject();
+                jo.put("group","物资");
+                jo.put("SrcName", s.getSupplyName());
+                array.add(jo);
+            }
+            
+            //输出资源到页面
+            String str = array.toString();
+            out().print(str);
+            out().flush();
+            out().close();           
+            
+        }
+        catch(Exception e){
+            System.out.println("error");
+        }
+       
+        return "jsonArray";
+    }  
     
     
   //保存预案和相关任务

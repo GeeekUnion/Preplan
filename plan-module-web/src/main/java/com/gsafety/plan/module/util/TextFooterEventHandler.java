@@ -27,11 +27,11 @@ public class TextFooterEventHandler implements IEventHandler {
         page++;
         canvas.beginText();
         try {
-            canvas.setFontAndSize(PdfFontFactory.createFont(FontConstants.HELVETICA_OBLIQUE), 15);
+            canvas.setFontAndSize(PdfFontFactory.createFont(FontConstants.HELVETICA_OBLIQUE), 10);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        canvas.moveText((pageSize.getRight() - doc.getRightMargin() + (pageSize.getLeft() + doc.getLeftMargin())) / 2,pageSize.getBottom() + doc.getBottomMargin())
+        canvas.moveText((pageSize.getRight() - doc.getRightMargin() + (pageSize.getLeft() + doc.getLeftMargin())) / 2,pageSize.getBottom() + doc.getBottomMargin()-5)
                 .showText(""+page)
                 .endText()
                 .release();

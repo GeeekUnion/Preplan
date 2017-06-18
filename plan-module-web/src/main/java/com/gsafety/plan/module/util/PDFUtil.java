@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.image.ImageData;
@@ -19,8 +21,10 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.xobject.PdfImageXObject;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 
 
@@ -132,6 +136,39 @@ public class PDFUtil {
 	   ImageData imgData=ImageDataFactory.create(realUrl);
 	   Image pic=new Image(imgData);	  
 	   doc.add(pic);
+   }
+   
+   /**
+    * 添加表格
+    * @param
+    * @param Element e
+    * */
+   public void addTable(Document doc,Element e) throws Exception{
+		 Elements eTag=e.children();//获得thead和tobody    		 
+		 Table table=new Table(e.children().last().children().last().childNodeSize());//tobody最后一列的tr获得行数，这里可能会有些出入
+		 for(Element tBady: eTag){    			 
+			 Elements tCellList=tBady.children();//获得tr行    			 
+			 for(Element tCell: tCellList){
+				 Elements tDList=tCell.children();//获得td格子      				 
+				 for(Element td:tDList){
+					 String oldRowspan=td.attr("rowspan");//获得跨行
+					 String oldColspan=td.attr("colspan");//获得跨列
+					 int rowspan=0;
+					 int colspan=0;
+					 if(oldRowspan!="" && oldRowspan.length()>0){
+						 rowspan=Integer.valueOf(td.attr("rowspan")); 
+					 }
+					 if(oldColspan!="" && oldColspan.length()>0){
+						 colspan=Integer.valueOf(td.attr("colspan"));
+					 }
+					 
+					 Cell cell=new Cell(rowspan,colspan).add(td.text());
+					 table.addCell(cell);
+				 }
+			 }
+			
+		 }
+       doc.add(table.setFont(sysFont).setAutoLayout());	   
    }
 
 	public Map<String, Integer> getCatalogMap() {
