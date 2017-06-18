@@ -5,6 +5,6 @@ import com.gsafety.plan.po.Hazard;
 
 public interface HazardService extends IBaseService{
 
-	Hazard getByHazardIType(String iType);
+	public Hazard getByHazardIType(String iType);
 
 }

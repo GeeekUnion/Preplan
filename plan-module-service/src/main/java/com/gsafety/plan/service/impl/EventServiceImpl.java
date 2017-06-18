@@ -74,6 +74,8 @@ public class EventServiceImpl extends BaseServiceImpl implements EventService{
 			    jo.put("eventSn", p.getEventSn());
 			    jo.put("latitude", p.getLatitude());
 			    jo.put("longitude", p.getLongitude());
+			    jo.put("personName", p.getPersonName());
+			    
 					array.add(jo);
 		 }
 	        return array;

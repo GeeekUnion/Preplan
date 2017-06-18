@@ -23,21 +23,22 @@ public class Hazard implements Serializable{
    	private String principalPhone;  //负责人电话
     private String iType;                     //用来在地图中区别于其他点的标记
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Column(name="hazard_sn",unique=true,nullable=false)
+	@Column(name="hazard_sn",unique=true)
 	public String getHazardSn() {
 		return hazardSn;
 	}
 	public void setHazardSn(String hazardSn) {
 		this.hazardSn = hazardSn;
 	}
-	@Column(name="hazard_name",nullable=false)
+	@Column(name="hazard_name")
 	public String getHazardName() {
 		return hazardName;
 	}
@@ -45,19 +46,19 @@ public class Hazard implements Serializable{
 		this.hazardName = hazardName;
 	}
 	
-	@Column(name="hazard_longitude",nullable=false)
+	@Column(name="hazard_longitude",precision = 12,scale = 7)
 	public Double getLongitude() {
 		return longitude;
 	}
 	public void setLongitude(Double longitude) {
-		longitude = longitude;
+		this.longitude = longitude;
 	}
-	@Column(name="hazard_latitude",nullable=false)
+	@Column(name="hazard_latitude",precision = 12,scale = 7)
 	public Double getLatitude() {
 		return latitude;
 	}
 	public void setLatitude(Double latitude) {
-		latitude = latitude;
+		this.latitude = latitude;
 	}
 	@Column(name="hazard_iType")
 	public String getiType() {
