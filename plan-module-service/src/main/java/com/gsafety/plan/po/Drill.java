@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -59,8 +60,8 @@ public class Drill implements Serializable{
 	public void setDrillContent(String drillContent) {
 		this.drillContent = drillContent;
 	}
-	@OneToOne(cascade = {CascadeType.ALL})    
-	@JoinColumn(name = "preplan_sn", referencedColumnName="preplan_sn")    
+	@ManyToOne( cascade = {CascadeType.PERSIST, CascadeType.MERGE}, targetEntity=Preplan.class )
+	@JoinColumn(name="preplan_sn")  
 	public Preplan getPreplan() {
 		return preplan;
 	}
