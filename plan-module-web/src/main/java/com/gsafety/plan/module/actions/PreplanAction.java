@@ -298,7 +298,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             }else {
                 docTitleDesc="简案";  
             }
-            String fileName="/"+docTitle+docTitleDesc+".pdf";//预案名字
+            String fileName="/"+docTitle+docTitleDesc+p.getVersion()+".pdf";//预案名字
             File fileDir = new File(saveRealFilePath);  
             if (!fileDir.exists()) { //如果不存在 则创建   
                 fileDir.mkdirs();  
@@ -337,7 +337,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                                             if(eContent.length()>0){//不为空
                                             	 //判断是否存在表格
                                             	 if("table".equals(e.nodeName())){
-                                            		 
+                                            		 pdfUtil.addTable(doc, e);
                                             	 }else{
                                             		 pdfUtil.addParagraph(doc,eContent);   
                                             	 }                                                                                             
@@ -372,7 +372,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     		}	
     	}
         long now = System.currentTimeMillis();
-        System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:");
+        System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n");
     	return "myJsonObject";
     }
     
@@ -462,8 +462,13 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
     		if(null!=version && version.length()>0){
     			int ssInde=version.lastIndexOf(".");   			
-    			int i=Integer.parseInt(version.substring(ssInde+1));//最后一个点后面的数字   			
-    			i++;
+    			int i=Integer.parseInt(version.substring(ssInde+1));//最后一个点后面的数字   	
+    			if(i==100){
+    				i=1;
+    			}else{
+    				i++;
+    			}
+    			
     			version=yearTow+"."+month+"."+date+"."+i+"";
     		}else{
     			version=yearTow+"."+month+"."+date+"."+"1";

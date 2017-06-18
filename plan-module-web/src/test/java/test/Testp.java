@@ -38,6 +38,7 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.pdf.canvas.draw.DottedLine;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Canvas;
@@ -45,8 +46,11 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Tab;
+import com.itextpdf.layout.element.TabStop;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.AreaBreakType;
+import com.itextpdf.layout.property.TabAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 
 
@@ -128,23 +132,27 @@ public class Testp{
 	    
 
 	   
-//	   PDFUtil pdfUtil2=new PDFUtil(urlOrig);
-//	   Document doc2=pdfUtil2.createPdfDoc();
-//	   System.out.println(doc2.getPdfDocument().getCatalog().getPdfObject());
-//	   //PdfDocument pdfdoc=doc2.getPdfDocument();
-//	   for(Entry<String, Integer> entry:pdfUtil.getCatalogMap().entrySet()){
+	   PDFUtil pdfUtil2=new PDFUtil(urlOrig);
+	   Document doc2=pdfUtil2.createPdfDoc();
+	   System.out.println(doc2.getPdfDocument().getCatalog().getPdfObject());
+	   //PdfDocument pdfdoc=doc2.getPdfDocument();
+	   for(Entry<String, Integer> entry:pdfUtil.getCatalogMap().entrySet()){
 //		   
-//		   String title=entry.getKey();
-//		   String page=entry.getValue()+"";	 
-//		   if(countInString(title, ".")==0){
-//			   pdfUtil2.addParagraph(doc2, title+"......."+page);
-//		   }else if(countInString(title, ".")==1){
-//			   pdfUtil2.addParagraph(doc2, title+"......."+page);
-//		   }else{
-//
-//		   }		   		   
-//	   }
-//	   doc2.close();
+//		    p.addTabStops(new TabStop(540, TabAlignment.RIGHT, new DottedLine()));
+//		    p.add(entry.getKey());
+//		    p.add(new Tab());
+//		    p.add((pdfDoc.getNumberOfPages() - 1)+"");
+		   String title=entry.getKey();
+		   String page=entry.getValue()+"";	 
+		   if(countInString(title, ".")==0){
+			   pdfUtil2.addParagraph(doc2, title+"......."+page);
+		   }else if(countInString(title, ".")==1){
+			   pdfUtil2.addParagraph(doc2, title+"......."+page);
+		   }else{
+
+		   }		   		   
+	   }
+	   doc2.close();
 	   
 	   long now = System.currentTimeMillis();
        System.out.println("共耗时：" + ((now - old) / 1000.0) + "秒\n\n" + "文件保存在:"+url);

@@ -29,6 +29,190 @@
     <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
     
+
+     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
+     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script> 
+</head>
+
+<!-- END HEAD -->
+
+<body
+	class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+	<#include "/decorators/plan_head.ftl">
+	<!-- BEGIN HEADER & CONTENT DIVIDER -->
+	<div class="clearfix"></div>
+	<!-- END HEADER & CONTENT DIVIDER -->
+	<!-- BEGIN CONTAINER -->
+	<div class="page-container">
+		<#include "/decorators/plan_left_menu.ftl">
+		<!-- BEGIN CONTENT 内容-->
+		<div class="page-content-wrapper">
+			<!-- BEGIN CONTENT BODY -->
+			<div class="page-content">
+				<!-- BEGIN PAGE HEADER-->
+				<!-- BEGIN PAGE BAR -->
+				<div class="page-bar">
+					<ul class="page-breadcrumb">
+						<li><a
+							href="${pageContext.request.contextPath}/plan/preplan/planIndex.action">主页</a>
+							<i class="fa fa-circle"></i></li>
+						<li><span>演练</span></li>
+					</ul>
+				</div>
+				<!-- END PAGE BAR -->
+				<!-- BEGIN PAGE TITLE-->
+				<h3 class="page-title">预案演练</h3>
+				<!-- END PAGE TITLE-->
+				<!-- END PAGE HEADER-->
+				<!--BEGIN MAP CONTENT-->
+				<!--Content container-->
+				               	<div class="portlet box green" id="drillDiv">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="fa fa-globe"></i>应急队伍信息
+						</div>
+						<div class="actions">
+							<a onClick="addDrill()"
+								class="btn btn-default btn-sm btn-circle"> <i
+								class="fa fa-plus"></i> 新增
+							</a>
+						</div>
+					</div>
+
+					<div class="portlet-body" id="">
+						<table id="drillTable" class="display" cellspacing="0"
+							width="100%">
+							<thead>
+								<tr><th>  </th>
+								    <th>预案演练部门</th>
+									<th>预案演练编号</th>
+									<th>预案名称</th>
+									<th>预案演练人数</th>
+									<th>预案演练时间</th>
+									<th>预案演练内容</th>
+								</tr>
+							</thead>
+
+						</table>
+					</div>
+
+				</div> 
+
+                  <!--Modals-->
+               <div id="staticUpdate" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">查看内容</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    
+                                                    <textarea id="xheditor2" class="xheditor {skin:'default'}">
+                                                  
+                                                    </textarea>
+                                                    <input id="id" type="text" style="display:none" value="">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="updateDrill()"> 提交</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                              <!--End Modals-->      
+    <!--Modals-->
+               <div id="staticAdd" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
+                                            <div class="modal-dialog modal-lg" >
+                                                <div class="modal-content">
+                                                   <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                                        <h4 class="modal-title">新增演练</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+<!-- BEGIN FORM-->
+                                    <form id="staticAddForm" class="form-horizontal">
+                                        <div class="form-body">
+                                            <div class="alert alert-danger display-hide">
+                                                <button class="close" data-close="alert"></button> 请按照要求填写预案基本信息。</div>
+                                            <div class="alert alert-success display-hide">
+                                                <button class="close" data-close="alert"></button> Your form validation is successful! </div> 
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">选择预案
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        			                                                                                                                    <select class="form-control" name="preplanSelect" id="preplanSelect">
+                                                                <option value=""></option>                                                                                                                                  
+			                                             </select>                                                       
+                                                    </div>    
+                                                </div>
+                                            </div> 
+                                           <textarea id="xheditor" class="xheditor {skin:'default'}">
+				                          </textarea>       
+                                           <div class="form-group">
+                                                <label class="control-label col-md-3">预案演练人数
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" id="drillNumOfParticipants" name="drillNumOfParticipants" data-required="1" class="form-control"  value=""/> 
+                                                        <span class="help-block"> 不能为空，必须为整数。</span>
+                                                    </div>   
+                                                </div>
+                                            </div>   
+                                            
+                                        </div>
+                                        <hr>
+						                <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
+                                        <button type="submit" class="btn green"> 提交</button>
+                                    </form>
+                                    <!-- END FORM-->                                                                                                
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+              <!--End Modals-->    
+
+
+				<!-- END MAP CONTENT-->
+			</div>
+			<!-- END CONTENT BODY -->
+		</div>
+		<!-- END CONTENT -->
+	</div>
+	<!-- END CONTAINER -->
+	<#include "/decorators/plan_footer.ftl">
+	<!--[if lt IE 9]>
+<script src="../assets/global/plugins/respond.min.js"></script>
+<script src="../assets/global/plugins/excanvas.min.js"></script> 
+<![endif]-->
+
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<script type="text/javascript"
+		src="${getTheme('default','')}assets/global/scripts/datatable.js"></script>
+	<script type="text/javascript"
+		src="${getTheme('default','')}assets/global/plugins/datatables/datatables.min.js"></script>
+	<script type="text/javascript"
+		src="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
+	<!-- END PAGE LEVEL PLUGINS -->
+
+	<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<script type="text/javascript"
+		src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
+	<!-- END PAGE LEVEL SCRIPTS -->
+	<!--MAP PLUGINS -->
+	<!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/select2/js/select2.full.min.js"></script>
+        <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
+        <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/form-validation.min.js"></script>        
+    <!-- END PAGE LEVEL PLUGINS -->
 	<script type="text/javascript">
 	//初始化preplanSn
 	var preplanSn="";
@@ -188,7 +372,7 @@
 		
 		//增加预案，生成表格
 	function addDrill(){
-	 document.getElementById("form_sample_1").reset()
+	 
 	
 	
 	$.ajax({
@@ -196,8 +380,7 @@
 	dataType:"json",	  
 	method:'POST',
 	success:function(data){    
-	        $("#preplanSelect").empty();
-		    var html="<option>"+"选择"+"</option>"
+		    var html=""
 		    for(var i=0;i<data.length;i++){
 		    	var co=data[i];
 		    	console.log(co);
@@ -213,7 +396,7 @@
 	         
 	               
 		//保存提交
-	function saveDrill(){
+	function saveDrillaaaa(){
 	 preplanSn=$("#preplanSelect").val();
 	 var drillNumOfParticipants=$("#drillNumOfParticipants").val();
 	 var xhedit=$('#xheditor').xheditor();
@@ -263,185 +446,86 @@
 		                 }
 	     })
 	                     }	
+	                     
+	                     
+	$(function(){			
+				var form2 = $('#staticAddForm');
+	            var error2 = $('.alert-danger', form2);
+	            var success2 = $('.alert-success', form2);
+	
+	            form2.validate({
+	                errorElement: 'span', //default input error message container
+	                errorClass: 'help-block help-block-error', // default input error message class
+	                focusInvalid: false, // do not focus the last invalid input
+	                ignore: "",  // validate all fields including form hidden input
+	                rules: {
+	                    drillNumOfParticipants: {
+	                        required: true,
+	                        digits:true 
+	                    },
+	                    preplanSelect: {
+	                        required: true
+	                    },
+	                },
+	
+	                invalidHandler: function (event, validator) { //display error alert on form submit              
+	                    success2.hide();
+	                    error2.show();
+	                    App.scrollTo(error2, -200);
+	                },
+	
+	                errorPlacement: function (error, element) { // render error placement for each input type
+	                    var icon = $(element).parent('.input-icon').children('i');
+	                    icon.removeClass('fa-check').addClass("fa-warning");  
+	                    icon.attr("data-original-title", error.text()).tooltip({'container': 'body'});
+	                },
+	
+	                highlight: function (element) { // hightlight error inputs
+	                    $(element)
+	                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+	                },
+	
+	                unhighlight: function (element) { // revert the change done by hightlight
+	                    
+	                },
+	
+	                success: function (label, element) {
+	                    var icon = $(element).parent('.input-icon').children('i');
+	                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+	                    icon.removeClass("fa-warning").addClass("fa-check");
+	                },
+	
+	                submitHandler: function (form) {
+	                	preplanSn=$("#preplanSelect").val();
+		                var drillNumOfParticipants=$("#drillNumOfParticipants").val();
+		                var xhedit=$('#xheditor').xheditor();
+		                var drillContent=xhedit.getSource();
+		            	$.ajax({    
+		                        url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
+		                        method:'POST',
+		                        dataType:"json",
+		                        data:{
+		                            preplanSn:preplanSn,
+		                            drillNumOfParticipants :drillNumOfParticipants,
+		                            drillContent:drillContent
+		                            },	  
+		                        success:function(data){    
+		                                if(data.status=="ok"){
+		                                queryDrill();
+		                                swal("提交成功");
+		                                }else{
+		                                swal("提交失败");
+		                                }
+				                }
+			                })
+	                 
+		                return false; // 阻止表单自动提交事件
+	                }
+	            });
+				
+	        })                     
 		
 </script>
-     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor-1.2.2.min.js"></script>   
-     <script type="text/javascript" src="${getTheme('default','')}xhedit/xheditor_lang/zh-cn.js"></script> 
-</head>
-
-<!-- END HEAD -->
-
-<body
-	class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
-	<#include "/decorators/plan_head.ftl">
-	<!-- BEGIN HEADER & CONTENT DIVIDER -->
-	<div class="clearfix"></div>
-	<!-- END HEADER & CONTENT DIVIDER -->
-	<!-- BEGIN CONTAINER -->
-	<div class="page-container">
-		<#include "/decorators/plan_left_menu.ftl">
-		<!-- BEGIN CONTENT 内容-->
-		<div class="page-content-wrapper">
-			<!-- BEGIN CONTENT BODY -->
-			<div class="page-content">
-				<!-- BEGIN PAGE HEADER-->
-				<!-- BEGIN PAGE BAR -->
-				<div class="page-bar">
-					<ul class="page-breadcrumb">
-						<li><a
-							href="${pageContext.request.contextPath}/plan/preplan/planIndex.action">主页</a>
-							<i class="fa fa-circle"></i></li>
-						<li><span>演练</span></li>
-					</ul>
-				</div>
-				<!-- END PAGE BAR -->
-				<!-- BEGIN PAGE TITLE-->
-				<h3 class="page-title">预案演练</h3>
-				<!-- END PAGE TITLE-->
-				<!-- END PAGE HEADER-->
-				<!--BEGIN MAP CONTENT-->
-				<!--Content container-->
-				               	<div class="portlet box green" id="drillDiv">
-					<div class="portlet-title">
-						<div class="caption">
-							<i class="fa fa-globe"></i>应急队伍信息
-						</div>
-						<div class="actions">
-							<a onClick="addDrill()"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
-					</div>
-
-					<div class="portlet-body" id="">
-						<table id="drillTable" class="display" cellspacing="0"
-							width="100%">
-							<thead>
-								<tr><th>  </th>
-								    <th>预案演练部门</th>
-									<th>预案演练编号</th>
-									<th>预案名称</th>
-									<th>预案演练人数</th>
-									<th>预案演练时间</th>
-									<th>预案演练内容</th>
-								</tr>
-							</thead>
-
-						</table>
-					</div>
-
-				</div> 
-
-                  <!--Modals-->
-               <div id="staticUpdate" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">查看内容</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    
-                                                    <textarea id="xheditor2" class="xheditor {skin:'default'}">
-                                                  
-                                                    </textarea>
-                                                    <input id="id" type="text" style="display:none" value="">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="updateDrill()"> 提交</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                              <!--End Modals-->      
-    <!--Modals-->
-               <div id="staticAdd" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
-                                            <div class="modal-dialog modal-lg" >
-                                                <div class="modal-content">
-                                                   
-                                                    <div class="modal-body">
-                                                      <!-- BEGIN FORM-->
-                                        <form action="#" id="form_sample_1" class="form-horizontal">
-                                            <div class="form-body">
-                                                <h3 class="form-section">新增</h3>
-                                             <div class="alert alert-danger display-hide">
-                                                    <button class="close" data-close="alert"></button> You have some form errors. Please check below. </div>
-                                                <div class="alert alert-success display-hide">
-                                                    <button class="close" data-close="alert"></button> Your form validation is successful! </div>   
-                                                    
-                                             
-                                             <div class="form-group">
-                                                    <label class="control-label col-md-3">选择预案
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                         <select class="form-control" name="preplanSelect" id="preplanSelect">
-
-                                                         </select>
-                                                    </div>
-                                              </div>
-                                               <textarea id="xheditor" class="xheditor {skin:'default'}">
-                                                  </textarea>  
-                                                
-                                                
-                                             <div class="form-group">
-                                                    <label class="control-label col-md-3">预案演练人数
-                                                        <span class="required"> * </span>
-                                                    </label>
-                                                    <div class="col-md-4">
-                                                        <input type="text" id="drillNumOfParticipants" name="drillNumOfParticipants" data-required="1" class="form-control"  value=""/> </div>
-                                                </div>
-                                               
-                                           
-                                             
-
-                                            </div>
-                                             
-                                        </form>
-                                        <!-- END FORM-->
-                                                 
-                                                    
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                       <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                       <button type="submit" data-dismiss="modal" class="btn green" onclick="saveDrill()">提交</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                              <!--End Modals-->    
-
-
-				<!-- END MAP CONTENT-->
-			</div>
-			<!-- END CONTENT BODY -->
-		</div>
-		<!-- END CONTENT -->
-	</div>
-	<!-- END CONTAINER -->
-	<#include "/decorators/plan_footer.ftl">
-	<!--[if lt IE 9]>
-<script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script> 
-<![endif]-->
-
-	<!-- BEGIN PAGE LEVEL PLUGINS -->
-	<script type="text/javascript"
-		src="${getTheme('default','')}assets/global/scripts/datatable.js"></script>
-	<script type="text/javascript"
-		src="${getTheme('default','')}assets/global/plugins/datatables/datatables.min.js"></script>
-	<script type="text/javascript"
-		src="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
-	<!-- END PAGE LEVEL PLUGINS -->
-
-	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script type="text/javascript"
-		src="${getTheme('default','')}assets/pages/scripts/table-datatables-fixedheader.min.js"></script>
-	<!-- END PAGE LEVEL SCRIPTS -->
-	<!--MAP PLUGINS -->
-
 </body>
 
 

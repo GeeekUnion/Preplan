@@ -25,8 +25,8 @@
     	<div id="control-heigh">
 	        <!-- BEGIN LOGO -->
 	        <div class="logo" id="logo-area">
-	            <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">
-	              <i class="icon-home fa-2x"></i> </a>
+	            <a href="${pageContext.request.contextPath}/plan/preplan/plan_index.action" style="color:#FFFFFF">
+	              <i class="icon-home fa-2x" ></i> </a>
 	        </div>
 	        <!-- END LOGO -->
 	        <!-- BEGIN LOGIN -->
