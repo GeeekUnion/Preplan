@@ -514,12 +514,7 @@
 						<div class="caption">
 							<i class="fa fa-globe"></i>资源信息
 						</div>
-						<div class="actions">
-							<a href=""
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
+						
 					</div>
 
 					<div class="portlet-body" id="">
@@ -550,12 +545,7 @@
 						<div class="caption">
 							<i class="fa fa-globe"></i>危险源信息
 						</div>
-						<div class="actions">
-							<a href="${pageContext.request.contextPath}/plan/preplan/"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
+						
 					</div>
 
 					<div class="portlet-body" id="">
@@ -586,12 +576,7 @@
 						<div class="caption">
 							<i class="fa fa-globe"></i>应急队伍信息
 						</div>
-						<div class="actions">
-							<a href="${pageContext.request.contextPath}/plan/preplan/"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
+						
 					</div>
 
 					<div class="portlet-body" id="">
@@ -622,12 +607,7 @@
 						<div class="caption">
 							<i class="fa fa-globe"></i>防护目标信息
 						</div>
-						<div class="actions">
-							<a href="${pageContext.request.contextPath}/plan/preplan/"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
+						
 					</div>
 
 					<div class="portlet-body" id="">
@@ -658,12 +638,7 @@
 						<div class="caption">
 							<i class="fa fa-globe"></i>事件信息
 						</div>
-						<div class="actions">
-							<a onClick="addDrill()"
-								class="btn btn-default btn-sm btn-circle"> <i
-								class="fa fa-plus"></i> 新增
-							</a>
-						</div>
+						
 					</div>
 
 					<div class="portlet-body" id="">
