@@ -5,7 +5,7 @@
             <div class="page-header-inner ">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <div  > 预案管理系统</div>
+                    <a class="logo-default" href="${pageContext.request.contextPath}/plan/preplan/plan_index.action" style="color:#FFFFFF;font-size:18px;font-weight:bold;margin-top:10px"> 预案管理系统</a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->

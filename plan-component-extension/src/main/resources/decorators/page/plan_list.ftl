@@ -164,7 +164,7 @@
 							error: function(){							
 								swal({
 									title: "删除失败!",
-									text: '未知错误，请重试！',
+									text: '请确定您其他地方没有引用该预案，比如预案演练、执行！',
 									type: "error",
 									timer: 2000, 
 									confirmButtonText: "确认"  
