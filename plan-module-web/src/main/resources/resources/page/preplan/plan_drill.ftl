@@ -414,13 +414,15 @@
 	     },	  
 	success:function(data){    
 	if(data.status=="ok"){
-	queryDrill();
 	swal("提交成功");
+	$('#staticAdd').modal('hide');
+	queryDrill();
 	}else{
 	swal("提交失败");
 	}
 		                 }
 	   })
+	  
 	               }	
 		
 		//更新内容
@@ -493,6 +495,7 @@
 	                    var icon = $(element).parent('.input-icon').children('i');
 	                    $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
 	                    icon.removeClass("fa-warning").addClass("fa-check");
+	                    	
 	                },
 	
 	                submitHandler: function (form) {
@@ -513,6 +516,7 @@
 		                                if(data.status=="ok"){
 		                                queryDrill();
 		                                swal("提交成功");
+		                                $('#staticAdd').modal('hide');
 		                                }else{
 		                                swal("提交失败");
 		                                }
@@ -520,6 +524,7 @@
 			                })
 	                 
 		                return false; // 阻止表单自动提交事件
+		                
 	                }
 	            });
 				
