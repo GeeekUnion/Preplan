@@ -148,8 +148,10 @@ public class InventoryAction extends ListAction<Inventory> {
 				h.setHazardName(inventoryName);
 				h.setHazardSn(uuid);
 				h.setiType(iType);
-				h.setLatitude(latitude);
-				h.setLongitude(longitude);
+			    h.setLatitude(latitude);
+			    h.setLongitude(longitude);
+			    h.getLatitude();
+			    h.getLongitude();
 				h.setPrincipal(inventoryPrincipal);
 				h.setPrincipalPhone(inventoryPrincipalPhone);
 				hazardService.save(h);

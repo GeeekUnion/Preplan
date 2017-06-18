@@ -558,7 +558,7 @@
     opts = {  
                     width : 200,     // 信息窗口宽度  
                     height: 80,     // 信息窗口高度  
-                    title : "站点信息" , // 信息窗口标题  
+                    title : "事件信息" , // 信息窗口标题  
                     enableMessage:true//设置允许信息窗发送短息  
         }; 
     //ajax显示Maker(EVENT)
@@ -582,7 +582,8 @@
 	    map.addOverlay(marker);
 		RightClickMaker(marker,point);//右键单击marker出现右键菜单事件
 		
-		var content = "站点名称:  " + data[i].eventName +"<br /> "  
+		var content = "事件名称:  " + data[i].eventName +"<br /> "  
+		                    + "上报人:     " + data[i].personName  +"<br /> " 
                             + "经度:     " + data[i].longitude  +"<br /> "  
                             + "纬度: " +  data[i].latitude  +"<br /> ";  
         addClickHandler(content,marker); 
