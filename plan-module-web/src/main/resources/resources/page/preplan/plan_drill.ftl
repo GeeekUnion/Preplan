@@ -93,6 +93,9 @@
 				            return '<a  class="btn blue" onclick="alterDrill(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-edit">查看 </i>'
 	                                      +      '</a>'
+	                                      + '<a  class="btn red" onclick="deleteDrill(\''+row.id+'\')">'
+	                                      +          	'<i class="fa fa-delete">删除 </i>'
+	                                      +      '</a>'
 	                                     
 				        }
 			        } ],
@@ -133,7 +136,52 @@
 		})
 		$('#staticUpdate').modal('show')
 		}
-  
+		
+        //删除事件drill的方法
+    	function deleteDrill(id){
+				swal({    
+				    title: "确认删除该事件？",     
+				    type: "warning",  
+				    confirmButtonText:"确认", 
+				    cancelButtonText :"取消", 
+				    showCancelButton: true,    
+				    closeOnConfirm: false,    
+				    showLoaderOnConfirm: true,  
+				    }, 
+				    function(){    
+				    	//删除该预案
+						$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_drill_delete.action",
+							dataType : "json",
+							data : {
+							id:id	
+							},
+							success : function(data) {
+                                  if(data.status=="ok"){
+                                swal({ 
+								  title: "删除成功", 
+								  timer: 2000
+								  });
+                                 queryDrill();
+                                  }if(data.status=="nook"){
+                                   swal({ 
+									  title: "删除失败", 
+									  text: "3秒后自动关闭。", 
+									  timer: 3000
+									});
+                                  }
+		 										
+							},
+							error: function(){
+							 
+																	
+							}
+						});	   
+				    }
+				);
+				
+			}
   
   
   

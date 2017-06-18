@@ -19,6 +19,7 @@ import net.sf.json.JSONObject;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Drill;
+import com.gsafety.plan.po.Event;
 import com.gsafety.plan.po.Preplan;
 import com.gsafety.plan.service.DrillService;
 import com.gsafety.plan.service.PreplanService;
@@ -128,7 +129,17 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
                      } 
          return "jsonArray";
      }
-     
+     public String delete(){
+ 		jsonObject.put("status", "ok");
+ 		
+ 		try {
+ 			Drill e =drillService.get(Drill.class, id);
+ 			drillService.delete(e);
+ 		} catch (Exception e) {
+ 			jsonObject.put("status", "nook");
+ 		}
+ 		return "jsonObject";
+ 	}
      
      
 	public JSONArray getJsonArray() {
