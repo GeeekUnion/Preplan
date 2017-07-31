@@ -58,10 +58,17 @@
 				<!--BEGIN MAP CONTENT-->
 				<!--MAP container-->
 				
+				<div id="r-result">请输入要搜索的地方:<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>
+				<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+				
 				<div style=" width:100%; height:500px;   border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
-            
+				<a> 事件&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/事件.png"   /> </a>	
+                <a> 资源点 &nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/inventory.png"  /> </a>	
+                <a> 防护目标&nbsp:&nbsp <img src="${getMC ("")}/theme/img/icon/防护目标.png"   /> </a>	
+                <a> 应急队伍&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/应急队伍.png"   /> </a>	
+                <a> 危险源&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/危险源.png"   /> </a>	
                               
                               
 				<#include "/decorators/plan_map_content.ftl">
@@ -267,6 +274,8 @@
 		var markers = new Array();
 	    var s;//经度
 	    var w;//纬度
+	    var lo2=0; //用来表示事件表格里面传来的经度
+	    var la2=0; 
 	    var longitude, latitude;  
 	    var type= "";   //判断传过来的点类型
 	    //用来决定table内容的
@@ -295,12 +304,67 @@
 	var emergencyResponseTeamIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/应急队伍.png", new BMap.Size(20,20));
 	var hazardIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/危险源.png", new BMap.Size(20,20));
 	
+	function Location(lo2,la2){
+	 var point = new BMap.Point(lo2,la2);
+	 map.centerAndZoom(point,12);
+	}
 	
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
 	var point = new BMap.Point(116.331398,39.897445);
 	map.centerAndZoom(point,12);
      getLocationHtml5()
-  
+   
+   
+   //关键字输入提示开始
+   function G(id) {
+		return document.getElementById(id);
+	}
+	
+   var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+		{"input" : "suggestId"
+		,"location" : map
+	});
+
+	ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+	var str = "";
+		var _value = e.fromitem.value;
+		var value = "";
+		if (e.fromitem.index > -1) {
+			value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		}    
+		str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+		
+		value = "";
+		if (e.toitem.index > -1) {
+			_value = e.toitem.value;
+			value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		}    
+		str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+		G("searchResultPanel").innerHTML = str;
+	});
+
+	var myValue;
+	ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+	var _value = e.item.value;
+		myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+		G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+		
+		setPlace();
+	});
+
+	function setPlace(){
+		map.clearOverlays();    //清除地图上所有覆盖物
+		function myFun(){
+			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp));    //添加标注
+		}
+		var local = new BMap.LocalSearch(map, { //智能搜索
+		  onSearchComplete: myFun
+		});
+		local.search(myValue);
+	}
+	//关键字输入提示结束
 
     //html5定位方法
     function getLocationHtml5(){
@@ -407,9 +471,10 @@
 	    hazardClick("hazard");
 	    emergencyResponseTeamClick("emergencyResponseTeam");
         protectionObjectClick("protectionObject");
-    	
-    	
-    	
+
+      
+       var circle = new BMap.Circle(new BMap.Point(lo, la),10000,{strokeColor:"blue", strokeWeight:1, strokeOpacity:0.1}); //创建圆
+	   map.addOverlay(circle);            //增加圆
      
     	}
     	

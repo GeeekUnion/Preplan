@@ -67,7 +67,13 @@ public class EventAction extends ListAction<Event>{
 		out().close();
 		return "jsonArray";
 	}
-     
+    public String  queryEventById(){
+    	Event e=eventService.get(Event.class, id);
+    	 jsonObject.put("longitude", e.getLongitude());
+    	 jsonObject.put("latitude", e.getLatitude());
+    	 return "jsonObject";
+    }
+	
 	//增加event
 	public String save(){
 		jsonObject.put("status", "ok");

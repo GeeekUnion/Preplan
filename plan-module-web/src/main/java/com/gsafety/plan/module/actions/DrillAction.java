@@ -43,7 +43,8 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      private String drillContent;
  	 private Preplan preplan;
  	 private String drillDepartment;                     //查询部门
-     
+ 	 private String drillAssessment;                     //演练评估
+	 private int drillScore;                            //演练评分
      private String preplanSn;
      
      public PrintWriter out() throws IOException {
@@ -79,8 +80,6 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      public String queryDrillById(){
     	 Drill d=drillService.get(Drill.class, id);
     	 jsonObject.put("drillContent", d.getDrillContent());
-    	 
-    	 
     	 return "jsonObject";
      }
      
@@ -237,6 +236,18 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	}
 	public void setPreplanSn(String preplanSn) {
 		this.preplanSn = preplanSn;
+	}
+	public String getDrillAssessment() {
+		return drillAssessment;
+	}
+	public void setDrillAssessment(String drillAssessment) {
+		this.drillAssessment = drillAssessment;
+	}
+	public int getDrillScore() {
+		return drillScore;
+	}
+	public void setDrillScore(int drillScore) {
+		this.drillScore = drillScore;
 	}
 	
      
