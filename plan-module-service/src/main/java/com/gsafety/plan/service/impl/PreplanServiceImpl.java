@@ -101,12 +101,29 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
     }
 
     @Override
-    public String getPageListByUser(int page, int rows, Person ps) {  
+    public String getPageListByUser(int page, int rows, Person ps,String preplanStatus) {  
         Map<String, Object> hashMap = new HashMap<String, Object>();
         hashMap.put("responDept",ps.getOrgCode());
         //hashMap.put("preplanStatus", "已完成");
         //String sql="SELECT * from pre_preplan AS p WHERE p.ems_org_code= "+"\'"+ps.getOrgCode()+"\'";
+        System.out.println(preplanStatus);
         String hql = "from Preplan p where p.responDept=:responDept";
+        if(null==preplanStatus || preplanStatus=="" || preplanStatus.length()==0) {//查询全状态
+           
+        }else if(preplanStatus.equals("修订")){
+            hashMap.put("preplanStatus1","通过");
+            hashMap.put("preplanStatus2","%修订%");
+            hql+=" and ( p.preplanStatus=:preplanStatus1 or p.preplanStatus like:preplanStatus2)";
+        }else if(preplanStatus.equals("编制")){
+            hashMap.put("preplanStatus1","待完成");
+            hashMap.put("preplanStatus2","待审核");
+            hashMap.put("preplanStatus3","未通过");         
+            hql+=" and ( p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 or p.preplanStatus=:preplanStatus3)";
+        }else if(preplanStatus.equals("通过")){
+            hashMap.put("preplanStatus","通过");        
+            hql+=" and p.preplanStatus=:preplanStatus";
+        }
+        
         PageResult pResult = baseDAO.getPageByHql(hql,page,rows,hashMap,Preplan.class);
         List<Preplan> pList =(List<Preplan>) pResult.getList();
         String str="";
@@ -167,8 +184,9 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 		 Map<String, Object> hashMap = new HashMap<String, Object>();
 	        hashMap.put("reviewOrg",ps.getOrgCode());	 
 	        hashMap.put("preplanStatus1","待审核");
-	        hashMap.put("preplanStatus2","申请编制");
-	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 ORDER BY p.preplanTime desc";
+	        hashMap.put("preplanStatus2","申请修订");
+	        hashMap.put("preplanStatus3","修订待审核");
+	        String hql = "from Preplan p where p.reviewOrg=:reviewOrg and (p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 or p.preplanStatus=:preplanStatus3) ORDER BY p.preplanTime desc";
 	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
 	        String str="";
 	        if(pList.size()>0) {
@@ -227,7 +245,10 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 		Cnds cnds=Cnds.me(Preplan.class);
 		WhereSet set = ConditionBuilder.whereSet(ConditionBuilder.eq("reviewOrg", orgCode));
 		set.and(ConditionBuilder.eq("preplanStatus", "待审核"));
-		set.or(ConditionBuilder.eq("preplanStatus", "申请编制"));
+		set.or(ConditionBuilder.eq("preplanStatus", "申请修订"));
+		set.or(ConditionBuilder.eq("preplanStatus", "修订待审核"));
+		
+		
 		cnds.and(set);
 		List<Preplan> pList=baseDAO.getListByCnds(cnds);
 		JSONObject myJo=new JSONObject();

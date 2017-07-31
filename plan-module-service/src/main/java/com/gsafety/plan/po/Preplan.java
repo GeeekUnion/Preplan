@@ -107,7 +107,7 @@ public class Preplan implements Serializable {
 	public void setResponPerson(String responPerson) {
 		this.responPerson = responPerson;
 	}
-	@Column(name="preplan_version",length=25)
+	@Column(name="preplan_version",length=45)
 	public String getVersion() {
 		return version;
 	}
