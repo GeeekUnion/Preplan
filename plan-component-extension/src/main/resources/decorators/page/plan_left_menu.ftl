@@ -71,7 +71,7 @@
                         <li class="nav-item " id="navPlanShowLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_drill.action" class="nav-link nav-toggle">
                                 <i class="fa fa-circle-o-notch"></i>
-                                <span class="title">预案演练</span>
+                                <span class="title">预案演练记录</span>
                             </a>
                         </li>
                         </#if>	 

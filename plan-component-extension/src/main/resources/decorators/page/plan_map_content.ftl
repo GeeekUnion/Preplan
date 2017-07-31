@@ -3,6 +3,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
+    //定位Event的方法
+    function locationEvent(id){
+    				$.ajax({
+							type : "POST",
+							url : "${pageContext.request.contextPath}/plan/preplan/preplan_event_queryEventById.action",
+							dataType : "json",
+							data : {
+							id:id	
+							},
+							success : function(data) {
+     			               Location(data.longitude,data.latitude);
+							},
+						});	  
+    }
+    
         //删除事件event的方法
     	function deleteEvent(id){
 				swal({    
@@ -439,7 +454,10 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-				            return   '<a href="javascript:;" class="btn red"onclick="deleteEvent('+row.id+')">'
+				         return '<a href="javascript:;" class="btn blue" onclick="locationEvent(\''+row.id+'\')">'
+	                                      +          	'<i class="fa fa-edit">查看 </i>'
+	                                      +      '</a>'
+	                                      +  	'<a href="javascript:;" class="btn red"onclick="deleteEvent('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
 	                                      +      '</a>'
 				        }
