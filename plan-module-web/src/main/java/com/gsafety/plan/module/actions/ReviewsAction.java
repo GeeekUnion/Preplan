@@ -44,6 +44,9 @@ public class ReviewsAction extends ListAction<Reviews>{
 				reviewsService.update(r);
 				
 				Preplan p=preplanService.getByPpSn(preplanSn);
+				if("修订待审核".equals(p.getPreplanStatus()) && preplanStatus.equals("未通过")) {
+				    preplanStatus="修订"+ preplanStatus;
+				}
 				p.setPreplanStatus(preplanStatus);
 				preplanService.update(p);
 			}else{//新增Opinion

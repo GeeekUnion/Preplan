@@ -197,7 +197,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             		String yearTow=String.valueOf(year).substring(2);
             		String month=String.valueOf(startTime.get(Calendar.MONTH));//月份
             		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
-                	version=yearTow+"."+month+"."+date+"."+"0";
+                	version="1";
                 	ppModel.setVersion(version);               	
                     ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);
@@ -392,10 +392,11 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public String queryPreplanList() throws IOException {
         String str="";
         String orgCode=session.get("preplanOrgCode").toString();
+        System.out.println(preplanStatus);
         if(null != orgCode && orgCode.length()>0) {
             Person p=new Person();
             p.setOrgCode(orgCode);
-            str=preplanService.getPageListByUser(page,rows,p);
+            str=preplanService.getPageListByUser(page,rows,p,preplanStatus);
         }        
         //输出资源到页面
         out().print(str);
@@ -460,18 +461,12 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     		String yearTow=String.valueOf(year).substring(2);
     		String month=String.valueOf(startTime.get(Calendar.MONTH));//月份
     		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
-    		if(null!=version && version.length()>0){
-    			int ssInde=version.lastIndexOf(".");   			
-    			int i=Integer.parseInt(version.substring(ssInde+1));//最后一个点后面的数字   	
-    			if(i==100){
-    				i=1;
-    			}else{
-    				i++;
-    			}
+    		if(null!=version && version.length()>0){  			
+    			int i=Integer.parseInt(version)+1;//最后一个点后面的数字   	
     			
-    			version=yearTow+"."+month+"."+date+"."+i+"";
+    			version=i+"";
     		}else{
-    			version=yearTow+"."+month+"."+date+"."+"1";
+    			version="1";
     		}   
     		p.setVersion(version);
     		myJsonObject.put("preplanVersion", version);
