@@ -2,7 +2,7 @@
 <div class="portlet box green">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-globe"></i>预案列表 </div>
+            <i class="fa fa-globe"></i>预案审核列表</div>
         <div class="actions">
 
 
@@ -40,8 +40,7 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanReviewList.action",
 					    "type": "POST",
-					    "data": function ( d ) {
-
+					    "data": {
 					    }
 					},
 				  	"deferRender": true,
@@ -63,13 +62,13 @@
 			            "data": null,
 			            render: function(data, type, row, meta) {
 			            	var myHtml="";
-			            	 if(row.status=="待审核"){
+			            	 if(row.status=="待审核" || row.status=="修订待审核"){
 			            	 	myHtml=myHtml+'<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\')">'
 		                                      +  			'<i class="fa fa-search">审核</i>'
 		                                      +      '</button>'
-			            	 }else if(row.status=="申请编制"){
-			            	 	myHtml=myHtml+'<button  class="btn blue"onclick="checkPlanOk(\''+row.preplanSn+'\')">'
-		                                      +  			'<i class="fa fa-check">同意申请</i>'
+			            	 }else if(row.status=="申请修订"){
+			            	 	myHtml=myHtml+'<button  class="btn green"onclick="checkPlanOk(\''+row.preplanSn+'\')">'
+		                                      +  			'<i class="fa fa-check">同意修订</i>'
 		                                      +      '</button>'		
 			            	 }else{
 			            	 
@@ -100,7 +99,7 @@
 			
 			
 			
-			function getPlanDetail(ppSn){
+			function getPlanDetail(ppSn,status){
 				var urlFFF =window.location.pathname;
 				var urlMsg='review';
 				if(urlFFF.indexOf("plan_edit")>0){
@@ -139,14 +138,14 @@
 				    showLoaderOnConfirm: true,  
 				    }, 
 				    function(){    
-				    	//删除该预案
+				    	//修订
 						$.ajax({
 							type : "POST",
 							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
 							dataType : "json",
 							data : {
 									ppSn:planSn.replace(/'/g,""),
-									preplanStatus:"待完成"
+									preplanStatus:"修订中"
 							},
 							success : function() {
 		 						loadPlan();

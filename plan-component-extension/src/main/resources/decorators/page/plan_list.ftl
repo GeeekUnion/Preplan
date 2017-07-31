@@ -40,8 +40,8 @@
 					"ajax": {
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanList.action",
 					    "type": "POST",
-					    "data": function ( d ) {
-
+					    "data": {
+							"preplanStatus":"",
 					    }
 					},
 				  	"deferRender": true,

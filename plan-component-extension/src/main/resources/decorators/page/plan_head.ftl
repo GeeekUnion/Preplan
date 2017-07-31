@@ -81,7 +81,7 @@
 				if(msgSize>0){
 					for(var i=0;i<msgSize;i++){
 						var myStatus=msgList[i].preplanStatus;
-						if(myStatus=="申请编制"){
+						if(myStatus=="申请修订"){
 							html=html+'<li>'
 			                     +       '<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action">'
 			                     +           '<span class="details">'
@@ -90,7 +90,7 @@
 			                     +               '</span> 《'+ msgList[i].preplanName+ '》'+myStatus+'</span>'
 			                     +       '</a>'
 			                     +   '</li>';
-						}else if(myStatus=="待审核"){
+						}else if(myStatus=="待审核" || 	myStatus=="修订待审核"){
 							html=html+'<li>'
 			                     +       '<a href="javascript:;" onclick="getPlanDetailByHead(\''+msgList[i].preplanSn+'\')">'
 			                     +           '<span class="details">'
