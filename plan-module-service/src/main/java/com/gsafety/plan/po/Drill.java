@@ -24,10 +24,12 @@ public class Drill implements Serializable{
 	private Timestamp  drillTime;
 	private int drillNumOfParticipants;
 	private String areaOrgCode;               //预案的地图编号，方便对应地区查询
-	//单位怎么弄
+
 	private String drillContent;
 	private Preplan preplan;
-	private String drillDepartment;                     //查询部门
+	private String drillDepartment;                      //查询部门
+	private String drillAssessment;                     //演练评估
+	private int drillScore;                            //演练评分
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,6 +90,20 @@ public class Drill implements Serializable{
 	}
 	public void setDrillTime(Timestamp drillTime) {
 		this.drillTime = drillTime;
+	}
+	@Column(name="drill_assessment")
+	public String getDrillAssessment() {
+		return drillAssessment;
+	}
+	public void setDrillAssessment(String drillAssessment) {
+		this.drillAssessment = drillAssessment;
+	}
+	@Column(name="drill_score")
+	public int getDrillScore() {
+		return drillScore;
+	}
+	public void setDrillScore(int drillScore) {
+		this.drillScore = drillScore;
 	}
 	
 	
