@@ -197,7 +197,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             		String yearTow=String.valueOf(year).substring(2);
             		String month=String.valueOf(startTime.get(Calendar.MONTH));//月份
             		String date=String.valueOf(startTime.get(Calendar.DAY_OF_MONTH));//日
-                	version="1";
+                	version="0";
                 	ppModel.setVersion(version);               	
                     ppModel.setPreplanStatus("待完成");                   
                     preplanService.save(ppModel);

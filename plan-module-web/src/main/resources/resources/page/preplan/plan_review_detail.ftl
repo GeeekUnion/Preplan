@@ -151,7 +151,7 @@
 					success : function(data) {			
 		                swal({       
 							title:"",
-							text: '完成编制,2秒后跳转回预案审核页面<i class="fa fa-spinner fa-spin fa-fw"></i>如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
+							text: '审核完毕,2秒后跳转回预案审核页面<i class="fa fa-spinner fa-spin fa-fw"></i>如果没有跳转<a href="${pageContext.request.contextPath}/plan/preplan/plan_review_do.action" style="color:#F8BB86">请点击此处跳转</a>',          
 							showConfirmButton: false,
 							html: true   
 							} 
