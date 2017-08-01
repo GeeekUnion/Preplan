@@ -85,6 +85,7 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			JSONObject jo = new JSONObject();
 			jo.put("preplanName", d.getPreplanName());
 			jo.put("preplanSn", d.getPreplanSn());
+			jo.put("id", d.getId());
 				array.add(jo);
 		}	
 		 return array;
