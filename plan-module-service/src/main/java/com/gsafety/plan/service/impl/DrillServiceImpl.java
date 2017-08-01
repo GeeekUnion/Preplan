@@ -56,6 +56,8 @@ public class DrillServiceImpl extends BaseServiceImpl implements DrillService {
 			jo.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
 			jo.put("drillPreplanName", d.getPreplan().getPreplanName());
 			jo.put("orgName", d.getDrillDepartment());
+			jo.put("drillScore", d.getDrillScore());
+			jo.put("drillAssessment", d.getDrillAssessment());
 				array.add(jo);
 			}	
 		str="{\"recordsTotal\":"+pResult.getPager().getRecordCount()+",\"data\":"+array.toString()+"}"; 
