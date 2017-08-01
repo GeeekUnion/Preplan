@@ -47,6 +47,7 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
 	 private int drillScore;                            //演练评分
      private String preplanSn;
      
+     
      public PrintWriter out() throws IOException {
   		HttpServletResponse response = ServletActionContext.getResponse();
   		response.setContentType("text/html");
@@ -79,7 +80,12 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      }
      public String queryDrillById(){
     	 Drill d=drillService.get(Drill.class, id);
+    	 jsonObject.put("preplanSn", d.getPreplan().getPreplanSn());
     	 jsonObject.put("drillContent", d.getDrillContent());
+    	 jsonObject.put("drillNumOfParticipants", d.getDrillNumOfParticipants());
+    	 jsonObject.put("drillScore", d.getDrillScore());
+    	 jsonObject.put("drillAssessment", d.getDrillAssessment());
+    	 jsonObject.put("preplanId", d.getPreplan().getId());
     	 return "jsonObject";
      }
      
@@ -87,41 +93,52 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
      
      public String save(){
     	 jsonObject.put("status", "ok");
-    	 Drill d=new Drill();
-    	 String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-    	 String orgCode=session.get("preplanOrgCode").toString();
-    	 JSONObject jo=drillService.queryAreaCodeByOrgCode(orgCode);
-    	 String areaOrgCode =(String) jo.get("areaOrgCode");
-    	 String orgName =(String) jo.get("orgName");
-    	 try {
-    		d.setDrillSn(uuid); 
-    		d.setAreaOrgCode(areaOrgCode);
-    		d.setDrillDepartment(orgName);
-    		d.setDrillContent(drillContent);
-    		d.setDrillNumOfParticipants(drillNumOfParticipants);
-    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    		d.setDrillTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis()))); 
-    	    preplan=preplanService.getByPpSn(preplanSn);
-    	    d.setDrillScore(drillScore);
-    	    d.setDrillAssessment(drillAssessment);
-    		d.setPreplan(preplan);
-    		drillService.save(d);
-		} catch (Exception e) {
-			jsonObject.put("status", "nook");
-		}
-    	  return "jsonObject";
+    	 System.out.println(id+"!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    	 if(id>0){
+    		 //更新
+    		 Drill d=drillService.get(Drill.class, id);
+        	 try {
+        		d.setDrillContent(drillContent);
+        		d.setDrillNumOfParticipants(drillNumOfParticipants);
+        		d.setDrillScore(drillScore);
+        	    d.setDrillAssessment(drillAssessment);
+        	    preplan=preplanService.getByPpSn(preplanSn);
+        	   
+        	    d.setPreplan(preplan);
+        		drillService.update(d);
+    		} catch (Exception e) {
+    			jsonObject.put("status", "nook");
+    		}
+        	  return "jsonObject";
+    	 }else{
+    		 Drill d=new Drill();
+        	 String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        	 String orgCode=session.get("preplanOrgCode").toString();
+        	 JSONObject jo=drillService.queryAreaCodeByOrgCode(orgCode);
+        	 String areaOrgCode =(String) jo.get("areaOrgCode");
+        	 String orgName =(String) jo.get("orgName");
+        	 try {
+        		d.setDrillSn(uuid); 
+        		d.setAreaOrgCode(areaOrgCode);
+        		d.setDrillDepartment(orgName);
+        		d.setDrillContent(drillContent);
+        		d.setDrillNumOfParticipants(drillNumOfParticipants);
+        		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        		d.setDrillTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis()))); 
+        	    preplan=preplanService.getByPpSn(preplanSn);
+        	    d.setDrillScore(drillScore);
+        	    d.setDrillAssessment(drillAssessment);
+        		d.setPreplan(preplan);
+        		drillService.save(d);
+    		} catch (Exception e) {
+    			jsonObject.put("status", "nook");
+    		}
+        	  return "jsonObject";
+    	 }
+    	
      } 
-     public String update(){
-    	 jsonObject.put("status", "ok");
-    	 Drill d=drillService.get(Drill.class, id);
-    	 try {
-    		d.setDrillContent(drillContent);
-    		drillService.update(d);
-		} catch (Exception e) {
-			jsonObject.put("status", "nook");
-		}
-    	  return "jsonObject";
-     }
+     
+     
      //获得当前部门可查预案
      public String queryPreplanList(){
     	 String orgCode=session.get("preplanOrgCode").toString();

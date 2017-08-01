@@ -100,29 +100,7 @@
 
 				</div> 
 
-                  <!--Modals-->
-               <div id="staticUpdate" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">查看内容</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                    
-                                                    <textarea id="xheditor2" class="xheditor {skin:'default'}">
-                                                  
-                                                    </textarea>
-                                                    <input id="id" type="text" style="display:none" value="">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
-                                                        <button type="button" data-dismiss="modal" class="btn green" onclick="updateDrill()"> 提交</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                              <!--End Modals-->      
+                  
     <!--Modals-->
                <div id="staticAdd" class="modal fade bs-modal-lg modal-scroll" tabindex="-1" data-backdrop="static" data-keyboard="false" >
                                             <div class="modal-dialog modal-lg" >
@@ -139,19 +117,20 @@
                                                 <button class="close" data-close="alert"></button> 请按照要求填写预案基本信息。</div>
                                             <div class="alert alert-success display-hide">
                                                 <button class="close" data-close="alert"></button> Your form validation is successful! </div> 
+                                                
                                             <div class="form-group">
                                                 <label class="control-label col-md-3">选择预案
                                                     <span class="required"> * </span>
                                                 </label>
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
-                                                        <i class="fa"></i>
-                                                        			                                                                                                                    <select class="form-control" name="preplanSelect" id="preplanSelect">
+                                                       <select class="form-control" name="preplanSelect" id="preplanSelect">
                                                                 <option value=""></option>                                                                                                                                  
 			                                             </select>                                                       
                                                     </div>    
                                                 </div>
                                             </div> 
+                                            
                                             <span class="help-block"> 预案内容:</span>
                                            <textarea id="xheditor" class="xheditor {skin:'default'}">
 				                          </textarea>       
@@ -194,6 +173,8 @@
                                             </div>    
                                             
                                         </div>
+                                        <input id="id" type="text" style="display:none" value="">
+                                        <input id="preplanId" type="text" style="display:none" value="">
                                         <hr>
 						                <button type="button" data-dismiss="modal" class="btn dark btn-outline">取消</button>
                                         <button type="submit" class="btn green"> 提交</button>
@@ -334,7 +315,8 @@
 		//查看并编辑演练内容	
 		function alterDrill(id){
 		console.log(id);
-		var xhedit=$('#xheditor2').xheditor();
+		var xhedit=$('#xheditor').xheditor();
+		 $('#id').val(id);
 		$.ajax({
 		url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryDrillById.action',
 		dataType:"json",	  
@@ -345,10 +327,35 @@
 		success:function(data){    
 			   console.log(data);
 			   xhedit.setSource(data.drillContent);
-			   $('#id').val(id);
+			   $('#preplanId').val(data.preplanId);
+			   $('#drillNumOfParticipants').val(data.drillNumOfParticipants);
+			   $('#drillScore').val(data.drillScore);
+			   $('#drillAssessment').val(data.drillAssessment);
+			   $.ajax({
+						url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
+						dataType:"json",	  
+						method:'POST',
+						success:function(data){    
+							    var html=""
+							    for(var i=0;i<data.length;i++){
+							      var preplanId=$('#preplanId').val();
+							      var co=data[i];
+							      console.log(data[i].id)
+							      console.log(id+"!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+							      if(data[i].id==preplanId){
+							       html=html+'<option value="'+co['preplanSn']+'" selected="selected">'+co['preplanName']+'</option>'
+							      }else{
+							        html=html+'<option value="'+co['preplanSn']+'">'+co['preplanName']+'</option>' 
+							      }
+							      
+							    	   
+							    }
+							    $("#preplanSelect").html(html);
+							}
+						})
 			}
 		})
-		$('#staticUpdate').modal('show')
+		$('#staticAdd').modal('show')
 		}
 		
         //删除事件drill的方法
@@ -402,8 +409,11 @@
 		
 		//增加预案，生成表格
 	function addDrill(){
-	 
-	
+	 $('#drillNumOfParticipants').val("");
+	 $('#drillScore').val(0);
+	 $('#drillAssessment').val("");
+	 $('#drillContent').val("");
+	 $('#id').val(0);
 	
 	$.ajax({
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
@@ -413,13 +423,11 @@
 		    var html=""
 		    for(var i=0;i<data.length;i++){
 		    	var co=data[i];
-		    	console.log(co);
+		    	
 		        html=html+'<option value="'+co['preplanSn']+'">'+co['preplanName']+'</option>'    
 		    }
-		    $("#preplanSelect").append(html);
+		    $("#preplanSelect").html(html);
 		    $('#staticAdd').modal('show')
-		    
-		   
 		}
 	})
 	               }
@@ -515,6 +523,7 @@
 		                var drillContent=xhedit.getSource();
 		                var drillScore=$("#drillScore").val();
 	                    var drillAssessment=$("#drillAssessment").val();
+	                    var id=$("#id").val();
 		            	$.ajax({    
 		                        url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
 		                        method:'POST',
@@ -524,7 +533,8 @@
 		                            drillNumOfParticipants :drillNumOfParticipants,
 		                            drillContent:drillContent,
 		                            drillScore:drillScore,
-		                            drillAssessment:drillAssessment
+		                            drillAssessment:drillAssessment,
+		                            id:id
 		                            },	  
 		                        success:function(data){    
 		                                if(data.status=="ok"){
@@ -537,7 +547,7 @@
 				                }
 			                })
 	                 
-		                return false; // 阻止表单自动提交事件
+		                	return false; // 阻止表单自动提交事件
 		                
 	                }
 	            });
