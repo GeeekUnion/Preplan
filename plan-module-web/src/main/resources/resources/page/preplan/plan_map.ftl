@@ -64,11 +64,11 @@
 				<div style=" width:100%; height:500px;   border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
-				<a> 事件&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/事件.png"   /> </a>	
-                <a> 资源点 &nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/inventory.png"  /> </a>	
-                <a> 防护目标&nbsp:&nbsp <img src="${getMC ("")}/theme/img/icon/防护目标.png"   /> </a>	
-                <a> 应急队伍&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/应急队伍.png"   /> </a>	
-                <a> 危险源&nbsp:&nbsp<img src="${getMC ("")}/theme/img/icon/危险源.png"   /> </a>	
+				<a> 事件&nbsp:<img src="${getMC ("")}/theme/img/icon/事件.png"   /> &nbsp</a>	
+                <a> 资源点 &nbsp:<img src="${getMC ("")}/theme/img/icon/inventory.png"  /> &nbsp</a>	
+                <a> 防护目标&nbsp: <img src="${getMC ("")}/theme/img/icon/防护目标.png"   /> &nbsp</a>	
+                <a> 应急队伍&nbsp:<img src="${getMC ("")}/theme/img/icon/应急队伍.png"   />&nbsp </a>	
+                <a> 危险源&nbsp:<img src="${getMC ("")}/theme/img/icon/危险源.png"   /> &nbsp</a>	
                               
                               
 				<#include "/decorators/plan_map_content.ftl">
@@ -305,8 +305,8 @@
 	var hazardIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/危险源.png", new BMap.Size(20,20));
 	
 	function Location(lo2,la2){
-	 var point = new BMap.Point(lo2,la2);
-	 map.centerAndZoom(point,12);
+	 var pointLocation = new BMap.Point(lo2,la2);
+	 map.centerAndZoom(pointLocation,12);
 	}
 	
 	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
@@ -356,8 +356,10 @@
 		map.clearOverlays();    //清除地图上所有覆盖物
 		function myFun(){
 			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
-			map.centerAndZoom(pp, 18);
+			map.centerAndZoom(pp, 12);
 			map.addOverlay(new BMap.Marker(pp));    //添加标注
+		    Circle(pp);
+	        initResource();
 		}
 		var local = new BMap.LocalSearch(map, { //智能搜索
 		  onSearchComplete: myFun
@@ -365,7 +367,15 @@
 		local.search(myValue);
 	}
 	//关键字输入提示结束
-
+	
+    //画Circle并增加隐藏circle方法
+    function Circle(point){
+    var circle = new BMap.Circle(point,10000,{strokeColor:"blue", strokeWeight:0.5, strokeOpacity:0.1}); //创建圆
+	map.addOverlay(circle);            //增加圆
+    circle.addEventListener("click",function(e){
+    	console.log("TEST");
+        	});
+    }
     //html5定位方法
     function getLocationHtml5(){
     var geolocation = new BMap.Geolocation();
@@ -380,6 +390,7 @@
 		    lo=r.point.lng;
 		    la=r.point.lat;
 			initResource();
+		Circle(r.point);
 		}
 		else {
 			alert('failed'+this.getStatus());
@@ -397,8 +408,7 @@
 				map.panTo(r.point);
 				alert('您的位置：'+r.point.lng+','+r.point.lat);
 				//生产圆圈
-		var circleLocation = new BMap.Circle(r.point,10000,{fillColor:"blue", strokeWeight: 1 ,fillOpacity: 0.3, strokeOpacity: 0.3});
-    	map.addOverlay(circleLocation);
+		Circle(r.point);
 				
 		setTimeout(function(){
 	    var convertor = new BMap.Convertor();
@@ -473,8 +483,8 @@
         protectionObjectClick("protectionObject");
 
       
-       var circle = new BMap.Circle(new BMap.Point(lo, la),10000,{strokeColor:"blue", strokeWeight:1, strokeOpacity:0.1}); //创建圆
-	   map.addOverlay(circle);            //增加圆
+       Circle(point);
+	   
      
     	}
     	

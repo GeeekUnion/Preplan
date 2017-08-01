@@ -102,6 +102,8 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
     		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     		d.setDrillTime(Timestamp.valueOf(sdf.format(System.currentTimeMillis()))); 
     	    preplan=preplanService.getByPpSn(preplanSn);
+    	    d.setDrillScore(drillScore);
+    	    d.setDrillAssessment(drillAssessment);
     		d.setPreplan(preplan);
     		drillService.save(d);
 		} catch (Exception e) {

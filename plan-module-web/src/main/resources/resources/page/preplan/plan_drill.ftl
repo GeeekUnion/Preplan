@@ -89,6 +89,8 @@
 									<th>预案名称</th>
 									<th>预案演练人数</th>
 									<th>预案演练时间</th>
+									<th>预案演练评估</th>
+									<th>预案演练打分</th>
 									<th>预案演练内容</th>
 								</tr>
 							</thead>
@@ -150,6 +152,7 @@
                                                     </div>    
                                                 </div>
                                             </div> 
+                                            <span class="help-block"> 预案内容:</span>
                                            <textarea id="xheditor" class="xheditor {skin:'default'}">
 				                          </textarea>       
                                            <div class="form-group">
@@ -164,6 +167,31 @@
                                                     </div>   
                                                 </div>
                                             </div>   
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">预案演练评估
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <textarea rows="3" cols="20" wrap="physical" id="drillAssessment" name="drillAssessment" data-required="1" class="form-control"  value=""/> 
+                                                        </textarea>
+                                                        <span class="help-block"> 不能为空</span>
+                                                    </div>   
+                                                </div>
+                                            </div> 
+                                              <div class="form-group">
+                                                <label class="control-label col-md-3">预案演练打分
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <input type="text" id="drillScore" name="drillScore" data-required="1" class="form-control"  value=""/> 
+                                                        <span class="help-block"> 不能为空，必须为数字，满分100</span>
+                                                    </div>   
+                                                </div>
+                                            </div>    
                                             
                                         </div>
                                         <hr>
@@ -268,6 +296,8 @@
 	                    { "data": "drillPreplanName" },
 	                    { "data": "drillNumOfParticipants" },
 	                    { "data": "drillTime" },
+	                    { "data": "drillAssessment" },
+	                    { "data": "drillScore" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
 	                "columnDefs": [ {
@@ -275,7 +305,7 @@
 			            "data": null,
 			            render: function(data, type, row, meta) {
 				            return '<a  class="btn blue" onclick="alterDrill(\''+row.id+'\')">'
-	                                      +          	'<i class="fa fa-edit">查看 </i>'
+	                                      +          	'<i class="fa fa-edit">编辑 </i>'
 	                                      +      '</a>'
 	                                      + '<a  class="btn red" onclick="deleteDrill(\''+row.id+'\')">'
 	                                      +          	'<i class="fa fa-delete">删除 </i>'
@@ -395,35 +425,7 @@
 	               }
 	         
 	               
-		//保存提交
-	function saveDrillaaaa(){
-	 preplanSn=$("#preplanSelect").val();
-	 var drillNumOfParticipants=$("#drillNumOfParticipants").val();
-	 var xhedit=$('#xheditor').xheditor();
-     var drillContent=xhedit.getSource();
-     console.log(drillContent);
-      
-	$.ajax({    
-	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
-	method:'POST',
-	dataType:"json",
-	data:{
-	preplanSn:preplanSn,
-	drillNumOfParticipants :drillNumOfParticipants,
-	drillContent:drillContent
-	     },	  
-	success:function(data){    
-	if(data.status=="ok"){
-	swal("提交成功");
-	$('#staticAdd').modal('hide');
-	queryDrill();
-	}else{
-	swal("提交失败");
-	}
-		                 }
-	   })
-	  
-	               }	
+	
 		
 		//更新内容
 	function updateDrill(){
@@ -468,6 +470,14 @@
 	                    preplanSelect: {
 	                        required: true
 	                    },
+	                    drillScore: {
+	                        required: true,
+	                        digits:true
+	                    },
+	                     drillAssessment: {
+	                        required: true
+	                    },
+	                    
 	                },
 	
 	                invalidHandler: function (event, validator) { //display error alert on form submit              
@@ -503,6 +513,8 @@
 		                var drillNumOfParticipants=$("#drillNumOfParticipants").val();
 		                var xhedit=$('#xheditor').xheditor();
 		                var drillContent=xhedit.getSource();
+		                var drillScore=$("#drillScore").val();
+	                    var drillAssessment=$("#drillAssessment").val();
 		            	$.ajax({    
 		                        url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_save.action',
 		                        method:'POST',
@@ -510,7 +522,9 @@
 		                        data:{
 		                            preplanSn:preplanSn,
 		                            drillNumOfParticipants :drillNumOfParticipants,
-		                            drillContent:drillContent
+		                            drillContent:drillContent,
+		                            drillScore:drillScore,
+		                            drillAssessment:drillAssessment
 		                            },	  
 		                        success:function(data){    
 		                                if(data.status=="ok"){
