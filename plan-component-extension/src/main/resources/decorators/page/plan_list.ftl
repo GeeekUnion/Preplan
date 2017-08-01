@@ -41,7 +41,7 @@
 					    "url": "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_queryPreplanList.action",
 					    "type": "POST",
 					    "data": {
-							"preplanStatus":"",
+							"preplanStatus":"通过",
 					    }
 					},
 				  	"deferRender": true,
@@ -63,43 +63,14 @@
 			            "targets": -1,//最后一列
 			            "data": null,
 			            render: function(data, type, row, meta) {
-			            var showHtml='<button class="btn  green" onclick="alterPlan(\''+row.preplanSn+'\')">'
-	                                      +          	'<i class="fa fa-edit">全案 </i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn green"onclick="getPlanDetail(\''+row.preplanSn+'\',\'simple_plan\')">'
-	                                      +  			'<i class="fa fa-edit">简案</i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn green"onclick="getPlanDetail(\''+row.preplanSn+'\',\'flow_chart\')">'
-	                                      +  			'<i class="fa fa-edit">流程图</i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
-	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</button>'            
-			            	if(row.status=="待完成" || row.status=="未通过"){
-			            		showHtml=showHtml+' '
-	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\',0)">'
-	                                      +  			'<i class="fa fa-check">提交审核</i>'
-	                                      +      '</button>'
-			            	}else if(row.status=="通过"){
-			            		showHtml='<button  class="btn green"onclick="overPlan(\''+row.preplanSn+'\',1)">'
-	                                      +  			'<i class="fa fa-check">申请编制</i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
+			            var showHtml='<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
 	                                      +  			'<i class="fa fa-search">查看详情</i>'
 	                                      +      '</button>'
 	                                      +      ' '
 	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
 	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</button>'
-			            	}else if(row.status=="待审核" || row.status=="申请编制"){
-			            		showHtml='';
-			            	}else{
-			            	
-			            	}
+	                                      +      '</button>'           
+	
 			            
 				            return showHtml;
 
@@ -125,11 +96,7 @@
 			
 			
 			
-			
-			//编辑预案
-			function alterPlan(planSn){
-				location.href ="/plan/preplan/plan_edit_base_msg.action"+"?ppSn="+planSn.replace(/'/g,""); 		
-			}
+
 			
 			//删除预案
 			function deletePlan(id){
@@ -205,117 +172,11 @@
 			    return false;         
 			}
 			
-			//改变预案状态
-			function overPlan(planSn,status){
-				var myStatus="";
-				if(status===1){
-					myStatus='申请编制';
-					
-				}else{
-					myStatus='待审核';
-				
-				}	
-				submitMyPlan(planSn,myStatus)	
-			}
+
 			
-			//提交审核
-        	function submitMyPlan(planSn,myStatus){  
-				swal({    
-				    title: "确认提交？",     
-				    type: "warning",  
-				    confirmButtonText:"确认", 
-				    cancelButtonText :"取消", 
-				    showCancelButton: true,    
-				    closeOnConfirm: false,    
-				    showLoaderOnConfirm: true,  
-				    }, 
-				    function(){    
-				    	var ppSn=planSn.replace(/'/g,"");
-				    	$.ajax({
-							type : "POST",
-							url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
-							dataType : "json",
-							data : {
-								ppSn:ppSn,
-								preplanStatus:myStatus
-							},
-							success : function(data) {								
-								if(myStatus=="待审核"){
-									changeVersion(ppSn);
-									
-								}else{
-									loadPlan();
-									successModal();
-								}
-			      				
-							},
-							error: function(){
-								loadPlan();
-								errorModal();
-							}
-						});		
-				    }
-				);
-				        	       	        	 			        		
-				
-        	}
+
 			
-			//修改版本号
-        	function changeVersion(ppSn){
-        		$.ajax({
-						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_changeVersion.action",
-						dataType : "json",
-						data : {
-							ppSn:ppSn
-						},
-						success : function(data) {
-							loadPlan();							
-							changeLog(ppSn,data.preplanVersion)	
-						},
-						error: function(){
-							loadPlan();
-							errorModal();
-						}
-					});	
-										
-        	}
+
         	
-        	//填写修改记录
-        	function changeLog(ppSn,preplanVersion){
-        		$.ajax({
-						type : "POST",
-						url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplanLog_savePLLog.action",
-						dataType : "json",
-						data : {
-							preplanSn:ppSn,
-							version:preplanVersion
-						},
-						success : function(data) {						
-		      				successModal()
-						},
-						error: function(){
-							errorModal();
-						}
-					});						
-        	}
-        	
-        	//成功提示
-        	function successModal(){
-        		swal({
-						title: "提交成功!",
-						text: '请等待审核！',
-						type: "success",
-						confirmButtonText: "确认"  
-					});	
-        	}
-        	//错误提示
-        	function errorModal(){
-				swal({
-					title: "提交失败!",
-					text: '未知错误，请登录重试!',
-					type: "error",
-					confirmButtonText: "确认"  
-				});
-        	}
+
         </script>

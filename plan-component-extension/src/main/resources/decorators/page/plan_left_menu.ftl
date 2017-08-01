@@ -42,15 +42,7 @@
                                 <span class="title">预案审核</span>
                             </a>
                         </li>  
-                        </#if>	 
-                        <#if hasPriv('preplan110-3')==true>     
-                        <li class="nav-item  " id="navPlanExecuteLi">
-                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
-                                <i class="fa fa-play "></i>
-                                <span class="title">预案执行</span>
-                            </a>
-                        </li>  
-                        </#if>	 
+                        </#if>	  
                         <#if hasPriv('preplan110-4')==true>    
                         <li class="nav-item " id="navPlanReviseLi"> 
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_revise_do.action" class="nav-link nav-toggle">
@@ -67,6 +59,14 @@
                             </a>
                         </li>  
                         </#if>	 
+                        <#if hasPriv('preplan110-3')==true>     
+                        <li class="nav-item  " id="navPlanExecuteLi">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_map.action" class="nav-link nav-toggle">
+                                <i class="fa fa-play "></i>
+                                <span class="title">预案执行</span>
+                            </a>
+                        </li>  
+                        </#if>	
                         <#if hasPriv('preplan110-6')==true>  
                         <li class="nav-item " id="navPlanShowLi">
                             <a href="${pageContext.request.contextPath}/plan/preplan/plan_drill.action" class="nav-link nav-toggle">

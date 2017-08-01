@@ -87,7 +87,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title">修改历史</h4>
+                        <h4 class="modal-title">修订历史</h4>
                     </div>
                     <div class="modal-body">
 						
@@ -95,8 +95,8 @@
 					        <thead>
 					            <tr>
 					                <th>预案版本号</th>
-					                <th>修改时间 </th>
-					                <th>修改人 </th>
+					                <th>修订时间 </th>
+					                <th>修订人 </th>
 					            </tr>
 					        </thead>
 					
