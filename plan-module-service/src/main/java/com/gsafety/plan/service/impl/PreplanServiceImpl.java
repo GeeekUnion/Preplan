@@ -109,19 +109,18 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
         System.out.println(preplanStatus);
         String hql = "from Preplan p where p.responDept=:responDept";
         if(null==preplanStatus || preplanStatus=="" || preplanStatus.length()==0) {//查询全状态
-           
+        	hql+="ORDER BY p.preplanTime desc";
         }else if(preplanStatus.equals("修订")){
-            hashMap.put("preplanStatus1","通过");
-            hashMap.put("preplanStatus2","%修订%");
-            hql+=" and ( p.preplanStatus=:preplanStatus1 or p.preplanStatus like:preplanStatus2)";
+            hashMap.put("preplanStatus","%修订%");
+            hql+=" and ( p.preplanStatus like:preplanStatus ) ORDER BY p.preplanTime desc";
         }else if(preplanStatus.equals("编制")){
             hashMap.put("preplanStatus1","待完成");
             hashMap.put("preplanStatus2","待审核");
             hashMap.put("preplanStatus3","未通过");         
-            hql+=" and ( p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 or p.preplanStatus=:preplanStatus3)";
+            hql+=" and ( p.preplanStatus=:preplanStatus1 or p.preplanStatus=:preplanStatus2 or p.preplanStatus=:preplanStatus3) ORDER BY p.preplanTime desc";
         }else if(preplanStatus.equals("通过")){
             hashMap.put("preplanStatus","通过");        
-            hql+=" and p.preplanStatus=:preplanStatus";
+            hql+=" and p.preplanStatus=:preplanStatus ORDER BY p.preplanTime desc";
         }
         
         PageResult pResult = baseDAO.getPageByHql(hql,page,rows,hashMap,Preplan.class);
@@ -190,13 +189,16 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
 	        List<Preplan> pList = baseDAO.getListByHql(hql,hashMap,Preplan.class);
 	        String str="";
 	        if(pList.size()>0) {
-	            Cnds cndsOrg = Cnds.me(EmsOrg.class);
-	            WhereSet setOrg = ConditionBuilder.whereSet(ConditionBuilder.eq("orgCode", ps.getOrgCode()));
-	            cndsOrg.and(setOrg);
-	            EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
+
 	            JSONArray array = new JSONArray();
 
                 for(Preplan p : pList) {
+    	            Cnds cndsOrg = Cnds.me(EmsOrg.class);
+    	            System.out.println( p.getResponDept());
+    	            WhereSet setOrg = ConditionBuilder.whereSet(ConditionBuilder.eq("orgCode", p.getResponDept()));
+    	            cndsOrg.and(setOrg);
+    	            EmsOrg org =baseDAO.getUniqueByCnds(cndsOrg);
+    	            
                     JSONObject jo = new JSONObject();
                     jo.put("id",p.getId());
                     jo.put("preplanUid",p.getPreplanUID());
