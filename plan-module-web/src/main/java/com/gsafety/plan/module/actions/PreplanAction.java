@@ -114,6 +114,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String preplanSpecialist;//预案专家组
     
     private String pageMsgType;//决定是
+    
+    private String pageMaker;
 
 
     private int page;
@@ -1035,6 +1037,16 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+
+	public String getPageMaker() {
+		return pageMaker;
+	}
+
+
+	public void setPageMaker(String pageMaker) {
+		this.pageMaker = pageMaker;
 	}
 
 

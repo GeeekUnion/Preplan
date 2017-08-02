@@ -123,6 +123,9 @@
 		<action name="plan_revise_module" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
 			<result name="url">preplan/plan_revise_module.ftl</result>				
 		</action>
+				<action name="plan_revise_*" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
+			<result>preplan/plan_revise_{1}.ftl</result>				
+		</action>
 		<!-- Mission拦截和结果配置 -->
 		<action name="preplan_mission_*" class="com.gsafety.plan.module.actions.MissionAction" method="{1}">
 			<result name="jsonObject" type="json">

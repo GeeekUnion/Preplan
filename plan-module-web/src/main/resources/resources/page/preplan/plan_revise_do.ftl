@@ -157,18 +157,6 @@
 	                                      +  	 '<button  class="btn blue"onclick="overPlan(\''+row.preplanSn+'\',0)">'
 	                                      +  			'<i class="fa fa-check">提交审核</i>'
 	                                      +      '</button>'
-			            	}else if(row.status=="通过"){
-			            		showHtml='<button  class="btn green"onclick="overPlan(\''+row.preplanSn+'\',1)">'
-	                                      +  			'<i class="fa fa-check">申请修订</i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn blue"onclick="getPlanDetail(\''+row.preplanSn+'\',\'detail\')">'
-	                                      +  			'<i class="fa fa-search">查看详情</i>'
-	                                      +      '</button>'
-	                                      +      ' '
-	                                      +  	 '<button  class="btn red"onclick="deletePlan('+row.id+')">'
-	                                      +  			'<i class="fa fa-times">删除</i>'
-	                                      +      '</button>'
 			            	}else if(row.status=="待审核" || row.status=="申请修订" ||  row.status=="修订待审核"){
 			            		showHtml='';
 			            	}else{
@@ -254,7 +242,7 @@
 				//去掉单引号  取得要提交的参数
 				var planSn=ppSn.replace(/'/g,"");
 				urlMsg=urlMsg.replace(/'/g,"");
-				var url='${pageContext.request.contextPath}/plan/preplan/plan_edit_'+urlMsg+'.action';
+				var url='${pageContext.request.contextPath}/plan/preplan/plan_revise_'+urlMsg+'.action';
 				// 创建Form  
 			    var form = $('<form></form>');  
 			    // 设置属性  
@@ -270,8 +258,14 @@
 	    			set_input2.attr('value','1001'); 
 	    			form.append(set_input2);     			
 	    		}
+	    		
+	    		var set_input3 = $('<input type="text" name="pageMaker" />');
+    			set_input3.attr('value', "revise");//审核 
+	    		
     			// 附加到Form  
+    			form.append(set_input3);  
     			form.append(set_input);  
+    			
     			// 提交表单  
     			$(document.body).append(form);
 			    form.submit();  
@@ -314,7 +308,7 @@
 								preplanStatus:myStatus
 							},
 							success : function(data) {								
-								if(myStatus=="待审核"){
+								if(myStatus=="修订待审核"){
 									changeVersion(ppSn);
 									
 								}else{

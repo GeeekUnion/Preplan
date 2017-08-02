@@ -25,6 +25,7 @@
 <!-- END PAGE LEVEL PLUGINS -->
 </head>
 
+
 <!-- END HEAD -->
 
 <body
@@ -251,6 +252,11 @@
 		src="${getTheme('default','')}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"></script>
 	<script type="text/javascript" src="${getMC ("")}/js/jquery.validate.min.js"></script>
 	
+	
+
+	
+	
+	
 	<!-- END PAGE LEVEL PLUGINS -->
 
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -309,7 +315,7 @@
 	 map.centerAndZoom(pointLocation,12);
 	}
 	
-	var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+	var map = new BMap.Map("dituContent",{minZoom:4,maxZoom:15});//在百度地图容器中创建一个地图
 	var point = new BMap.Point(116.331398,39.897445);
 	map.centerAndZoom(point,12);
      getLocationHtml5()
@@ -372,9 +378,7 @@
     function Circle(point){
     var circle = new BMap.Circle(point,10000,{strokeColor:"blue", strokeWeight:0.5, strokeOpacity:0.1}); //创建圆
 	map.addOverlay(circle);            //增加圆
-    circle.addEventListener("click",function(e){
-    	console.log("TEST");
-        	});
+    RightClickCircle(circle)
     }
     //html5定位方法
     function getLocationHtml5(){
@@ -442,24 +446,26 @@
           }
     	//右键单击map出现右键菜单事件
     	function RightClickMap(s,w){
+    	var zoom=map.getZoom();
+    	
     	var createMarker = function(map){
     	var idType="inventory";
-    	AddRe(s,w,idType);
+    	AddRe(s,w,idType,zoom);
     	};
     	var hazardMarker = function(map){
     	var idType="hazard";
-    	AddRe(s,w,idType);
+    	AddRe(s,w,idType,zoom);
     	};
     	var emergencyResponseTeamMarker = function(map){
     	var idType="emergencyResponseTeam";
-    	AddRe(s,w,idType);
+    	AddRe(s,w,idType,zoom);
     	};
     	var protectionObjectMarker = function(map){
     	var idType="protectionObject";
-    	AddRe(s,w,idType);
+    	AddRe(s,w,idType,zoom);
     	};
     	var EventMarker =function(map){
-    	addEventF(s,w);
+    	addEventF(s,w,zoom);
     	};
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('添加资源点',createMarker.bind(map)));
@@ -481,20 +487,46 @@
 	    hazardClick("hazard");
 	    emergencyResponseTeamClick("emergencyResponseTeam");
         protectionObjectClick("protectionObject");
-
-      
-       Circle(point);
-	   
-     
+        
     	}
-    	
-	
-		
- 
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('查看附近资源',watchMarker.bind(marker)));
 		marker.addContextMenu(markerMenu);//给标记添加右键菜单
     	} 
+    	
+    	 //右键单击Circle出现右键菜单事件
+    	function RightClickCircle(circle){  
+        
+
+	    var createCircle = function(e,ee,circle){
+    	var idType="inventory";
+    	AddRe(e.lng,e.lat,idType,30);
+    	};
+    	var hazardCircle = function(e,ee,circle){
+    	var idType="hazard";
+    	AddRe(e.lng,e.lat,idType,30);
+    	};
+    	var emergencyResponseTeamCircle = function(e,ee,circle){
+    	var idType="emergencyResponseTeam";
+    	AddRe(e.lng,e.lat,idType,30);
+    	};
+    	var protectionObjectCircle = function(e,ee,circle){
+    	var idType="protectionObject";
+    	AddRe(e.lng,e.lat,idType,30);
+    	};
+    	var EventCircle =function(e,ee,circle){
+    	addEventF(e.lng,e.lat,30);
+    	};
+    	var CircleMenu=new BMap.ContextMenu();
+    	CircleMenu.addItem(new BMap.MenuItem('添加资源点',createCircle.bind(circle)));
+    	CircleMenu.addItem(new BMap.MenuItem('添加危险源',hazardCircle.bind(circle)));
+    	CircleMenu.addItem(new BMap.MenuItem('添加应急队伍',emergencyResponseTeamCircle.bind(circle)));
+    	CircleMenu.addItem(new BMap.MenuItem('添加防护目标',protectionObjectCircle.bind(circle)));
+    	CircleMenu.addItem(new BMap.MenuItem('生成事件',EventCircle.bind(circle)));
+    	circle.addContextMenu(CircleMenu);//给标记添加右键菜单
+
+    	} 
+    	
     //初始化所有资源，目标点
    function initResource(){
     loadTable();
@@ -702,10 +734,10 @@
  
 	
 	 //新建Inventory站点
-    function AddRe(s,w,idType){
-    
-     $("#addRe  #longitude").val(s);
-     $("#addRe  #latitude").val(w);
+    function AddRe(s,w,idType,zoom){
+     var multiple=Math.pow(2,15-zoom)
+     $("#addRe  #longitude").val(s-0.004625*multiple  );
+     $("#addRe  #latitude").val(w+0.004625*multiple);
      $("#addRe  #idType").val(idType);
      console.log(s+'----'+w);
      
@@ -714,10 +746,10 @@
     
 
  //新建Event事件
-    function addEventF(s,w){
-    
-     $("#staticEventAdd #longitude").val(s);
-     $("#staticEventAdd #latitude").val(w);
+    function addEventF(s,w,zoom){
+     var multiple=Math.pow(2,15-zoom)
+     $("#staticEventAdd #longitude").val(s-0.004625*multiple);
+     $("#staticEventAdd #latitude").val(w+0.004625*multiple);
      console.log(s+'----'+w);
      $('#staticEventAdd').modal('show');
     }
@@ -847,6 +879,18 @@
 	   })
 	}
 
+		$(document).ready(function(){
+$("#dituContent").bind("contextmenu", function(e){
+//alert(e);
+var t = setInterval(function(){
+$(".BMap_contextMenu").each(function(){
+    $(this).css({left: e.clientX-255, top: e.clientY -150});
+});
+clearInterval(t);
+}, 500);
+//$(".BMap_contextMenu").position().left;
+});
+});
 
 
 </script>

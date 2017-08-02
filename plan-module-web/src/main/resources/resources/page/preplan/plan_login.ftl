@@ -33,7 +33,7 @@
 	        <div class="content" id="content-area">
 	            <!-- BEGIN LOGIN FORM -->
 	            <form class="login-form">
-	                <h3 class="form-title"><center>预警管理系统登录</center></h3>
+	                <h3 class="form-title"><center>预案管理系统登录</center></h3>
 	                <div id="error" style="display:none;color:#FF0000;margin:10px 0;">	
 					</div>
 	                <div class="alert alert-danger display-hide">

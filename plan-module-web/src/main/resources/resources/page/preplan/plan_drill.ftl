@@ -89,7 +89,6 @@
 									<th>预案名称</th>
 									<th>预案演练人数</th>
 									<th>预案演练时间</th>
-									<th>预案演练评估</th>
 									<th>预案演练打分</th>
 									<th>预案演练内容</th>
 								</tr>
@@ -107,7 +106,7 @@
                                                 <div class="modal-content">
                                                    <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">新增演练</h4>
+                                                        <h4 class="modal-title"></h4>
                                                     </div>
                                                     <div class="modal-body">
 <!-- BEGIN FORM-->
@@ -153,7 +152,7 @@
                                                 <div class="col-md-4">
                                                     <div class="input-icon right">
                                                         <i class="fa"></i>
-                                                        <textarea rows="3" cols="20" wrap="physical" id="drillAssessment" name="drillAssessment" data-required="1" class="form-control"  value=""/> 
+                                                        <textarea rows="5" cols="40" wrap="physical" id="drillAssessment" name="drillAssessment" data-required="1" class="form-control"  value=""/> 
                                                         </textarea>
                                                         <span class="help-block"> 不能为空</span>
                                                     </div>   
@@ -277,7 +276,6 @@
 	                    { "data": "drillPreplanName" },
 	                    { "data": "drillNumOfParticipants" },
 	                    { "data": "drillTime" },
-	                    { "data": "drillAssessment" },
 	                    { "data": "drillScore" },
 	                    { "formatNumber": "preplanTime" }
 	                ],
@@ -410,11 +408,12 @@
 		//增加预案，生成表格
 	function addDrill(){
 	 $('#drillNumOfParticipants').val("");
-	 $('#drillScore').val(0);
+	 $('#drillScore').val("");
 	 $('#drillAssessment').val("");
-	 $('#drillContent').val("");
 	 $('#id').val(0);
-	
+	  var xhedit=$('#xheditor').xheditor();
+	 xhedit.setSource("");
+	 
 	$.ajax({
 	url:'${pageContext.request.contextPath}/plan/preplan/preplan_drill_queryPreplanList.action',
 	dataType:"json",	  
