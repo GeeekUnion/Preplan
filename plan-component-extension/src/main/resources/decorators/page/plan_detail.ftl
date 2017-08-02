@@ -23,7 +23,7 @@
 				<p>
 					<strong>
 						<a  data-toggle="modal" href="#largeLog">
-	                		<i class="fa fa-search"></i> 查看编制历史
+	                		<i class="fa fa-search"></i> 查看修订历史
 	                	</a>
                 	</strong>	
                 </p>
