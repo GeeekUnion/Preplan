@@ -165,7 +165,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                                        <h4 class="modal-title">查看内容</h4>
+                                                        <h4 class="modal-title">生成事件</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                        <!-- BEGIN FORM-->
@@ -364,8 +364,12 @@
 			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
 			map.centerAndZoom(pp, 12);
 			map.addOverlay(new BMap.Marker(pp));    //添加标注
-		    Circle(pp);
+			lo=pp.lng;
+		    la=pp.lat;
+		    
 	        initResource();
+	        Circle(pp);
+	        
 		}
 		var local = new BMap.LocalSearch(map, { //智能搜索
 		  onSearchComplete: myFun
@@ -487,7 +491,7 @@
 	    hazardClick("hazard");
 	    emergencyResponseTeamClick("emergencyResponseTeam");
         protectionObjectClick("protectionObject");
-        
+        Circle(point);
     	}
     	var markerMenu=new BMap.ContextMenu();
     	markerMenu.addItem(new BMap.MenuItem('查看附近资源',watchMarker.bind(marker)));
@@ -764,6 +768,7 @@
 	var inventoryPrincipal=$("#addRe  #inventoryPrincipal").val();
 	var inventoryPrincipalPhone=$("#addRe #inventoryPrincipalPhone").val();
 	var idType= $("#addRe #idType").val();
+	console.log(idType+"!!!!!!!!!!!!!!!!!!");
 	
 	
 	$.ajax({    
