@@ -173,12 +173,16 @@
 						swal({title: "打印失败!",text: '未知错误，请重试',type: "error",confirmButtonText: "确认" });			
 						
 					}else{
+						getPdfByUrl(msg);
+						swal.close();
+						/*
 						swal({
 							title: "打印成功!",
 							text:'路径为：'+msg,
 							type: "success",
 							confirmButtonText: "确认"
-						}); 
+						});
+						*/ 
 					}								
 					  	
 					
@@ -189,6 +193,28 @@
 			});
 	  }
 			
+		//下载预案		
+		function getPdfByUrl(url){			
+				// 创建Form  
+			    var form = $('<form></form>');  
+			    
+			    // 设置属性  
+			    form.attr('action', "${pageContext.request.contextPath}/plan/preplan/plan_download.action");  
+			    form.attr('method', 'post');
+			    
+			    // 创建Input  
+    			var set_input = $('<input type="text" name="downloadFileName" />');
+    			set_input.attr('value', url); 
+	    		
+    			// 附加到Form  
+    			form.append(set_input);  
+    			
+    			// 提交表单  
+    			$(document.body).append(form);
+			    form.submit();  
+			    //return false自动刷新
+			    return false;  	
+		}
 			
 		</script>
     </body>

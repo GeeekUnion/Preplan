@@ -123,8 +123,16 @@
 		<action name="plan_revise_module" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
 			<result name="url">preplan/plan_revise_module.ftl</result>				
 		</action>
-				<action name="plan_revise_*" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
+		<action name="plan_revise_*" class="com.gsafety.plan.module.actions.PreplanAction" method="editSkip">
 			<result>preplan/plan_revise_{1}.ftl</result>				
+		</action>
+		<action name="plan_download" class="com.gsafety.plan.module.actions.PreplanAction" method="getPdfByUrl">
+			<result name="success" type="stream">
+				<param name="contenType">application/pdf</param>
+				<param name="inputName">downloadFilePath</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<param name="bufferSize">8192</param>
+			</result>				
 		</action>
 		<!-- Mission拦截和结果配置 -->
 		<action name="preplan_mission_*" class="com.gsafety.plan.module.actions.MissionAction" method="{1}">

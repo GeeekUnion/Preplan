@@ -1,9 +1,13 @@
 package com.gsafety.plan.module.actions;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -116,6 +120,9 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String pageMsgType;//决定是
     
     private String pageMaker;
+    
+    private InputStream downloadFilePath;//下载文件流
+    private String downloadFileName;//下载文件名
 
 
     private int page;
@@ -363,7 +370,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
      	            	}
 
      				}
-     	        myJsonObject.put("status",saveRealFilePath);    
+     	        System.out.println(fileName);  
+     	        myJsonObject.put("status",fileName);    
      	          
     		} catch (Exception e) {
     		    myJsonObject.put("status","error");   
@@ -378,8 +386,26 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     	return "myJsonObject";
     }
     
-
     
+    /**
+     *TODO(根据路径下载pdf)
+     *@param path
+     **/
+    public String getPdfByUrl(){   	
+    	String saveRealFilePath = ServletActionContext.getServletContext().getRealPath("/doc");//下载路径 
+    	saveRealFilePath=saveRealFilePath+downloadFileName;
+    	System.out.println(saveRealFilePath);  
+    	downloadFileName=downloadFileName.replace("/", "");
+    	try {
+    		downloadFileName=URLEncoder.encode(downloadFileName,"UTF-8");//解决中文乱码
+			downloadFilePath=new FileInputStream(saveRealFilePath);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return SUCCESS;
+    	
+    }
     
     
     public String queryPlanList(){
@@ -1047,6 +1073,29 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
 
 	public void setPageMaker(String pageMaker) {
 		this.pageMaker = pageMaker;
+	}
+
+
+
+
+
+	public InputStream getDownloadFilePath() {
+		return downloadFilePath;
+	}
+
+
+	public void setDownloadFilePath(InputStream downloadFilePath) {
+		this.downloadFilePath = downloadFilePath;
+	}
+
+
+	public String getDownloadFileName() {
+		return downloadFileName;
+	}
+
+
+	public void setDownloadFileName(String downloadFileName) {
+		this.downloadFileName = downloadFileName;
 	}
 
 
