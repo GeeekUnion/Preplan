@@ -44,5 +44,15 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
         String str=jo.toString(); 
         return str;
     }
+    
+    /**
+     *根据org id查询查org_area_code
+     */
+    @Override
+    public String getOrgAreaCodeById(String orgCode) {   
+    	String sql="select ORG_AREA_CODE from fw_t_ems_org where ORG_CODE="+"\'"+orgCode+"\'";
+        String orgAreaCode =(String) baseDAO.getUniqueBySql(sql);
+        return orgAreaCode;
+    }
 
 }

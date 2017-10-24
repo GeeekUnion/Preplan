@@ -7,4 +7,6 @@ public interface DepartmentService extends IBaseService{
 
     String getOrg(EmsOrg orgSet);
 
+	String getOrgAreaCodeById(String OrgCode);
+
 }
