@@ -19,7 +19,20 @@
         <link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/global/plugins/select2/css/select2-bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="${getTheme('default','')}assets/pages/css/login-4.min.css"/>
         <!-- END PAGE LEVEL PLUGINS -->
-        
+        <style>
+        	.login-tab{
+        		width:50%;
+        		height:40px;
+        		line-height:40px;
+        		margin-bottom:20px;
+        		border:1px solid #666;
+        		color:#666;
+        	}
+        	.active{
+        		font-size:1.2em;
+        		color:#FFF;
+        	}
+        </style>
          </head>
     <body class=" login">
     	<div id="control-heigh">
@@ -31,9 +44,15 @@
 	        <!-- END LOGO -->
 	        <!-- BEGIN LOGIN -->
 	        <div class="content" id="content-area">
+
 	            <!-- BEGIN LOGIN FORM -->
 	            <form class="login-form">
 	                <h3 class="form-title"><center>预案管理系统登录</center></h3>
+	                <div>
+		        		<div class="pull-left text-center login-tab active" data-code="1" id="governmentTab">政府用户</div>
+		        		<div class="pull-right text-center login-tab" data-code="2" id="companyTab">企业用户</div>
+		        	</div>
+		        	<div class="clearfix"></div>		        	
 	                <div id="error" style="display:none;color:#FF0000;margin:10px 0;">	
 					</div>
 	                <div class="alert alert-danger display-hide">
@@ -53,7 +72,8 @@
 	                        <i class="fa fa-lock"></i>
 	                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="密码" name="password" id="password" /> </div>
 	                </div>
-	                <div class="form-actions">
+	                <input  type="hidden" name="orgAreaCode" id="orgAreaCodeInput" value="1"/>
+	                <div class="form-actions">	               
 	                    <button type="submit" id="loginBtn" class="btn green pull-right"> 登录 </button>
 	                </div>
 	
@@ -80,6 +100,7 @@
       
         <script>
 			$(function(){
+				localStorage.titleName="政府";//默认政府
 				var h=document.documentElement.clientHeight ;
 				var logoH=$("#logo-area").outerHeight(true); 
 				var contentH=$("#content-area").outerHeight(true); 
@@ -87,6 +108,22 @@
 				var getM=(h-logoH-contentH-copurH)/2;
 				$('#control-heigh').css("margin-top",getM);				
 			})
+			
+			$('.login-tab').click(function(){
+			  $('#content-area').fadeOut()
+			  var that=this;
+			  
+			  var thatId="#"+that.id;
+			  var titleName=$(thatId).html().substring(0,2);
+			  localStorage.titleName=titleName;
+			  $('#orgAreaCodeInput').val($(thatId).data("code"))
+			  //console.log($(thatId).data("code"))
+			  //console.log(localStorage.titleName)
+			  $(thatId).siblings().removeClass("active");
+			  $(thatId).addClass("active");
+			   $('#content-area').fadeIn(200)
+			});
+
         </script>
     </body>
          

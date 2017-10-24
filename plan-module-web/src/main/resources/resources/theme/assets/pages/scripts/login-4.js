@@ -47,17 +47,26 @@ var Login = function () {
 
 	            submitHandler: function (form) {	            	
 	            	$('#error').html('<div class="panel-heading"></div>').hide();
+	            	var orgAreaCode=$('#orgAreaCodeInput').val();
+	            	var titleName="政府";
+	            	if(orgAreaCode=='2'){
+	            		titleName="企业";
+	            	}
 	            	$.ajax({  
 	                    type: 'post',  
 	                    url: "/plan/preplan/preplan_person_login.action", 
 	                    data:{
                             username:$('#username').val(),
-                            password:$('#password').val()
+                            password:$('#password').val(),
+                            orgAreaCode:orgAreaCode,
                         },
 	                    success:function(data){
 	                    	//console.log(data=="\"ok\"");
                             if(data=="\"ok\""){
                                 location.href ="/plan/preplan/plan_index.action";   
+                            }else if(data=="\"nook\""){
+                            	$("#error div").append("该"+titleName+"用户不存在！");
+                                $('#error').fadeIn('slow');
                             }else{
                                 $("#error div").append("用户名或密码错误！");
                                 $('#error').fadeIn('slow');

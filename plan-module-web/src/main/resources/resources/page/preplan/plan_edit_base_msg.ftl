@@ -116,7 +116,21 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-md-3">预案类别
+                                                <label class="control-label col-md-3">预案分类
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-4">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <select name="classify" id="classify_list" class="form-control">                                                       	
+                                                            <option value=""></option>
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </div>    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">灾害类型
                                                     <span class="required"> * </span>
                                                 </label>
                                                 <div class="col-md-4">
@@ -200,7 +214,8 @@
         <script type="text/javascript" src="${getTheme('default','')}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
         <script type="text/javascript" src="${getTheme('default','')}assets/pages/scripts/form-validation.min.js"></script>        
         <!-- END PAGE LEVEL PLUGINS -->
-        <script>         
+        <script>     
+   
 			$(function(){
 				//绑定点击事件
 				$("#sava_base_msg_btn").on("click",function(){
@@ -227,6 +242,9 @@
 	                    },
 	                    domain: {
 	                        required: true
+	                    },
+	                    classify:{
+	                    	required: true
 	                    },
 	                    preplanDesc: {
 	                        required: true,

@@ -11,8 +11,10 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.interceptor.SessionAware;
 
 
+
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.Person;
+import com.gsafety.plan.service.DepartmentService;
 import com.gsafety.plan.service.PersonService;
 
 
@@ -27,8 +29,12 @@ public class PersonAction extends ListAction<Person> implements SessionAware {
 	 @Resource
 	 private PersonService personService;   
 	
+	 @Resource
+	 private DepartmentService departmentService; 
+	 
 	private String username;
 	private String password;
+	private String orgAreaCode;
 	private String jsonObject;
 	//用于封装会话session
 	protected Map<String, Object> session;  
@@ -39,14 +45,21 @@ public class PersonAction extends ListAction<Person> implements SessionAware {
 	 * @return
 	 */
 	public String login(){
-		System.out.println(username+':'+password);
+		
 		if(StringUtils.isNotEmpty(username)) {
 			Person pr=personService.getPersonByUname(username,password);	
 			if(password.equals(pr.getPassword())){
-			    session.put("preplanOrgCode",pr.getOrgCode());  
-			    session.put("preplanUsername",pr.getLoginName());  
+				String myOrgAreaCode=departmentService.getOrgAreaCodeById(pr.getOrgCode());
+				if(orgAreaCode.equals(myOrgAreaCode.substring(1,2))){//如果校验正确
+				    session.put("preplanOrgCode",pr.getOrgCode()); 			    			   
+				    session.put("preplanUsername",pr.getLoginName()); 
+				    jsonObject="ok";
+				}else{
+					jsonObject="nook";
+				}
+ 
 			    
-				jsonObject="ok";
+				
 			}else{
 				jsonObject="error";		
 			}
@@ -85,7 +98,13 @@ public class PersonAction extends ListAction<Person> implements SessionAware {
     public void setJsonObject(String jsonObject) {
         this.jsonObject = jsonObject;
     }
-
+    
+	public String getOrgAreaCode() {
+		return orgAreaCode;
+	}
+	public void setOrgAreaCode(String orgAreaCode) {
+		this.orgAreaCode = orgAreaCode;
+	}
 	@Override
 	public void setSession(Map<String, Object> session) {
 		this.session=session;
