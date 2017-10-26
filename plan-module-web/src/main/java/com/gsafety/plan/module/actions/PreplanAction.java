@@ -105,6 +105,7 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     private String ppName;//预案名字
     private String ppDesc;//预案描述
     private String ppType;//预案分类Sn
+	private String classify;//分类
     private String ppDept;//预案部门
     private String ppUid;//自定义预案编号
     
@@ -181,7 +182,8 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
             ppModel=preplanService.getByPpSn(ppSn);           
             
         }   
-        ppModel.setPreplanName(ppName);            
+        ppModel.setPreplanName(ppName);  
+        ppModel.setClassify(classify);//分类
         ppModel.setPreplanDesc(ppDesc);
         ppModel.setReviewOrg(ppDept);//审核部门
         ppModel.setResponDept(session.get("preplanOrgCode").toString()); //sesion获得负责部门           
@@ -245,11 +247,12 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
                    preplanDomainId=d.getId();
                    preplanDomainName=d.getDomainName();
                    
-               } 
+               }             
                jo.put("preplanDesc",p.getPreplanDesc());
                jo.put("preplanName",p.getPreplanName());
                jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
                jo.put("preplanUID",p.getPreplanUID());
+               jo.put("preplanClassify", p.getClassify());
                jo.put("preplanDomain",preplanDomainId); 
                jo.put("preplanDomainName",preplanDomainName); 
                jo.put("preplanOrgId", p.getResponDept());
@@ -991,11 +994,23 @@ public class PreplanAction extends ListAction<Preplan>implements SessionAware{
     public String getPpUid() {
         return ppUid;
     }
-
+    
     public void setPpUid(String ppUid) {
         this.ppUid = ppUid;
-    }
-    public String getMisnOrder() {
+    }     
+    
+      
+    public String getClassify() {
+		return classify;
+	}
+
+
+	public void setClassify(String classify) {
+		this.classify = classify;
+	}
+
+
+	public String getMisnOrder() {
         return misnOrder;
     }
 

@@ -124,7 +124,6 @@
                                                         <i class="fa"></i>
                                                         <select name="classify" id="classify_list" class="form-control">                                                       	
                                                             <option value=""></option>
-                                                            <option value=""></option>
                                                         </select>
                                                     </div>    
                                                 </div>
@@ -222,7 +221,10 @@
 					$('#sava_base_msg_ipt').val(1);	
 				});
 				
-				getPlanBaseMsg();//查询已有预案信息					
+				getPlanBaseMsg();//查询已有预案信息	
+				
+
+								
 				var form2 = $('#baseMsgForm');
 	            var error2 = $('.alert-danger', form2);
 	            var success2 = $('.alert-success', form2);
@@ -287,9 +289,11 @@
 	                var ppDesc=$('#preplanDesc').val()
 	                var ppUid=$('#preplanSn').val()
 	                var ppType=$('#domain_list').val();
+	                var classify=$('#classify_list').val();
 	                var ppDept=$('#review_list').val();
 	                var ppSn=$('#planSn').val();
 	                var preplanSpecialist=$('#preplanSpecialist').val();
+
 	                  $.ajax({  
 		                    type: 'post',  
 		                    url: "/plan/preplan/preplan_preplan_saveOnlyPreplan.action", 
@@ -300,7 +304,8 @@
 								ppType : ppType,
 								ppDept : ppDept,
 								ppUid  : ppUid,
-								ppSn   : ppSn
+								ppSn   : ppSn,
+								classify:classify
 								
 	                        },
 		                    success:function(data){
@@ -338,6 +343,12 @@
         		var preplanDeparmentId=0;
         		var preplanReviewOrg=0;
         		var planSn=$('#planSn').val();
+        		
+        		var titleName=localStorage.titleName;
+				var classifyList=['综合','专项','部门'];//政府
+				if(titleName=="企业"){
+					classifyList=[综合,专项,现场处置方案];//企业
+				}
 
             	//查询预案基本信息
 				$.ajax({
@@ -356,7 +367,21 @@
 							preplanDomainId=data[0].preplanDomain;
 							preplanReviewOrg=data[0].preplanReviewOrg;
 						} 
-						//查询所有分类
+						
+						//查询设置分类
+						var myHtml='';                             
+ 						for(var i=0;i<classifyList.length;i++){
+// 							if(classifyList[i]==""){
+// 								myHtml= myHtml+'<option value="'+data[i].id+'" selected="selected">'+data[i].domain_name+'</option>'
+//							}else{
+//								myHtml= myHtml+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
+// 							}
+							myHtml= myHtml+'<option value="'+classifyList[i]+'">'+classifyList[i]+'</option>'
+						}
+						 $('#classify_list').append(myHtml);		
+						
+						
+						//查询所有灾害分类
 			        	$.ajax({
 							type : "POST",
 							url : "${pageContext.request.contextPath}/plan/preplan/preplan_domain_queryAllDomain.action",
