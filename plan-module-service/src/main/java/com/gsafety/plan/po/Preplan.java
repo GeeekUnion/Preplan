@@ -36,8 +36,10 @@ public class Preplan implements Serializable {
 	private String responPerson;              //负责人，暂无对应表		
 	private String preplanSpecialist;    //专家组
 	private String version;//版本号
+	private String classify;
 	
 	private String reviewOrg;//审核部门
+	
 	
 	private Event eventSn;
 	
@@ -79,7 +81,15 @@ public class Preplan implements Serializable {
 	public void setPreplanTime(Timestamp preplanTime) {
 		this.preplanTime = preplanTime;
 	}
-    @Column(name="preplan_status")
+		
+	@Column(name="preplan_classify")
+    public String getClassify() {
+		return classify;
+	}
+	public void setClassify(String classify) {
+		this.classify = classify;
+	}
+	@Column(name="preplan_status")
 	public String getPreplanStatus() {
 		return preplanStatus;
 	}

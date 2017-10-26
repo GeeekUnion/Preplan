@@ -40,7 +40,8 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
             jo.put("preplanUid",p.getPreplanUID());
             jo.put("preplanName",p.getPreplanName());  
             jo.put("responDept",p.getResponDept()); 
-            jo.put("preplanSn",p.getPreplanSn());                                                    
+            jo.put("preplanSn",p.getPreplanSn());   
+            jo.put("preplanClassify",p.getClassify());  
             if(p.getPreplanTime() != null) {
                 jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
             }
@@ -139,6 +140,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
                 jo.put("id",p.getId());
                 jo.put("preplanUid",p.getPreplanUID());
                 jo.put("preplanName",p.getPreplanName());  
+                jo.put("preplanClassify",p.getClassify());  
                 jo.put("responDept",org.getOrgName()); 
                 jo.put("preplanSn",p.getPreplanSn()); 
                 jo.put("status",p.getPreplanStatus()); 
@@ -205,6 +207,7 @@ public class PreplanServiceImpl extends BaseServiceImpl implements PreplanServic
                     jo.put("preplanName",p.getPreplanName());  
                     jo.put("responDept",org.getOrgName()); 
                     jo.put("preplanSn",p.getPreplanSn()); 
+                    jo.put("preplanClassify",p.getClassify());  
                     jo.put("status",p.getPreplanStatus()); 
                     if(p.getPreplanTime() != null) {
                         jo.put("preplanTime",p.getPreplanTime().toString().split(" ")[0]); 
