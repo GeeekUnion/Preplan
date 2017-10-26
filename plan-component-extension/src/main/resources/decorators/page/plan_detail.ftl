@@ -11,7 +11,10 @@
 				<p><strong>预案编号：</strong><span id="preplanUIDSpan"></span></p>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-12">
-				<p><strong>预案分类：</strong><span id="preplanDomainNameSpan"></span></p>
+				<p><strong>预案分类：</strong><span id="preplanClassify"></span></p>
+			</div>
+			<div class="col-md-4 col-sm-6 col-xs-12">
+				<p><strong>灾害分类：</strong><span id="preplanDomainNameSpan"></span></p>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-12">
 				<p><strong>编制时间：</strong><span id="preplanTimeSpan"></span></p>
@@ -28,7 +31,7 @@
                 	</strong>	
                 </p>
 			</div>
-			<div class="col-xs-12">
+			<div class="col-md-4 col-sm-6 col-xs-12">
 				<p><strong>专家组：</strong><span id="preplanSpecialistSpan"></span></p>
 			</div>
 			<div class="col-xs-12">
@@ -144,6 +147,7 @@
 				},
 				success : function(data) {	
 					var obj=data[0];
+					$('#preplanClassify').append(obj.preplanClassify);
 					$('#preplanNameSpan').append(obj.preplanName);	
 					$('#preplanUIDSpan').append(obj.preplanUID);		
 					$('#preplanDomainNameSpan').append(obj.preplanDomainName);

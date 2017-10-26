@@ -15,6 +15,7 @@
 	            <tr>
 	                <th>预案编号</th>
 	                <th>预案名称 </th>
+	                <th>预案类别 </th>
 	                <th>灾害类型 </th>
 	                <th>负责部门</th>
 	                <th>状态 </th>
@@ -50,6 +51,7 @@
 			        "columns": [
 	                    { "data": "preplanUid", align:"center" },
 	                    { "data": "preplanName" },
+	                    { "data": "preplanClassify" },
 	                    { "data": "preplanType" },
 	                    { "data": "responDept" },
 	                    { "data": "status" },
