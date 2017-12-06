@@ -371,7 +371,7 @@
 						//查询设置分类
 						var myHtml='';                             
  						for(var i=0;i<classifyList.length;i++){
-// 							if(classifyList[i]==""){
+// 							if(classifyList[i]==data[0].preplanClassify){
 // 								myHtml= myHtml+'<option value="'+data[i].id+'" selected="selected">'+data[i].domain_name+'</option>'
 //							}else{
 //								myHtml= myHtml+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
