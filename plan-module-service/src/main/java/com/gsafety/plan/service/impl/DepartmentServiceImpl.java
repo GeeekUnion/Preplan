@@ -27,7 +27,11 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
         Object[] obj= (Object[]) baseDAO.getUniqueBySql(sql);//获得原Org
         JSONObject jo = new JSONObject();
         String oldOrgAreaCode=(String) obj[2];
-        if("01".equals(oldOrgAreaCode)){
+        boolean qiyepd=false;//如果是一级企业
+        if(oldOrgAreaCode.length()==4 && "02".equals(oldOrgAreaCode.substring(0, 2))){
+        	qiyepd=true;
+        }
+        if("01".equals(oldOrgAreaCode) || qiyepd){//最高级政府或者一级企业
         	jo.put("orgCode",obj[0]);
             jo.put("orgName",obj[1]);
             jo.put("orgAreaCode",oldOrgAreaCode);           
