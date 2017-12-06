@@ -359,7 +359,9 @@
 						ppSn:planSn
 					},
 					success : function(data) {
+						var preplanClassify="";
 						if(data.length>0){
+							preplanClassify=data[0].preplanClassify;
 							$('#preplanSn').val(data[0].preplanUID);//预案编号	
 							$('#preplanName').val(data[0].preplanName);//预案名字
 							$('#preplanDesc').val(data[0].preplanDesc);//预案描述
@@ -367,8 +369,9 @@
 							preplanDomainId=data[0].preplanDomain;
 							preplanReviewOrg=data[0].preplanReviewOrg;
 							
+							
 						} 
-						var preplanClassify=data[0].preplanClassify
+						
 						//查询设置分类
 						var myHtml='';                             
  						for(var i=0;i<classifyList.length;i++){
