@@ -75,6 +75,13 @@
                             </a>
                         </li>
                         </#if>	 
+                         <li class="nav-item " id="navPlanShowLi">
+                            <a href="${pageContext.request.contextPath}/plan/preplan/plan_offline_map.action" class="nav-link nav-toggle">
+                                <i class="fa fa-circle-o-notch"></i>
+                                <span class="title">离线地图</span>
+                            </a>
+                        </li>
+                        
                                                                           
                     </ul>
                     <!-- END SIDEBAR MENU -->
