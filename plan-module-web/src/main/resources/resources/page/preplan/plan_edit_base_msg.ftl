@@ -366,12 +366,13 @@
 							$('#preplanSpecialist').val(data[0].preplanSpecialist);
 							preplanDomainId=data[0].preplanDomain;
 							preplanReviewOrg=data[0].preplanReviewOrg;
+							
 						} 
-						
+						var preplanClassify=data[0].preplanClassify
 						//查询设置分类
 						var myHtml='';                             
  						for(var i=0;i<classifyList.length;i++){
- 							if(classifyList[i]==data[0].preplanClassify){
+ 							if(classifyList[i]==preplanClassify){
 								myHtml= myHtml+'<option value="'+classifyList[i]+'" selected="selected">'+classifyList[i]+'</option>'
 							}else{
 								myHtml= myHtml+'<option value="'+classifyList[i]+'">'+classifyList[i]+'</option>'
