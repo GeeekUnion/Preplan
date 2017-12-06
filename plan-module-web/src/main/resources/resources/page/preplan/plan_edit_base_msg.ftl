@@ -347,7 +347,7 @@
         		var titleName=localStorage.titleName;
 				var classifyList=['综合','专项','部门'];//政府
 				if(titleName=="企业"){
-					classifyList=[综合,专项,现场处置方案];//企业
+					classifyList=['综合','专项','现场处置方案'];//企业
 				}
 
             	//查询预案基本信息
