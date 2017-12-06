@@ -371,12 +371,11 @@
 						//查询设置分类
 						var myHtml='';                             
  						for(var i=0;i<classifyList.length;i++){
-// 							if(classifyList[i]==data[0].preplanClassify){
-// 								myHtml= myHtml+'<option value="'+data[i].id+'" selected="selected">'+data[i].domain_name+'</option>'
-//							}else{
-//								myHtml= myHtml+'<option value="'+data[i].id+'">'+data[i].domain_name+'</option>'
-// 							}
-							myHtml= myHtml+'<option value="'+classifyList[i]+'">'+classifyList[i]+'</option>'
+ 							if(classifyList[i]==data[0].preplanClassify){
+								myHtml= myHtml+'<option value="'+classifyList[i]+'" selected="selected">'+classifyList[i]+'</option>'
+							}else{
+								myHtml= myHtml+'<option value="'+classifyList[i]+'">'+classifyList[i]+'</option>'
+ 							}
 						}
 						 $('#classify_list').append(myHtml);		
 						
