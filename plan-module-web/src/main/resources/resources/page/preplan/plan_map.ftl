@@ -65,11 +65,11 @@
 				<div style=" width:100%; height:500px;   border: #ccc solid 1px;"
 					id="dituContent"></div>
 					
-				<a> 事件&nbsp:<img src="${getMC ("")}/theme/img/icon/事件.png"   /> &nbsp</a>	
+				<a> 事件&nbsp:<img src="${getMC ("")}/theme/img/icon/event.png"   /> &nbsp</a>	
                 <a> 资源点 &nbsp:<img src="${getMC ("")}/theme/img/icon/inventory.png"  /> &nbsp</a>	
-                <a> 防护目标&nbsp: <img src="${getMC ("")}/theme/img/icon/防护目标.png"   /> &nbsp</a>	
-                <a> 应急队伍&nbsp:<img src="${getMC ("")}/theme/img/icon/应急队伍.png"   />&nbsp </a>	
-                <a> 危险源&nbsp:<img src="${getMC ("")}/theme/img/icon/危险源.png"   /> &nbsp</a>	
+                <a> 防护目标&nbsp: <img src="${getMC ("")}/theme/img/icon/protect.png"   /> &nbsp</a>	
+                <a> 应急队伍&nbsp:<img src="${getMC ("")}/theme/img/icon/emergency.png"   />&nbsp </a>	
+                <a> 危险源&nbsp:<img src="${getMC ("")}/theme/img/icon/hazard.png"   /> &nbsp</a>	
                               
                               
 				<#include "/decorators/plan_map_content.ftl">
@@ -304,11 +304,11 @@
 		
 	    var clickType="inventory";
 	    
-	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/事件.png", new BMap.Size(20,20));
+	var eventIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/event.png", new BMap.Size(20,20));
 	var inventoryIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/inventory.png", new BMap.Size(20,20));
-	var protectionObjectIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/防护目标.png", new BMap.Size(20,20));
-	var emergencyResponseTeamIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/应急队伍.png", new BMap.Size(20,20));
-	var hazardIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/危险源.png", new BMap.Size(20,20));
+	var protectionObjectIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/protect.png", new BMap.Size(20,20));
+	var emergencyResponseTeamIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/emergency.png", new BMap.Size(20,20));
+	var hazardIcon = new BMap.Icon("${getMC ("")}/theme/img/icon/hazard.png", new BMap.Size(20,20));
 	
 	function Location(lo2,la2){
 	 var pointLocation = new BMap.Point(lo2,la2);

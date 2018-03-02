@@ -118,7 +118,7 @@ public class DrillAction extends ListAction<Drill> implements SessionAware{
         	 String areaOrgCode =(String) jo.get("areaOrgCode");
         	 String orgName =(String) jo.get("orgName");
         	 try {
-        		d.setDrillSn(uuid); 
+        		d.setDrillSn(uuid.substring(0,15)); 
         		d.setAreaOrgCode(areaOrgCode);
         		d.setDrillDepartment(orgName);
         		d.setDrillContent(drillContent);
