@@ -18,7 +18,8 @@
         		var xhedit=$('#xheditor').xheditor();
         		var planContent=xhedit.getSource();
         		var planSn=$('#planSn').val();
-        		if(null===planContent || planContent===""){  
+        		var orderInt=parseInt(order);
+        		if( orderInt<35 && (null===planContent || planContent==="")){  
         			swal({   
         				title: "内容不能为空",   
         				timer: 1000,   

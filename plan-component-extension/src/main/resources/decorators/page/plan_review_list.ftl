@@ -71,6 +71,9 @@
 			            	 }else if(row.status=="申请修订"){
 			            	 	myHtml=myHtml+'<button  class="btn green"onclick="checkPlanOk(\''+row.preplanSn+'\')">'
 		                                      +  			'<i class="fa fa-check">同意修订</i>'
+		                                      +      '</button>'	
+		                                      +'<button  class="btn red"onclick="checkPlanReject(\''+row.preplanSn+'\')">'
+		                                      +  			'<i class="fa fa-times">不同意修订</i>'
 		                                      +      '</button>'		
 			            	 }else{
 			            	 
@@ -172,5 +175,36 @@
 				    }
 				);
 			}
-			
+			//不同意申请
+			function checkPlanReject(planSn){
+				//修订
+				$.ajax({
+					type : "POST",
+					url : "${pageContext.request.contextPath}/plan/preplan/preplan_preplan_updatePreplanStatus.action",
+					dataType : "json",
+					data : {
+							ppSn:planSn.replace(/'/g,""),
+							preplanStatus:"通过"
+					},
+					success : function() {
+ 						loadPlan();
+ 						swal({
+							title: "操作成功!",
+							text: '',
+							type: "success",
+							timer: 2000, 
+							confirmButtonText: "确认"  
+						});				
+					},
+					error: function(){							
+						swal({
+							title: "操作失败!",
+							text: '未知错误，请重试！',
+							type: "error",
+							timer: 2000, 
+							confirmButtonText: "确认"  
+						});									
+					}
+				});				
+			}
         </script>
