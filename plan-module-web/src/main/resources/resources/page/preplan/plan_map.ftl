@@ -46,7 +46,7 @@
 				<div class="page-bar">
 					<ul class="page-breadcrumb">
 						<li><a
-							href="${pageContext.request.contextPath}/plan/preplan/planIndex.action">主页</a>
+							href="${pageContext.request.contextPath}/plan/preplan/plan_index.action">主页</a>
 							<i class="fa fa-circle"></i></li>
 						<li><span>地图</span></li>
 					</ul>
