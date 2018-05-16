@@ -2,6 +2,8 @@ package com.gsafety.plan.module.actions;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -15,8 +17,6 @@ import net.sf.json.JSONObject;
 
 import com.gsafety.cloudframework.common.ui.list.action.ListAction;
 import com.gsafety.plan.po.*;
-
-
 import com.gsafety.plan.service.EmergencyResponseTeamService;
 import com.gsafety.plan.service.HazardService;
 import com.gsafety.plan.service.InventoryService;
@@ -129,6 +129,9 @@ public class InventoryAction extends ListAction<Inventory> {
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 		if(idType.equalsIgnoreCase("inventory")){
 			try{
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				LocalDateTime time = LocalDateTime.now();
+				String localTime = df.format(time);
 				
 				String iType='a'+ UUID.randomUUID().toString().substring(0, 6);
 			    i.setLatitude(latitude);
@@ -136,7 +139,7 @@ public class InventoryAction extends ListAction<Inventory> {
 			    i.setInventoryName(inventoryName);
 			    i.setInventoryPrincipal(inventoryPrincipal);
 			    i.setInventoryPrincipalPhone(inventoryPrincipalPhone);
-			    i.setInventorySn(uuid);
+			    i.setInventorySn(localTime);
 			    i.setiType(iType);
 				inventoryService.save(i);
 			}catch(Exception e){
@@ -144,9 +147,13 @@ public class InventoryAction extends ListAction<Inventory> {
 			}
 		}else if(idType.equalsIgnoreCase("hazard")){
 			try {
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				LocalDateTime time = LocalDateTime.now();
+				String localTime = df.format(time);
+				
 				String iType='b'+ UUID.randomUUID().toString().substring(0, 6);
 				h.setHazardName(inventoryName);
-				h.setHazardSn(uuid);
+				h.setHazardSn(localTime);
 				h.setiType(iType);
 			    h.setLatitude(latitude);
 			    h.setLongitude(longitude);
@@ -160,11 +167,14 @@ public class InventoryAction extends ListAction<Inventory> {
 			}
 		}else if(idType.equalsIgnoreCase("emergencyResponseTeam")){
 			try {
+				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				LocalDateTime time = LocalDateTime.now();
+				String localTime = df.format(time);
 				String iType='c'+ UUID.randomUUID().toString().substring(0, 6);
 				em.setLongitude(longitude);
 				em.setLatitude(latitude);
 				em.setEmergencyResponseTeamName(inventoryName);
-				em.setEmergencyResponseTeamSn(uuid);
+				em.setEmergencyResponseTeamSn(localTime);
 				em.setPrincipal(inventoryPrincipal);
 				em.setPrincipalPhone(inventoryPrincipalPhone);
 				em.setiType(iType);
@@ -174,6 +184,9 @@ public class InventoryAction extends ListAction<Inventory> {
 			}
 		}else if(idType.equalsIgnoreCase("protectionObject")){
           try {
+        	  DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+				LocalDateTime time = LocalDateTime.now();
+				String localTime = df.format(time);  
         	String iType='d'+ UUID.randomUUID().toString().substring(0, 6);
 			p.setiType(iType);
 			p.setLatitude(latitude);
@@ -181,7 +194,7 @@ public class InventoryAction extends ListAction<Inventory> {
 			p.setPrincipal(inventoryPrincipal);
 			p.setPrincipalPhone(inventoryPrincipalPhone);
 			p.setProtectionObjectName(inventoryName);
-			p.setProtectionObjectSn(uuid);
+			p.setProtectionObjectSn(localTime);
 			protectionObjectService.save(p);
 			} catch (Exception e) {
 				jsonObject.put("status", "nook");
